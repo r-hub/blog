@@ -10,6 +10,7 @@
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
 
+<meta name="twitter:image" content="{{.Site.BaseURL}}rhub-square-white.png" >
 {{ if eq .URL "/" }}
 <title>{{ .Site.Title }}</title>
 <meta property="og:title" content="{{ .Site.Title }}">
@@ -30,7 +31,6 @@
 {{ if .Keywords }}
 <meta property="keywords" content ="{{ delimit .Keywords ", " }}">
 {{ end }}
-<meta name="twitter:image" content="{{.Site.BaseURL}}rhub-square-white.png" >
 {{ if .RSSLink }}
 <link href="{{ .RSSLink | relURL }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
 {{ end }}
