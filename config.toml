@@ -1,4 +1,4 @@
-baseurl = "/"
+baseurl = "https://blog.r-hub.io/"
 languageCode = "en-us"
 title = "R-hub blog"
 theme = "hugo-lithium"
