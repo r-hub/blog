@@ -14,11 +14,11 @@
 {{ if eq .URL "/" }}
 <title>{{ .Site.Title }}</title>
 <meta property="og:title" content="{{ .Site.Title }}">
+<meta property="description" content="{{ .Site.Params.description }}">
 <meta property="og:type" content="website">
 {{ else }}
 <title>{{ .Title }}{{ with .Params.subtitle }} - {{ . }} {{ end }} - {{ .Site.Title }}</title>
 <meta property="og:title" content="{{ .Title }} - {{ .Site.Title }}">
-<meta property="description" content="{{ .Site.Params.description }}">
 {{ end }}
 
 {{ if eq .URL "/" }}
