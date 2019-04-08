@@ -147,7 +147,7 @@ For more general information about CRAN submissions, refer to
 * [CRAN itself](https://cran.r-project.org//web//packages//submission_checklist.html)
  whose checklist suggest using R-hub :sunglasses:;
  
-* `usethis::use_release_issue()` that opens an issue with a handy checklist, including an item about R-hub :sunglasses:, in your GitHub issue tracker;
+* [`usethis::use_release_issue()`](https://usethis.r-lib.org/reference/use_release_issue.html) that opens an issue with a handy checklist, including an item about R-hub :sunglasses:, in your GitHub issue tracker;
 
 * [this book chapter](https://r-pkgs.org/release.html#release-process);
 
