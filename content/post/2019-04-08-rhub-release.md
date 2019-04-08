@@ -97,7 +97,7 @@ Find more information in the dedicated vignette [Local Linux checks with Docker]
 
 ### Better helper for CRAN submissions
 
-The output of `check_` functions, in particular `check_for_cran()`, and of `get_check()` has a new `cran_summary()` method to print a summary ready to copy-paste in your cran-comments.md. **So, here's how you can use `rhub` as part of your CRAN submission preparation:, in video and written form** 
+The output of `check_` functions, in particular `check_for_cran()`, and of `get_check()` has a new `cran_summary()` method to print a summary ready to copy-paste in your cran-comments.md. **So, here's how you can use `rhub` as part of your CRAN submission preparation:, in video and written form.** 
 
 #### `rhub` and CRAN submission preparation, screencast
 
