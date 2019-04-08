@@ -91,7 +91,7 @@ Two new functions help you make the most of R-hub Docker Linux images:
 
 * `local_check_linux_images()` lists R-hub Docker images.
 * `local_check_linux()` allows to run an R-hub check on the local
-  host's Docker. The function is doesn't work on Windows yet, which we plan to solve in the next CRAN release.
+  host's Docker. The function is doesn't work on Windows yet, which we plan to solve in the next CRAN release; it only works works on Linux and macOS at the moment.
   
 Find more information in the dedicated vignette [Local Linux checks with Docker](https://r-hub.github.io/rhub/articles/local-debugging.html).
 
