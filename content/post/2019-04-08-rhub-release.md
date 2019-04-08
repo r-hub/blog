@@ -1,9 +1,10 @@
 ---
-date: "2019-03-26"
-title: rhub 1.1.0 is on CRAN!
+date: "2019-04-08"
+title: rhub 1.1.1 is on CRAN!
+slug: rhub-1.1.1
 ---
 
-Version 1.1.0 of the `rhub` package has been released on CRAN! `rhub` allows to check packages on R-hub package builder, 
+Version 1.1.1 of the `rhub` package has been released on CRAN! `rhub` allows to check packages on R-hub package builder, 
 or on local Docker images, _without leaving R_.
 
 Get `rhub`'s latest version from 
@@ -14,7 +15,7 @@ you:
 install.packages("rhub")
 ```
 
-This release should improve user experience thanks to several :sparkles: new 
+This release, compared to `rhub` 1.0.2, should improve user experience thanks to several :sparkles: new 
 features :sparkles: and two bug fixes :wave: :bug: :bug:.
 
 
@@ -22,7 +23,7 @@ features :sparkles: and two bug fixes :wave: :bug: :bug:.
 
 ### List and extract checks
 
-The `list_package_checks()` and `list_my_checks()`, that help you browse your previous checks, now output a `tibble`, that is nicely formatted when printed to the screen. 
+The `list_package_checks()` and `list_my_checks()`, that help you browse your previous checks, now output a `tibble` which is nicely formatted when printed to the screen. 
 
 ```r
 list_my_checks(howmany = 2)
@@ -90,13 +91,22 @@ Two new functions help you make the most of R-hub Docker Linux images:
 
 * `local_check_linux_images()` lists R-hub Docker images.
 * `local_check_linux()` allows to run an R-hub check on the local
-  host's Docker. The function is untested on Windows at the moment, which we plan to solve in the next CRAN release.
+  host's Docker. The function is doesn't work on Windows yet, which we plan to solve in the next CRAN release.
   
 Find more information in the dedicated vignette [Local Linux checks with Docker](https://r-hub.github.io/rhub/articles/local-debugging.html).
 
 ### Better helper for CRAN submissions
 
-The output of `check_` functions, in particular `check_for_cran()`, and of `get_check()` has a new `cran_summary()` method to print a summary ready to copy-paste in your cran-comments.md. **So, here's how you can use `rhub` as part of your CRAN submission preparation:** First, run `check_for_cran()` and assign the result to an object. Then once the checks are done, use the `cran_summary()` method to get a message that you can copy-paste in your cran-comments.md file (created via e.g. `usethis::use_cran_comments()`).
+The output of `check_` functions, in particular `check_for_cran()`, and of `get_check()` has a new `cran_summary()` method to print a summary ready to copy-paste in your cran-comments.md. **So, here's how you can use `rhub` as part of your CRAN submission preparation:, in video and written form** 
+
+#### `rhub` and CRAN submission preparation, screencast
+
+
+{{< vimeo 329059890 >}}
+
+#### `rhub` and CRAN submission preparation, script
+
+First, run `check_for_cran()` and assign the result to an object. Then once the checks are done, use the `cran_summary()` method to get a message that you can copy-paste in your cran-comments.md file (created via e.g. `usethis::use_cran_comments()`).
 
 ```r
 cran_prep <- check_for_cran()
@@ -144,8 +154,6 @@ For more general information about CRAN submissions, refer to
 * [this collaborative list](https://github.com/ThinkR-open/prepare-for-cran).
 
 ## Bug fixes
-
-SUBMIT NEW VERSION AND MENTION CRAN_SUMMARY FIX
 
 In printing methods the submitted time is now always correct thanks to explicitly specifying units for `as.numeric.difftime`. Thanks to [Jim Hester](https://github.com/) and [Barret Schloerke](https://github.com/schloerke)!
 
