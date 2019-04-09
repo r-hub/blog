@@ -83,7 +83,40 @@ you:</p>
 <h1>Can we also <em>play</em> with <code>rversions</code> data?</h1>
 <p>At this point, you have no doubt <code>rversions</code> is useful, but what about we use it to get a glimpse at R’s release schedule over time?</p>
 <pre class="r"><code>library(&quot;ggplot2&quot;)
-versions &lt;- rversions::r_versions()</code></pre>
+versions &lt;- rversions::r_versions()
+versions &lt;- dplyr::mutate(versions, date = anytime::anytime(date))
+versions &lt;- tidyr::separate(versions, version,
+                            into = c(&quot;major&quot;, &quot;minor&quot;, &quot;patch&quot;))</code></pre>
+<pre><code>## Warning: Expected 3 pieces. Missing pieces filled with `NA` in 13 rows [1,
+## 2, 6, 11, 15, 18, 20, 22, 23, 25, 27, 31, 33].</code></pre>
+<pre class="r"><code>versions &lt;- dplyr::mutate(versions, patch = ifelse(is.na(patch), 0, patch))
+versions &lt;- dplyr::mutate(versions, release = dplyr::case_when(
+  major != dplyr::lag(major) ~ &quot;major&quot;,
+  minor != dplyr::lag(minor) ~ &quot;minor&quot;,
+  TRUE ~ &quot;patch&quot;
+))
+
+ggplot(versions) +
+  geom_segment(aes(x = date, xend = date,
+                 col = release), 
+                   y = 0, yend = 1) +
+  viridis::scale_colour_viridis(discrete = TRUE) +
+  theme_minimal() +
+  hrbrthemes::theme_ipsum(base_size = 16,
+                          axis_title_size = 16) +
+  xlab(&quot;Time&quot;) + 
+  theme(
+  axis.text.y = element_blank(),
+  axis.ticks.y = element_blank(),
+  axis.title.y = element_blank(),
+  legend.position = &quot;bottom&quot;)</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-1"></span>
+<img src="/post/2019-04-15-rversions-1-0-4_files/figure-html/unnamed-chunk-1-1.png" alt="Major, minor and patch releases of R over time" width="672" />
+<p class="caption">
+Figure 1: Major, minor and patch releases of R over time
+</p>
+</div>
+<p>With the R version being x.y.z, we define a major release as a change in x, a minor release as a change in y and a patch release as a change in z. The figure above shows that the frequency of minor releases decreased in 2013, from twice to once a year. The frequency of patch releases seems irregular, as is the frequency of <em>major</em> releases: not sure when we should expect R 4.0.0!</p>
 </div>
 <div id="conclusion" class="section level1">
 <h1>Conclusion</h1>

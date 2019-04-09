@@ -76,11 +76,36 @@ rversions::r_release_macos()
 At this point, you have no doubt `rversions` is useful, but what about we use it to get a glimpse at R's release schedule over time?
 
 
-```{r}
+```{r, fig.cap="Major, minor and patch releases of R over time"}
 library("ggplot2")
 versions <- rversions::r_versions()
+versions <- dplyr::mutate(versions, date = anytime::anytime(date))
+versions <- tidyr::separate(versions, version,
+                            into = c("major", "minor", "patch"))
+versions <- dplyr::mutate(versions, patch = ifelse(is.na(patch), 0, patch))
+versions <- dplyr::mutate(versions, release = dplyr::case_when(
+  major != dplyr::lag(major) ~ "major",
+  minor != dplyr::lag(minor) ~ "minor",
+  TRUE ~ "patch"
+))
 
+ggplot(versions) +
+  geom_segment(aes(x = date, xend = date,
+                 col = release), 
+                   y = 0, yend = 1) +
+  viridis::scale_colour_viridis(discrete = TRUE) +
+  theme_minimal() +
+  hrbrthemes::theme_ipsum(base_size = 16,
+                          axis_title_size = 16) +
+  xlab("Time") + 
+  theme(
+  axis.text.y = element_blank(),
+  axis.ticks.y = element_blank(),
+  axis.title.y = element_blank(),
+  legend.position = "bottom")
 ```
+
+With the R version being x.y.z, we define a major release as a change in x, a minor release as a change in y and a patch release as a change in z. The figure above shows that the frequency of minor releases decreased in 2013, from twice to once a year. The frequency of patch releases seems irregular, as is the frequency of _major_ releases: not sure when we should expect R 4.0.0!
 
 # Conclusion
 
