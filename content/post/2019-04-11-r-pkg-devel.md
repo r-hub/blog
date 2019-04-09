@@ -1,6 +1,6 @@
 ---
 title: "How to get help with R package development? R-package-devel and beyond"
-date: '2019-04-01'
+date: '2019-04-11'
 slug: r-package-devel
 output:
   md_document:
