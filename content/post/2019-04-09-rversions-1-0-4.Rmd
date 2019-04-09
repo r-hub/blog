@@ -1,0 +1,35 @@
+---
+title: rversions 1.0.4 is on CRAN!
+date: '2019-04-09'
+slug: rversions-1-0-4
+---
+
+Version 1.0.4 of the `rversions` package has been released on CRAN! `rversions` queries the main R SVN repository to find the versions r-release and r-oldrel refer to, and also all previous R versions and their release dates.
+
+Get `rversions`'s latest version from 
+a [safe](https://rud.is/b/2019/03/03/cran-mirror-security/) CRAN mirror near
+you:
+
+```r
+install.packages("rversions")
+```
+
+This release, compared to `rversions` 1.0.3, brings :sparkles: caching :sparkles: of the R versions within each R session (less useless queries!) thanks to a contribution by [Rich FitzJohn](https://github.com/richfitz); a documentation website built with `pkgdown`; and a new home for `rversions`' source from METACRAN to R-hub! :house: Not too much, but since it's the first time we blog about `rversions`, we'll use the release as an opportunity to introduce it with all due respect! How does `rversions` work and what is it useful for?
+
+# Where does `rversions` get its information from?
+
+As you might have guessed, R is developed under version control. The R Core team uses SVN, i.e.[Apache Subversion](https://en.wikipedia.org/wiki/Apache_Subversion). The versions `rversions` guesses are derived from SVN _tags_ in the [main R SVN repository](https://svn.r-project.org/R/). In SVN lingo, ["tagging refers to labeling the repository at a certain point in time so that it can be easily found in the future."](https://en.wikipedia.org/wiki/Apache_Subversion#Branching_and_tagging) so it might remind you of GitHub releases. In more details,
+
+- [r-versions are coming from SVN tags](https://github.com/metacran/rversions/blob/36deaf5c4ffd648c7524d8e3225871e6d97d9ccf/R/rversions.R#L79)
+- r-release is the latest SVN tag
+- r-oldrel is the latest of the previous minor version
+- r-release-tarball is the latest SVN tag that has a corresponding tar.gz to download
+- Windows, macOS are the same: latest SVN tag that has a file to download
+
+# Where is `rversions` used?
+
+# Can we also _play_ with `rversions` data?
+
+# Conclusion
+
+The best place to get to know `rversions` is [its brand-new documentation website built with `pkgdown`](https://r-hub.github.io/rversions), and the best place to provide feedback or contribute is [its GitHub repo](https://github.com/r-hub/rversions). Thanks to all folks who chimed in in the issue tracker and pull request tab!
