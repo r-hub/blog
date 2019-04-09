@@ -1,6 +1,6 @@
 ---
 title: rversions 1.0.4 is on CRAN!
-date: '2019-04-09'
+date: '2019-04-15'
 slug: rversions-1-0-4
 ---
 
@@ -21,14 +21,66 @@ This release, compared to `rversions` 1.0.3, brings :sparkles: caching :sparkles
 As you might have guessed, R is developed under version control. The R Core team uses SVN, i.e.[Apache Subversion](https://en.wikipedia.org/wiki/Apache_Subversion). The versions `rversions` guesses are derived from SVN _tags_ in the [main R SVN repository](https://svn.r-project.org/R/). In SVN lingo, ["tagging refers to labeling the repository at a certain point in time so that it can be easily found in the future."](https://en.wikipedia.org/wiki/Apache_Subversion#Branching_and_tagging) so it might remind you of GitHub releases. In more details,
 
 - [r-versions are coming from SVN tags](https://github.com/metacran/rversions/blob/36deaf5c4ffd648c7524d8e3225871e6d97d9ccf/R/rversions.R#L79)
+
+```{r r-versions}
+head(rversions::r_versions())
+```
+
 - r-release is the latest SVN tag
+
+```{r r-release}
+rversions::r_release()
+```
+
 - r-oldrel is the latest of the previous minor version
+
+```{r r-oldrel}
+rversions::r_oldrel()
+```
+
 - r-release-tarball is the latest SVN tag that has a corresponding tar.gz to download
+
+```{r r-release-tarball}
+rversions::r_release_tarball()
+```
+
 - Windows, macOS are the same: latest SVN tag that has a file to download
+
+```{r win-r}
+rversions::r_release_win()
+rversions::r_release_macos()
+
+```
 
 # Where is `rversions` used?
 
+`rversions` is used in R packages but also public web services for R package developers, including R-hub of course!
+
+### In R packages
+
+* `rversions` is used in `devtools`, in [`dr_devtools()`](https://devtools.r-lib.org/reference/dr_devtools.html) to compare the installed R version to the current R release version.
+
+* [`provisionr`](https://github.com/mrc-ide/provisionr) imports `rversions` and uses it in `check_r_version()`, a function that checks and coerces something into an R version.
+
+### In other tools
+
+- [r-appveyor web service uses `rversions` to determine what versions r-release and r-oldrel are](https://github.com/krlmlr/r-appveyor/blob/master/scripts/appveyor-tool.ps1#L77-L87).
+
+- R-hub uses it to do the same on [Solaris](https://github.com/r-hub/solarischeck/blob/d3edc6077f52081a53b2ed8b9ec40e17176fdb43/run.sh#L105), [macOS](https://github.com/r-hub/macoscheck/blob/846f87d1ad1c4b4aeb283a986e084913f203879f/run.sh#L160) and [Windows](https://github.com/r-hub/wincheck/blob/591ea8d9a28cd5044c063e88f46ef0507fa16fc7/run.ps1#L114).
+
+- [R-hub's Windows install script uses it as well, to decide what versions of R to install](https://github.com/r-hub/rhub-server/blob/master/jenkins/scripts/windows-2008-setup.ps1#L74-L79).
+
+
 # Can we also _play_ with `rversions` data?
+
+At this point, you have no doubt `rversions` is useful, but what about we use it to get a glimpse at R's release schedule over time?
+
+
+```{r}
+library("ggplot2")
+versions <- rversions::r_versions()
+
+```
 
 # Conclusion
 
