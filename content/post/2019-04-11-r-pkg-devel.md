@@ -287,8 +287,6 @@ dplyr::count(emails, author, sort = TRUE)
     ## 10 i.ucar86 at gmail.com (=?UTF-8?B?ScOxYWtpIMOaY2Fy?=)            42
     ## # … with 660 more rows
 
-*:wave: Gábor Csárdi, R-hub creator!*
-
 The above shows that there are clearly duplicates, which we won’t try to
 solve in this post. With this not cleaned dataset, we find 670 distinct
 authors. There are less than that, but still quite a lot!
