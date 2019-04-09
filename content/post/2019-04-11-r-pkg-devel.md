@@ -23,21 +23,24 @@ Brief presentation of R-package-devel
 
 R-package-devel is one of the [official mailing lists of the R
 project](https://www.r-project.org/mail.html). In the [words of its
-creators](https://stat.ethz.ch/mailman/listinfo/r-package-devel), “*This
+creators](https://stat.ethz.ch/mailman/listinfo/r-package-devel), *“This
 list is to get help about package development in R. The goal of the list
 is to provide a forum for learning about the package development
 process. We hope to build a community of R package developers who can
 help each other solve problems, and reduce some of the burden on the
 CRAN maintainers. If you are having problems developing a package or
-passing R CMD check, this is the place to ask!*”. It was born on [May
+passing R CMD check, this is the place to ask!”*. It was born on [May
 22d,
 2015](https://stat.ethz.ch/pipermail/r-package-devel/2015q2/000000.html)
 which is fairly recent; before then, R package development questions
 were asked on R-devel, which is now “intended for questions and
 discussion about code development in R.”.
 
-Now, this is all good, but how about getting a more data-drive overview
-by downloading [its
+To participate, you need to subscribe, and your first post will be
+manually moderated. After that, you’re free to post to ask or help!
+
+Now, this is all good, but how about getting a more data-driven overview
+of the mailing list by downloading [its
 archives](https://stat.ethz.ch/pipermail/r-package-devel/)?
 
 Building a `data.frame` of R-package-devel archives
@@ -228,8 +231,8 @@ str(emails)
     ##   ..   thread = col_character()
     ##   .. )
 
-Rough EDA of R-package-devel-archives
-=====================================
+Rough exploratory data analysis (EDA) of R-package-devel-archives
+=================================================================
 
 Activity of the list
 --------------------
@@ -253,7 +256,7 @@ emails %>%
   ylab("Number of emails")
 ```
 
-{{< figure src="/2019-04-11-r-pkg-devel/over-time-1.png" alt="" >}}
+{{< figure src="/2019-04-11-r-pkg-devel/over-time-1.png" alt="R-package-devel weekly number of emails over time" >}}
 
 In this context of R package development help at least, email is not
 dead!
@@ -330,6 +333,8 @@ GitHub or CRAN), others are actually… URLs from signatures, which we
 therefore haven’t been able to completely remove, too bad!
 
 What are the subjects of emails in which R-hub ended up being mentioned?
+To assess that we wrote and tested a R-hub regular expression,
+`"[Rr](-)?( )?[Hh]ub"`.
 
 ``` r
 grepl("[Rr](-)?( )?[Hh]ub",
@@ -355,9 +360,9 @@ sample(unique(rhub$subject), 7)
     ## [7] "[R-pkg-devel] Cannot reproduce errors for an already-accepted package"
 
 For having read these threads, some of them contain actual promotion of
-R-hub services, others links to R-hub builder logs, which is quite cool;
-as well as questions about R-hub which we want to have covered in the
-docs.
+R-hub services, others feature links to R-hub builder logs, which is
+quite cool; as well as questions about R-hub which we want to have
+covered in the docs.
 
 What are the most frequent words?
 
@@ -383,10 +388,10 @@ ggplot(word_counts[1:15,]) +
   coord_flip()
 ```
 
-{{< figure src="/2019-04-11-r-pkg-devel/words-1.png" alt="" >}}
+{{< figure src="/2019-04-11-r-pkg-devel/words-1.png" alt="Most common words in R package devel archives" >}}
 
 Nothing too surprising here, especially the clear dominance of
-“package”! Now, we could apply the same script again and again to show
+“package”, followed by "cran", "check" and "error"! Now, we could apply the same script again and again to show
 the most frequent bigrams (pairs of words appearing together), trigrams,
 etc., but we’ll take a stab at a different approach in the next section,
 topic modeling.
@@ -500,7 +505,8 @@ k_result %>%
                           axis_title_size = 16)
 ```
 
-{{< figure src="/2019-04-11-r-pkg-devel/diagnostics-1.png" alt="" >}}
+{{< figure src="/2019-04-11-r-pkg-devel/diagnostics-1.png" alt="Model diagnostics by number of topics. Held-out likelihood and lower bound keep increasing while residuals keep decreasing with the number of topics, but semantic coherence also decreases with the number of topics." >}}
+
 
 The model diagnostics plot didn’t help a ton because there was no clear
 best number of topics. We chose to go with 20 topics, because semantic
@@ -522,47 +528,9 @@ topic_model
 ``` r
 td_beta <- tidytext::tidy(topic_model)
 
-td_beta
-```
-
-    ## # A tibble: 7,820 x 3
-    ##    topic term        beta
-    ##    <int> <chr>      <dbl>
-    ##  1     1 address 1.32e- 4
-    ##  2     2 address 5.64e-32
-    ##  3     3 address 1.62e- 2
-    ##  4     4 address 7.52e- 6
-    ##  5     5 address 5.86e-24
-    ##  6     6 address 2.35e- 8
-    ##  7     7 address 1.58e- 3
-    ##  8     8 address 3.69e- 8
-    ##  9     9 address 1.05e- 4
-    ## 10    10 address 1.25e- 9
-    ## # … with 7,810 more rows
-
-``` r
 td_gamma <- tidytext::tidy(topic_model, matrix = "gamma",
                            document_names = rownames(threads_sparse))
 
-td_gamma
-```
-
-    ## # A tibble: 20,640 x 3
-    ##    document topic   gamma
-    ##    <chr>    <int>   <dbl>
-    ##  1 1            1 0.00488
-    ##  2 2            1 0.00900
-    ##  3 3            1 0.0254 
-    ##  4 4            1 0.00345
-    ##  5 5            1 0.00304
-    ##  6 6            1 0.00264
-    ##  7 7            1 0.00137
-    ##  8 8            1 0.105  
-    ##  9 9            1 0.00388
-    ## 10 10           1 0.00711
-    ## # … with 20,630 more rows
-
-``` r
 top_terms <- td_beta %>%
   dplyr::arrange(beta) %>%
   dplyr::group_by(topic) %>%
@@ -597,20 +565,75 @@ gamma_terms %>%
        subtitle = "With the top words that contribute to each topic")
 ```
 
-{{< figure src="/2019-04-11-r-pkg-devel/topics20-1.png" alt="" >}}
+{{< figure src="/2019-04-11-r-pkg-devel/topics20-1.png" alt="20 topics by prevalence in the r-pkg-devel archives with the top words that contribute to each topic" >}}
 
 A first thing we notice about the topics is that some of them contain
-the signatures of superposters: opic 7 features Uwe Ligges and CRAN;
-Topic 9 puts Dirk Eddelbuettel together with a package he maintains,
-`rcpp`, as well as with the language C, which makes sense (although it
-might be C++?). Some topics’ representative words look like fragments of
-code, which is due to the emails containing both text and output logs
-from R CMD check without special nodes/formatting from code. Still, one
-could dive into topic 15 to find discussions around package
-documentation, and topic 4 could refer to check results across different
+the signatures of superposters: Topic 7 (“cran, package, uwe, best,
+version, ligges, check”) features Uwe Ligges and CRAN; Topic 9 (“dirk,
+library, c, use, package, rcpp, thanks”) puts Dirk Eddelbuettel together
+with a package he maintains, `rcpp`, as well as with the language C,
+which makes sense (although it might be C++?). Some topics’
+representative words look like fragments of code (e.g. Topic 5: “double,
++, int, c, =, package, using”), which is due to the emails containing
+both text and output logs from R CMD check without special
+nodes/formatting from code. Still, one could dive into Topic 15 (“file,
+files, vignettes, help, documentation, rd”) to find discussions around
+package documentation, and Topic 4 (“windows, r, version, rdevel,
+directory, using, linux”) could refer to check results across different
 R versions and OS which is a good topic for R-hub, so some of these
 topics might be useful, and might help with mining the archives of, let
 us remind this, 1104 threads.
+
+Here’s how we would extract the subjects of the threads whose most
+probably topic is Topic 4. It is not a very good method since Topic 4
+could be the most probable topic for the document without being that
+much more probably than other topics, but that’s a start.
+
+``` r
+td_gamma %>%
+  dplyr::group_by(document) %>%
+  dplyr::filter(gamma[topic == 4] == max(gamma)) %>%
+  dplyr::pull(document) %>%
+  unique() -> ids
+
+set.seed(42)
+unique(threads$subject[threads$threadID %in% ids]) %>%
+  sample(7)
+```
+
+    ## [1] "Version of make on CRAN Windows build machines"                           
+    ## [2] "Windows binaries"                                                         
+    ## [3] "Error appearing only with check_win_devel() - could be ggplot2 R version?"
+    ## [4] "robust download function in R (similar to wget)?"                         
+    ## [5] "Question about selective platform for my R package"                       
+    ## [6] "object 'nativeRoutines' not found"                                        
+    ## [7] "R CMD check yielding different results for me than CRAN reviewer"
+
+And here’s the same for Topic 15.
+
+``` r
+td_gamma %>%
+  dplyr::group_by(document) %>%
+  dplyr::filter(gamma[topic == 15] == max(gamma)) %>%
+  dplyr::pull(document) %>%
+  unique() -> ids
+
+set.seed(42)
+unique(threads$subject[threads$threadID %in% ids]) %>%
+  sample(7)
+```
+
+    ## [1] "Roxygen: function documentation to get \\item{...} in .rd file"
+    ## [2] "separate Functions: and Datasets: indices?"                    
+    ## [3] "documentation of generic '['"                                  
+    ## [4] "R-devel problem with temporary files or decompression?"        
+    ## [5] "No reference output from knitr vignettes"                      
+    ## [6] "Indexing HTML vignette topics"                                 
+    ## [7] "Problem installing built vignettes"
+
+All in all, our rough topic modelling could help us exploring the
+threads to identify common bottlenecks/showstoppers for R package
+developers.
 
 Conclusion: R-package-devel and beyond
 ======================================
@@ -631,8 +654,8 @@ development questions. Now, there are at least two alternatives that are
 actual *discussion forums* built on
 [Discourse](https://www.discourse.org/), where the threads are arguably
 easier to browse thanks to their being actual topics with all answers
-below each other, and thanks to Markdown formatting of code, rendering
-of URL’s cards in the presence of metadata, etc.:
+below each other, and thanks to Markdown-based formatting of code,
+rendering of URL’s cards in the presence of metadata, etc.:
 
 -   [RStudio community forum](https://community.rstudio.com/) has a
     [“package development”
