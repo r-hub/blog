@@ -11,10 +11,10 @@ output:
 No matter how good your docs reading and search engine querying skills
 are, sometimes as an R package developer you’ll need to ask questions to
 your peers. Where to find them? R-hub has its own
-[feedback](https://github.com/r-hub/rhub) and
+[feedback](https://github.com/r-hub/rhub/issues) and
 [discussion](https://gitter.im/r-hub/community) venues, but what about R
 package development in general? In this blog post, we’ll have a look at
-the oldest channel for R package development help, the [R-package-devel
+the oldest _specific_ channel for R package development help, the [R-package-devel
 mailing list](https://stat.ethz.ch/mailman/listinfo/r-package-devel).
 We’ll also mention other, younger, *fora* for such questions.
 
