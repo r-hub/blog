@@ -1,6 +1,6 @@
 ---
 title: rversions 1.0.4 is on CRAN!
-date: '2019-04-15'
+date: '2019-04-05'
 slug: rversions-1-0-4
 ---
 
