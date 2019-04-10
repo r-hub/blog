@@ -64,7 +64,7 @@ rversions::r_release_macos()
 
 ### In other tools
 
-In the tools mentioned below, `rversions` is used via its very own web service.
+In the tools mentioned below, `rversions` is used via its [very own web service](https://github.com/r-hub/rversions.app#readme).
 
 - [r-appveyor service uses `rversions` to determine what versions r-release and r-oldrel are](https://github.com/krlmlr/r-appveyor/blob/master/scripts/appveyor-tool.ps1#L77-L87).
 
