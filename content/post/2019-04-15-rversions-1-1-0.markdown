@@ -175,7 +175,9 @@ ggplot(versions) +
   axis.text.y = element_blank(),
   axis.ticks.y = element_blank(),
   axis.title.y = element_blank(),
-  legend.position = "bottom")
+  legend.position = "bottom") +
+  ggtitle("R releases over time",
+          subtitle = "Data obtained via the R-hub rversions R package")
 ```
 
 <div class="figure">

@@ -116,7 +116,9 @@ ggplot(versions) +
   axis.text.y = element_blank(),
   axis.ticks.y = element_blank(),
   axis.title.y = element_blank(),
-  legend.position = "bottom")
+  legend.position = "bottom") +
+  ggtitle("R releases over time",
+          subtitle = "Data obtained via the R-hub rversions R package")
 ```
 
 With the R version being x.y.z, we define a major release as a change in x, a minor release as a change in y and a patch release as a change in z. The figure above shows that the frequency of minor releases decreased in 2013, from twice to once a year. The frequency of patch releases seems irregular, as is the frequency of _major_ releases: not sure when we should expect R 4.0.0!
