@@ -569,7 +569,7 @@ A first thing we notice about the topics is that some of them contain
 the signatures of superposters: Topic 7 (“cran, package, uwe, best,
 version, ligges, check”) features Uwe Ligges and CRAN; Topic 9 (“dirk,
 library, c, use, package, rcpp, thanks”) puts Dirk Eddelbuettel together
-with a package he maintains, `rcpp`, as well as with the language C,
+with a package he maintains, `Rcpp`, as well as with the language C,
 which makes sense (although it might be C++?). Some topics’
 representative words look like fragments of code (e.g. Topic 5: “double,
 +, int, c, =, package, using”), which is due to the emails containing
@@ -585,7 +585,7 @@ us remind this, 1104 threads.
 Here’s how we would extract the subjects of the threads whose most
 probably topic is Topic 4. It is not a very good method since Topic 4
 could be the most probable topic for the document without being that
-much more probably than other topics, but that’s a start.
+much more probable than other topics, but that’s a start.
 
 ``` r
 td_gamma %>%
