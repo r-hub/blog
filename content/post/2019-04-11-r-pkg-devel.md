@@ -648,7 +648,7 @@ and of [a blog post by David
 Smith](https://blog.revolutionanalytics.com/2009/01/comparing-mailing-list-traffic-for-r-sas-and-splus.html).
 
 R-package-devel is definitely an active and specific venue for R package
-development questions. Now, there are at least two alternatives that are
+development questions, thanks a lot to its maintainers and contributors! Now, there are at least two alternatives that are
 actual *discussion forums* built on
 [Discourse](https://www.discourse.org/), where the threads are arguably
 easier to browse thanks to their being actual topics with all answers
