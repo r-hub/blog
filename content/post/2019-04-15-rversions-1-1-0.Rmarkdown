@@ -2,6 +2,10 @@
 title: rversions 1.1.0 is on CRAN!
 date: '2019-04-15'
 slug: rversions-1-1-0
+tags:
+  - rversions
+  - R package
+  - release
 ---
 
 Version 1.1.0 of the `rversions` package has been [released on CRAN](https://cran.r-project.org/package=rversions)! `rversions` queries the main R SVN repository to find the versions r-release and r-oldrel refer to, and also all previous R versions and their release dates.

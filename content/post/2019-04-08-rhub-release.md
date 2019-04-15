@@ -2,6 +2,11 @@
 date: "2019-04-08"
 title: rhub 1.1.1 is on CRAN!
 slug: rhub-1.1.1
+tags:
+  - rhub
+  - R package
+  - release
+  - screencast
 ---
 
 Version 1.1.1 of the `rhub` package has been released on CRAN! `rhub` allows to check packages on R-hub package builder, 
