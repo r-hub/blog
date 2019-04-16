@@ -1,5 +1,5 @@
 ---
-title:  r-devel-linux-x86_64-debian-clang, or keeping up with CRAN platforms with help from R-hub
+title:  How to handle CRAN checks with help from R-hub
 date: '2019-04-13'
 slug:  r-devel-linux-x86-64-debian-clang
 tags:
@@ -7,13 +7,26 @@ tags:
   - CRAN
 ---
 
-**tl;dr: CRAN changed settings on one check platform,  r-devel-linux-x86_64-debian-clang, which revealed bugs in packages. A new platform was added to R-hub package builder to allow package authors to reproduce these bugs online on the platform, or locally via Docker.**
-
-In this post, we shall introduce CRAN checks in general, present the new setting of the r-devel-linux-x86_64-debian-clang CRAN platform, how it was mimicked on one of R-hub platforms, and how to use this new R-hub platform to debug your package.
+In this post, we shall introduce CRAN checks in general and use the recent changes of the r-devel-linux-x86_64-debian-clang CRAN platform as a case study of how R-hub can help you, package developers, handle CRAN checks and keep up with CRAN platforms.
 
 # CRAN checks 101
 
-All CRAN packages are _R CMD Check_-ed regularly on 12 CRAN platforms, more than at submission. The results of these checks are reported on each package's check results page, cf [e.g. `fpeek`'s one](https://cran.r-project.org/web/checks/check_results_fpeek.html). You might notice your package starts getting NOTE(s)/WARNING(s)/ERROR(s) on one of them by different means:
+All CRAN packages are _R CMD Check_-ed regularly on 12 CRAN platforms called [_CRAN Package Check Flavors_](https://cran.r-project.org/web/checks/check_flavors.htmlac), more platforms than at submission. The results of these checks are reported on each package's check results page, cf [e.g. `fpeek`'s one](https://cran.r-project.org/web/checks/check_results_fpeek.html). 
+
+## CRAN checks failure
+
+Your package might get NOTE(s)/WARNING(s)/ERROR(s)
+
+* right after it was accepted on CRAN, revealing issues the CRAN platforms used at submission hadn't uncovered. 
+
+* later, 
+    * if one of your package's dependencies changes, 
+    * if your package e.g. wraps a web service that evolved or broke,
+    * if the CRAN check flavors changed a bit.
+
+## CRAN checks surveillance
+
+You might notice your package starts getting NOTE(s)/WARNING(s)/ERROR(s) on one of them by different means:
 
 * You might have set up [some `foghorn` code](https://github.com/fmichonneau/foghorn) in [your .Rprofile](https://www.tidyverse.org/articles/2019/04/usethis-1.5.0/#options-to-set-in-rprofile) to regularly, well, check, your CRAN checks results.  :loudspeaker: :boat:
 
