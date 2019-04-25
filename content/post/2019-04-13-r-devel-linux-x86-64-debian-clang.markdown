@@ -28,9 +28,9 @@ Your package might get NOTE(s)/WARNING(s)/ERROR(s)
 
 You might notice your package starts getting NOTE(s)/WARNING(s)/ERROR(s) on one CRAN check platform by different means:
 
-* You might have set up [some `foghorn` code](https://github.com/fmichonneau/foghorn) in [your .Rprofile](https://www.tidyverse.org/articles/2019/04/usethis-1.5.0/#options-to-set-in-rprofile) to regularly, well, check, your CRAN checks results.  :loudspeaker: :boat:
+* You might have set up [some `foghorn` code](https://github.com/fmichonneau/foghorn) by François Michonneau in [your .Rprofile](https://www.tidyverse.org/articles/2019/04/usethis-1.5.0/#options-to-set-in-rprofile) to regularly, well, check, your CRAN checks results.  :loudspeaker: :boat:
 
-* Your package repo might exhibit a [CRAN check badge by rOpenSci Scott Chamberlain](https://github.com/ropensci/cchecksapi#badges), and you see a different color whilst landing on your README.  :traffic_light:
+* Your package repo might exhibit a [CRAN check badge by rOpenSci's Scott Chamberlain](https://github.com/ropensci/cchecksapi#badges), and you see a different color whilst landing on your README.  :traffic_light:
 
 * You might receive an email from CRAN itself, informing you some steps are to be taken to avoid your package's being taken down from CRAN.  :email: :scream:
 
