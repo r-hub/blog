@@ -1,6 +1,6 @@
 ---
 title:  How to handle CRAN checks with help from R-hub
-date: '2019-04-13'
+date: '2019-04-25'
 slug:  r-devel-linux-x86-64-debian-clang
 tags:
   - help
