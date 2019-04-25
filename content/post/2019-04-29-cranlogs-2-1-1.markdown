@@ -9,30 +9,47 @@ tags:
 ---
 
 Version 2.1.1 of the `cranlogs` package has been [released on CRAN](https://cran.r-project.org/package=cranlogs)! `cranlogs` queries a database that contains the daily download
-numbers for each package and for R itself from the RStudio CRAN mirror.
+numbers for each package and for R itself from the RStudio CRAN mirror. :chart_with_upwards_trend:
 
-Get `cranlogs`'s latest version from 
-a CRAN mirror near
-you, hopefully RStudio CRAN mirror so we can monitor counts. :wink:
+Get `cranlogs`'s latest version from CRAN, hopefully from RStudio CRAN mirror so we can monitor counts. :wink:
 
 ```r
 install.packages("cranlogs", repos = "https://cran.rstudio.com/")
 ```
 
-The [changes brought by this version](https://r-hub.github.io/cranlogs/news/index.html#cranlogs-2-1-1) mostly are a few docs and bug fixes :wave: :bug:, but also the addition of a brand-new function simplifying your use of cranlogs badges, `cranlogs_badge()`! Since it is the first time we blog about `cranlogs` after its transfer to R-hub, we shall use the rest this blog post as an opportunity to show it off.
+The [changes brought by this version](https://r-hub.github.io/cranlogs/news/index.html#cranlogs-2-1-1) mostly are a few docs and bug fixes :wave: :bug:, but also the addition of a brand-new function simplifying your use of cranlogs badges, `cranlogs_badge()`! Since it is the first time we blog about `cranlogs` after its transfer to R-hub, we shall use the rest this blog post as an introduction to it.
 
-# cranlogs data source and its quality
+# `cranlogs` data source and its quality
 
+[RStudio](http://www.rstudio.com) publishes the download logs from their
+CRAN package mirror daily at <http://cran-logs.rstudio.com>. The `cranlogs` package queries a database that contains the daily download numbers for each package.
 
+The RStudio CRAN mirror is not the only CRAN mirror, but it’s a popular one: it’s the default choice for RStudio users. The actual number of downloads over all CRAN mirrors is unknown. Therefore, using numbers of downloads from that mirror is a _proxy_ for actual numbers of downloads, and when analysing it one has to _assume_ the observed trends are representative of what happens via other mirrors.
 
-Assumptions made when using the data (representative of the trends)
+The data `cranlogs` queries has other limitations:
 
-Limits of the data, mention adjustedcranlogs
+* zero counts on days the RStudio server serving the log was down. 
 
-Uses for such analyses. Only egosurfing? Probably not. As the developer, assess effect of promotion efforts for instance. As the potential user, compare popularity of possible packages (more popularity being a good sign, in particular of the probability to get help from other users)
+* count inflation due to CRAN-wide shared daily downloads
+
+* re-download/CRAN mirror spikes due to package updates
+
+The latter two downsides can be corrected by the use of the [`adjustedcranlogs` package ](https://github.com/tylermorganwall/adjustedcranlogs) by Tyler Morgan-Wall. Refer to that package documentation and code to find out more about it adjusts the download counts.
+
+## `cranlogs` use cases
+
+Now, _why_ would you even be interested in the download counts of packages and R? As a package maintainer, is it only [egosurfing](https://twitter.com/jhollist/status/1115959975359209472)? Probably not, such data can be useful:
+
+* As the developer, you can e.g. assess effect of promotion efforts, and maybe use proof of your package's popularity in career reports? (Note that it is perfectly fine to maintain a small niche package! `cranlogs` itself is no `ggplot2`. :wink:) 
+
+* As the potential user, you can use download counts to compare popularity of packages you're hesitating to use. Again, quality does not necessitate popularity but a higher usage can be a good sign, in particular a good sign of the probability to get help from other users.
 
 
 # Case study: downloads of cranlogs itself
+
+# `cranlogs` on the web
+
+If you wish to have a quick look at downloads count time series without even firing up your own R session, you can use [Hadley Wickham's handy Shiny app](https://hadley.shinyapps.io/cran-downloads/), whose [source code](https://github.com/hadley/cran-downloads) uses `cranlogs`.
 
 # cranlogs badges, or how to show off usages
 
