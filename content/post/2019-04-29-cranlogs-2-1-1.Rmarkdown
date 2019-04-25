@@ -124,7 +124,7 @@ cranlogs::cranlogs_badge("cranlogs", summary = "last-week",
 
 Resulting badge: [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/last-week/cranlogs?color=orange)](https://r-pkg.org/pkg/cranlogs)
 
-The colour can also be any hex code so there's no limit to your creativity. :rainbow:
+The colour can also be any hex code so there's no limit to your creativity (you might want to check [contrast](https://medium.com/@uistephen/text-contrast-for-web-pages-d685636c0749), though). :rainbow:
 
 ```{r}
 cranlogs::cranlogs_badge("cranlogs", color = "ff8c69")
