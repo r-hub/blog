@@ -52,6 +52,12 @@ Probably not, such data can be useful:
 
 * As the potential user, you can use download counts to compare popularity of packages you're hesitating to use. Again, quality does not necessitate popularity but a higher usage can be a good sign, in particular a good sign of the probability to get help from other users.
 
+* You could also use download counts as a way to summarize the "most important" packages around a topic, like what Zev Ross did below with spatial packages (the screenshot attached to the tweet).
+
+```{r zevross, echo = FALSE}
+blogdown::shortcode("tweet", "1123204696141963264")
+```
+
 # How to use `cranlogs`?
 
 We shall first show how to use `cranlogs` from within R.
