@@ -1,6 +1,6 @@
 ---
 title: cranlogs 2.1.1 is on CRAN!
-date: '2019-04-15'
+date: '2019-05-02'
 slug: cranlogs-2-1-1
 tags:
   - cranlogs
@@ -28,15 +28,7 @@ CRAN package mirror daily at <http://cran-logs.rstudio.com>. The `cranlogs` pack
 
 The RStudio CRAN mirror is not the only CRAN mirror, but it’s a popular one: it’s the default choice for RStudio users. The actual number of downloads over all CRAN mirrors is unknown. Therefore, using numbers of downloads from that mirror is a _proxy_ for actual numbers of downloads, and when analysing it one has to assume the observed trends are representative of what happens via other mirrors.
 
-The data `cranlogs` queries has other limitations:
-
-* zero counts on days the RStudio server serving the log was down. 
-
-* count inflation due to CRAN-wide shared daily downloads
-
-* re-download/CRAN mirror spikes due to package updates
-
-The latter two downsides can be corrected by the use of the [`adjustedcranlogs` package ](https://github.com/tylermorganwall/adjustedcranlogs) by Tyler Morgan-Wall. Refer to that package documentation and code to find out more about it adjusts the download counts.
+The data `cranlogs` queries has other limitations such as re-download/CRAN mirror spikes due to package updates that can be corrected, if you want, by the use of the [`adjustedcranlogs` package ](https://github.com/tylermorganwall/adjustedcranlogs) by Tyler Morgan-Wall. Refer to that package documentation and code to find out more about it adjusts the download counts. For another type of context information about the download counts, refer to the brand-new and in development [`packageRank`](https://github.com/lindbrook/packageRank) package by lindbrook that provides _ranks_ for packages.
 
 ### `cranlogs` use cases
 
@@ -50,7 +42,7 @@ Probably not, such data can be useful:
 
 * As the potential user, you can use download counts to compare popularity of packages you're hesitating to use. Again, quality does not necessitate popularity but a higher usage can be a good sign, in particular a good sign of the probability to get help from other users.
 
-* You could also use download counts as a way to summarize the "most important" packages around a topic, like what Zev Ross did below with spatial packages (the code attached to the tweet, [available as a GitHub gist](https://gist.github.com/zross/b64657b05156d43cf81dbdd093df5c13), uses the list of packages of the [spatial CRAN task view](https://cran.r-project.org/web/views/Spatial.html), get their downloads with `cranlogs`, and sort them by popularity).
+* You could also use download counts as a way to summarize the "most important" packages around a topic, like what Zev Ross did below with spatial packages (the code attached to the tweet, [available as a GitHub gist](https://gist.github.com/zross/b64657b05156d43cf81dbdd093df5c13), uses the list of packages of the [spatial CRAN task view](https://cran.r-project.org/web/views/Spatial.html), get their downloads with `cranlogs`, and sort them by popularity). Note that the [R-hub `pkgsearch` package returns the downloads of last month for search results](https://r-hub.github.io/pkgsearch/)!
 
 <!--html_preserve-->{{% tweet "1123204696141963264" %}}<!--/html_preserve-->
 
@@ -69,16 +61,16 @@ cranlogs::cran_top_downloads(when = "last-month")
 
 ```
 ##    rank    package   count       from         to
-## 1     1      rlang 1041916 2019-03-29 2019-04-27
-## 2     2       Rcpp  882844 2019-03-29 2019-04-27
-## 3     3      dplyr  808224 2019-03-29 2019-04-27
-## 4     4    ggplot2  797997 2019-03-29 2019-04-27
-## 5     5   devtools  770564 2019-03-29 2019-04-27
-## 6     6     tibble  767263 2019-03-29 2019-04-27
-## 7     7 data.table  723330 2019-03-29 2019-04-27
-## 8     8       glue  661120 2019-03-29 2019-04-27
-## 9     9        cli  652700 2019-03-29 2019-04-27
-## 10   10     pillar  630206 2019-03-29 2019-04-27
+## 1     1      rlang 1031362 2019-03-31 2019-04-29
+## 2     2       Rcpp  888903 2019-03-31 2019-04-29
+## 3     3      dplyr  822528 2019-03-31 2019-04-29
+## 4     4   devtools  818129 2019-03-31 2019-04-29
+## 5     5    ggplot2  811036 2019-03-31 2019-04-29
+## 6     6     tibble  775563 2019-03-31 2019-04-29
+## 7     7 data.table  721868 2019-03-31 2019-04-29
+## 8     8       glue  664281 2019-03-31 2019-04-29
+## 9     9        cli  655877 2019-03-31 2019-04-29
+## 10   10     pillar  637211 2019-03-31 2019-04-29
 ```
 
 Were these packages the ones you expected? 
@@ -110,7 +102,7 @@ ggplot(dl, aes(date, count)) +
 ```
 
 <div class="figure">
-<img src="/post/2019-04-29-cranlogs-2-1-1_files/figure-html/cranlogs-dl-1.png" alt="Time series of cranlogs downloads showing a few dozens of downloads a day, with an upward trend since 2018." width="672" />
+<img src="/post/2019-05-02-cranlogs-2-1-1_files/figure-html/cranlogs-dl-1.png" alt="Time series of cranlogs downloads showing a few dozens of downloads a day, with an upward trend since 2018." width="672" />
 <p class="caption">Figure 1 Time series of cranlogs downloads showing a few dozens of downloads a day, with an upward trend since 2018.</p>
 </div>
 
@@ -176,5 +168,7 @@ cranlogs::cranlogs_badge("cranlogs", color = "ff8c69")
 Resulting badge: [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/last-month/cranlogs?color=ff8c69)](https://r-pkg.org/pkg/cranlogs)
 
 # Conclusion
+
+In this post we've presented the `cranlogs` package that makes download counts from RStudio CRAN mirror available in R. The web API that powers it is used by another packages, [`dlstats`](https://cran.r-project.org/web/packages/dlstats/index.html) by Guangchuang Yu that also features Bioconductor download stats.
 
 The best place to get to know `cranlogs` is [its brand-new documentation website built with `pkgdown`](https://r-hub.github.io/cranlogs), and the best place to provide feedback or contribute is [its GitHub repo](https://github.com/r-hub/cranlogs). Also feel free to report your use cases via [gitter](https://gitter.im/r-hub/community) or [Twitter](https://twitter.com/rhub_)! Thanks to all folks who chimed in in the issue tracker and pull request tab!
