@@ -1,5 +1,5 @@
 ---
-title:  A noLD platform on R-hub to reproduce CRAN check errors
+title:  A noLD platform on R-hub package builder
 date: '2019-05-20'
 slug:  nold
 tags:
@@ -11,7 +11,7 @@ In [a recent post](/2019/04/25/r-devel-linux-x86-64-debian-clang/) we introduced
 
 # Why noLD?
 
-As an R package developer you've probably thoroughly read ["Writing R extensions"](https://cran.r-project.org/doc/manuals/r-release/R-exts.html), the official CRAN bible (haven't you? :wink:). At the very end of the [Writing portable packages section](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Writing-portable-packages), after discussion of compilers etc., it states _"Only test the accuracy of results if you have done a formal error analysis. Things such as checking that probabilities numerically sum to one are silly: numerical tests should always have a tolerance. That the tests on your platform achieve a particular tolerance says little about other platforms. R is configured by default to make use of long doubles where available, but they may not be available or be too slow for routine use. (...)"_. To ensure package developers follow this recommendation, CRAN maintainers disabled long doubles on the "x86_64 Linux with R-devel" check flavor, so related issues might be detected. :male_detective: If your package was found guilty, what can you do?
+As an R package developer you've probably thoroughly read ["Writing R extensions"](https://cran.r-project.org/doc/manuals/r-release/R-exts.html), the official CRAN bible (haven't you? :wink:). At the very end of the [Writing portable packages section](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Writing-portable-packages), after discussion of compilers etc., it states _"Only test the accuracy of results if you have done a formal error analysis. Things such as checking that probabilities numerically sum to one are silly: numerical tests should always have a tolerance. That the tests on your platform achieve a particular tolerance says little about other platforms. R is configured by default to make use of long doubles where available, but they may not be available or be too slow for routine use. (...)"_. To ensure package developers follow this recommendation, CRAN maintainers disabled long doubles on the "x86_64 Linux with R-devel" check flavor, so related issues might be detected. :male_detective: If your package was found guilty, what can you do? _Note that getting a noLD error does *not* mean you are silly._
 
 # noLD platform for the R-hub package builder
 
@@ -19,7 +19,7 @@ We were reminded of the noLD setting of by two emails to R-package-devel: [a fir
 am a at a bit of a loss on how to go about fixing this (would rounding help),
 but **more importantly, how can I check this to make sure I have fixed it -
 since I do not get an error on my local system** (and it passes all other
-checks.)"_ Good question! As explained in "Writing R extensions", one could "configure and build R with --disable-long-double" but there's now a handier solution: a new platform of R-hub package builder! You can have a look at [the corresponding Dockerfile](https://github.com/r-hub/rhub-linux-builders/blob/master/debian-gcc-devel-nold/Dockerfile), in particular [the line disabling long doubles](https://github.com/r-hub/rhub-linux-builders/blob/7af50594ab7a3076adb6e52cce5a912d513a9faa/debian-gcc-devel-nold/Dockerfile#L15). 
+checks.)"_ Good question! As explained in "Writing R extensions", one could "configure and build R with `--disable-long-double`" but there's now a handier solution: a new platform of R-hub package builder! You can have a look at [the corresponding Dockerfile](https://github.com/r-hub/rhub-linux-builders/blob/master/debian-gcc-devel-nold/Dockerfile), in particular [the line disabling long doubles](https://github.com/r-hub/rhub-linux-builders/blob/7af50594ab7a3076adb6e52cce5a912d513a9faa/debian-gcc-devel-nold/Dockerfile#L15). 
 
 As all R-hub's Linux platforms it's available [on Docker hub](https://hub.docker.com/r/rhub/debian-gcc-devel-nold) but more importantly accessible via R.
 
@@ -34,6 +34,8 @@ Or run a local check if your OS is not Windows,
 ```r
 rhub::local_check_linux(<pkg-path>, image = "rhub/debian-gcc-devel-nold")
 ```
+
+[Read more about `rhub`, R client for R-hub package builder](https://r-hub.github.io/rhub/).
 
 # How to fix a noLD error?
 
@@ -73,3 +75,9 @@ expect_equal(
 ```
 
 later, since [`testthat::expect_equal()`](https://testthat.r-lib.org/reference/equality-expectations.html) has a `tolerance` argument.
+
+If you find other fixes interesting, please share them via [Twitter](https://twitter.com/rhub_) or [gitter](https://gitter.im/r-hub/community)!
+
+# Conclusion
+
+In this post we presented the rationale between the noLD setting of CRAN's "x86_64 Linux with R-devel" check flavor, explained how to reproduce noLD errors with R-hub package builder, and gave some examples of fixes. Now go forth and get rid of your noLD errors, good luck!
