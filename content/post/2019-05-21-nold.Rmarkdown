@@ -1,0 +1,28 @@
+---
+title:  A noLD platform on R-hub to reproduce CRAN check errors
+date: '2019-05-20'
+slug:  nold
+tags:
+  - help
+  - CRAN
+---
+
+In [a recent post](/2019/04/25/r-devel-linux-x86-64-debian-clang/) we introduced CRAN checks of packages, and the efforts we make to ensure all CRAN check flavours have a R-hub equivalent platform for you to reproduce errors on and for you to ensure you have fixed the problems. In this post, we'll explain the context behind CRAN's "noLD", "no long doubles" setting of the "x86_64 Linux with R-devel" flavor; present the R-hub noLD platform; and mention possible fixes for noLD errors.
+
+# Why noLD?
+
+# noLD platform for the R-hub package builder
+
+We were reminded of the noLD setting of by two emails to R-package-devel: [a first one](https://stat.ethz.ch/pipermail/r-package-devel/2019q2/003940.html) and then [another one with a similar question](https://stat.ethz.ch/pipermail/r-package-devel/2019q2/003951.html): _"I am getting an "noLD" error - so there is some issue with a long double. I
+am a at a bit of a loss on how to go about fixing this (would rounding help),
+but **more importantly, how can I check this to make sure I have fixed it -
+since I do not get an error on my local system** (and it passes all other
+checks.)"_ Good question! As explained in "Writing R extensions", one could "configure and build R with --disable-long-double" but there's now an handier solution: a new platform of R-hub package builder! You can have a look at [the corresponding Dockerfile](https://github.com/r-hub/rhub-linux-builders/blob/master/debian-gcc-devel-nold/Dockerfile), in particular [the line disabling long doubles](https://github.com/r-hub/rhub-linux-builders/blob/7af50594ab7a3076adb6e52cce5a912d513a9faa/debian-gcc-devel-nold/Dockerfile#L15) WHY "--enable-long-double"???
+
+You can use its online version,
+
+```r
+
+```
+
+Or run a local check if you 
