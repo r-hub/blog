@@ -11,18 +11,65 @@ In [a recent post](/2019/04/25/r-devel-linux-x86-64-debian-clang/) we introduced
 
 # Why noLD?
 
+As an R package developer you've probably thoroughly read ["Writing R extensions"](https://cran.r-project.org/doc/manuals/r-release/R-exts.html), the official CRAN bible (haven't you? :wink:). At the very end of the [Writing portable packages section](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Writing-portable-packages), after discussion of compilers etc., it states _"Only test the accuracy of results if you have done a formal error analysis. Things such as checking that probabilities numerically sum to one are silly: numerical tests should always have a tolerance. That the tests on your platform achieve a particular tolerance says little about other platforms. R is configured by default to make use of long doubles where available, but they may not be available or be too slow for routine use. (...)"_. To ensure package developers follow this recommendation, CRAN maintainers disabled long doubles on the "x86_64 Linux with R-devel" check flavor, so related issues might be detected. :male_detective: If your package was found guilty, what can you do?
+
 # noLD platform for the R-hub package builder
 
 We were reminded of the noLD setting of by two emails to R-package-devel: [a first one](https://stat.ethz.ch/pipermail/r-package-devel/2019q2/003940.html) and then [another one with a similar question](https://stat.ethz.ch/pipermail/r-package-devel/2019q2/003951.html): _"I am getting an "noLD" error - so there is some issue with a long double. I
 am a at a bit of a loss on how to go about fixing this (would rounding help),
 but **more importantly, how can I check this to make sure I have fixed it -
 since I do not get an error on my local system** (and it passes all other
-checks.)"_ Good question! As explained in "Writing R extensions", one could "configure and build R with --disable-long-double" but there's now an handier solution: a new platform of R-hub package builder! You can have a look at [the corresponding Dockerfile](https://github.com/r-hub/rhub-linux-builders/blob/master/debian-gcc-devel-nold/Dockerfile), in particular [the line disabling long doubles](https://github.com/r-hub/rhub-linux-builders/blob/7af50594ab7a3076adb6e52cce5a912d513a9faa/debian-gcc-devel-nold/Dockerfile#L15) WHY "--enable-long-double"???
+checks.)"_ Good question! As explained in "Writing R extensions", one could "configure and build R with --disable-long-double" but there's now a handier solution: a new platform of R-hub package builder! You can have a look at [the corresponding Dockerfile](https://github.com/r-hub/rhub-linux-builders/blob/master/debian-gcc-devel-nold/Dockerfile), in particular [the line disabling long doubles](https://github.com/r-hub/rhub-linux-builders/blob/7af50594ab7a3076adb6e52cce5a912d513a9faa/debian-gcc-devel-nold/Dockerfile#L15). 
+
+As all R-hub's Linux platforms it's available [on Docker hub](https://hub.docker.com/r/rhub/debian-gcc-devel-nold) but more importantly accessible via R.
 
 You can use its online version,
 
 ```r
-
+rhub::check(<pkg-path>, platform = "debian-gcc-devel-nold") 
 ```
 
-Or run a local check if you 
+Or run a local check if your OS is not Windows,
+
+```r
+rhub::local_check_linux(<pkg-path>, image = "rhub/debian-gcc-devel-nold")
+```
+
+# How to fix a noLD error?
+
+So now that you know why CRAN has a noLD ingredient in one of its check flavor, and how to reproduce its errors... how do you fix them? Let's find inspiration in existing packages. The summary is, do not rely on a given tolerance being valid on all machines. Here are two workarounds.
+
+* The `HACSim` package that was mentioned in one of the R-package-devel thread has been updated on CRAN. Thanks to [R-hub's CRAN source code mirror](https://docs.r-hub.io/#cranatgh) we can [assess what was changed](https://github.com/cran/HACSim/commit/68e492c488e2c9e74af7cd9202d42b604f6f8730#diff-a0c1f5182c14c9f9d6a43b0d1516c880L105). The error fix seems to be the change from
+
+```r
+if (sum(probs) != 1) {
+```
+
+to 
+
+```r
+if (!isTRUE(all.equal(1, sum(probs), tolerance = .Machine$double.eps^0.25))) {
+```
+
+in the package code.
+
+* The `recipes` package also includes a fix for [a noLD error that was detected last year](https://github.com/tidymodels/recipes/issues/116). Of particular interest in the [related commit](https://github.com/tidymodels/recipes/commit/c39586a4228552114f58730d236b73d1ff3c454a) are these lines in the `testthat`-powered tests,
+
+```r
+eps <- if (capabilities("long.double"))
+  sqrt(.Machine$double.eps) else
+  0.1
+```
+
+followed by
+
+```r
+expect_equal(
+
+    as.data.frame(tidy_exp_tr),
+    as.data.frame(tidy(trained, number = 1)),
+    tolerance = eps
+  )
+```
+
+later, since [`testthat::expect_equal()`](https://testthat.r-lib.org/reference/equality-expectations.html) has a `tolerance` argument.
