@@ -1,6 +1,6 @@
 ---
 title:  A noLD platform on R-hub package builder
-date: '2019-05-20'
+date: '2019-05-21'
 slug:  nold
 tags:
   - help
@@ -11,7 +11,7 @@ In [a recent post](/2019/04/25/r-devel-linux-x86-64-debian-clang/) we introduced
 
 # Why noLD?
 
-As an R package developer you've probably thoroughly read ["Writing R extensions"](https://cran.r-project.org/doc/manuals/r-release/R-exts.html), the official CRAN bible (haven't you? :wink:). At the very end of the [Writing portable packages section](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Writing-portable-packages), after discussion of compilers etc., it states _"Only test the accuracy of results if you have done a formal error analysis. Things such as checking that probabilities numerically sum to one are silly: numerical tests should always have a tolerance. That the tests on your platform achieve a particular tolerance says little about other platforms. R is configured by default to make use of long doubles where available, but they may not be available or be too slow for routine use. (...)"_. To ensure package developers follow this recommendation, CRAN maintainers disabled long doubles on the "x86_64 Linux with R-devel" check flavor, so related issues might be detected. :male_detective: If your package was found guilty, what can you do? _Note that getting a noLD error does *not* mean you are silly._
+In ["Writing R extensions"](https://cran.r-project.org/doc/manuals/r-release/R-exts.html) -- the official CRAN bible, at the very end of the [Writing portable packages section](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Writing-portable-packages), after discussion of compilers etc., it states _"Only test the accuracy of results if you have done a formal error analysis. Things such as checking that probabilities numerically sum to one are silly: numerical tests should always have a tolerance. That the tests on your platform achieve a particular tolerance says little about other platforms. R is configured by default to make use of long doubles where available, but they may not be available or be too slow for routine use. (...)"_. To ensure package developers follow this recommendation, CRAN maintainers make extra checks with long doubles disabled, on the "x86_64 Linux with R-devel" check flavor, so related issues might be detected. :male_detective: If your package was found guilty, what can you do? _Note that getting a noLD error does *not* mean you are silly._
 
 # noLD platform for the R-hub package builder
 
