@@ -15,7 +15,7 @@ There is no direct hot flow of information from CRAN but there are at least two 
 
 The first one is the [CRAN policy](https://cran.r-project.org/web/packages/policies.html) that has however no changelog. Thankfully, in 2013 Dirk Eddelbuettel [created and announced](http://dirk.eddelbuettel.com/blog/2013/10/23/) his creating a tool, the CRAN Repository Policy Watch, that works by mirroring the SVN repository of the policy. You can use the tool in two ways,
 
-* Browse or even [watch](https://help.github.com/en/articles/watching-and-unwatching-repositories) the [mirror GitHub repository](https://github.com/eddelbuettel/crp);
+* Browse or even [watch](https://help.github.com/en/articles/watching-and-unwatching-repositories) the [mirror GitHub repository](https://github.com/eddelbuettel/crp) of the [original SVN account](https://svn.r-project.org/R-dev-web/) (there's even [this other GitHub mirror](https://github.com/gaborcsardi/R-dev-web/tree/master/trunk/CRAN/Policy)). _Watching only means you'll see the commits in your GitHub timeline, you will not get notifications since changes are not made by PRs_;
 
 * Follow the [Twitter account that broadcasts the updates](https://twitter.com/CRANPolicyWatch).
 
@@ -34,9 +34,9 @@ These articles have info about policy changes but also changes in the submission
 
 Now there are also indirect information sources that can help you notice something changed.
 
-First, your own packages are nice sentinels of new/updated CRAN checks: refer to [this section of a recent post of ours, about CRAN checks surveillance](/2019/04/25/r-devel-linux-x86-64-debian-clang/#cran-checks-surveillance). Ensure the email address you listed as maintainer email is still valid, because that's the way CRAN might communicate about a new failing check with you. If you fail to respond, your package could get archived! 
+First, your own packages are nice sentinels of new/updated CRAN checks: refer to [this section of a recent post of ours, about CRAN checks surveillance](/2019/04/25/r-devel-linux-x86-64-debian-clang/#cran-checks-surveillance). Ensure the email address you listed as maintainer email is still valid, because that's the way CRAN might communicate about a new failing check with you. If you fail to respond, your package could get orphaned or archived! 
 
-Then, other maintainers' experiences are useful to know. You cannot possibly talk with all maintainers of CRAN packages, but it's useful to listen to channels where they post: [subscribe to R-package-devel (or its daily digest)](/2019/04/11/r-package-devel/), lurk or participate in other venues where [help about package development](https://docs.r-hub.io/#pkg-dev-help) is given. 
+Then, other maintainers' experiences are useful to know. You cannot possibly talk to all maintainers of CRAN packages, but it's useful to listen to channels where they post: [subscribe to R-package-devel (or its daily digest)](/2019/04/11/r-package-devel/), lurk or participate in other venues where [help about package development](https://docs.r-hub.io/#pkg-dev-help) is given. 
 
 # Conclusion
 
