@@ -10,3 +10,5 @@ You might also like, or actually be looking for:
 * [R-hub documentation website](https://docs.r-hub.io/),
 
 * [R-hub package builder](https://builder.r-hub.io/).
+
+Except where otherwise noted, content on this site is licensed under the [CC-BY license](https://creativecommons.org/licenses/by/4.0/). 
