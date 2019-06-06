@@ -22,25 +22,18 @@ There are two good ways to get to know the API, [its docs](https://github.com/ro
 
 Here's an example of showing how to use the API to get results for two packages,
 
-<details>
 ```{r}
-library("magrittr")
-cchecks::cch_pkgs(c("rhub", "cranlogs")) %>%
-  jsonlite::toJSON() %>%
-  jsonlite::prettify()
+res <- cchecks::cch_pkgs(c("rhub", "cranlogs"))
+
+res[[1]]$data$package
+res[[1]]$data$checks
 ```
-</details>
 
 And for one maintainer,
 
-<details>
 ```{r}
-library("magrittr")
-cchecks::cch_maintainers("maelle.salmon_at_yahoo.se") %>%
-  jsonlite::toJSON() %>%
-  jsonlite::prettify()
+cchecks::cch_maintainers("maelle.salmon_at_yahoo.se")$data$table
 ```
-</details>
 
 So it's all the same information as on the CRAN html pages, but in a nicer format for further wrangling and analysis.
 
@@ -52,7 +45,7 @@ Last but not least, with the API you can get badges! See the following badges fo
 
 * Check by flavor, e.g. if you want a special badge because you're proud you fixed checks on Solaris. `[![cran checks](https://cranchecks.info/badges/flavor/solaris/rhub)](https://cranchecks.info/pkgs/rhub)` [![cran checks](https://cranchecks.info/badges/flavor/solaris/rhub)](https://cranchecks.info/pkgs/rhub) 
 
-According to the API usage logs, the JSON data isn't queried that much: what's most successful are badges, both of the summary and worst types. :nail_care:
+According to the API usage logs, the JSON data isn't queried that much: what's most successful are badges, /badges requests are 36 times that of /pkgs requests. :nail_care: Among badges, "worst" gets about 4.5 times the usage as summary and flavor (summary and flavor are about equal).
 
 # Tech stack
 
@@ -60,7 +53,7 @@ Scott underlined the main challenge he faced when creating API was that he learn
 
 Scott chose the [programming language Ruby](https://www.ruby-lang.org/en/) because it is good for building web APIs and because he already knew Ruby. In Ruby, he used the [Sinatra framework/library](http://sinatrarb.com/) for the REST API because it's light weight, and the [Faraday library](https://github.com/lostisland/faraday) for scraping. Scraping was a bit too slow at first, so he complemented the toolset with the [Go ganda library](https://github.com/tednaleid/ganda/) for making parallel curl requests. By the way, the pages he scrapes are the one from the RStudio CRAN mirror, not from other mirrors.
 
-The data lives in two types of databases, [MongoDB](https://www.mongodb.com/) (noSQL) for the data of the day, [MariaDB](https://mariadb.org/) (SQL) for the rest. Originally the service only used MongoDB which was slow. Data and processing are wrapped in containers, via [Docker Compose](https://docs.docker.com/compose/), on the cloud :cloud: on an [Amazon Web Services](https://aws.amazon.com/) server, which costs about 75$ a year.
+The data lives in two types of databases, [MongoDB](https://www.mongodb.com/) (NoSQL) for the data of the day, [MariaDB](https://mariadb.org/) (SQL) for the rest. Originally the service only used MongoDB which was not optimal for storing large amounts of historical CRAN checks data. Data and processing are wrapped in containers, via [Docker Compose](https://docs.docker.com/compose/), on the cloud :cloud: on an [Amazon Web Services](https://aws.amazon.com/) server, which costs about 75$ a year.
 
 The whole thing is brought to life by [CRON jobs](https://en.wikipedia.org/wiki/Cron): package specific data is scraped every 3 hours, maintainer level data every 4 hours and the history routes are populated once a day. To ensure Scott knows when something is going wrong, which happens less often now that the system is stable, he uses [Healthchecks](https://healthchecks.io/) that alerts you when your CRON jobs fail.
 

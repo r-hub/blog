@@ -22,483 +22,66 @@ There are two good ways to get to know the API, [its docs](https://github.com/ro
 
 Here's an example of showing how to use the API to get results for two packages,
 
-<details>
 
 ```r
-library("magrittr")
-cchecks::cch_pkgs(c("rhub", "cranlogs")) %>%
-  jsonlite::toJSON() %>%
-  jsonlite::prettify()
+res <- cchecks::cch_pkgs(c("rhub", "cranlogs"))
+
+res[[1]]$data$package
 ```
 
 ```
-## [
-##     {
-##         "error": {
-## 
-##         },
-##         "data": {
-##             "_id": [
-##                 "rhub"
-##             ],
-##             "package": [
-##                 "rhub"
-##             ],
-##             "url": [
-##                 "https://cloud.r-project.org/web/checks/check_results_rhub.html"
-##             ],
-##             "summary": {
-##                 "any": [
-##                     false
-##                 ],
-##                 "ok": [
-##                     12
-##                 ],
-##                 "note": [
-##                     0
-##                 ],
-##                 "warn": [
-##                     0
-##                 ],
-##                 "error": [
-##                     0
-##                 ],
-##                 "fail": [
-##                     0
-##                 ]
-##             },
-##             "checks": [
-##                 {
-##                     "flavor": "r-devel-linux-x86_64-debian-clang",
-##                     "version": "1.1.1",
-##                     "tinstall": 5.52,
-##                     "tcheck": 51.1,
-##                     "ttotal": 56.62,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-devel-linux-x86_64-debian-clang/rhub-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-devel-linux-x86_64-debian-gcc",
-##                     "version": "1.1.1",
-##                     "tinstall": 4.41,
-##                     "tcheck": 40.83,
-##                     "ttotal": 45.24,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-devel-linux-x86_64-debian-gcc/rhub-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-devel-linux-x86_64-fedora-clang",
-##                     "version": "1.1.1",
-##                     "tinstall": 0,
-##                     "tcheck": 0,
-##                     "ttotal": 67.79,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-devel-linux-x86_64-fedora-clang/rhub-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-devel-linux-x86_64-fedora-gcc",
-##                     "version": "1.1.1",
-##                     "tinstall": 0,
-##                     "tcheck": 0,
-##                     "ttotal": 64.61,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-devel-linux-x86_64-fedora-gcc/rhub-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-devel-windows-ix86+x86_64",
-##                     "version": "1.1.1",
-##                     "tinstall": 21,
-##                     "tcheck": 58,
-##                     "ttotal": 79,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-devel-windows-ix86+x86_64/rhub-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-patched-linux-x86_64",
-##                     "version": "1.1.1",
-##                     "tinstall": 5.45,
-##                     "tcheck": 50.78,
-##                     "ttotal": 56.23,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-patched-linux-x86_64/rhub-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-patched-solaris-x86",
-##                     "version": "1.1.1",
-##                     "tinstall": 0,
-##                     "tcheck": 0,
-##                     "ttotal": 82.3,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-patched-solaris-x86/rhub-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-release-linux-x86_64",
-##                     "version": "1.1.1",
-##                     "tinstall": 4.99,
-##                     "tcheck": 50,
-##                     "ttotal": 54.99,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-release-linux-x86_64/rhub-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-release-windows-ix86+x86_64",
-##                     "version": "1.1.1",
-##                     "tinstall": 19,
-##                     "tcheck": 90,
-##                     "ttotal": 109,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-release-windows-ix86+x86_64/rhub-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-release-osx-x86_64",
-##                     "version": "1.1.1",
-##                     "tinstall": 0,
-##                     "tcheck": 0,
-##                     "ttotal": 0,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-release-osx-x86_64/rhub-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-oldrel-windows-ix86+x86_64",
-##                     "version": "1.1.1",
-##                     "tinstall": 8,
-##                     "tcheck": 99,
-##                     "ttotal": 107,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-oldrel-windows-ix86+x86_64/rhub-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-oldrel-osx-x86_64",
-##                     "version": "1.1.1",
-##                     "tinstall": 0,
-##                     "tcheck": 0,
-##                     "ttotal": 0,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-oldrel-osx-x86_64/rhub-00check.html"
-##                 }
-##             ],
-##             "check_details": {
-## 
-##             },
-##             "date_updated": [
-##                 "2019-06-06T06:02:32.541Z"
-##             ]
-##         }
-##     },
-##     {
-##         "error": {
-## 
-##         },
-##         "data": {
-##             "_id": [
-##                 "cranlogs"
-##             ],
-##             "package": [
-##                 "cranlogs"
-##             ],
-##             "url": [
-##                 "https://cloud.r-project.org/web/checks/check_results_cranlogs.html"
-##             ],
-##             "summary": {
-##                 "any": [
-##                     false
-##                 ],
-##                 "ok": [
-##                     12
-##                 ],
-##                 "note": [
-##                     0
-##                 ],
-##                 "warn": [
-##                     0
-##                 ],
-##                 "error": [
-##                     0
-##                 ],
-##                 "fail": [
-##                     0
-##                 ]
-##             },
-##             "checks": [
-##                 {
-##                     "flavor": "r-devel-linux-x86_64-debian-clang",
-##                     "version": "2.1.1",
-##                     "tinstall": 1.75,
-##                     "tcheck": 20.09,
-##                     "ttotal": 21.84,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-devel-linux-x86_64-debian-clang/cranlogs-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-devel-linux-x86_64-debian-gcc",
-##                     "version": "2.1.1",
-##                     "tinstall": 1.45,
-##                     "tcheck": 16.59,
-##                     "ttotal": 18.04,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-devel-linux-x86_64-debian-gcc/cranlogs-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-devel-linux-x86_64-fedora-clang",
-##                     "version": "2.1.1",
-##                     "tinstall": 0,
-##                     "tcheck": 0,
-##                     "ttotal": 27.03,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-devel-linux-x86_64-fedora-clang/cranlogs-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-devel-linux-x86_64-fedora-gcc",
-##                     "version": "2.1.1",
-##                     "tinstall": 0,
-##                     "tcheck": 0,
-##                     "ttotal": 25.78,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-devel-linux-x86_64-fedora-gcc/cranlogs-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-devel-windows-ix86+x86_64",
-##                     "version": "2.1.1",
-##                     "tinstall": 7,
-##                     "tcheck": 50,
-##                     "ttotal": 57,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-devel-windows-ix86+x86_64/cranlogs-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-patched-linux-x86_64",
-##                     "version": "2.1.1",
-##                     "tinstall": 1.78,
-##                     "tcheck": 20.33,
-##                     "ttotal": 22.11,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-patched-linux-x86_64/cranlogs-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-patched-solaris-x86",
-##                     "version": "2.1.1",
-##                     "tinstall": 0,
-##                     "tcheck": 0,
-##                     "ttotal": 44.8,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-patched-solaris-x86/cranlogs-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-release-linux-x86_64",
-##                     "version": "2.1.1",
-##                     "tinstall": 1.78,
-##                     "tcheck": 20.21,
-##                     "ttotal": 21.99,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-release-linux-x86_64/cranlogs-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-release-windows-ix86+x86_64",
-##                     "version": "2.1.1",
-##                     "tinstall": 15,
-##                     "tcheck": 50,
-##                     "ttotal": 65,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-release-windows-ix86+x86_64/cranlogs-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-release-osx-x86_64",
-##                     "version": "2.1.1",
-##                     "tinstall": 0,
-##                     "tcheck": 0,
-##                     "ttotal": 0,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-release-osx-x86_64/cranlogs-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-oldrel-windows-ix86+x86_64",
-##                     "version": "2.1.1",
-##                     "tinstall": 4,
-##                     "tcheck": 36,
-##                     "ttotal": 40,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-oldrel-windows-ix86+x86_64/cranlogs-00check.html"
-##                 },
-##                 {
-##                     "flavor": "r-oldrel-osx-x86_64",
-##                     "version": "2.1.1",
-##                     "tinstall": 0,
-##                     "tcheck": 0,
-##                     "ttotal": 0,
-##                     "status": "OK",
-##                     "check_url": "https://www.R-project.org/nosvn/R.check/r-oldrel-osx-x86_64/cranlogs-00check.html"
-##                 }
-##             ],
-##             "check_details": {
-## 
-##             },
-##             "date_updated": [
-##                 "2019-06-06T06:02:32.491Z"
-##             ]
-##         }
-##     }
-## ]
-## 
+## [1] "rhub"
 ```
-</details>
+
+```r
+res[[1]]$data$checks
+```
+
+```
+##                               flavor version tinstall tcheck ttotal status
+## 1  r-devel-linux-x86_64-debian-clang   1.1.1     5.52  51.10  56.62     OK
+## 2    r-devel-linux-x86_64-debian-gcc   1.1.1     4.37  41.21  45.58     OK
+## 3  r-devel-linux-x86_64-fedora-clang   1.1.1     0.00   0.00  67.79     OK
+## 4    r-devel-linux-x86_64-fedora-gcc   1.1.1     0.00   0.00  64.61     OK
+## 5        r-devel-windows-ix86+x86_64   1.1.1    21.00  58.00  79.00     OK
+## 6             r-patched-linux-x86_64   1.1.1     5.45  50.78  56.23     OK
+## 7              r-patched-solaris-x86   1.1.1     0.00   0.00  82.30     OK
+## 8             r-release-linux-x86_64   1.1.1     5.32  50.36  55.68     OK
+## 9      r-release-windows-ix86+x86_64   1.1.1    19.00  90.00 109.00     OK
+## 10              r-release-osx-x86_64   1.1.1     0.00   0.00   0.00     OK
+## 11      r-oldrel-windows-ix86+x86_64   1.1.1     8.00  99.00 107.00     OK
+## 12               r-oldrel-osx-x86_64   1.1.1     0.00   0.00   0.00     OK
+##                                                                                      check_url
+## 1  https://www.R-project.org/nosvn/R.check/r-devel-linux-x86_64-debian-clang/rhub-00check.html
+## 2    https://www.R-project.org/nosvn/R.check/r-devel-linux-x86_64-debian-gcc/rhub-00check.html
+## 3  https://www.R-project.org/nosvn/R.check/r-devel-linux-x86_64-fedora-clang/rhub-00check.html
+## 4    https://www.R-project.org/nosvn/R.check/r-devel-linux-x86_64-fedora-gcc/rhub-00check.html
+## 5        https://www.R-project.org/nosvn/R.check/r-devel-windows-ix86+x86_64/rhub-00check.html
+## 6             https://www.R-project.org/nosvn/R.check/r-patched-linux-x86_64/rhub-00check.html
+## 7              https://www.R-project.org/nosvn/R.check/r-patched-solaris-x86/rhub-00check.html
+## 8             https://www.R-project.org/nosvn/R.check/r-release-linux-x86_64/rhub-00check.html
+## 9      https://www.R-project.org/nosvn/R.check/r-release-windows-ix86+x86_64/rhub-00check.html
+## 10              https://www.R-project.org/nosvn/R.check/r-release-osx-x86_64/rhub-00check.html
+## 11      https://www.R-project.org/nosvn/R.check/r-oldrel-windows-ix86+x86_64/rhub-00check.html
+## 12               https://www.R-project.org/nosvn/R.check/r-oldrel-osx-x86_64/rhub-00check.html
+```
 
 And for one maintainer,
 
-<details>
 
 ```r
-library("magrittr")
-cchecks::cch_maintainers("maelle.salmon_at_yahoo.se") %>%
-  jsonlite::toJSON() %>%
-  jsonlite::prettify()
+cchecks::cch_maintainers("maelle.salmon_at_yahoo.se")$data$table
 ```
 
 ```
-## {
-##     "error": {
-## 
-##     },
-##     "data": {
-##         "_id": [
-##             "maelle.salmon_at_yahoo.se"
-##         ],
-##         "email": [
-##             "maelle.salmon_at_yahoo.se"
-##         ],
-##         "name": [
-##             "Maëlle Salmon"
-##         ],
-##         "url": [
-##             "https://cloud.r-project.org/web/checks/check_results_maelle.salmon_at_yahoo.se.html"
-##         ],
-##         "table": [
-##             {
-##                 "package": "geoparser",
-##                 "any": false,
-##                 "ok": 12,
-##                 "note": 0,
-##                 "warn": 0,
-##                 "error": 0
-##             },
-##             {
-##                 "package": "monkeylearn",
-##                 "any": true,
-##                 "ok": 7,
-##                 "note": 5,
-##                 "warn": 0,
-##                 "error": 0
-##             },
-##             {
-##                 "package": "opencage",
-##                 "any": false,
-##                 "ok": 12,
-##                 "note": 0,
-##                 "warn": 0,
-##                 "error": 0
-##             },
-##             {
-##                 "package": "riem",
-##                 "any": false,
-##                 "ok": 12,
-##                 "note": 0,
-##                 "warn": 0,
-##                 "error": 0
-##             },
-##             {
-##                 "package": "ropenaq",
-##                 "any": false,
-##                 "ok": 12,
-##                 "note": 0,
-##                 "warn": 0,
-##                 "error": 0
-##             },
-##             {
-##                 "package": "rtimicropem",
-##                 "any": true,
-##                 "ok": 6,
-##                 "note": 6,
-##                 "warn": 0,
-##                 "error": 0
-##             }
-##         ],
-##         "packages": [
-##             {
-##                 "package": "geoparser",
-##                 "url": "https://cloud.r-project.org/web/checks/check_results_geoparser.html",
-##                 "check_result": [
-##                     {
-##                         "category": "OK",
-##                         "number_checks": 12
-##                     }
-##                 ]
-##             },
-##             {
-##                 "package": "monkeylearn",
-##                 "url": "https://cloud.r-project.org/web/checks/check_results_monkeylearn.html",
-##                 "check_result": [
-##                     {
-##                         "category": "NOTE",
-##                         "number_checks": 5
-##                     },
-##                     {
-##                         "category": "OK",
-##                         "number_checks": 7
-##                     }
-##                 ]
-##             },
-##             {
-##                 "package": "opencage",
-##                 "url": "https://cloud.r-project.org/web/checks/check_results_opencage.html",
-##                 "check_result": [
-##                     {
-##                         "category": "OK",
-##                         "number_checks": 12
-##                     }
-##                 ]
-##             },
-##             {
-##                 "package": "riem",
-##                 "url": "https://cloud.r-project.org/web/checks/check_results_riem.html",
-##                 "check_result": [
-##                     {
-##                         "category": "OK",
-##                         "number_checks": 12
-##                     }
-##                 ]
-##             },
-##             {
-##                 "package": "ropenaq",
-##                 "url": "https://cloud.r-project.org/web/checks/check_results_ropenaq.html",
-##                 "check_result": [
-##                     {
-##                         "category": "OK",
-##                         "number_checks": 12
-##                     }
-##                 ]
-##             },
-##             {
-##                 "package": "rtimicropem",
-##                 "url": "https://cloud.r-project.org/web/checks/check_results_rtimicropem.html",
-##                 "check_result": [
-##                     {
-##                         "category": "NOTE",
-##                         "number_checks": 6
-##                     },
-##                     {
-##                         "category": "OK",
-##                         "number_checks": 6
-##                     }
-##                 ]
-##             }
-##         ],
-##         "date_updated": [
-##             "2019-04-03T12:01:43.725Z"
-##         ]
-##     }
-## }
-## 
+##       package   any ok note warn error
+## 1   geoparser FALSE 12    0    0     0
+## 2 monkeylearn  TRUE  7    5    0     0
+## 3    opencage FALSE 12    0    0     0
+## 4        riem FALSE 12    0    0     0
+## 5     ropenaq FALSE 12    0    0     0
+## 6 rtimicropem  TRUE  6    6    0     0
 ```
-</details>
 
 So it's all the same information as on the CRAN html pages, but in a nicer format for further wrangling and analysis.
 
@@ -510,7 +93,7 @@ Last but not least, with the API you can get badges! See the following badges fo
 
 * Check by flavor, e.g. if you want a special badge because you're proud you fixed checks on Solaris. `[![cran checks](https://cranchecks.info/badges/flavor/solaris/rhub)](https://cranchecks.info/pkgs/rhub)` [![cran checks](https://cranchecks.info/badges/flavor/solaris/rhub)](https://cranchecks.info/pkgs/rhub) 
 
-According to the API usage logs, the JSON data isn't queried that much: what's most successful are badges, both of the summary and worst types. :nail_care:
+According to the API usage logs, the JSON data isn't queried that much: what's most successful are badges, /badges requests are 36 times that of /pkgs requests. :nail_care: Among badges, "worst" gets about 4.5 times the usage as summary and flavor (summary and flavor are about equal).
 
 # Tech stack
 
@@ -518,7 +101,7 @@ Scott underlined the main challenge he faced when creating API was that he learn
 
 Scott chose the [programming language Ruby](https://www.ruby-lang.org/en/) because it is good for building web APIs and because he already knew Ruby. In Ruby, he used the [Sinatra framework/library](http://sinatrarb.com/) for the REST API because it's light weight, and the [Faraday library](https://github.com/lostisland/faraday) for scraping. Scraping was a bit too slow at first, so he complemented the toolset with the [Go ganda library](https://github.com/tednaleid/ganda/) for making parallel curl requests. By the way, the pages he scrapes are the one from the RStudio CRAN mirror, not from other mirrors.
 
-The data lives in two types of databases, [MongoDB](https://www.mongodb.com/) (noSQL) for the data of the day, [MariaDB](https://mariadb.org/) (SQL) for the rest. Originally the service only used MongoDB which was slow. Data and processing are wrapped in containers, via [Docker Compose](https://docs.docker.com/compose/), on the cloud :cloud: on an [Amazon Web Services](https://aws.amazon.com/) server, which costs about 75$ a year.
+The data lives in two types of databases, [MongoDB](https://www.mongodb.com/) (NoSQL) for the data of the day, [MariaDB](https://mariadb.org/) (SQL) for the rest. Originally the service only used MongoDB which was not optimal for storing large amounts of historical CRAN checks data. Data and processing are wrapped in containers, via [Docker Compose](https://docs.docker.com/compose/), on the cloud :cloud: on an [Amazon Web Services](https://aws.amazon.com/) server, which costs about 75$ a year.
 
 The whole thing is brought to life by [CRON jobs](https://en.wikipedia.org/wiki/Cron): package specific data is scraped every 3 hours, maintainer level data every 4 hours and the history routes are populated once a day. To ensure Scott knows when something is going wrong, which happens less often now that the system is stable, he uses [Healthchecks](https://healthchecks.io/) that alerts you when your CRON jobs fail.
 
