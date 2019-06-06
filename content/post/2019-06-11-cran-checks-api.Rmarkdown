@@ -52,7 +52,7 @@ Last but not least, with the API you can get badges! See the following badges fo
 
 * Check by flavor, e.g. if you want a special badge because you're proud you fixed checks on Solaris. `[![cran checks](https://cranchecks.info/badges/flavor/solaris/rhub)](https://cranchecks.info/pkgs/rhub)` [![cran checks](https://cranchecks.info/badges/flavor/solaris/rhub)](https://cranchecks.info/pkgs/rhub) 
 
-According to the API usage logs, the JSON data isn't queried that much: what's most successful are badges, both of the summary and worst types.
+According to the API usage logs, the JSON data isn't queried that much: what's most successful are badges, both of the summary and worst types. :nail_care:
 
 # Tech stack
 
