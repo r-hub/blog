@@ -58,7 +58,7 @@ According to the API usage logs, the JSON data isn't queried that much: what's m
 
 Scott underlined the main challenge he faced when creating API was that he learnt tools for the job as he went. Cool learning experience, lots of reading (blogs, Stack Overflow, etc.) and a bit of error making! 
 
-Scott chose the programming language Ruby as a tool for the job because Ruby is good for building web APIs and because he already knew Ruby. In Ruby, he used the Sinatra framework/library for the REST API because it's light weight, and the Faraday library for scraping. Scraping was a bit too slow at first, so he complemented the toolset with the [Go ganda library](https://github.com/tednaleid/ganda/) for making parallel curl requests. By the way, the pages he scrapes are the one from the RStudio CRAN mirror, not from other mirrors.
+Scott chose the programming language Ruby because it is good for building web APIs and because he already knew Ruby. In Ruby, he used the Sinatra framework/library for the REST API because it's light weight, and the Faraday library for scraping. Scraping was a bit too slow at first, so he complemented the toolset with the [Go ganda library](https://github.com/tednaleid/ganda/) for making parallel curl requests. By the way, the pages he scrapes are the one from the RStudio CRAN mirror, not from other mirrors.
 
 The data lives in two types of databases, MongoDB (noSQL) for the data of the day, MariaDB (SQL) for the rest. Originally the service only used MongoDB which was slow. Data and processing are wrapped in containers, via Docker Compose, on the cloud :cloud: on an Amazon Web Services server, which costs about 75$ a year.
 
