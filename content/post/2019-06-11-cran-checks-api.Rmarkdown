@@ -42,6 +42,8 @@ cchecks::cch_maintainers("maelle.salmon_at_yahoo.se") %>%
 ```
 </details>
 
+So it's all the same information as on the CRAN html pages, but in a nicer format for further wrangling and analysis.
+
 Last but not least, with the API you can get badges! See the following badges for the `rhub` package.
 
 * Summary, binary badge, either a green "OK" :grin: or a red "Not OK" :sob: `[![cran checks](https://cranchecks.info/badges/summary/rhub)](https://cran.r-project.org/web/checks/check_results_rhub.html)` or `[![cran checks](https://cranchecks.info/badges/summary/rhub)](https://cranchecks.info/pkgs/rhub)` depending on whether you want to point to CRAN check results in hipster html format or in modern JSON. [![cran checks](https://cranchecks.info/badges/summary/rhub)](https://cranchecks.info/pkgs/rhub)
