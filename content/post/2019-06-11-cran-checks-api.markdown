@@ -1,6 +1,6 @@
 ---
 title:  Overview of the CRAN checks API
-date: '2019-06-11'
+date: '2019-06-05'
 slug:  cran-checks-api
 tags:
   - CRAN
