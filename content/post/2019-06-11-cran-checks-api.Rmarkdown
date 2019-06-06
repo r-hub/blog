@@ -58,13 +58,13 @@ According to the API usage logs, the JSON data isn't queried that much: what's m
 
 Scott underlined the main challenge he faced when creating API was that he learnt tools for the job as he went. Cool learning experience, lots of reading (blogs, Stack Overflow, etc.) and a bit of error making! 
 
-Scott chose the programming language Ruby because it is good for building web APIs and because he already knew Ruby. In Ruby, he used the Sinatra framework/library for the REST API because it's light weight, and the Faraday library for scraping. Scraping was a bit too slow at first, so he complemented the toolset with the [Go ganda library](https://github.com/tednaleid/ganda/) for making parallel curl requests. By the way, the pages he scrapes are the one from the RStudio CRAN mirror, not from other mirrors.
+Scott chose the [programming language Ruby](https://www.ruby-lang.org/en/) because it is good for building web APIs and because he already knew Ruby. In Ruby, he used the [Sinatra framework/library](http://sinatrarb.com/) for the REST API because it's light weight, and the [Faraday library](https://github.com/lostisland/faraday) for scraping. Scraping was a bit too slow at first, so he complemented the toolset with the [Go ganda library](https://github.com/tednaleid/ganda/) for making parallel curl requests. By the way, the pages he scrapes are the one from the RStudio CRAN mirror, not from other mirrors.
 
-The data lives in two types of databases, MongoDB (noSQL) for the data of the day, MariaDB (SQL) for the rest. Originally the service only used MongoDB which was slow. Data and processing are wrapped in containers, via Docker Compose, on the cloud :cloud: on an Amazon Web Services server, which costs about 75$ a year.
+The data lives in two types of databases, [MongoDB](https://www.mongodb.com/) (noSQL) for the data of the day, [MariaDB](https://mariadb.org/) (SQL) for the rest. Originally the service only used MongoDB which was slow. Data and processing are wrapped in containers, via [Docker Compose](https://docs.docker.com/compose/), on the cloud :cloud: on an [Amazon Web Services](https://aws.amazon.com/) server, which costs about 75$ a year.
 
-The whole thing is brought to life by CRON jobs: package specific data is scraped every 3 hours, maintainer level data every 4 hours and the history routes are populated once a day. To ensure Scott knows when something is going wrong, which happens less often now that the system is stable, he uses [Healthchecks](https://healthchecks.io/) that alerts you when your CRON jobs fail.
+The whole thing is brought to life by [CRON jobs](https://en.wikipedia.org/wiki/Cron): package specific data is scraped every 3 hours, maintainer level data every 4 hours and the history routes are populated once a day. To ensure Scott knows when something is going wrong, which happens less often now that the system is stable, he uses [Healthchecks](https://healthchecks.io/) that alerts you when your CRON jobs fail.
 
-Gábor, the API uses the crandb API that hasn't been transferred yet, should we mention the crandb API anyway?
+**Gábor, the API uses the crandb API that hasn't been transferred yet, should we mention the crandb API anyway?**
 
 # Future plans
 
