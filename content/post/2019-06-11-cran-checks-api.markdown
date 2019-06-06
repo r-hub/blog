@@ -1,0 +1,19 @@
+---
+title:  rOpenSci Scott Chamberlain about his CRAN checks API
+date: '2019-06-11'
+slug:  cran-checks-api
+tags:
+  - CRAN
+---
+
+We've recently introduced [CRAN checks on our blog](/2019/04/25/r-devel-linux-x86-64-debian-clang/): once on CRAN your package is checked daily on a dozen platforms, and new failures can lead to its being archived or orphaned. We mentioned [ways to monitor your CRAN checks results](/2019/04/25/r-devel-linux-x86-64-debian-clang/#cran-checks-surveillance), including a cool web API, the CRAN checks API. We were thrilled to talk to its creator Scott Chamberlain, co-founder and tech lead at rOpenSci!  :telephone_receiver: :tada: In this post, we shall summarize our most interesting discussion with him about the API's functionalities, tech stack and future goals!
+
+# CRAN checks data at your fingertips
+
+When [introducing the API on his blog in 2017](https://recology.info/2017/09/cranchecks-api/), Scott presented the motivation for it with these words _"it’d be nice to have a modern way (read: an API) to check CRAN check results."_. Prior to the API creation, the data was only available via CRAN check pages like e.g. [`rhub` CRAN check results](https://cran.r-project.org/web/checks/check_results_rhub.html), [by package or by maintainer](https://cran.r-project.org/web/checks/). Programmatic access to this data was only possible via webscraping, so now Scott webscrapes it for everyone and makes it available in :sparkles: _JSON_ :sparkles: and :sparkles: _SVG badges_ :sparkles:.
+
+Initially, Scott was thinking of providing the service only for [rOpenSci packages](https://ropensci.org/packages/), but luckily for all of us, he noticed the system was easy enough to scale up and made it available for all CRAN packages, a service for the whole R community! :rocket: So, what can you do with the API? 
+
+# Conclusion
+
+Thanks Scott for talking to us and maintaining the API, and good luck with future development! Dear readers, Scott let us know feedback, bug reports and suggestions are more than welcome in [the API's issue tracker](https://github.com/ropenscilabs/cchecksapi/issues). We wish all your READMEs will display green OK badges, and if they ever turn orange or red, don't forget [R-hub is here to help](/2019/04/25/r-devel-linux-x86-64-debian-clang/).
