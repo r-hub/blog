@@ -6,7 +6,7 @@ tags:
   - CRAN
 ---
 
-We've recently introduced [CRAN checks on our blog](/2019/04/25/r-devel-linux-x86-64-debian-clang/): once on CRAN your package is checked daily on a dozen platforms, and new failures can lead to its being archived or orphaned. We mentioned [ways to monitor your CRAN checks results](/2019/04/25/r-devel-linux-x86-64-debian-clang/#cran-checks-surveillance), including a cool web API, the CRAN checks API. We were thrilled to talk to its creator Scott Chamberlain, co-founder and tech lead at rOpenSci!  :telephone_receiver: :tada: In this post, we shall summarize our most interesting discussion with him about the API's functionalities, tech stack and future goals!
+We've recently introduced [CRAN checks on our blog](/2019/04/25/r-devel-linux-x86-64-debian-clang/): once on CRAN your package is checked daily on a dozen platforms, and new failures can lead to its being archived or orphaned. We mentioned [ways to monitor your CRAN checks results](/2019/04/25/r-devel-linux-x86-64-debian-clang/#cran-checks-surveillance), including a cool web API, the CRAN checks API. We were thrilled to talk to its creator Scott Chamberlain, co-founder and tech lead at rOpenSci!  :telephone_receiver: :tada: In this post, we shall summarize our discussion with him about the API's functionalities, tech stack and future goals!
 
 # CRAN checks data at your fingertips
 
@@ -512,14 +512,15 @@ According to the API usage logs, the JSON data isn't queried that much: what's m
 
 # Tech stack
 
-Scott underlined the main challenge he faced when creating API was that he learnt tools for the job as he went. Cool learning experience, lots of reading and a bit of error making! 
+Scott underlined the main challenge he faced when creating API was that he learnt tools for the job as he went. Cool learning experience, lots of reading (blogs, Stack Overflow, etc.) and a bit of error making! 
 
 Scott chose the programming language Ruby as a tool for the job because Ruby is good for building web APIs and because he already knew Ruby. In Ruby, he used the Sinatra framework/library for the REST API because it's light weight, and the Faraday library for scraping. Scraping was a bit too slow at first, so he complemented the toolset with the [Go ganda library](https://github.com/tednaleid/ganda/) for making parallel curl requests. By the way, the pages he scrapes are the one from the RStudio CRAN mirror, not from other mirrors.
 
-The data lives in two types of databases, MongoDB (noSQL) for the data of the day, MariaDB (SQL) for the rest. Originally the service only used MongoDB which was slow. Data and processing happen on the cloud :cloud: on an Amazon Web Services server, which costs about 75$ a year.
+The data lives in two types of databases, MongoDB (noSQL) for the data of the day, MariaDB (SQL) for the rest. Originally the service only used MongoDB which was slow. Data and processing are wrapped in containers, via Docker Compose, on the cloud :cloud: on an Amazon Web Services server, which costs about 75$ a year.
 
-The whole thing is set to live by CRON jobs: package specific data is scraped every 3 hours, maintainer level data every 4 hours and the history routes are populated once a day. To ensure Scott knows when something is going wrong, which happens less often now that the system is stable, he uses [Healthchecks](https://healthchecks.io/) that alerts you when your CRON jobs fail.
+The whole thing is brought to life by CRON jobs: package specific data is scraped every 3 hours, maintainer level data every 4 hours and the history routes are populated once a day. To ensure Scott knows when something is going wrong, which happens less often now that the system is stable, he uses [Healthchecks](https://healthchecks.io/) that alerts you when your CRON jobs fail.
 
+Gábor, the API uses the crandb API that hasn't been transferred yet, should we mention the crandb API anyway?
 
 # Future plans
 
@@ -531,4 +532,4 @@ A **notification system** would allow maintainers to subscribe and get emails/Sl
 
 # Conclusion
 
-Thanks Scott for talking to us and maintaining the API, and good luck with future development! Dear readers, Scott let us know feedback, bug reports and suggestions are more than welcome in [the API's issue tracker](https://github.com/ropenscilabs/cchecksapi/issues). We wish all your READMEs will display green OK badges, and if they ever turn orange or red, don't forget [R-hub is here to help](/2019/04/25/r-devel-linux-x86-64-debian-clang/).
+Thanks Scott for talking to us and for maintaining the API, and good luck with its future development! Dear readers, Scott let us know feedback, bug reports and suggestions are more than welcome in [the API's issue tracker](https://github.com/ropenscilabs/cchecksapi/issues). We wish all your READMEs will display green OK badges, and if they ever turn orange or red, don't forget [R-hub is here to help](/2019/04/25/r-devel-linux-x86-64-debian-clang/).
