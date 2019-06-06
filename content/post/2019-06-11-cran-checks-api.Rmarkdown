@@ -72,7 +72,7 @@ There are two big and exciting TODOs for the CRAN checks API: a notification sys
 
 A **notification system** would allow maintainers to subscribe and get emails/Slack messages about new failures. The main challenge with that is that sometimes there are false positives, e.g. a transient change on R-devel or a failure of the check platform itself, so that could be a lot of a notifications.
 
-**Historical data** is at the moment only available via the package history route e.g. https://cranchecks.info/pkgs/rhub/history In the future Scott would like to still provide historical data for the last 30 days via the API, but all older data via data dumps on Amazon S3. Imagine how interesting such data could be to explore the health of CRAN platforms over time for instance, or to [pinpoint when a given change was introduced and packages had be updated](/2019/04/25/r-devel-linux-x86-64-debian-clang/)!
+**Historical data** is at the moment only available via the package history route e.g. https://cranchecks.info/pkgs/rhub/history In the future Scott would like to still provide historical data for the last 30 days via the API, but all older data via data dumps on [Amazon S3](https://aws.amazon.com/s3/). Imagine how interesting such data could be to explore the health of CRAN platforms over time for instance, or to [pinpoint when a given change was introduced and packages had be updated](/2019/04/25/r-devel-linux-x86-64-debian-clang/)!
 
 # Conclusion
 
