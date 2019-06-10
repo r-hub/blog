@@ -1,12 +1,12 @@
 ---
 title:  Overview of the CRAN checks API
-date: '2019-06-05'
+date: '2019-06-10'
 slug:  cran-checks-api
 tags:
   - CRAN
 ---
 
-We've recently introduced [CRAN checks on our blog](/2019/04/25/r-devel-linux-x86-64-debian-clang/): once on CRAN your package is checked daily on a dozen platforms, and new failures can lead to its being archived or orphaned. We mentioned [ways to monitor your CRAN checks results](/2019/04/25/r-devel-linux-x86-64-debian-clang/#cran-checks-surveillance), including a cool web API, the CRAN checks API. We were thrilled to talk to its creator Scott Chamberlain, co-founder and tech lead at rOpenSci!  :telephone_receiver: :tada: In this post, we shall summarize our discussion with him about the API's functionalities, tech stack and future goals!
+We've recently introduced [CRAN checks on our blog](/2019/04/25/r-devel-linux-x86-64-debian-clang/): once on CRAN your package is checked regularly on a dozen platforms, and new failures can lead to its being archived or orphaned. We mentioned [ways to monitor your CRAN checks results](/2019/04/25/r-devel-linux-x86-64-debian-clang/#cran-checks-surveillance), including a cool web API, the CRAN checks API. We were thrilled to talk to its creator Scott Chamberlain, co-founder and tech lead at rOpenSci!  :telephone_receiver: :tada: In this post, we shall summarize our discussion with him about the API's functionalities, tech stack and future goals!
 
 # CRAN checks data at your fingertips
 
@@ -57,7 +57,7 @@ The data lives in two types of databases, [MongoDB](https://www.mongodb.com/) (N
 
 The whole thing is brought to life by [CRON jobs](https://en.wikipedia.org/wiki/Cron): package specific data is scraped every 3 hours, maintainer level data every 4 hours and the history routes are populated once a day. To ensure Scott knows when something is going wrong, which happens less often now that the system is stable, he uses [Healthchecks](https://healthchecks.io/) that alerts you when your CRON jobs fail.
 
-**Gábor, the API uses the crandb API that hasn't been transferred yet, should we mention the crandb API anyway?**
+Last but not least, to know what packages are on CRAN, Scott's scripts use [the crandb API](http://crandb.r-pkg.org/).
 
 # Future plans
 

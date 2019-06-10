@@ -1,12 +1,12 @@
 ---
 title:  Overview of the CRAN checks API
-date: '2019-06-05'
+date: '2019-06-10'
 slug:  cran-checks-api
 tags:
   - CRAN
 ---
 
-We've recently introduced [CRAN checks on our blog](/2019/04/25/r-devel-linux-x86-64-debian-clang/): once on CRAN your package is checked daily on a dozen platforms, and new failures can lead to its being archived or orphaned. We mentioned [ways to monitor your CRAN checks results](/2019/04/25/r-devel-linux-x86-64-debian-clang/#cran-checks-surveillance), including a cool web API, the CRAN checks API. We were thrilled to talk to its creator Scott Chamberlain, co-founder and tech lead at rOpenSci!  :telephone_receiver: :tada: In this post, we shall summarize our discussion with him about the API's functionalities, tech stack and future goals!
+We've recently introduced [CRAN checks on our blog](/2019/04/25/r-devel-linux-x86-64-debian-clang/): once on CRAN your package is checked regularly on a dozen platforms, and new failures can lead to its being archived or orphaned. We mentioned [ways to monitor your CRAN checks results](/2019/04/25/r-devel-linux-x86-64-debian-clang/#cran-checks-surveillance), including a cool web API, the CRAN checks API. We were thrilled to talk to its creator Scott Chamberlain, co-founder and tech lead at rOpenSci!  :telephone_receiver: :tada: In this post, we shall summarize our discussion with him about the API's functionalities, tech stack and future goals!
 
 # CRAN checks data at your fingertips
 
@@ -39,15 +39,15 @@ res[[1]]$data$checks
 
 ```
 ##                               flavor version tinstall tcheck ttotal status
-## 1  r-devel-linux-x86_64-debian-clang   1.1.1     5.52  51.10  56.62     OK
-## 2    r-devel-linux-x86_64-debian-gcc   1.1.1     4.37  41.21  45.58     OK
-## 3  r-devel-linux-x86_64-fedora-clang   1.1.1     0.00   0.00  67.79     OK
-## 4    r-devel-linux-x86_64-fedora-gcc   1.1.1     0.00   0.00  64.61     OK
-## 5        r-devel-windows-ix86+x86_64   1.1.1    21.00  58.00  79.00     OK
-## 6             r-patched-linux-x86_64   1.1.1     5.45  50.78  56.23     OK
+## 1  r-devel-linux-x86_64-debian-clang   1.1.1     5.74  51.08  56.82     OK
+## 2    r-devel-linux-x86_64-debian-gcc   1.1.1     4.28  41.02  45.30     OK
+## 3  r-devel-linux-x86_64-fedora-clang   1.1.1     0.00   0.00  67.18     OK
+## 4    r-devel-linux-x86_64-fedora-gcc   1.1.1     0.00   0.00  64.12     OK
+## 5        r-devel-windows-ix86+x86_64   1.1.1    11.00  60.00  71.00     OK
+## 6             r-patched-linux-x86_64   1.1.1     5.56  50.22  55.78     OK
 ## 7              r-patched-solaris-x86   1.1.1     0.00   0.00  82.30     OK
-## 8             r-release-linux-x86_64   1.1.1     5.32  50.36  55.68     OK
-## 9      r-release-windows-ix86+x86_64   1.1.1    19.00  90.00 109.00     OK
+## 8             r-release-linux-x86_64   1.1.1     5.40  50.51  55.91     OK
+## 9      r-release-windows-ix86+x86_64   1.1.1    20.00  79.00  99.00     OK
 ## 10              r-release-osx-x86_64   1.1.1     0.00   0.00   0.00     OK
 ## 11      r-oldrel-windows-ix86+x86_64   1.1.1     8.00  99.00 107.00     OK
 ## 12               r-oldrel-osx-x86_64   1.1.1     0.00   0.00   0.00     OK
@@ -105,7 +105,7 @@ The data lives in two types of databases, [MongoDB](https://www.mongodb.com/) (N
 
 The whole thing is brought to life by [CRON jobs](https://en.wikipedia.org/wiki/Cron): package specific data is scraped every 3 hours, maintainer level data every 4 hours and the history routes are populated once a day. To ensure Scott knows when something is going wrong, which happens less often now that the system is stable, he uses [Healthchecks](https://healthchecks.io/) that alerts you when your CRON jobs fail.
 
-**Gábor, the API uses the crandb API that hasn't been transferred yet, should we mention the crandb API anyway?**
+Last but not least, to know what packages are on CRAN, Scott's scripts use [the crandb API](http://crandb.r-pkg.org/).
 
 # Future plans
 
