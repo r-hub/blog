@@ -1,0 +1,23 @@
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="{{ .Site.RSSLink | relURL }}" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="{{ "images/hugo-logo.png" | relURL }}" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+          <li>
+            <a href="https://www.r-consortium.org/" class="footer-links-kudos">Funded by the <img src="{{ "images/rc.png" | relURL }}" alt="Img link to R Consortium website" height="22"></a>
+          </li>
+          <li>
+            <a href="/privacy/" class="footer-links-kudos">Privacy policy</a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    {{ partial "footer_highlightjs" . }}
+    {{ partial "footer_mathjax" . }}
+    {{ template "_internal/google_analytics.html" . }}
+  </body>
+</html>
