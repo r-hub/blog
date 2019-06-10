@@ -13,4 +13,4 @@ You might also like, or actually be looking for:
 
 Except where otherwise noted, content on this site is licensed under the [CC-BY license](https://creativecommons.org/licenses/by/4.0/). 
 
-We have a [privacy policy](/privacy/).
+We have a [privacy policy](https://github.com/r-hub/blog/blob/745533927b0d51ac0c31d4c9114ee4f6d62b194b/content/privacy.md).
