@@ -7,7 +7,8 @@ tags:
   - CRAN
 ---
 
-Ever heard the phrase "Read the source, Luke"? It's a play on ["Use the force, Luke" from Star Wars](https://mygeekwisdom.com/2012/04/14/use-the-force-luke/), with no definite _source_ :wink:, [maybe a blog post by Jeff Atwood](https://blog.codinghorror.com/learn-to-read-the-source-luke/); and it underlines how important and useful it can be to read the source code of a tool instead of just its docs. 
+Ever heard the phrase "Read the source, Luke"? It's a play on ["Use the force, Luke" from Star Wars](https://mygeekwisdom.com/2012/04/14/use-the-force-luke/), with no definite _source_ :wink: that we could find^[We erroneously first linked to [a rather recent blog post](https://blog.codinghorror.com/learn-to-read-the-source-luke/) but [Robert Link](https://github.com/rplzzz) corrected us [in a comment](https://github.com/r-hub/blog/issues/27#issuecomment-528011915) that we reproduce here in case the post gets separated from its comments: _""Use the Source, Luke" goes way back before 2012, and probably even before blogs were a thing.  Here's a mention in the New Hacker's Dictionary: http://catb.org/jargon/html/U/UTSL.html.
+The earliest version I've been able to find is from August of 1991:  http://www.catb.org/~esr/jargon/oldversions/jarg296.txt, but I suspect it was in use long before then.  "_]; and it underlines how important and useful it can be to read the source code of a tool instead of just its docs. 
 
 In this blog post, we shall explain why and how to read the source code of your R tools, be they base R or packages, and how an R-hub service is part of the reason why this process has gotten easier.
 
