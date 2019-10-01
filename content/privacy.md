@@ -3,6 +3,8 @@ date: "2019-06-05"
 title: R-hub blog's privacy policy
 ---
 
+This blog is deployed via [Netlify](https://www.netlify.com/gdpr/).
+
 We use [Google Analytics](https://analytics.google.com/analytics/web/) to log data and ultimately improve the blog. Below are the [Hugo privacy settings](https://gohugo.io/about/hugo-and-gdpr/#googleanalytics) we use for Google Analytics, within [the Hugo config file for this blog](https://github.com/r-hub/blog/blob/master/config.toml).
 
 ```yaml
