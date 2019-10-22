@@ -125,9 +125,9 @@ For say a plotting or modelling library, you can tailor-make data. Comparing app
 
 As [explained in this discussion about testing web API packages](https://discuss.ropensci.org/t/best-practices-for-testing-api-packages/460/), when testing a package accessing and munging web data you might want to separate testing of the data access and of the data munging, on the one hand because failures will be easier to trace back to a problem in the web API vs. your code, on the other hand to be able to selectively turn off some tests based on internet connection, the presence of an API key, etc. Storing and replaying HTTP requests is supported by:
 
-* [`vcr`](https://github.com/ropensci/vcr) with [`webmockr`](https://github.com/ropensci/webmockr)
+* [`vcr`](https://github.com/ropensci/vcr) with [`webmockr`](https://github.com/ropensci/webmockr),
 
-* [`httptest`](https://github.com/nealrichardson/httptest)
+* [`httptest`](https://github.com/nealrichardson/httptest).
 
 What about applying the same idea to packages using a _database_ connection?
 
