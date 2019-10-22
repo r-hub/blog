@@ -1,0 +1,52 @@
+---
+title: Mocking is catching
+date: '2019-10-22'
+slug: mocking
+tags:
+  - testing
+  - mocking
+---
+
+When writing unit tests for a package, you might find yourself wondering about how to best test the behaviour of your package 
+
+* when the data it's supposed to munge has this or that quirk, 
+
+* when the operating system is Windows, 
+
+* when a package enhancing its functionality is not there,
+
+* when a web API returns an error;
+
+or you might even wonder how to test at least part of that package of yours that calls a web API or local database... _without accessing the web API or local database during testing_.
+
+In most of these cases, the programming concept you're after is _mocking_! In this blog post we shall offer a round-up of resources around mocking, or not mocking, when unit testing an R package.
+
+<!--html_preserve-->{{% tweet "1156754150828498945" %}}<!--/html_preserve-->
+
+Please keep reading, do not flee to Twitter! :wink:
+
+https://github.com/jonkeane/dbtest/
+
+## To mock or not to mock
+
+Sometimes, you might not need mocking and can resort to an alternative approach instead, using the real thing/situation. You could say it's a less "unit" approach.
+
+### Input data
+
+For say a plotting or modeling library, you can tailor-make data. Comparing packages for creating fake data are beyond the scope of this post, so let's just name a few
+
+* [`charlatan`](https://docs.ropensci.org/charlatan/)
+
+* [`fakir`](https://thinkr-open.github.io/fakir/)
+
+### Different operating systems
+
+Say you want to be sure your packages builds correctly on another operating system... well you can use R-hub :grin: or maybe a continuous integration service.
+
+### Different system configurations
+
+Regarding the case where you want to test your package when a suggested dependency is or is not installed, you can use the configuration script of a continuous integration service to have at least one build without that dependency:
+
+<!--html_preserve-->{{% tweet "1180175458782076928" %}}<!--/html_preserve-->
+
+Now, what if you're not sure about the best approach for that quirky thing you want to test, mocking or not mocking? Well, you can fall back on two methods: [Reading the source code](/2019/04/11/r-package-devel/), and [Asking for help](/2019/05/14/read-the-source/)! Good luck
