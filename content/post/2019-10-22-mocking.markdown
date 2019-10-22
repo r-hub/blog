@@ -33,6 +33,8 @@ Nowadays, when using `testthat` for testing, the recommending tool for mocking i
 
 
 ```r
+# a function that says encoding is a pain
+# when the OS is Windows
 is_encoding_a_pain <- function(){
   if (Sys.info()[["sysname"]] == "Windows"){
     return("YES")
@@ -41,14 +43,7 @@ is_encoding_a_pain <- function(){
   }
 }
 
-is_encoding_a_pain()
-```
-
-```
-## [1] "no"
-```
-
-```r
+# The post was rendered on Ubuntu
 Sys.info()[["sysname"]]
 ```
 
@@ -57,7 +52,17 @@ Sys.info()[["sysname"]]
 ```
 
 ```r
-# stub Sys.info() in is_encoding_a_pain()
+# So, is encoding a pain?
+is_encoding_a_pain()
+```
+
+```
+## [1] "no"
+```
+
+```r
+# stub/replace Sys.info() in is_encoding_a_pain()
+# with a mock that answers "Windows"
 mockery::stub(where = is_encoding_a_pain,
               what = "Sys.info", 
               how = c(sysname = "Windows"))
