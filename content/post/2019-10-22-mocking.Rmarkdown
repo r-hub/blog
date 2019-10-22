@@ -72,7 +72,7 @@ test_that("auto windows", {
 })
 ```
 
-What happens after the call to `mockery::stub()` is that inside the test, when `default_backend_auto()` is called, it won't use the actual `Sys.info()` but instead a mock that returns `c(sysname = "Windows")` so the test assess what `default_backend_auto()` returns on Windows... without the test being run on a Windows machine. :sunglasses: 
+What happens after the call to `mockery::stub()` is that inside the test, when `default_backend_auto()` is called, it won't use the actual `Sys.info()` but instead a mock that returns `c(sysname = "Windows")` so the test can assess what `default_backend_auto()` returns on Windows... without the test being run on a Windows machine. :sunglasses: 
 
 Instead of directly defining the return value as is the case in this example, one could stub the function with a function, [as seen in one of the tests for the `remotes` package](https://github.com/cran/remotes/blob/f1b3e75c162f555dec0c7ab9dba7dbf9faf69444/tests/testthat/test-install-svn.R#L78).
 
