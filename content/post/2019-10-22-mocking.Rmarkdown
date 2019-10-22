@@ -19,7 +19,7 @@ When writing unit tests for a package, you might find yourself wondering about h
 
 or you might even wonder how to test at least part of that package of yours that calls a web API or local database... _without accessing the web API or local database during testing_.
 
-In most of these cases, the programming concept you're after is _mocking_! In this blog post we shall offer a round-up of resources around mocking, or not mocking, when unit testing an R package.
+In some of these cases, the programming concept you're after is _mocking_, i.e. making a function act _as if_ something were a certain way! In this blog post we shall offer a round-up of resources around mocking, or not mocking, when unit testing an R package.
 
 ```{r sharlatweet, echo = FALSE}
 blogdown::shortcode("tweet", "1156754150828498945")
@@ -27,13 +27,37 @@ blogdown::shortcode("tweet", "1156754150828498945")
 
 Please keep reading, do not flee to Twitter! :wink:
 
-# Packages for mocking
+## Packages for mocking
 
-## General mocking
+### General mocking
 
-Nowadays, when using `testthat` for testing, the recommending tool for mocking is the `mockery` package, _not_ `testthat`'s own `with_mock()` function. To read how they differ in their implementation of mocking, refer to [this issue](https://github.com/r-lib/mockery/issues/8#issuecomment-259005484) and [that section of `mockery` README](https://github.com/r-lib/mockery#comparison-to-with_mock). In brief, with `mockery` you can stub (i.e. replace) a function in a given environment at a given depth.
+Nowadays, when using `testthat` for testing, the recommending tool for mocking is the [`mockery` package](https://github.com/r-lib/mockery), _not_ `testthat`'s own `with_mock()` function. To read how they differ in their implementation of mocking, refer to [this issue](https://github.com/r-lib/mockery/issues/8#issuecomment-259005484) and [that section of `mockery` README](https://github.com/r-lib/mockery#comparison-to-with_mock). In brief, with `mockery` you can stub (i.e. replace) a function in a given environment e.g. the environment of a function. Let's create a small toy example to illustrate that.
 
-Let's look at [an example from `keyring` tests](https://github.com/r-lib/keyring/blob/0cdd366dfd2e8accbf94dd43643531f6f6e1acff/tests/testthat/test-default-backend.R#L56)
+```{r mockery}
+is_encoding_a_pain <- function(){
+  if (Sys.info()[["sysname"]] == "Windows"){
+    return("YES")
+  } else {
+    return("no")
+  }
+}
+
+is_encoding_a_pain()
+Sys.info()[["sysname"]]
+
+# stub Sys.info() in is_encoding_a_pain()
+mockery::stub(where = is_encoding_a_pain,
+              what = "Sys.info", 
+              how = c(sysname = "Windows"))
+
+# Different output
+is_encoding_a_pain()
+
+# NOT changed
+Sys.info()[["sysname"]]
+```
+
+Let's also look at a real life example, [from `keyring` tests](https://github.com/r-lib/keyring/blob/0cdd366dfd2e8accbf94dd43643531f6f6e1acff/tests/testthat/test-default-backend.R#L56):
 
 ```r
 test_that("auto windows", {
@@ -42,17 +66,21 @@ test_that("auto windows", {
 })
 ```
 
-What happens after the call to `mockery::stub()` is that inside the test, when `default_backend_auto()` is called, it won't use the actual `Sys.info()` but instead a mock that returns `c(sysname = "Windows")`. 
+What happens after the call to `mockery::stub()` is that inside the test, when `default_backend_auto()` is called, it won't use the actual `Sys.info()` but instead a mock that returns `c(sysname = "Windows")` so the test assess what `default_backend_auto()` returns on Windows... without the test being run on a Windows machine. :sunglasses: 
 
 Instead of directly defining the return value as is the case in this example, one could stub the function with a function, [as seen in one of the tests for the `remotes` package](https://github.com/cran/remotes/blob/f1b3e75c162f555dec0c7ab9dba7dbf9faf69444/tests/testthat/test-install-svn.R#L78).
 
-To find more examples of how to use `mockery` in tests, you can use GitHub search in combination with R-hub's : https://github.com/search?l=&q=%22mockery%3A%3Astub%22+user%3Acran&type=Code 
+To find more examples of how to use `mockery` in tests, you can use GitHub search in combination with [R-hub's CRAN source code mirror](https://docs.r-hub.io/#cranatgh): https://github.com/search?l=&q=%22mockery%3A%3Astub%22+user%3Acran&type=Code 
 
-## Web mocking
+### Web mocking
 
-In the case of a package doing HTTP requests, you might want to test what happens when an error code is received for instance. To do that, you can use either [`webmockr`](https://github.com/ropensci/webmockr) (compatible with both `httr` and `crul`) or [`httptest`](https://github.com/nealrichardson/httptest).
+In the case of a package doing HTTP requests, you might want to test what happens when an error code is received for instance. To do that, you can use either [`httptest`](https://github.com/nealrichardson/httptest) or [`webmockr`](https://github.com/ropensci/webmockr) (compatible with both `httr` and `crul`).
 
-# To mock or... not to mock
+### Temporarily modify the global state
+
+To test what happens when there's, say, an environment variable, one can set it temporarily within a test using the [`withr` package](https://github.com/r-lib/withr). You could argue it's not technically mocking, but it's an useful trick. :shrug:
+
+## To mock or... not to mock
 
 Sometimes, you might not need _mocking_ and can resort to an alternative approach instead, using the real thing/situation. You could say it's a less "unit" approach and requires more work, but on the flip side, it's, well, real.
 
@@ -60,11 +88,11 @@ Sometimes, you might not need _mocking_ and can resort to an alternative approac
 
 For say a plotting or modelling library, you can tailor-make data. Comparing approaches or packages for creating fake data are beyond the scope of this post, so let's just name a few packages:
 
-* [`charlatan`](https://docs.ropensci.org/charlatan/)
+* [`charlatan`](https://docs.ropensci.org/charlatan/),
 
-* [`fakir`](https://thinkr-open.github.io/fakir/)
+* [`fakir`](https://thinkr-open.github.io/fakir/),
 
-* [`salty`](https://github.com/mdlincoln/salty) (for "salting" clean data i.e. adding errors in it)
+* [`salty`](https://github.com/mdlincoln/salty) (for "salting" clean data i.e. adding errors in it).
 
 ### Stored data from a web API / a database
 
@@ -80,8 +108,6 @@ What about applying the same idea to packages using a _database_ connection?
 
 * There is [a nascent package called `dbtest`](https://github.com/jonkeane/dbtest/) that is similar to `httptest`, but for databases.
 
-https://github.com/jonkeane/dbtest/
-
 ### Different operating systems
 
 Say you want to be sure your packages builds correctly on another operating system... you can use [R-hub package builder](https://docs.r-hub.io) :grin: or maybe a [continuous integration service](https://devguide.ropensci.org/ci.html).
@@ -94,6 +120,6 @@ Regarding the case where you want to test your package when a suggested dependen
 blogdown::shortcode("tweet", "1180175458782076928")
 ```
 
-# Conclusion
+## Conclusion
 
 In this post we offered a round-up of resources around mocking when unit testing R packages, as well as around _not_ mocking. To learn about more packages for testing your package, [refer to the list published on Locke Data's blog](https://itsalocke.com/blog/packages-for-testing-your-r-package/). Now, what if you're not sure about the best approach for that quirky thing you want to test, mocking or not mocking, and how exactly? Well, you can fall back on two methods: [Reading the source code](/2019/04/11/r-package-devel/), and [Asking for help](/2019/05/14/read-the-source/)! Good luck! :rocket:
