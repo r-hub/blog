@@ -84,7 +84,7 @@ In the case of a package doing HTTP requests, you might want to test what happen
 
 ### Temporarily modify the global state
 
-To test what happens when there's, say, an environment variable, one can set it temporarily within a test using the [`withr` package](https://github.com/r-lib/withr). You could argue it's not technically mocking, but it's an useful trick. :shrug:
+To test what happens when there's, say, an environment variable, one can set it temporarily within a test using the [`withr` package](https://github.com/r-lib/withr). You could argue it's not technically mocking, but it's an useful trick. You can see it in action [in `keyring`'s tests](https://github.com/r-lib/keyring/blob/0cdd366dfd2e8accbf94dd43643531f6f6e1acff/tests/testthat/test-default-backend.R#L18).
 
 ## To mock or... not to mock
 
