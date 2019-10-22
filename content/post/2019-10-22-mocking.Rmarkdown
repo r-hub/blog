@@ -7,7 +7,7 @@ tags:
   - mocking
 ---
 
-When writing unit tests for a package, you might find yourself wondering about how to best test the behaviour of your package 
+When [writing unit tests for a package](https://r-pkgs.org/tests.html), you might find yourself wondering about how to best test the behaviour of your package 
 
 * when the data it's supposed to munge has this or that quirk, 
 
