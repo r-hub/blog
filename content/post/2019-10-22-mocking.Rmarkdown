@@ -88,7 +88,7 @@ To test what happens when there's, say, an environment variable, one can set it 
 
 ## To mock or... not to mock
 
-Sometimes, you might not need _mocking_ and can resort to an alternative approach instead, using the real thing/situation. You could say it's a less "unit" approach and requires more work, but on the flip side, it's, well, real.
+Sometimes, you might not need _mocking_ and can resort to an alternative approach instead, using the real thing/situation. You could say it's a less "unit" approach and requires more work.
 
 ### Fake input data
 
