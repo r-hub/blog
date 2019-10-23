@@ -23,7 +23,7 @@ In some of these cases, the programming concept you're after is _mocking_, i.e. 
 
 <!--html_preserve-->{{% tweet "1156754150828498945" %}}<!--/html_preserve-->
 
-Please keep reading, do not flee to Twitter! :wink:
+Please keep reading, do not flee to Twitter! :wink: (The talented Sharla did end up using mocking for [her package](https://sharlagelfand.github.io/opendatatoronto/)!)
 
 ## Packages for mocking
 
