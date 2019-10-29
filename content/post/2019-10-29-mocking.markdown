@@ -1,6 +1,6 @@
 ---
 title: Mocking is catching
-date: '2019-10-22'
+date: '2019-10-29'
 slug: mocking
 tags:
   - testing
@@ -21,9 +21,7 @@ or you might even wonder how to test at least part of that package of yours that
 
 In some of these cases, the programming concept you're after is _mocking_, i.e. making a function act _as if_ something were a certain way! In this blog post we shall offer a round-up of resources around mocking, or not mocking, when unit testing an R package.
 
-```{r sharlatweet, echo = FALSE}
-blogdown::shortcode("tweet", "1156754150828498945")
-```
+<!--html_preserve-->{{% tweet "1156754150828498945" %}}<!--/html_preserve-->
 
 Please keep reading, do not flee to Twitter! :wink: (The talented Sharla did end up using mocking for [her package](https://sharlagelfand.github.io/opendatatoronto/)!)
 
@@ -31,9 +29,10 @@ Please keep reading, do not flee to Twitter! :wink: (The talented Sharla did end
 
 ### General mocking
 
-Nowadays, when using `testthat` for testing, the recommending tool for mocking is the [`mockery` package](https://github.com/r-lib/mockery), _not_ `testthat`'s own `with_mock()` function. To read how they differ in their implementation of mocking, refer to [this issue](https://github.com/r-lib/mockery/issues/8#issuecomment-259005484) and [that section of `mockery` README](https://github.com/r-lib/mockery#comparison-to-with_mock). In brief, with `mockery` you can stub (i.e. replace) a function in a given environment e.g. the environment of a function. Let's create a small toy example to illustrate that.
+Nowadays, when using `testthat` for testing, the recommended tool for mocking is the [`mockery` package](https://github.com/r-lib/mockery), _not_ `testthat`'s own `with_mock()` function. To read how they differ in their implementation of mocking, refer to [this issue](https://github.com/r-lib/mockery/issues/8#issuecomment-259005484) and [that section of `mockery` README](https://github.com/r-lib/mockery#comparison-to-with_mock). In brief, with `mockery` you can stub (i.e. replace) a function in a given environment e.g. the environment of a function. Let's create a small toy example to illustrate that.
 
-```{r mockery}
+
+```r
 # a function that says encoding is a pain
 # when the OS is Windows
 is_encoding_a_pain <- function(){
@@ -46,10 +45,22 @@ is_encoding_a_pain <- function(){
 
 # The post was rendered on Ubuntu
 Sys.info()[["sysname"]]
+```
+
+```
+## [1] "Linux"
+```
+
+```r
 # So, is encoding a pain?
 is_encoding_a_pain()
+```
 
+```
+## [1] "no"
+```
 
+```r
 # stub/replace Sys.info() in is_encoding_a_pain()
 # with a mock that answers "Windows"
 mockery::stub(where = is_encoding_a_pain,
@@ -58,9 +69,19 @@ mockery::stub(where = is_encoding_a_pain,
 
 # Different output
 is_encoding_a_pain()
+```
 
+```
+## [1] "YES"
+```
+
+```r
 # NOT changed
 Sys.info()[["sysname"]]
+```
+
+```
+## [1] "Linux"
 ```
 
 Let's also look at a real life example, [from `keyring` tests](https://github.com/r-lib/keyring/blob/0cdd366dfd2e8accbf94dd43643531f6f6e1acff/tests/testthat/test-default-backend.R#L56):
@@ -84,7 +105,7 @@ In the case of a package doing HTTP requests, you might want to test what happen
 
 ### Temporarily modify the global state
 
-To test what happens when there's, say, an environment variable, one can set it temporarily within a test using the [`withr` package](https://github.com/r-lib/withr). You could argue it's not technically mocking, but it's an useful trick. You can see it in action [in `keyring`'s tests](https://github.com/r-lib/keyring/blob/0cdd366dfd2e8accbf94dd43643531f6f6e1acff/tests/testthat/test-default-backend.R#L18).
+To test what happens when, say, an environment variable has a particular value, one can set it temporarily within a test using the [`withr` package](https://github.com/r-lib/withr). You could argue it's not technically mocking, but it's an useful trick. You can see it in action [in `keyring`'s tests](https://github.com/r-lib/keyring/blob/0cdd366dfd2e8accbf94dd43643531f6f6e1acff/tests/testthat/test-default-backend.R#L18).
 
 ## To mock or... not to mock
 
@@ -122,9 +143,7 @@ Say you want to be sure your packages builds correctly on another operating syst
 
 Regarding the case where you want to test your package when a suggested dependency is or is not installed, you can use the configuration script of a continuous integration service to have at least one build without that dependency:
 
-```{r hadleytweet, echo = FALSE}
-blogdown::shortcode("tweet", "1180175458782076928")
-```
+<!--html_preserve-->{{% tweet "1180175458782076928" %}}<!--/html_preserve-->
 
 ## Conclusion
 
