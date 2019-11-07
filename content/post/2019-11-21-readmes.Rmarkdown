@@ -18,9 +18,9 @@ blogdown::shortcode("tweet", "969442252610191361")
 
 A good README is crucial to recruit users that'll actually gain something from using your package. As written by [noffle](https://github.com/noffle/) in [the Art of README](https://github.com/noffle/art-of-readme), 
 
-> your job, when you're doing it with optimal altruism in mind, isn't to "sell" people on your work. It's to let them evaluate what your creation does as objectively as possible, and decide whether it meets their needs or not -- not to, say, maximize your downloads or userbase. 
+> _your job, when you're doing it with optimal altruism in mind, isn't to "sell" people on your work. It's to let them evaluate what your creation does as objectively as possible, and decide whether it meets their needs or not -- not to, say, maximize your downloads or userbase. _
 
-Furthermore, you can recycle the content of your README in other venues (more on how to do that -- without repeating yourself -- later) like that vignette mentioned in the poll. If you summarize your package in a good one-liner, 
+Furthermore, you can recycle the content of your README in other venues (more on how to do that -- without copy-pasting -- later) like that vignette mentioned in the poll. If you summarize your package in a good one-liner, 
 
 ```
 > Connect to R-hub, from R
@@ -91,7 +91,7 @@ get_readme_lines <- function(owner, repo){
     return(NULL)
   }
   readme$download_url %>%
-    readLines() %>%
+    suppressWarnings(readLines()) %>%
     purrr::discard(. == "") %>%
     length() -> nolines
   
