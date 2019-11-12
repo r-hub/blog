@@ -222,7 +222,9 @@ get_wordcount <- function(xml, package) {
 
 The number of words in READMEs range from `r min(words$wordcount)` to `r max(words$wordcount)` with a median of `r median(words$wordcount)`. The READMEs with respectively the most words and least words are `r glue::glue("https://github.com/{words$owner[words$wordcount == max(words$wordcount)]}/{words$repo[words$wordcount == max(words$wordcount)]}")` and `r glue::glue("https://github.com/{words$owner[words$wordcount == min(words$wordcount)]}/{words$repo[words$wordcount == min(words$wordcount)]}")`.
 
-The README size might depend on the package interface size itself, and after a certain size one might want to make it easier on users by breaking up documentation into smaller articles, instead of showing all there is in one page. Now, a helpful way to still convey information efficiently when there are more than a few things is a good _structure_. You could even argue a good structure is important for READMEs.
+The README size might depend on the package interface size itself, i.e. a package with a single function/dataset probably doesn't warrant many lines. Beyond a certain interface size or complexity, one might want to make it easier on potential users by breaking up documentation into smaller articles, instead of showing all there is in one page. 
+
+Now, a helpful way to still convey information efficiently when there are more than a few things is a good README _structure_. Besides, a good structure is important for READMEs of all sizes.
 
 ### Glimpsing at README structure
 
@@ -324,6 +326,7 @@ In practice,
 ```{r r42}
 print_readme_structure(structure$structure[42][[1]])
 print_readme_structure(structure$structure[7][[1]])
+print_readme_structure(structure$structure[1][[1]])
 ```
 
 What are the most common headers?
@@ -336,7 +339,7 @@ structure %>%
   knitr::kable()
 ```
 
-This seems to be quite in line with noffle's checklist (e.g. having installation instructions). Headers related to the background and to examples might have a title specific to the package, hence there being so few "Examples" headers as compared to "Installation" headers.
+This seems to be quite in line with noffle's checklist (e.g. having installation instructions). Headers related to the background and to examples might have a title specific to the package, in which case they don't appear in the table above.
 
 The headers are one thing, their _order_ is another one which we won't analyze in this post. In the Art of README, noffle [discusses "cognitive funneling"](https://github.com/noffle/art-of-readme#cognitive-funneling) which might help you choose an order.
 
@@ -350,13 +353,13 @@ The previous sections aimed at giving an overview of reasons for writing a good 
 
 In [noffle's checklist for a README](https://github.com/noffle/art-of-readme#bonus-the-readme-checklist) one item is "Clear, runnable example of usage". You probably want to go a step further and have "Clear, runnable, executed example of usage" for which using R Markdown is quite handy. Using R Markdown to produce your package README is our number one recommendation.
 
-#### Re-use of Rmd portions in other Rmds
-
-Then, instead of writing everything in one .Rmd and then copying entire sections of it in a vignette, you can re-use Rmd chunks as explained in [this blog post by Garrick Aden-Buie presenting an idea by Brodie Gaslam](https://www.garrickadenbuie.com/blog/dry-vignette-and-readme/).
-
 #### usethis' README templates
 
 To create the README, you can use either [`usethis::use_readme_rmd()` (for an R Markdown README) or `usethis::use_readme_md()` (for a Markdown README)](https://usethis.r-lib.org/reference/use_readme_rmd.html). The created README file will include a few sections for you to fill in.
+
+#### Re-use of Rmd portions in other Rmds
+
+Then, instead of writing everything in one .Rmd and then copying entire sections of it in a vignette, you can re-use Rmd chunks as explained in [this blog post by Garrick Aden-Buie presenting an idea by Brodie Gaslam](https://www.garrickadenbuie.com/blog/dry-vignette-and-readme/).
 
 #### Re-use of Rmd portions in manual pages
 
@@ -372,4 +375,4 @@ You should write the package README with potential users in mind, who might not 
 
 ## Conclusion
 
-In this post we discussed the importance of a good package README and gave some data-driven clues as to what is a good README. We also mentioned useful tools and tricks to write a good README. For further READing we recommend the [Write the Docs' list of README-related resources](https://www.writethedocs.org/blog/newsletter-july-2019/#readmes-on-readmes-and-other-readme-related-resources). We also welcome your input below... What do _you_ like seeing in a README?
+In this post we discussed the importance of a good package README, mentioned existing guidance, and gave some data-driven clues as to what is a usual README. We also mentioned useful tools to write a good README. For further READing we recommend the [Write the Docs' list of README-related resources](https://www.writethedocs.org/blog/newsletter-july-2019/#readmes-on-readmes-and-other-readme-related-resources). We also welcome your input below... What do _you_ like seeing in a README?
