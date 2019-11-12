@@ -6,6 +6,8 @@ tags:
   - readme
 ---
 
+
+
 A recent topic of the Write The Docs' great newsletter was [READMEs](https://www.writethedocs.org/blog/newsletter-july-2019/#readmes-on-readmes-and-other-readme-related-resources). It read _"As they’re often the first thing people see about a code project, READMEs are pretty important to get right."_. In this post, we'll share some insights around the READMEs of R packages: why they're crucial; what they usually contain; how you can best write yours. Let's dive in!  :swimmer:
 
 ## Why is a good README key
@@ -16,9 +18,9 @@ As mentioned above, the WTD newsletter stated that READMEs are often the first e
 
 A good README is crucial to recruit users that'll actually gain something from using your package. As written by [noffle](https://github.com/noffle/) in [the Art of README](https://github.com/noffle/art-of-readme), 
 
-> your job, when you're doing it with optimal altruism in mind, isn't to "sell" people on your work. It's to let them evaluate what your creation does as objectively as possible, and decide whether it meets their needs or not -- not to, say, maximize your downloads or userbase. 
+> "your job, when you're doing it with optimal altruism in mind, isn't to "sell" people on your work. It's to let them evaluate what your creation does as objectively as possible, and decide whether it meets their needs or not -- not to, say, maximize your downloads or userbase."
 
-Furthermore, you can recycle the content of your README in other venues (more on how to do that -- without repeating yourself -- later) like that vignette mentioned in the poll. If you summarize your package in a good one-liner, 
+Furthermore, you can recycle the content of your README in other venues (more on how to do that -- without copy-pasting -- later) like that vignette mentioned in the poll. If you summarize your package in a good one-liner for the top of the README, 
 
 ```
 > Connect to R-hub, from R
@@ -36,7 +38,7 @@ Title: Connect to 'R-hub'
 
 * in your introduction at a social event (ok, maybe not).
 
-Other parts of a pitch are good talk fodder, blog post introductions, etc, Therefore, the time you spend pitching your package in the best possible way is a gift that'll keep on giving, to your users and you.  
+Other parts of a pitch are good talk fodder, blog post introductions, vignette sections, etc. Therefore, the time you spend pitching your package in the best possible way is a gift that'll keep on giving, to your users and you.  
 
 ## What is a good README
 
@@ -54,7 +56,7 @@ top <- pkgsearch::cran_top_downloaded()
 pkglist <- unique(c(trending[["package"]], top[["package"]]))
 ```
 
-This is a list of 197 package names, including echarts4r, ggThemeAssist, waffle, cartography, fable and sparkline. Then, again with `pkgsearch`, we'll extract their metadata, before keeping only those that have a GitHub README. More arbitrary choices. :grimacing:
+This is a list of 198 package names, including igraph0, dplyr.teradata, fable, feasts, fabletools and AzureGraph. Then, again with `pkgsearch`, we'll extract their metadata, before keeping only those that have a GitHub README. More arbitrary choices. :grimacing:
 
 
 ```r
@@ -71,90 +73,77 @@ meta <- meta %>%
   dplyr::mutate(path = urltools::path(URL)) %>%
   dplyr::mutate(path = stringr::str_remove(path, "\\/$")) %>%
   tidyr::separate(path, sep = "\\/", into = c("owner", "repo"))
-```
-
-```
-## Warning: Expected 2 pieces. Additional pieces discarded in 6 rows [2, 6,
-## 33, 44, 45, 74].
-```
-
-```r
 str(meta)
 ```
 
 ```
-## Classes 'tbl_df', 'tbl' and 'data.frame':	123 obs. of  7 variables:
-##  $ Package: chr  "ggThemeAssist" "waffle" "cartography" "shinydashboardPlus" ...
-##  $ Title  : chr  "Add-in to Customize 'ggplot2' Themes" "Create Waffle Chart Visualizations in R" "Thematic Cartography" "Add More 'AdminLTE2' Components to 'shinydashboard'" ...
-##  $ Date   : chr  NA "2017-01-07" NA NA ...
-##  $ Version: chr  "0.1.5" "0.7.0" "2.2.1" "0.7.0" ...
-##  $ URL    : chr  "https://github.com/calligross/ggthemeassist" "https://github.com/hrbrmstr/waffle/tree/cran" "https://github.com/riatelab/cartography/" "https://github.com/RinteRface/shinydashboardPlus" ...
-##  $ owner  : chr  "calligross" "hrbrmstr" "riatelab" "RinteRface" ...
-##  $ repo   : chr  "ggthemeassist" "waffle" "cartography" "shinydashboardPlus" ...
+## Classes 'tbl_df', 'tbl' and 'data.frame':	121 obs. of  7 variables:
+##  $ Package: chr  "dplyr.teradata" "AzureGraph" "fastmap" "mltools" ...
+##  $ Title  : chr  "A 'Teradata' Backend for 'dplyr'" "Simple Interface to 'Microsoft Graph'" "Fast Implementation of a Key-Value Store" "Machine Learning Tools" ...
+##  $ Date   : chr  NA NA NA NA ...
+##  $ Version: chr  "0.3.2" "1.1.0" "1.0.1" "0.3.5" ...
+##  $ URL    : chr  "https://github.com/hoxo-m/dplyr.teradata" "https://github.com/Azure/AzureGraph\nhttps://github.com/Azure/AzureR" "https://github.com/r-lib/fastmap" "https://github.com/ben519/mltools" ...
+##  $ owner  : chr  "hoxo-m" "Azure" "r-lib" "ben519" ...
+##  $ repo   : chr  "dplyr.teradata" "AzureGraph\nhttps:" "fastmap" "mltools" ...
 ```
 
-At this point we have 123 packages with 123 unique GitHub repo URLs, pfiew.
+At this point we have 121 packages with 121 unique GitHub repo URLs, pfiew.
 
-We'll then extract their preferred README from GitHub API. Some of them won't even have one so we'll lose them from the sample. A first metric we'll extract is the number of lines of the README. 
+We'll then extract their [preferred README from GitHub V3 API](https://developer.github.com/v3/repos/contents/#get-the-readme). Some of them won't even have one so we'll lose them from the sample. 
 
 
 ```r
-# memoising because we'll run the same query twice
 gh <- memoise::memoise(ratelimitr::limit_rate(gh::gh,
                                               ratelimitr::rate(1, 1)))
-
-get_readme_lines <- function(owner, repo){
+get_readme <- function(owner, repo){
   readme <- try(gh("GET /repos/:owner/:repo/readme",
                    owner = owner, repo = repo),
                 silent = TRUE)
   if(inherits(readme, "try-error")){
     return(NULL)
   }
-  readme$download_url %>%
-    readLines() %>%
-    purrr::discard(. == "") %>%
-    length() -> nolines
+  
+  lines <- suppressWarnings(
+    readLines(readme$download_url
+              )
+    )
+  
+  if (length(lines) == 1){
+  sub(readme$path, lines,
+      readme$download_url) -> link
+  } else {
+    link <- readme$download_url
+  }
   
   tibble::tibble(owner = owner,
                  repo = repo,
-                 lines_no = nolines)
+                 readme = list(suppressWarnings(readLines(link))))
 }
 
-readmes_lengths <- purrr::map2_df(.x = meta$owner, .y = meta$repo,
-                       .f = get_readme_lines)
+readmes <- purrr::map2_df(.x = meta$owner, .y = meta$repo,
+                          .f = get_readme)
 ```
 
-```
-## Warning in readLines(.): incomplete final line found on 'https://
-## raw.githubusercontent.com/r-hub/rversions/master/README.md'
+### Assessing README size
+
+#### Number of lines
+
+A first metric we'll extract is the number of lines of the README. 
+
+
+```r
+count_lines <- function(readme_lines){
+  readme_lines %>%
+    purrr::discard(. == "") %>% # emtpy lines
+    purrr::discard(stringr::str_detect(., "\\<\\!\\-\\-")) %>% # html comments
+    length()
+}
+
+readmes_lengths <- dplyr::group_by(readmes, owner, repo) %>%
+  dplyr::summarise(lines_no = count_lines(readme[[1]]))
 ```
 
-```
-## Warning in readLines(.): incomplete final line found on 'https://
-## raw.githubusercontent.com/wch/extrafont/master/README.md'
-```
-
-```
-## Warning in readLines(.): incomplete final line found on 'https://
-## raw.githubusercontent.com/r-lib/pkgconfig/master/README.markdown'
-```
-
-```
-## Warning in readLines(.): incomplete final line found on 'https://
-## raw.githubusercontent.com/r-lib/crayon/master/README.markdown'
-```
-
-```
-## Warning in readLines(.): incomplete final line found on 'https://
-## raw.githubusercontent.com/gaborcsardi/prettyunits/master/README.md'
-```
-
-```
-## Warning in readLines(.): incomplete final line found on 'https://
-## raw.githubusercontent.com/MangoTheCat/rematch/master/README.md'
-```
-
-The `readmes_lengths` data.frame has 117 lines so we lost a few more packages. How long are usual READMEs?
+The `readmes_lengths` data.frame has 114 lines so we lost a few more packages. How long are usual READMEs?
 
 
 ```r
@@ -162,7 +151,7 @@ median(readmes_lengths$lines_no)
 ```
 
 ```
-## [1] 90
+## [1] 84
 ```
 
 ```r
@@ -170,7 +159,7 @@ max(readmes_lengths$lines_no)
 ```
 
 ```
-## [1] 811
+## [1] 715
 ```
 
 ```r
@@ -178,10 +167,16 @@ min(readmes_lengths$lines_no)
 ```
 
 ```
-## [1] 1
+## [1] 4
 ```
 
-###
+Now, this metric might indicate how much a potential user needs to take in and how long they need to scroll down but we shall now look into other indicators of size: the number of lines of R code, the number of words outside of code and output.
+
+#### Other size indicators
+
+To access the numbers we're after, we don't need too much regular expressions of m
+
+### Glimpsing at README structure
 
 ## How to write a good README
 

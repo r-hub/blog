@@ -6,6 +6,12 @@ tags:
   - readme
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      cache = FALSE,
+                      warning = FALSE)
+```
+
 A recent topic of the Write The Docs' great newsletter was [READMEs](https://www.writethedocs.org/blog/newsletter-july-2019/#readmes-on-readmes-and-other-readme-related-resources). It read _"As they’re often the first thing people see about a code project, READMEs are pretty important to get right."_. In this post, we'll share some insights around the READMEs of R packages: why they're crucial; what they usually contain; how you can best write yours. Let's dive in!  :swimmer:
 
 ## Why is a good README key
@@ -18,9 +24,9 @@ blogdown::shortcode("tweet", "969442252610191361")
 
 A good README is crucial to recruit users that'll actually gain something from using your package. As written by [noffle](https://github.com/noffle/) in [the Art of README](https://github.com/noffle/art-of-readme), 
 
-> _your job, when you're doing it with optimal altruism in mind, isn't to "sell" people on your work. It's to let them evaluate what your creation does as objectively as possible, and decide whether it meets their needs or not -- not to, say, maximize your downloads or userbase. _
+> "your job, when you're doing it with optimal altruism in mind, isn't to "sell" people on your work. It's to let them evaluate what your creation does as objectively as possible, and decide whether it meets their needs or not -- not to, say, maximize your downloads or userbase."
 
-Furthermore, you can recycle the content of your README in other venues (more on how to do that -- without copy-pasting -- later) like that vignette mentioned in the poll. If you summarize your package in a good one-liner, 
+Furthermore, you can recycle the content of your README in other venues (more on how to do that -- without copy-pasting -- later) like that vignette mentioned in the poll. If you summarize your package in a good one-liner for the top of the README, 
 
 ```
 > Connect to R-hub, from R
@@ -38,7 +44,7 @@ Title: Connect to 'R-hub'
 
 * in your introduction at a social event (ok, maybe not).
 
-Other parts of a pitch are good talk fodder, blog post introductions, etc. Therefore, the time you spend pitching your package in the best possible way is a gift that'll keep on giving, to your users and you.  
+Other parts of a pitch are good talk fodder, blog post introductions, vignette sections, etc. Therefore, the time you spend pitching your package in the best possible way is a gift that'll keep on giving, to your users and you.  
 
 ## What is a good README
 
@@ -76,32 +82,58 @@ str(meta)
 
 At this point we have `r nrow(meta)` packages with `r length(unique(meta$URL))` unique GitHub repo URLs, pfiew.
 
-We'll then extract their preferred README from GitHub API. Some of them won't even have one so we'll lose them from the sample. A first metric we'll extract is the number of lines of the README. 
+We'll then extract their [preferred README from GitHub V3 API](https://developer.github.com/v3/repos/contents/#get-the-readme). Some of them won't even have one so we'll lose them from the sample. 
 
-```{r}
-# memoising because we'll run the same query twice
+```{r, get-readmes}
+
 gh <- memoise::memoise(ratelimitr::limit_rate(gh::gh,
                                               ratelimitr::rate(1, 1)))
-
-get_readme_lines <- function(owner, repo){
+get_readme <- function(owner, repo){
   readme <- try(gh("GET /repos/:owner/:repo/readme",
                    owner = owner, repo = repo),
                 silent = TRUE)
   if(inherits(readme, "try-error")){
     return(NULL)
   }
-  readme$download_url %>%
-    suppressWarnings(readLines()) %>%
-    purrr::discard(. == "") %>%
-    length() -> nolines
+  
+  lines <- suppressWarnings(
+    readLines(readme$download_url
+              )
+    )
+  
+  if (length(lines) == 1){
+  sub(readme$path, lines,
+      readme$download_url) -> link
+  } else {
+    link <- readme$download_url
+  }
   
   tibble::tibble(owner = owner,
                  repo = repo,
-                 lines_no = nolines)
+                 readme = list(suppressWarnings(readLines(link))))
 }
 
-readmes_lengths <- purrr::map2_df(.x = meta$owner, .y = meta$repo,
-                       .f = get_readme_lines)
+readmes <- purrr::map2_df(.x = meta$owner, .y = meta$repo,
+                          .f = get_readme)
+```
+
+### Assessing README size
+
+#### Number of lines
+
+A first metric we'll extract is the number of lines of the README. 
+
+```{r}
+count_lines <- function(readme_lines){
+  readme_lines %>%
+    purrr::discard(. == "") %>% # emtpy lines
+    purrr::discard(stringr::str_detect(., "\\<\\!\\-\\-")) %>% # html comments
+    length()
+}
+
+readmes_lengths <- dplyr::group_by(readmes, owner, repo) %>%
+  dplyr::summarise(lines_no = count_lines(readme[[1]]))
+
 ```
 
 The `readmes_lengths` data.frame has `r nrow(readmes_lengths)` lines so we lost a few more packages. How long are usual READMEs?
@@ -112,7 +144,13 @@ max(readmes_lengths$lines_no)
 min(readmes_lengths$lines_no)
 ```
 
-###
+Now, this metric might indicate how much a potential user needs to take in and how long they need to scroll down but we shall now look into other indicators of size: the number of lines of R code, the number of words outside of code and output.
+
+#### Other size indicators
+
+To access the numbers we're after without using too many regular expressions, [we shall convert the Markdown content to XML via `commonmark` and use Xpath to parse it](https://ropensci.org/technotes/2018/09/05/commonmark/).
+
+### Glimpsing at README structure
 
 ## How to write a good README
 
