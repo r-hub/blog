@@ -409,13 +409,590 @@ print_readme_structure(structure$structure[7][[1]])
 ##    └─ Code of Conduct
 ```
 
+What are the most common headers?
+
+
+```r
+structure %>%
+  tidyr::unnest(structure) %>%
+  dplyr::count(text, sort = TRUE) %>%
+  knitr::kable()
+```
+
+
+
+|text                                                                                                                                                                       |  n|
+|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--:|
+|Installation                                                                                                                                                               | 87|
+|Usage                                                                                                                                                                      | 47|
+|Overview                                                                                                                                                                   | 26|
+|License                                                                                                                                                                    | 16|
+|Code of Conduct                                                                                                                                                            | 15|
+|Cheatsheet                                                                                                                                                                 | 10|
+|Features                                                                                                                                                                   |  8|
+|Example                                                                                                                                                                    |  7|
+|Development version                                                                                                                                                        |  6|
+|Examples                                                                                                                                                                   |  5|
+|Getting help                                                                                                                                                               |  5|
+|Getting started                                                                                                                                                            |  4|
+|Install                                                                                                                                                                    |  4|
+|Related work                                                                                                                                                               |  4|
+|Status                                                                                                                                                                     |  4|
+|Code of conduct                                                                                                                                                            |  3|
+|Contributing                                                                                                                                                               |  3|
+|Getting Started                                                                                                                                                            |  3|
+|Introduction                                                                                                                                                               |  3|
+|References                                                                                                                                                                 |  3|
+|Acknowledgements                                                                                                                                                           |  2|
+|Articles                                                                                                                                                                   |  2|
+|Basic usage                                                                                                                                                                |  2|
+|Citation                                                                                                                                                                   |  2|
+|Colors                                                                                                                                                                     |  2|
+|Community Guidelines                                                                                                                                                       |  2|
+|Contact                                                                                                                                                                    |  2|
+|Contributions                                                                                                                                                              |  2|
+|CRAN                                                                                                                                                                       |  2|
+|Demo                                                                                                                                                                       |  2|
+|Documentation                                                                                                                                                              |  2|
+|Environment variables                                                                                                                                                      |  2|
+|Errors                                                                                                                                                                     |  2|
+|Hello World                                                                                                                                                                |  2|
+|Inspirations                                                                                                                                                               |  2|
+|Installing                                                                                                                                                                 |  2|
+|Stable version                                                                                                                                                             |  2|
+|Standard output and error                                                                                                                                                  |  2|
+|Support                                                                                                                                                                    |  2|
+|Thanks                                                                                                                                                                     |  2|
+|Variable Selection                                                                                                                                                         |  2|
+|Vignette                                                                                                                                                                   |  2|
+|\\ at the end of a line continues it without a new line.                                                                                                                   |  1|
+|🏎💨vroom <a href="http://r-lib.github.io/vroom"><img src="https://github.com/r-lib/vroom/raw/gh-pages/taylor.gif" align="right" width = "30%"/></a>                         |  1|
+|1 Overview                                                                                                                                                                 |  1|
+|2 Installation                                                                                                                                                             |  1|
+|256 colors                                                                                                                                                                 |  1|
+|3 Details                                                                                                                                                                  |  1|
+|3.1 Usage                                                                                                                                                                  |  1|
+|3.2 Translatable functions                                                                                                                                                 |  1|
+|3.2.1 lubridate friendly functions                                                                                                                                         |  1|
+|3.2.2 Treat Boolean                                                                                                                                                        |  1|
+|3.2.3 to_timestamp()                                                                                                                                                       |  1|
+|3.2.4 cut()                                                                                                                                                                |  1|
+|3.3 Other useful functions                                                                                                                                                 |  1|
+|3.3.1 blob_to_string()                                                                                                                                                     |  1|
+|4 Related work                                                                                                                                                             |  1|
+|A literal brace is inserted by using doubled braces.                                                                                                                       |  1|
+|A Teradata Backend for dplyr                                                                                                                                               |  1|
+|A very customized box                                                                                                                                                      |  1|
+|About                                                                                                                                                                      |  1|
+|Acknowledgment                                                                                                                                                             |  1|
+|Acknowledgments                                                                                                                                                            |  1|
+|Add documents                                                                                                                                                              |  1|
+|Adding list items iteratively                                                                                                                                              |  1|
+|Adding text to an item iteratively                                                                                                                                         |  1|
+|Additional convenience functions                                                                                                                                           |  1|
+|Additional documentation                                                                                                                                                   |  1|
+|Additional repositories                                                                                                                                                    |  1|
+|Advanced features                                                                                                                                                          |  1|
+|Advanced: Function Queries                                                                                                                                                 |  1|
+|Alerts                                                                                                                                                                     |  1|
+|All R versions and release dates                                                                                                                                           |  1|
+|All valid R code works in expressions, including braces and escaping.                                                                                                      |  1|
+|Alternative delimiters can be specified with .open and .close.                                                                                                             |  1|
+|Alternative syntaxes                                                                                                                                                       |  1|
+|Alternatives                                                                                                                                                               |  1|
+|Alternatives Packages                                                                                                                                                      |  1|
+|An additional newline can be used if you want a leading or trailing newline.                                                                                               |  1|
+|An example                                                                                                                                                                 |  1|
+|ANSI colors                                                                                                                                                                |  1|
+|Apache Arrow                                                                                                                                                               |  1|
+|API                                                                                                                                                                        |  1|
+|as.yaml                                                                                                                                                                    |  1|
+|askpass                                                                                                                                                                    |  1|
+|Authentication and authorization                                                                                                                                           |  1|
+|Authors                                                                                                                                                                    |  1|
+|Authors and Contributors                                                                                                                                                   |  1|
+|Auto-closing containers                                                                                                                                                    |  1|
+|Autoplot methods for easy visualization                                                                                                                                    |  1|
+|AWS S3 Client Package                                                                                                                                                      |  1|
+|Backbone Layout                                                                                                                                                            |  1|
+|Backends                                                                                                                                                                   |  1|
+|Background colors                                                                                                                                                          |  1|
+|Background R processes                                                                                                                                                     |  1|
+|Background tasks                                                                                                                                                           |  1|
+|backports                                                                                                                                                                  |  1|
+|Backports for R versions prior to 3.2.0                                                                                                                                    |  1|
+|Backports for R versions prior to 3.3.0                                                                                                                                    |  1|
+|Backports for R versions prior to 3.4.0                                                                                                                                    |  1|
+|Backports for R versions prior to 3.5.0                                                                                                                                    |  1|
+|Backports for R versions prior to 3.6.0                                                                                                                                    |  1|
+|Base R                                                                                                                                                                     |  1|
+|Basic example                                                                                                                                                              |  1|
+|Benchmarks                                                                                                                                                                 |  1|
+|bigrquery                                                                                                                                                                  |  1|
+|Billing project                                                                                                                                                            |  1|
+|Bioconductor packages                                                                                                                                                      |  1|
+|Blog Posts                                                                                                                                                                 |  1|
+|Boxes                                                                                                                                                                      |  1|
+|BradleyTerry2                                                                                                                                                              |  1|
+|Breaks and labels                                                                                                                                                          |  1|
+|Breusch Pagan Test                                                                                                                                                         |  1|
+|broom <img src="man/figures/logo.png" align="right" width="100" />                                                                                                         |  1|
+|Buckets                                                                                                                                                                    |  1|
+|Bug/feature request                                                                                                                                                        |  1|
+|Building a command line interface                                                                                                                                          |  1|
+|Building and installing:                                                                                                                                                   |  1|
+|Bytes                                                                                                                                                                      |  1|
+|C++ API                                                                                                                                                                    |  1|
+|Calculating metrics on resamples                                                                                                                                           |  1|
+|Callbacks for I/O                                                                                                                                                          |  1|
+|Called from R                                                                                                                                                              |  1|
+|Called from SSH / Git                                                                                                                                                      |  1|
+|callr                                                                                                                                                                      |  1|
+|cartography <img src="man/figures/logo.png" align="right" alt="" width="120" />                                                                                            |  1|
+|Change border style                                                                                                                                                        |  1|
+|Cheat Sheet                                                                                                                                                                |  1|
+|Cheatsheets                                                                                                                                                                |  1|
+|Check and release:                                                                                                                                                         |  1|
+|Class Example                                                                                                                                                              |  1|
+|cli                                                                                                                                                                        |  1|
+|CLI messages                                                                                                                                                               |  1|
+|clipr                                                                                                                                                                      |  1|
+|Clustering with the Leiden Algorithm in R                                                                                                                                  |  1|
+|Code Examples                                                                                                                                                              |  1|
+|Collections                                                                                                                                                                |  1|
+|Collinearity Diagnostics                                                                                                                                                   |  1|
+|Color specification                                                                                                                                                        |  1|
+|Colour manipulation                                                                                                                                                        |  1|
+|Colour space exploration                                                                                                                                                   |  1|
+|column.major                                                                                                                                                               |  1|
+|Command-line Usage                                                                                                                                                         |  1|
+|Command-line Usage with CSV input                                                                                                                                          |  1|
+|Community                                                                                                                                                                  |  1|
+|Compared to base R                                                                                                                                                         |  1|
+|Compared to the XML package                                                                                                                                                |  1|
+|Comparison vs base equivalents                                                                                                                                             |  1|
+|Computing partitions on data matrices or dimension reductions                                                                                                              |  1|
+|Conscious uncoupling                                                                                                                                                       |  1|
+|Console capabilities                                                                                                                                                       |  1|
+|Contents                                                                                                                                                                   |  1|
+|Control Sequences Require Special Handling                                                                                                                                 |  1|
+|Copyright and License                                                                                                                                                      |  1|
+|Cores                                                                                                                                                                      |  1|
+|CRAN version pbv 0.3-19 (2019-11-04)                                                                                                                                       |  1|
+|Create and integrate maps in your R workflow!                                                                                                                              |  1|
+|Creating a plyr compatible progress bar                                                                                                                                    |  1|
+|Currently supported remote types                                                                                                                                           |  1|
+|Custom tags                                                                                                                                                                |  1|
+|cyclocomp                                                                                                                                                                  |  1|
+|data.table <a href="http://r-datatable.com"><img src="https://raw.githubusercontent.com/Rdatatable/data.table/master/.graphics/logo.png" align="right" height="140" /></a> |  1|
+|data.table and fread()                                                                                                                                                     |  1|
+|DBI                                                                                                                                                                        |  1|
+|Debugging builds                                                                                                                                                           |  1|
+|Demonstration                                                                                                                                                              |  1|
+|Dependancies                                                                                                                                                               |  1|
+|Dependencies                                                                                                                                                               |  1|
+|Dependencies on GitHub                                                                                                                                                     |  1|
+|Describing rectangles via cell_limits                                                                                                                                      |  1|
+|Description                                                                                                                                                                |  1|
+|Details                                                                                                                                                                    |  1|
+|Developing with clipr                                                                                                                                                      |  1|
+|Development                                                                                                                                                                |  1|
+|devtools <img src="man/figures/logo.svg" align="right" height = 150/>                                                                                                      |  1|
+|Differences from Python Bindings                                                                                                                                           |  1|
+|DO NOT USE NAMED PARAMETERS                                                                                                                                                |  1|
+|Docker                                                                                                                                                                     |  1|
+|Download methods                                                                                                                                                           |  1|
+|dplyr                                                                                                                                                                      |  1|
+|dplyr <a href='https://dplyr.tidyverse.org'><img src='man/figures/logo.png' align="right" height="139" /></a>                                                              |  1|
+|dynamic layouts                                                                                                                                                            |  1|
+|ellipsis                                                                                                                                                                   |  1|
+|Encodings                                                                                                                                                                  |  1|
+|End of output                                                                                                                                                              |  1|
+|Error handling                                                                                                                                                             |  1|
+|Evaluate                                                                                                                                                                   |  1|
+|Evaluate model                                                                                                                                                             |  1|
+|Exit statuses                                                                                                                                                              |  1|
+|Extending                                                                                                                                                                  |  1|
+|ez                                                                                                                                                                         |  1|
+|Facet                                                                                                                                                                      |  1|
+|fansi - ANSI Control Sequence Aware String Functions                                                                                                                       |  1|
+|fastmap                                                                                                                                                                    |  1|
+|Feedback                                                                                                                                                                   |  1|
+|Feedback wanted!                                                                                                                                                           |  1|
+|Filtering and sorting processes                                                                                                                                            |  1|
+|Find process by name                                                                                                                                                       |  1|
+|Finished and zombie processes                                                                                                                                              |  1|
+|Floating                                                                                                                                                                   |  1|
+|forcats <img src='man/figures/logo.png' align="right" height="139" />                                                                                                      |  1|
+|Formatting Strings with Control Sequences                                                                                                                                  |  1|
+|Frequent development tasks:                                                                                                                                                |  1|
+|fs                                                                                                                                                                         |  1|
+|Function example                                                                                                                                                           |  1|
+|Function mapping                                                                                                                                                           |  1|
+|Functions                                                                                                                                                                  |  1|
+|Further Reading and Examples                                                                                                                                               |  1|
+|Fuzz Testing                                                                                                                                                               |  1|
+|gargle                                                                                                                                                                     |  1|
+|General styles                                                                                                                                                             |  1|
+|Generic containers                                                                                                                                                         |  1|
+|Geoms!                                                                                                                                                                     |  1|
+|Get EC2 Instance Metadata                                                                                                                                                  |  1|
+|Getting Help                                                                                                                                                               |  1|
+|Getting involved                                                                                                                                                           |  1|
+|ggplot2 <img src="man/figures/logo.png" align="right" width="120" />                                                                                                       |  1|
+|ggThemeAssist                                                                                                                                                              |  1|
+|Git (via devtools)                                                                                                                                                         |  1|
+|GitHub version pbv 0.4-2 (2019-11-05)                                                                                                                                      |  1|
+|glue <a href='https:/glue.tidyverse.org'><img src='man/figures/logo.png' align="right" height="139" /></a>                                                                 |  1|
+|glue_data() is useful with magrittr pipes.                                                                                                                                 |  1|
+|glue_sql() makes constructing SQL statements safe and easy                                                                                                                 |  1|
+|graphlayouts <img src="man/figures/logo.png" align="right"/>                                                                                                               |  1|
+|gtable <img src="man/figures/logo.png" align="right"/>                                                                                                                     |  1|
+|handlers                                                                                                                                                                   |  1|
+|Handlers                                                                                                                                                                   |  1|
+|haven <a href='https:/haven.tidyverse.org'><img src='man/figures/logo.png' align="right" height="139" /></a>                                                               |  1|
+|Headings                                                                                                                                                                   |  1|
+|Help                                                                                                                                                                       |  1|
+|Highlight                                                                                                                                                                  |  1|
+|highr                                                                                                                                                                      |  1|
+|hms <a href='https:/hms.tidyverse.org'><img src='man/figures/logo.png' align="right" height="139" /></a>                                                                   |  1|
+|hnswlib                                                                                                                                                                    |  1|
+|How to Contribute                                                                                                                                                          |  1|
+|HTML Translation                                                                                                                                                           |  1|
+|HTML Widgets for R                                                                                                                                                         |  1|
+|htmltools                                                                                                                                                                  |  1|
+|httpuv: HTTP and WebSocket server library for R                                                                                                                            |  1|
+|httr                                                                                                                                                                       |  1|
+|igraph                                                                                                                                                                     |  1|
+|Implementing pillar_shaft.your_class_name()                                                                                                                                |  1|
+|Implicit tag discovery                                                                                                                                                     |  1|
+|Important details                                                                                                                                                          |  1|
+|In packages                                                                                                                                                                |  1|
+|Included text datasets                                                                                                                                                     |  1|
+|indent                                                                                                                                                                     |  1|
+|indent.mapping.sequence                                                                                                                                                    |  1|
+|Inline text formatting                                                                                                                                                     |  1|
+|Install from CRAN                                                                                                                                                          |  1|
+|Install from Github                                                                                                                                                        |  1|
+|Installing, Loading, Unloading, Updating, & Deleting Packages with pacman                                                                                                  |  1|
+|Interacting with models                                                                                                                                                    |  1|
+|Interactively                                                                                                                                                              |  1|
+|Interpolation                                                                                                                                                              |  1|
+|Keeps factor by default levels now                                                                                                                                         |  1|
+|Key encoding                                                                                                                                                               |  1|
+|Key functions                                                                                                                                                              |  1|
+|Key ordering                                                                                                                                                               |  1|
+|Kill process tree                                                                                                                                                          |  1|
+|Killing a process                                                                                                                                                          |  1|
+|Koji Makiyama (@hoxo-m)                                                                                                                                                    |  1|
+|Label alignment                                                                                                                                                            |  1|
+|Labels                                                                                                                                                                     |  1|
+|Language Bindings                                                                                                                                                          |  1|
+|Large graphs                                                                                                                                                               |  1|
+|later                                                                                                                                                                      |  1|
+|Latest stable version                                                                                                                                                      |  1|
+|Layout manipulation                                                                                                                                                        |  1|
+|Leading whitespace and blank lines from the first and last lines are automatically trimmed.                                                                                |  1|
+|Learning ggplot2                                                                                                                                                           |  1|
+|Learning more                                                                                                                                                              |  1|
+|Leiden Algorithm                                                                                                                                                           |  1|
+|leiden version 0.3.1                                                                                                                                                       |  1|
+|Library Usage: Reading Files                                                                                                                                               |  1|
+|Library Usage: Writing Files                                                                                                                                               |  1|
+|lifecycle                                                                                                                                                                  |  1|
+|Lifecycle                                                                                                                                                                  |  1|
+|Listing all processes                                                                                                                                                      |  1|
+|Lists                                                                                                                                                                      |  1|
+|Long strings are broken by line and concatenated together.                                                                                                                 |  1|
+|Look how pretty they are!                                                                                                                                                  |  1|
+|Low-level API                                                                                                                                                              |  1|
+|lubridate <img src="man/figures/logo.png" align="right" />                                                                                                                 |  1|
+|Mailing list                                                                                                                                                               |  1|
+|Maintainer(s)                                                                                                                                                              |  1|
+|Managing external processes                                                                                                                                                |  1|
+|Manual                                                                                                                                                                     |  1|
+|Map handlers                                                                                                                                                               |  1|
+|mapedit                                                                                                                                                                    |  1|
+|Maps                                                                                                                                                                       |  1|
+|Markdown rendering for R                                                                                                                                                   |  1|
+|Memory leak examples                                                                                                                                                       |  1|
+|Meta                                                                                                                                                                       |  1|
+|mime                                                                                                                                                                       |  1|
+|mltools                                                                                                                                                                    |  1|
+|Model quality metrics                                                                                                                                                      |  1|
+|modelr <img src="man/figures/logo.png" align="right" />                                                                                                                    |  1|
+|More algorithms                                                                                                                                                            |  1|
+|More data structure support                                                                                                                                                |  1|
+|More like this                                                                                                                                                             |  1|
+|More maps                                                                                                                                                                  |  1|
+|More morphs                                                                                                                                                                |  1|
+|More replication                                                                                                                                                           |  1|
+|More resources                                                                                                                                                             |  1|
+|More verbs                                                                                                                                                                 |  1|
+|Motivation                                                                                                                                                                 |  1|
+|Motivations                                                                                                                                                                |  1|
+|Multiclass metrics                                                                                                                                                         |  1|
+|Multiple background R processes and poll()                                                                                                                                 |  1|
+|Multiple lines of text                                                                                                                                                     |  1|
+|munsell                                                                                                                                                                    |  1|
+|Named arguments are used to assign temporary variables.                                                                                                                    |  1|
+|Nested lists                                                                                                                                                               |  1|
+|News                                                                                                                                                                       |  1|
+|Nice uses of clipr                                                                                                                                                         |  1|
+|Non-semantic CLI                                                                                                                                                           |  1|
+|Normalize data                                                                                                                                                             |  1|
+|Notable arguments                                                                                                                                                          |  1|
+|Note to developers                                                                                                                                                         |  1|
+|Note:                                                                                                                                                                      |  1|
+|Notes                                                                                                                                                                      |  1|
+|Objects                                                                                                                                                                    |  1|
+|OK onto the API                                                                                                                                                            |  1|
+|olsrr                                                                                                                                                                      |  1|
+|Oniguruma Regular Expressions (for R)                                                                                                                                      |  1|
+|openssl                                                                                                                                                                    |  1|
+|openxlsx                                                                                                                                                                   |  1|
+|Optionally combine strings with +                                                                                                                                          |  1|
+|Options                                                                                                                                                                    |  1|
+|or Github (development version)                                                                                                                                            |  1|
+|Or within dplyr pipelines                                                                                                                                                  |  1|
+|Other implementations                                                                                                                                                      |  1|
+|Other relevant packages                                                                                                                                                    |  1|
+|Other Resources                                                                                                                                                            |  1|
+|Output Streams:                                                                                                                                                            |  1|
+|Package API and ways of using the package                                                                                                                                  |  1|
+|Package Code Metrics                                                                                                                                                       |  1|
+|Packages                                                                                                                                                                   |  1|
+|pacman                                                                                                                                                                     |  1|
+|Padding and margin                                                                                                                                                         |  1|
+|Paragraphs                                                                                                                                                                 |  1|
+|Parsing                                                                                                                                                                    |  1|
+|Partitioning and sampling                                                                                                                                                  |  1|
+|Passing arguments                                                                                                                                                          |  1|
+|pbv                                                                                                                                                                        |  1|
+|Persistent R sessions                                                                                                                                                      |  1|
+|Pid reuse                                                                                                                                                                  |  1|
+|pillar                                                                                                                                                                     |  1|
+|pkgA                                                                                                                                                                       |  1|
+|pkgB                                                                                                                                                                       |  1|
+|pkgbuild                                                                                                                                                                   |  1|
+|plogr Travis-CI Build Status AppVeyor Build Status                                                                                                                         |  1|
+|plyr                                                                                                                                                                       |  1|
+|Policies                                                                                                                                                                   |  1|
+|Polling multiple processes                                                                                                                                                 |  1|
+|Polling the standard output and error                                                                                                                                      |  1|
+|Powering In-Memory Analytics                                                                                                                                               |  1|
+|Pre-release version                                                                                                                                                        |  1|
+|Preparing for ML model                                                                                                                                                     |  1|
+|prettyunits                                                                                                                                                                |  1|
+|Print emoji                                                                                                                                                                |  1|
+|Private configuration for R packages                                                                                                                                       |  1|
+|Probabilities for Bivariate Normal Distribution                                                                                                                            |  1|
+|Process API                                                                                                                                                                |  1|
+|Process manipulation                                                                                                                                                       |  1|
+|processx                                                                                                                                                                   |  1|
+|Progress bars                                                                                                                                                              |  1|
+|promises                                                                                                                                                                   |  1|
+|ps                                                                                                                                                                         |  1|
+|purrr <img src="man/figures/logo.png" align="right" />                                                                                                                     |  1|
+|qcc                                                                                                                                                                        |  1|
+|Quasiquotation                                                                                                                                                             |  1|
+|Query functions                                                                                                                                                            |  1|
+|Questions about the data:                                                                                                                                                  |  1|
+|R for MacOS                                                                                                                                                                |  1|
+|R YAML package                                                                                                                                                             |  1|
+|R-release and R-oldrel                                                                                                                                                     |  1|
+|R.oo: R Object-Oriented Programming with or without References                                                                                                             |  1|
+|R6: Encapsulated object-oriented programming for R                                                                                                                         |  1|
+|Radial Centrality Layout                                                                                                                                                   |  1|
+|Radial Layout with Focal Node                                                                                                                                              |  1|
+|Rcpp: Seamless R and C++ Integration                                                                                                                                       |  1|
+|RcppHNSW                                                                                                                                                                   |  1|
+|read_yaml                                                                                                                                                                  |  1|
+|Reading multiple files                                                                                                                                                     |  1|
+|README                                                                                                                                                                     |  1|
+|readr <a href="https://readr.tidyverse.org"><img src="man/figures/logo.png" align="right" height = 150 /></a>                                                              |  1|
+|ReadStat: Read (and write) data sets from SAS, Stata, and SPSS                                                                                                             |  1|
+|readxl <img src='man/figures/logo.png' align="right" height="139" />                                                                                                       |  1|
+|Recipes                                                                                                                                                                    |  1|
+|Regression                                                                                                                                                                 |  1|
+|Related Packages and References                                                                                                                                            |  1|
+|rematch                                                                                                                                                                    |  1|
+|remotes                                                                                                                                                                    |  1|
+|Renaming some tokens                                                                                                                                                       |  1|
+|Replicating an old favourite                                                                                                                                               |  1|
+|reprex <img src="man/figures/logo.png" align="right" height="139" />                                                                                                       |  1|
+|reshape2                                                                                                                                                                   |  1|
+|RGUI / Windows                                                                                                                                                             |  1|
+|rlang <img src="man/figures/rlang.png" align="right" />                                                                                                                    |  1|
+|Rmarkdown                                                                                                                                                                  |  1|
+|RStudio (server, desktop)                                                                                                                                                  |  1|
+|RStudio Addin                                                                                                                                                              |  1|
+|RStudio caveats                                                                                                                                                            |  1|
+|rstudioapi <a href='https:/rstudio.github.io/rstudioapi'><img src='man/figures/logo.png' align="right" height="139" /></a>                                                 |  1|
+|Rules                                                                                                                                                                      |  1|
+|Running an external process                                                                                                                                                |  1|
+|Running R CMD commands                                                                                                                                                     |  1|
+|rversions <a href='https://r-hub.github.io/rversions'><img src='man/figures/logo.png' align="right" height="138.5" /></a>                                                  |  1|
+|rvest <img src='man/figures/logo.png' align="right" height="139" />                                                                                                        |  1|
+|Safe Functions                                                                                                                                                             |  1|
+|sass <a href="https://sass-lang.com"><img src="man/figures/icon.svg" align="right" height = 150 style="background-color: white; padding-left: 20px;"/></a>                 |  1|
+|Scalars                                                                                                                                                                    |  1|
+|scales <a href='https://scales.r-lib.org'><img src='man/figures/logo.png' align="right" height="139" /></a>                                                                |  1|
+|Screenshot on OSX                                                                                                                                                          |  1|
+|Search                                                                                                                                                                     |  1|
+|Search grouped data                                                                                                                                                        |  1|
+|Search the parse tree with xml2                                                                                                                                            |  1|
+|Searching in files                                                                                                                                                         |  1|
+|See Also                                                                                                                                                                   |  1|
+|Sequence handlers                                                                                                                                                          |  1|
+|Sequences                                                                                                                                                                  |  1|
+|Serialization                                                                                                                                                              |  1|
+|Setup                                                                                                                                                                      |  1|
+|Seurat version 2                                                                                                                                                           |  1|
+|Seurat version 3 (or higher)                                                                                                                                               |  1|
+|shinydashboardPlus <img src="https://rinterface.com/inst/images/shinydashboardPlus.svg" width="200px" align="right"/>                                                      |  1|
+|Showing output                                                                                                                                                             |  1|
+|Simple rule, double rule, bars                                                                                                                                             |  1|
+|Slightly more complex example                                                                                                                                              |  1|
+|Software status                                                                                                                                                            |  1|
+|Solr info                                                                                                                                                                  |  1|
+|Solr server management                                                                                                                                                     |  1|
+|solrium                                                                                                                                                                    |  1|
+|Some new bits up first                                                                                                                                                     |  1|
+|Source code                                                                                                                                                                |  1|
+|Special features                                                                                                                                                           |  1|
+|Spinner                                                                                                                                                                    |  1|
+|Spinners                                                                                                                                                                   |  1|
+|Splitting                                                                                                                                                                  |  1|
+|Stable release                                                                                                                                                             |  1|
+|Standalone mode                                                                                                                                                            |  1|
+|Starting processes                                                                                                                                                         |  1|
+|Stats                                                                                                                                                                      |  1|
+|Status Lifecycle: retired                                                                                                                                                  |  1|
+|Stay up-to-date                                                                                                                                                            |  1|
+|Stepwise AIC Backward Regression                                                                                                                                           |  1|
+|Stepwise Regression                                                                                                                                                        |  1|
+|Stress Majorization: Connected Network                                                                                                                                     |  1|
+|Stress Majorization: Unconnected Network                                                                                                                                   |  1|
+|stringr <a href='https:/stringr.tidyverse.org'><img src='man/figures/logo.png' align="right" height="139" /></a>                                                           |  1|
+|Styles                                                                                                                                                                     |  1|
+|Subprocesses                                                                                                                                                               |  1|
+|Substitutions                                                                                                                                                              |  1|
+|Supported platforms                                                                                                                                                        |  1|
+|survival                                                                                                                                                                   |  1|
+|svDialogs - Standard Dialog Boxes for R                                                                                                                                    |  1|
+|Synchronous, one-off R processes                                                                                                                                           |  1|
+|Synopsis                                                                                                                                                                   |  1|
+|sys                                                                                                                                                                        |  1|
+|System Defaults                                                                                                                                                            |  1|
+|systemfonts                                                                                                                                                                |  1|
+|Table of Contents                                                                                                                                                          |  1|
+|Tags, ids and classes                                                                                                                                                      |  1|
+|Talks                                                                                                                                                                      |  1|
+|Terminal                                                                                                                                                                   |  1|
+|Terminate children                                                                                                                                                         |  1|
+|Testing for equality                                                                                                                                                       |  1|
+|Testing your code for symbol leakage                                                                                                                                       |  1|
+|testthat <img src="man/figures/logo.png" align="right" />                                                                                                                  |  1|
+|Text                                                                                                                                                                       |  1|
+|Text colors                                                                                                                                                                |  1|
+|textdata <img src='man/figures/logo.png' align="right" height="139" />                                                                                                     |  1|
+|The %<-% Operator                                                                                                                                                          |  1|
+|The pattern dictionary                                                                                                                                                     |  1|
+|The RcppHNSW Package                                                                                                                                                       |  1|
+|The status bar                                                                                                                                                             |  1|
+|Theming                                                                                                                                                                    |  1|
+|Theming inline markup                                                                                                                                                      |  1|
+|tibble <img src="man/figures/logo.png" align="right" />                                                                                                                    |  1|
+|Tidy paths                                                                                                                                                                 |  1|
+|tidygraph <img src="man/figures/logo.png" align="right" width="140px"/>                                                                                                    |  1|
+|tidyr <a href='https:/tidyr.tidyverse.org'><img src='man/figures/logo.png' align="right" height="139" /></a>                                                               |  1|
+|tidyverse <a href='https:/tidyverse.tidyverse.org'><img src='man/figures/logo.png' align="right" height="138.5" /></a>                                                     |  1|
+|Time intervals                                                                                                                                                             |  1|
+|TinyTeX                                                                                                                                                                    |  1|
+|Trees                                                                                                                                                                      |  1|
+|Two class metric                                                                                                                                                           |  1|
+|Typical usage                                                                                                                                                              |  1|
+|Unicode characters                                                                                                                                                         |  1|
+|Usage from C++                                                                                                                                                             |  1|
+|Usage from R                                                                                                                                                               |  1|
+|Use a data frame                                                                                                                                                           |  1|
+|Use with iGraph                                                                                                                                                            |  1|
+|Use with Seurat                                                                                                                                                            |  1|
+|Useful helpers                                                                                                                                                             |  1|
+|Useful links                                                                                                                                                               |  1|
+|Using packages                                                                                                                                                             |  1|
+|Using specific data sources                                                                                                                                                |  1|
+|utf8                                                                                                                                                                       |  1|
+|Utilities for spreadsheet annoyances                                                                                                                                       |  1|
+|Utility functions                                                                                                                                                          |  1|
+|utils::getParseData()                                                                                                                                                      |  1|
+|Vague time intervals                                                                                                                                                       |  1|
+|Validate character data and convert to UTF-8                                                                                                                               |  1|
+|Variables can be passed directly into strings.                                                                                                                             |  1|
+|vctrs <img src="man/figures/logo.png" align="right" width=120 height=139 alt="" />                                                                                         |  1|
+|Verbatim(-ish) text                                                                                                                                                        |  1|
+|VERSION file                                                                                                                                                               |  1|
+|viridisLite                                                                                                                                                                |  1|
+|Visualisation                                                                                                                                                              |  1|
+|waffle                                                                                                                                                                     |  1|
+|Waffle Bar Charts with scales!                                                                                                                                             |  1|
+|Wait for a process to finish                                                                                                                                               |  1|
+|Wait for several processes to finish                                                                                                                                       |  1|
+|Waiting on a process                                                                                                                                                       |  1|
+|What if pkgA calls pkgB?                                                                                                                                                   |  1|
+|What is cellranger for?                                                                                                                                                    |  1|
+|What is YAML?                                                                                                                                                              |  1|
+|What's in the Arrow libraries?                                                                                                                                             |  1|
+|What's there to be excited about?                                                                                                                                          |  1|
+|What’s Inside the Tin                                                                                                                                                      |  1|
+|Why data.table?                                                                                                                                                            |  1|
+|Why R6?                                                                                                                                                                    |  1|
+|Windows specific notes                                                                                                                                                     |  1|
+|withr - run code ‘with’ modified state <img src="man/figures/logo.png" align="right" />                                                                                    |  1|
+|Workflow                                                                                                                                                                   |  1|
+|write_yaml                                                                                                                                                                 |  1|
+|xfun                                                                                                                                                                       |  1|
+|xml_parse_data()                                                                                                                                                           |  1|
+|xml2                                                                                                                                                                       |  1|
+|xmlparsedata                                                                                                                                                               |  1|
+|yaml.load                                                                                                                                                                  |  1|
+|yaml.load_file                                                                                                                                                             |  1|
+|yardstick <img src="man/figures/logo.png" align="right"/>                                                                                                                  |  1|
+|zeallot                                                                                                                                                                    |  1|
+|Zip/Tarball                                                                                                                                                                |  1|
+
+The headers are one thing, their _order_ is another one which we won't analyze in this post. In the Art of README, noffle [discusses "cognitive funneling"](https://github.com/noffle/art-of-readme#cognitive-funneling) which might help you choose an order.
+
 ## How to write a good README
+
+The previous sections aimed at giving an overview of reasons for writing a good README and content of READMEs in the wild, this one should give a few helpful tips.
 
 ### Tools for writing and re-using content
 
+#### R Markdown
+
+In [noffle's checklist for a README](https://github.com/noffle/art-of-readme#bonus-the-readme-checklist) one item is "Clear, runnable example of usage". You probably want to go a step further and have "Clear, runnable, executed example of usage" for which using R Markdown is quite handy. Using R Markdown to produce your package README is our number one recommendation.
+
+#### Re-use of Rmd portions in other Rmds
+
+Then, instead of writing everything in one .Rmd and then copying entire sections of it in a vignette, you can re-use Rmd chunks as explained in [this blog post by Garrick Aden-Buie presenting an idea by Brodie Gaslam](https://www.garrickadenbuie.com/blog/dry-vignette-and-readme/).
+
+#### usethis' README template
+
+To create the README, you can use either `usethis::use_readme_rmd()` (for an R Markdown README) or `usethis::use_readme_md()` (for a Markdown README). The created README file will include a few sections for you to fill in.
+
+#### Re-use of Rmd portions in manual pages
+
+Since `roxygen2`'s latest release, you can include md/Rmd in manual pages. What a handy thing for, say, your [package-level documentation](https://usethis.r-lib.org/reference/use_package_doc.html)! [Refer to `roxygen2`'s documentation](https://roxygen2.r-lib.org/articles/rd.html#including-external--rmd-md-files).
+
+#### Table of content
+
+If your README is a bit long you might need to add a table of contents at the top, [as done for `cli` README](https://github.com/r-lib/cli/blob/ad6410aee086f374e974eb7e794fa0d475815320/README.Rmd#L6). In a pkgdown website, the README does not get a table of content in the sidebar, which might be an argument for keeping it small as opposed to articles that do get a table of contents in the sidebar.
+
 ### How to assess a README
 
-You should write the package README with potential users in mind, who might not understand the use case for your package, who might not know the tool you're wrapping or porting, etc. It is not easy to change perspectives! Having actual external people review your README, or using the audience feedback after say a talk introducing the package, can help a lot here. 
+You should write the package README with potential users in mind, who might not understand the use case for your package, who might not know the tool you're wrapping or porting, etc. It is not easy to change perspectives, though! Having actual external people review your README, or using the audience feedback after say a talk introducing the package, can help a lot here. Ask someone on your corridor or your usual discussion venues (forums, Twitter, etc.).
 
 ## Conclusion
 
