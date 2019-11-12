@@ -134,7 +134,8 @@ count_lines <- function(readme_lines){
 }
 
 readmes <- dplyr::group_by(readmes, owner, repo) %>%
-  dplyr::summarise(lines_no = count_lines(readme[[1]]))
+  dplyr::mutate(lines_no = count_lines(readme[[1]])) %>%
+  dplyr::ungroup()
 
 ```
 
@@ -144,11 +145,65 @@ Now, this metric might indicate how much a potential user needs to take in and h
 
 #### Other size indicators
 
-To access the numbers we're after without using too many regular expressions, [we shall convert the Markdown content to XML via `commonmark` and use Xpath to parse it](https://ropensci.org/technotes/2018/09/05/commonmark/).
+To access the numbers we're after without using too many regular expressions, [we shall convert the Markdown content to XML via `commonmark` and use XPath to parse it](https://ropensci.org/technotes/2018/09/05/commonmark/).
+
+```{r xml}
+get_xml <- function(readme_lines){
+  readme_lines %>%
+      glue::glue_collapse(sep = "\n") %>%
+      commonmark::markdown_xml(normalize = TRUE,
+                               hardbreaks = TRUE) %>%
+      xml2::read_xml() %>%
+      xml2::xml_ns_strip() -> xml
+    
+    xml2::xml_replace(xml2::xml_find_all(xml, "//softbreak"),
+                      xml2::read_xml("<text>\n</text>"))
+    
+    xml
+}
+
+readmes <- dplyr::group_by(readmes, owner, repo) %>%
+  dplyr::mutate(xml_readme = get_xml(readme[[1]])) %>%
+  dplyr::ungroup()
+```
+
+This is how a single README XML looks like:
+
+```{r xmlex}
+readmes$xml_readme[[1]]
+```
+
+Let's count lines of code.
+
+
+```{r loc}
+get_code_lines <- function(xml) {
+  
+  if(is.null(xml)) {
+    return(NULL)
+  }
+  
+  xml2::xml_find_all(xml, "code_block") %>%
+    purrr::keep(xml2::xml_attr(., "info") == "r") %>%
+    xml2::xml_text() %>%
+    length
+}
+
+loc <- readmes %>%
+  dplyr::group_by(repo, owner) %>%
+  dplyr::summarise(loc = get_code_lines(xml_readme[[1]]))
+
+```
 
 ### Glimpsing at README structure
 
 ## How to write a good README
+
+### Tools for writing and re-using content
+
+### How to assess a README
+
+You should write the package README with potential users in mind, who might not understand the use case for your package, who might not know the tool you're wrapping or porting, etc. 
 
 ## Conclusion
 
