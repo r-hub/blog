@@ -8,7 +8,7 @@ tags:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
-                      cache = FALSE,
+                      cache = TRUE
                       warning = FALSE)
 ```
 
@@ -326,13 +326,41 @@ print_readme_structure(structure$structure[42][[1]])
 print_readme_structure(structure$structure[7][[1]])
 ```
 
+What are the most common headers?
+
+```{r}
+structure %>%
+  tidyr::unnest(structure) %>%
+  dplyr::count(text, sort = TRUE)
+```
+
+The headers are one thing, their _order_ is another one which we won't analyze in this post. In the Art of README, noffle [discusses "cognitive funneling"](https://github.com/noffle/art-of-readme#cognitive-funneling) which might help you choose an order.
+
 ## How to write a good README
+
+The previous sections aimed at giving an overview of reasons for writing a good README and content of READMEs in the wild, this one should give a few helpful tips.
 
 ### Tools for writing and re-using content
 
+#### R Markdown
+
+In [noffle's checklist for a README](https://github.com/noffle/art-of-readme#bonus-the-readme-checklist) one item is "Clear, runnable example of usage". You probably want to go a step further and have "Clear, runnable, executed example of usage" for which using R Markdown is quite handy. Using R Markdown to produce your package README is our number one recommendation.
+
+#### Re-use of Rmd portions in other Rmds
+
+Then, instead of writing everything in one .Rmd and then copying entire sections of it in a vignette, you can re-use Rmd chunks as explained in [this blog post by Garrick Aden-Buie presenting an idea by Brodie Gaslam](https://www.garrickadenbuie.com/blog/dry-vignette-and-readme/).
+
+#### Re-use of Rmd portions in manual pages
+
+Since `roxygen2`'s latest release, you can include md/Rmd in manual pages. What a handy thing for, say, your [package-level documentation](https://usethis.r-lib.org/reference/use_package_doc.html)! [Refer to `roxygen2`'s documentation](https://roxygen2.r-lib.org/articles/rd.html#including-external--rmd-md-files).
+
+#### Table of content
+
+If your README is a bit long you might need to add a table of contents at the top, [as done for `cli` README](https://github.com/r-lib/cli/blob/ad6410aee086f374e974eb7e794fa0d475815320/README.Rmd#L6). In a pkgdown website, the README does not get a table of content in the sidebar, which might be an argument for keeping it small as opposed to articles that do get a table of contents in the sidebar.
+
 ### How to assess a README
 
-You should write the package README with potential users in mind, who might not understand the use case for your package, who might not know the tool you're wrapping or porting, etc. It is not easy to change perspectives! Having actual external people review your README, or using the audience feedback after say a talk introducing the package, can help a lot here. 
+You should write the package README with potential users in mind, who might not understand the use case for your package, who might not know the tool you're wrapping or porting, etc. It is not easy to change perspectives, though! Having actual external people review your README, or using the audience feedback after say a talk introducing the package, can help a lot here. Ask someone on your corridor or your usual discussion venues (forums, Twitter, etc.).
 
 ## Conclusion
 
