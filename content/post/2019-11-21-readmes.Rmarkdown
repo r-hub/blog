@@ -159,7 +159,7 @@ get_xml <- function(readme_lines){
     xml2::xml_replace(xml2::xml_find_all(xml, "//softbreak"),
                       xml2::read_xml("<text>\n</text>"))
     
-    xml
+    list(xml)
 }
 
 readmes <- dplyr::group_by(readmes, owner, repo) %>%
@@ -194,6 +194,8 @@ loc <- readmes %>%
   dplyr::summarise(loc = get_code_lines(xml_readme[[1]]))
 
 ```
+
+The number of lines of code of READMEs range from `r min(loc$loc)` to `r max(loc$loc)` with a median of `r median(loc$loc)`. The README with the most lines of code is `r glue::glue("https://github.com/{loc$owner[loc$loc == max(loc$loc)]}/{loc$repo[loc$loc == max(loc$loc)]}")`.
 
 ### Glimpsing at README structure
 
