@@ -117,6 +117,8 @@ readmes <- purrr::map2_df(.x = meta$owner, .y = meta$repo,
                           .f = get_readme)
 ```
 
+The `readmes` data.frame has `r nrow(readmes)` lines so we lost a few more packages. 
+
 ### Assessing README size
 
 #### Number of lines
@@ -131,18 +133,12 @@ count_lines <- function(readme_lines){
     length()
 }
 
-readmes_lengths <- dplyr::group_by(readmes, owner, repo) %>%
+readmes <- dplyr::group_by(readmes, owner, repo) %>%
   dplyr::summarise(lines_no = count_lines(readme[[1]]))
 
 ```
 
-The `readmes_lengths` data.frame has `r nrow(readmes_lengths)` lines so we lost a few more packages. How long are usual READMEs?
-
-```{r nolines}
-median(readmes_lengths$lines_no)
-max(readmes_lengths$lines_no)
-min(readmes_lengths$lines_no)
-```
+How long are usual READMEs? Their number of lines range from `r min(readmes$lines_no)` to `r max(readmes$lines_no)` with a median of `r median(readmes$lines_no)`.
 
 Now, this metric might indicate how much a potential user needs to take in and how long they need to scroll down but we shall now look into other indicators of size: the number of lines of R code, the number of words outside of code and output.
 
