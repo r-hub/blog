@@ -197,7 +197,134 @@ loc <- readmes %>%
 
 The number of lines of code of READMEs range from `r min(loc$loc)` to `r max(loc$loc)` with a median of `r median(loc$loc)`. The README with the most lines of code is `r glue::glue("https://github.com/{loc$owner[loc$loc == max(loc$loc)]}/{loc$repo[loc$loc == max(loc$loc)]}")`.
 
+What about words in text?
+
+```{r words}
+get_wordcount <- function(xml, package) {
+  
+  if(is.null(xml)) {
+    return(NULL)
+  }
+  xml %>%
+    xml2::xml_find_all("*[not(self::code_block) and not(self::html_block)]") %>%
+    xml2::xml_text() %>%
+    glue::glue_collapse(sep = " ") %>%
+    tibble::tibble(text = .) %>%
+    tidytext::unnest_tokens(word, text) %>%
+    nrow() 
+}
+
+ words <- readmes %>%
+  dplyr::group_by(repo, owner) %>%
+  dplyr::summarise(wordcount = get_wordcount(xml_readme[[1]]))
+
+``` 
+
+The number of words in READMEs range from `r min(words$wordcount)` to `r max(words$wordcount)` with a median of `r median(words$wordcount)`. The READMEs with respectively the most words and least words are `r glue::glue("https://github.com/{words$owner[words$wordcount == max(words$wordcount)]}/{words$repo[words$wordcount == max(words$wordcount)]}")` and `r glue::glue("https://github.com/{words$owner[words$wordcount == min(words$wordcount)]}/{words$repo[words$wordcount == min(words$wordcount)]}")`.
+
+The README size might depend on the package interface size itself, and after a certain size one might want to make it easier on users by breaking up documentation into smaller articles, instead of showing all there is in one page. Now, a helpful way to still convey information efficiently when there are more than a few things is a good _structure_. You could even argue a good structure is important for READMEs.
+
 ### Glimpsing at README structure
+
+To assess README structures a bit, we first need to extract headers.
+
+
+```{r structure}
+get_headings <- function(xml) {
+  
+  if(is.null(xml)) {
+    return(NULL)
+  }
+  
+  xml %>%
+    xml2::xml_find_all("heading") -> headings
+  
+  list(tibble::tibble(text = xml2::xml_text(headings),
+                 position = seq_along(headings),
+                 level = xml2::xml_attr(headings, "level")))
+}
+
+structure <- readmes %>%
+  dplyr::group_by(repo, owner) %>%
+  dplyr::mutate(structure = get_headings(xml_readme[[1]])) %>%
+  dplyr::ungroup()
+```
+
+Here's the structure of the 42th README.
+
+```{r structureex}
+structure$structure[42][[1]]
+```
+
+We wrote an ugly long function to visualize the structure of any of the sampled READMEs, inspired by not ugly code in [`fs`](https://github.com/r-lib/fs/blob/master/R/tree.R).
+
+<details>
+<summary>Click to see the function.</summary>
+```{r ugly}
+
+pc <- function(...) {
+  paste0(..., collapse = "")
+}
+
+print_readme_structure <- function(structure){
+
+  structure$parent <- NA
+  for (i in seq_len(nrow(structure))) {
+    possible_parents <- structure$position[structure$level < structure$level[i]
+                                    & structure$position < structure$position[i]]
+    if (any(possible_parents)) {
+      structure$parent[i] <- max(possible_parents)
+    } else {
+      structure$parent[i] <- NA
+    }
+  }
+  
+  structure$parent[structure$level == min(structure$level)] <- 0
+  
+  
+  for (i in seq_len(nrow(structure))) {
+    if (structure$level[i] == 1) {
+      cat(structure$text[i])
+    } else {
+      
+      if(structure$position[i] == max(structure$position[structure$parent==structure$parent[i]])) {
+        firstchar <- cli:::box_chars()$l
+      } else {
+        firstchar <- cli:::box_chars()$j
+      }
+      
+      cat(
+        rep("  ", max(
+          0,
+          as.numeric(structure$level[i]) - 1
+        )),
+        pc(
+          firstchar,
+          pc(rep(
+            cli:::box_chars()$h,
+            max(
+              0,
+              as.numeric(structure$level[i]) - 1
+            )
+          ))
+        ), structure$text[i]
+      )
+    }
+    cat("\n")
+  }
+  
+}
+
+
+```
+</details>
+
+In practice,
+
+```{r r42}
+print_readme_structure(structure$structure[42][[1]])
+print_readme_structure(structure$structure[7][[1]])
+```
 
 ## How to write a good README
 
@@ -205,7 +332,7 @@ The number of lines of code of READMEs range from `r min(loc$loc)` to `r max(loc
 
 ### How to assess a README
 
-You should write the package README with potential users in mind, who might not understand the use case for your package, who might not know the tool you're wrapping or porting, etc. 
+You should write the package README with potential users in mind, who might not understand the use case for your package, who might not know the tool you're wrapping or porting, etc. It is not easy to change perspectives! Having actual external people review your README, or using the audience feedback after say a talk introducing the package, can help a lot here. 
 
 ## Conclusion
 

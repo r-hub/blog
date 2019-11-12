@@ -124,6 +124,8 @@ readmes <- purrr::map2_df(.x = meta$owner, .y = meta$repo,
                           .f = get_readme)
 ```
 
+The `readmes` data.frame has 114 lines so we lost a few more packages. 
+
 ### Assessing README size
 
 #### Number of lines
@@ -139,46 +141,281 @@ count_lines <- function(readme_lines){
     length()
 }
 
-readmes_lengths <- dplyr::group_by(readmes, owner, repo) %>%
-  dplyr::summarise(lines_no = count_lines(readme[[1]]))
+readmes <- dplyr::group_by(readmes, owner, repo) %>%
+  dplyr::mutate(lines_no = count_lines(readme[[1]])) %>%
+  dplyr::ungroup()
 ```
 
-The `readmes_lengths` data.frame has 114 lines so we lost a few more packages. How long are usual READMEs?
-
-
-```r
-median(readmes_lengths$lines_no)
-```
-
-```
-## [1] 84
-```
-
-```r
-max(readmes_lengths$lines_no)
-```
-
-```
-## [1] 715
-```
-
-```r
-min(readmes_lengths$lines_no)
-```
-
-```
-## [1] 4
-```
+How long are usual READMEs? Their number of lines range from 4 to 715 with a median of 84.
 
 Now, this metric might indicate how much a potential user needs to take in and how long they need to scroll down but we shall now look into other indicators of size: the number of lines of R code, the number of words outside of code and output.
 
 #### Other size indicators
 
-To access the numbers we're after, we don't need too much regular expressions of m
+To access the numbers we're after without using too many regular expressions, [we shall convert the Markdown content to XML via `commonmark` and use XPath to parse it](https://ropensci.org/technotes/2018/09/05/commonmark/).
+
+
+```r
+get_xml <- function(readme_lines){
+  readme_lines %>%
+      glue::glue_collapse(sep = "\n") %>%
+      commonmark::markdown_xml(normalize = TRUE,
+                               hardbreaks = TRUE) %>%
+      xml2::read_xml() %>%
+      xml2::xml_ns_strip() -> xml
+    
+    xml2::xml_replace(xml2::xml_find_all(xml, "//softbreak"),
+                      xml2::read_xml("<text>\n</text>"))
+    
+    list(xml)
+}
+
+readmes <- dplyr::group_by(readmes, owner, repo) %>%
+  dplyr::mutate(xml_readme = get_xml(readme[[1]])) %>%
+  dplyr::ungroup()
+```
+
+This is how a single README XML looks like:
+
+
+```r
+readmes$xml_readme[[1]]
+```
+
+```
+## {xml_document}
+## <document>
+##  [1] <html_block xml:space="preserve">&lt;!-- README.md is generated fro ...
+##  [2] <heading level="1">\n  <text xml:space="preserve">A Teradata Backen ...
+##  [3] <heading level="4">\n  <emph>\n    <text xml:space="preserve">Koji  ...
+##  [4] <html_block xml:space="preserve">&lt;!-- badges: start --&gt;\n</ht ...
+##  [5] <paragraph>\n  <link destination="https://travis-ci.org/hoxo-m/dply ...
+##  [6] <html_block xml:space="preserve">&lt;!-- badges: end --&gt;\n</html ...
+##  [7] <heading level="2">\n  <text xml:space="preserve">1 Overview</text> ...
+##  [8] <paragraph>\n  <text xml:space="preserve">The package provides a Te ...
+##  [9] <paragraph>\n  <text xml:space="preserve">It makes it possible to o ...
+## [10] <code_block info="r" xml:space="preserve">library(dplyr.teradata)\n ...
+## [11] <heading level="2">\n  <text xml:space="preserve">2 Installation</t ...
+## [12] <paragraph>\n  <text xml:space="preserve">You can install the </tex ...
+## [13] <code_block info="r" xml:space="preserve">install.packages("dplyr.t ...
+## [14] <paragraph>\n  <text xml:space="preserve">You can also install the  ...
+## [15] <code_block info="r" xml:space="preserve">install.packages("devtool ...
+## [16] <paragraph>\n  <text xml:space="preserve">The source code for </tex ...
+## [17] <list type="bullet" tight="true">\n  <item>\n    <paragraph>\n      ...
+## [18] <heading level="2">\n  <text xml:space="preserve">3 Details</text>\ ...
+## [19] <paragraph>\n  <text xml:space="preserve">The package provides a Te ...
+## [20] <paragraph>\n  <text xml:space="preserve">Therefore, you can comple ...
+## ...
+```
+
+Let's count lines of code.
+
+
+
+```r
+get_code_lines <- function(xml) {
+  
+  if(is.null(xml)) {
+    return(NULL)
+  }
+  
+  xml2::xml_find_all(xml, "code_block") %>%
+    purrr::keep(xml2::xml_attr(., "info") == "r") %>%
+    xml2::xml_text() %>%
+    length
+}
+
+loc <- readmes %>%
+  dplyr::group_by(repo, owner) %>%
+  dplyr::summarise(loc = get_code_lines(xml_readme[[1]]))
+```
+
+The number of lines of code of READMEs range from 0 to 41 with a median of 2. The README with the most lines of code is https://github.com/r-lib/ps.
+
+What about words in text?
+
+
+```r
+get_wordcount <- function(xml, package) {
+  
+  if(is.null(xml)) {
+    return(NULL)
+  }
+  xml %>%
+    xml2::xml_find_all("*[not(self::code_block) and not(self::html_block)]") %>%
+    xml2::xml_text() %>%
+    glue::glue_collapse(sep = " ") %>%
+    tibble::tibble(text = .) %>%
+    tidytext::unnest_tokens(word, text) %>%
+    nrow() 
+}
+
+ words <- readmes %>%
+  dplyr::group_by(repo, owner) %>%
+  dplyr::summarise(wordcount = get_wordcount(xml_readme[[1]]))
+```
+
+The number of words in READMEs range from 14 to 1622 with a median of 280.5. The READMEs with respectively the most words and least words are https://github.com/jonclayden/ore and https://github.com/rstudio/htmltools.
+
+The README size might depend on the package interface size itself, and after a certain size one might want to make it easier on users by breaking up documentation into smaller articles, instead of showing all there is in one page. Now, a helpful way to still convey information efficiently when there are more than a few things is a good _structure_. You could even argue a good structure is important for READMEs.
 
 ### Glimpsing at README structure
 
+To assess README structures a bit, we first need to extract headers.
+
+
+
+```r
+get_headings <- function(xml) {
+  
+  if(is.null(xml)) {
+    return(NULL)
+  }
+  
+  xml %>%
+    xml2::xml_find_all("heading") -> headings
+  
+  list(tibble::tibble(text = xml2::xml_text(headings),
+                 position = seq_along(headings),
+                 level = xml2::xml_attr(headings, "level")))
+}
+
+structure <- readmes %>%
+  dplyr::group_by(repo, owner) %>%
+  dplyr::mutate(structure = get_headings(xml_readme[[1]])) %>%
+  dplyr::ungroup()
+```
+
+Here's the structure of the 42th README.
+
+
+```r
+structure$structure[42][[1]]
+```
+
+```
+## # A tibble: 8 x 3
+##   text                                 position level
+##   <chr>                                   <int> <chr>
+## 1 Rcpp: Seamless R and C++ Integration        1 2    
+## 2 Synopsis                                    2 3    
+## 3 Documentation                               3 3    
+## 4 Examples                                    4 3    
+## 5 Installation                                5 3    
+## 6 Support                                     6 3    
+## 7 Authors                                     7 3    
+## 8 License                                     8 3
+```
+
+We wrote an ugly long function to visualize the structure of any of the sampled READMEs, inspired by not ugly code in [`fs`](https://github.com/r-lib/fs/blob/master/R/tree.R).
+
+<details>
+<summary>Click to see the function.</summary>
+
+```r
+pc <- function(...) {
+  paste0(..., collapse = "")
+}
+
+print_readme_structure <- function(structure){
+
+  structure$parent <- NA
+  for (i in seq_len(nrow(structure))) {
+    possible_parents <- structure$position[structure$level < structure$level[i]
+                                    & structure$position < structure$position[i]]
+    if (any(possible_parents)) {
+      structure$parent[i] <- max(possible_parents)
+    } else {
+      structure$parent[i] <- NA
+    }
+  }
+  
+  structure$parent[structure$level == min(structure$level)] <- 0
+  
+  
+  for (i in seq_len(nrow(structure))) {
+    if (structure$level[i] == 1) {
+      cat(structure$text[i])
+    } else {
+      
+      if(structure$position[i] == max(structure$position[structure$parent==structure$parent[i]])) {
+        firstchar <- cli:::box_chars()$l
+      } else {
+        firstchar <- cli:::box_chars()$j
+      }
+      
+      cat(
+        rep("  ", max(
+          0,
+          as.numeric(structure$level[i]) - 1
+        )),
+        pc(
+          firstchar,
+          pc(rep(
+            cli:::box_chars()$h,
+            max(
+              0,
+              as.numeric(structure$level[i]) - 1
+            )
+          ))
+        ), structure$text[i]
+      )
+    }
+    cat("\n")
+  }
+  
+}
+```
+</details>
+
+In practice,
+
+
+```r
+print_readme_structure(structure$structure[42][[1]])
+```
+
+```
+##    └─ Rcpp: Seamless R and C++ Integration
+##       ├── Synopsis
+##       ├── Documentation
+##       ├── Examples
+##       ├── Installation
+##       ├── Support
+##       ├── Authors
+##       └── License
+```
+
+```r
+print_readme_structure(structure$structure[7][[1]])
+```
+
+```
+## waffle
+##    ├─ Description
+##    ├─ What’s Inside the Tin
+##    ├─ Installation
+##    ├─ Usage
+##       ├── Some new bits up first
+##       ├── Geoms!
+##       ├── Waffle Bar Charts with scales!
+##       ├── Basic example
+##       ├── Use a data frame
+##       ├── Slightly more complex example
+##       ├── Replicating an old favourite
+##       ├── More replication
+##       └── Keeps factor by default levels now
+##    ├─ Package Code Metrics
+##    └─ Code of Conduct
+```
+
 ## How to write a good README
+
+### Tools for writing and re-using content
+
+### How to assess a README
+
+You should write the package README with potential users in mind, who might not understand the use case for your package, who might not know the tool you're wrapping or porting, etc. It is not easy to change perspectives! Having actual external people review your README, or using the audience feedback after say a talk introducing the package, can help a lot here. 
 
 ## Conclusion
 
