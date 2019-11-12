@@ -507,6 +507,10 @@ Since `roxygen2`'s latest release, you can include md/Rmd in manual pages. What 
 
 If your README is a bit long you might need to add a table of contents at the top, [as done for `cli` README](https://github.com/r-lib/cli/blob/ad6410aee086f374e974eb7e794fa0d475815320/README.Rmd#L6). In a pkgdown website, the README does not get a table of content in the sidebar, which might be an argument for keeping it small as opposed to articles that do get a table of contents in the sidebar.
 
+#### Hide clutter in details tags
+
+You can use the [`details` package](https://cran.r-project.org/web/packages/details/index.html) to hide some content that'd otherwise clutter the README, but that you still want to be available upon click. You can see it in action [in `reactor` README](https://github.com/yonicd/reactor/blob/master/README.Rmd).
+
 ### How to assess a README
 
 You should write the package README with potential users in mind, who might not understand the use case for your package, who might not know the tool you're wrapping or porting, etc. It is not easy to change perspectives, though! Having actual external people review your README, or using the audience feedback after say a talk introducing the package, can help a lot here. Ask someone on your corridor or your usual discussion venues (forums, Twitter, etc.).
