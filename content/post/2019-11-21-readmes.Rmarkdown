@@ -332,8 +332,11 @@ What are the most common headers?
 structure %>%
   tidyr::unnest(structure) %>%
   dplyr::count(text, sort = TRUE) %>%
+  dplyr::filter(n > 4) %>%
   knitr::kable()
 ```
+
+This seems to be quite in line with noffle's checklist (e.g. having installation instructions). Headers related to the background and to examples might have a title specific to the package, hence there being so few "Examples" headers as compared to "Installation" headers.
 
 The headers are one thing, their _order_ is another one which we won't analyze in this post. In the Art of README, noffle [discusses "cognitive funneling"](https://github.com/noffle/art-of-readme#cognitive-funneling) which might help you choose an order.
 
@@ -351,9 +354,9 @@ In [noffle's checklist for a README](https://github.com/noffle/art-of-readme#bon
 
 Then, instead of writing everything in one .Rmd and then copying entire sections of it in a vignette, you can re-use Rmd chunks as explained in [this blog post by Garrick Aden-Buie presenting an idea by Brodie Gaslam](https://www.garrickadenbuie.com/blog/dry-vignette-and-readme/).
 
-#### usethis' README template
+#### usethis' README templates
 
-To create the README, you can use either `usethis::use_readme_rmd()` (for an R Markdown README) or `usethis::use_readme_md()` (for a Markdown README). The created README file will include a few sections for you to fill in.
+To create the README, you can use either [`usethis::use_readme_rmd()` (for an R Markdown README) or `usethis::use_readme_md()` (for a Markdown README)](https://usethis.r-lib.org/reference/use_readme_rmd.html). The created README file will include a few sections for you to fill in.
 
 #### Re-use of Rmd portions in manual pages
 
