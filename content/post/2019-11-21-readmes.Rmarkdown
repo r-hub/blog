@@ -141,7 +141,19 @@ readmes <- dplyr::group_by(readmes, owner, repo) %>%
 
 How long are usual READMEs? Their number of lines range from `r min(readmes$lines_no)` to `r max(readmes$lines_no)` with a median of `r median(readmes$lines_no)`.
 
-Now, this metric might indicate how much a potential user needs to take in and how long they need to scroll down but we shall now look into other indicators of size: the number of lines of R code, the number of words outside of code and output.
+```{r nolinesplot, fig.cap="Dot plot of the number of lines in READMEs"}
+library("ggplot2")
+
+ggplot(readmes) +
+  geom_dotplot(aes(lines_no), binwidth = 5) +
+  xlab("No. of lines") +
+  scale_y_continuous(NULL, breaks = NULL) +
+  hrbrthemes::theme_ipsum(base_size = 16,
+                          axis_title_size = 16) +
+  ggtitle(glue::glue("Number of lines in a sample of {nrow(readmes)} READMEs"))
+```
+
+READMEs in our sample most often don't have more than 200 lines. Now, this metric might indicate how much a potential user needs to take in and how long they need to scroll down but we shall now look into other indicators of size: the number of lines of R code, the number of words outside of code and output.
 
 #### Other size indicators
 
@@ -195,7 +207,7 @@ loc <- readmes %>%
 
 ```
 
-The number of lines of code of READMEs range from `r min(loc$loc)` to `r max(loc$loc)` with a median of `r median(loc$loc)`. The README with the most lines of code is `r glue::glue("https://github.com/{loc$owner[loc$loc == max(loc$loc)]}/{loc$repo[loc$loc == max(loc$loc)]}")`.
+The number of lines of code of READMEs range from `r min(loc$loc)` (for `r sum(loc$loc == min(loc$loc))` READMEs) to `r max(loc$loc)` with a median of `r median(loc$loc)`. The README with the most lines of code is `r glue::glue("https://github.com/{loc$owner[loc$loc == max(loc$loc)]}/{loc$repo[loc$loc == max(loc$loc)]}")`.
 
 What about words in text?
 
@@ -375,4 +387,4 @@ You should write the package README with potential users in mind, who might not 
 
 ## Conclusion
 
-In this post we discussed the importance of a good package README, mentioned existing guidance, and gave some data-driven clues as to what is a usual README. We also mentioned useful tools to write a good README. For further READing we recommend the [Write the Docs' list of README-related resources](https://www.writethedocs.org/blog/newsletter-july-2019/#readmes-on-readmes-and-other-readme-related-resources). We also welcome your input below... What do _you_ like seeing in a README?
+In this post we discussed the importance of a good package README, mentioned existing guidance, and gave some data-driven clues as to what is a usual README. We also mentioned useful tools to write a good README. For further READing we recommend the [Write the Docs' list of README-related resources](https://www.writethedocs.org/blog/newsletter-july-2019/#readmes-on-readmes-and-other-readme-related-resources) as well as [this curated list of awesome READMEs](https://github.com/matiassingers/awesome-readme). We also welcome your input below... What do _you_ like seeing in a README?
