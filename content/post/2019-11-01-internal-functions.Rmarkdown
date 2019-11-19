@@ -1,0 +1,54 @@
+---
+title: Internal functions in R packages
+date: '2019-11-01'
+slug: internal functions
+tags:
+  - package development
+---
+
+An R package can be viewed as a [set of functions](https://github.com/ropensci/software-review/issues/350#issue-518124603), part of which are exposed to the user, part of which are not. In this blog post we shall explain what the latter, internal functions, are good for, and we shall present the best practice for documenting and testing them.
+
+## Internal functions 101
+
+### What is an internal function? 
+
+It's a function that your package functions know about, but that isn't surfaced to the user. You could also call it unexported function or helper function as opposed to exported functions, and user-facing functions.
+
+For instance, in the usethis package there's a `base_and_recommended()` function.
+
+```{r examples, error = TRUE}
+# doesn't work
+library("usethis")
+base_and_recommended()
+usethis::base_and_recommended()
+# works
+usethis:::base_and_recommended()
+```
+
+### Why not export all functions?
+
+There are at least these two reasons:
+
+* In a package you want to provide your user an API that is useful and stable. You can vouch for a few functions, that work well, serve the package main goals, are documented enough, and that you'd only change[with great care](https://devguide.ropensci.org/evolution.html) [if need be](https://ropensci.org/blog/2019/04/30/qualtrics-relaunch/). If your package users rely of an internal function that you decide to ditch when re-factoring code, they won't be happy, so only export what you want to maintain.
+
+* If all packages exposed all their internal functions, the user environment would be flooded and the namespace conflicts would be out of control.
+
+### Why to write internal functions?
+
+Why writing internal functions instead of having everything in one block of code inside each exported functions?
+
+When writing R code in general [there are several reasons to write functions](https://r4ds.had.co.nz/functions.html) and it is the same within R packages: you can re-use a bit of code in several places (e.g. an epoch converter used for the output of several endpoints from a web API), and you can give it a self-explaining name (e.g. `convert_epoch()`). 
+
+Having internal functions also mean you can test these bits of code on their own. That said [if you test internals too much re-factoring your code will mean breaking tests so you might want to focus testing on external functions](https://r-pkgs.org/tests.html).
+
+### Where to put internal functions?
+
+You could save internal functions used in one function only in the R file defining that function, and internal functions used in several other functions in a single utils.R file or specialized utils-dates.R, utils-encoding.R files.
+
+## Explore internal functions
+
+### Explore internal functions within a package
+
+### Explore internal functions across packages
+
+Bob Rudis [wrote a very interesting blog post about his exploration of R packages "utility belts" i.e. the utils.R files](https://rud.is/b/2018/04/08/dissecting-r-package-utility-belts/). 
