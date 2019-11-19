@@ -33,22 +33,70 @@ There are at least these two reasons:
 
 * If all packages exposed all their internal functions, the user environment would be flooded and the namespace conflicts would be out of control.
 
-### Why to write internal functions?
+### Why write internal functions?
 
 Why writing internal functions instead of having everything in one block of code inside each exported functions?
 
 When writing R code in general [there are several reasons to write functions](https://r4ds.had.co.nz/functions.html) and it is the same within R packages: you can re-use a bit of code in several places (e.g. an epoch converter used for the output of several endpoints from a web API), and you can give it a self-explaining name (e.g. `convert_epoch()`). 
 
-Having internal functions also mean you can test these bits of code on their own. That said [if you test internals too much re-factoring your code will mean breaking tests so you might want to focus testing on external functions](https://r-pkgs.org/tests.html).
+Having internal functions also means you can test these bits of code on their own. That said [if you test internals too much re-factoring your code will mean breaking tests so you might want to focus testing on external functions](https://r-pkgs.org/tests.html).
+
+To find blocks of code that could be replaced with a function used several times, you could use [the `dupree` package](https://cran.r-project.org/web/packages/dupree/index.html) whose planned enhancements [include highlighting or printing the similar blocks](https://github.com/russHyde/dupree/issues/48).
+
+### When not to write internal functions?
+
+There is a balance to be found between writing your own helpers for everything and only depending on external code. [You can watch this excellent code on the topic](https://resources.rstudio.com/rstudio-conf-2019/it-depends-a-dialog-about-dependencies).
 
 ### Where to put internal functions?
 
 You could save internal functions used in one function only in the R file defining that function, and internal functions used in several other functions in a single utils.R file or specialized utils-dates.R, utils-encoding.R files.
 
+### How to document internal functions?
+
+You should at least add a few comments in their code as usual. Best practice recommended in the [tidyverse style guide](https://style.tidyverse.org/documentation.html#internal-functions) and the [rOpenSci dev guide](https://devguide.ropensci.org/building.html) is to document them with roxygen2 tags like other functions, but to use `#' @NoRd` to prevent manual pages to be created. 
+
+The keyword `@keyword internal` would mean [a manual page is created but not present in the function index](https://roxygen2.r-lib.org/articles/rd.html#indexing).
+
 ## Explore internal functions
+
+You might need to have a look at the guts of a package when wanting to contribute to it, or at the guts of several packages to get some inspiration for your code.
 
 ### Explore internal functions within a package
 
+Say you've started working on a new-to-you package (or resumed work on a long forgotten package of yours :wink:). How to know how it all hangs together?
+
+One first way to understand what a given helper does is looking at its code, but also searching for occurrences of its names across R scripts, and using the [browser() function inside it or inside functions calling it](
+One first way to understand). The first two tasks are static code analysis (well unless your brain really executes R code by reading it!), the latter is dynamic.
+
+An useful tool is also the `pkgapi` package. Let's look at the [rversions source code](/2019/04/15/rversions-1-1-0/).
+
+```{r pkgapi}
+map <- pkgapi::map_package("/home/maelle/Documents/R-hub/rversions")
+```
+
+We can see all defined functions, exported or not.
+
+```{r}
+knitr::kable(map$defs)
+```
+
+We can see all calls inside the package code, to functions from the package and other packages.
+
+```{r}
+str(map$calls)
+```
+
+We can filter that data.frame to only keep calls between functions defined in the package.
+
+```{r}
+library("magrittr")
+map$calls[map$calls$to %in% glue::glue("{map$name}::{map$defs$name}"),] %>%
+  dplyr::arrange(to) %>%
+  knitr::kable()
+```
+
+That table can help understand how a package works. One could combine that with a network visualization.
+
 ### Explore internal functions across packages
 
-Bob Rudis [wrote a very interesting blog post about his exploration of R packages "utility belts" i.e. the utils.R files](https://rud.is/b/2018/04/08/dissecting-r-package-utility-belts/). 
+Bob Rudis [wrote a very interesting blog post about his exploration of R packages "utility belts" i.e. the utils.R files](https://rud.is/b/2018/04/08/dissecting-r-package-utility-belts/). We also recommend our own blog post [about reading the R source](/2019/05/14/read-the-source/).
