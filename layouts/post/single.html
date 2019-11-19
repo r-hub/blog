@@ -33,12 +33,12 @@
 {{ end }}
 <!--end github edit code-->
 
-  <div class="container" data-spy="scroll" data-target="#TableOfContents" data-offset="20">
+  <div class="container">
     <div class="row">
-    <div class="article-content col-sm-8">
+    <div class="article-content col-sm-8 position-relative">
       {{ .Content }}
     </div>
-    <div class = "col-sm-4 position-sticky toc">
+    <div class = "col-sm-4 toc" id = "sidebar">
       {{.TableOfContents}}
       </div>
     </div>
