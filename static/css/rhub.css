@@ -35,6 +35,7 @@ pre {
 
 .nav {
   max-width: 90vw;
+  text-align: inherit;
 }
 
 .toc ul {
@@ -44,3 +45,4 @@ pre {
 .container {
   position: relative;
 }
+
