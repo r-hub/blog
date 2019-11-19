@@ -62,11 +62,11 @@ pkg_search("mocking")
 
 ### Dependencies of a package over time?
 
-```{r tweet}
+```{r tweet, echo = FALSE}
 blogdown::shortcode("tweet", "1186667832718876673")
 ```
 
-So say we want to query the dependencies of `igraph`, we can use `cran_package_history()` for that.
+YES, we know! :nerd: :raised_hand: So say we want to query the dependencies of `igraph`, we can use `cran_package_history()` for that.
 
 ```{r igraph1}
 library("magrittr")
@@ -124,6 +124,8 @@ Without surprise `pkgsearch` is our favorite CRAN metadata munger since it is _o
 * [`CRANberries`](http://dirk.eddelbuettel.com/cranberries/about/) by Dirk Eddelbuettel "aggregates information about new, updated and removed packages from the CRAN network for R available as this html version and a corresponding RSS feed." and a Twitter feed. Handy!
 
 ## Conclusion
+
+In this post we gave an overview of `pkgsearch` functionalities. It could become your go-to packages for searching and exploring CRAN packages thanks to its exposing CRAN metadata in different ways: packages related to a keyword, trending packages, information about a package, etc. And you can use it either from the R console or a GUI!
 
 The best place to get to know `pkgsearch` is [its brand-new documentation website built with `pkgdown`](https://r-hub.github.io/pkgsearch), and the best place to provide feedback or contribute is [its GitHub repo](https://github.com/r-hub/pkgsearch). We look forward to hearing from your use cases, and hope your enthusiasm for the package can push it to the `cran_trending()` VIP list! :wink:
 

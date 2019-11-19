@@ -63,7 +63,7 @@ pkg_search("mocking")
 ```
 
 ```
-## - "mocking" ------------------------------------- 8 packages in 0.006 seconds -
+## - "mocking" ------------------------------------- 8 packages in 0.008 seconds -
 ##   #     package   version by                         @ title                   
 ##  1  100 mockery   0.4.2   Jim Hester                3M Mocking Library for R   
 ##  2   43 mockr     0.1     Kirill Müller             3y Mocking in R            
@@ -77,14 +77,9 @@ pkg_search("mocking")
 
 ### Dependencies of a package over time?
 
-
-```r
-blogdown::shortcode("tweet", "1186667832718876673")
-```
-
 <!--html_preserve-->{{% tweet "1186667832718876673" %}}<!--/html_preserve-->
 
-So say we want to query the dependencies of `igraph`, we can use `cran_package_history()` for that.
+YES, we know! :nerd: :raised_hand: So say we want to query the dependencies of `igraph`, we can use `cran_package_history()` for that.
 
 
 ```r
@@ -248,6 +243,8 @@ Without surprise `pkgsearch` is our favorite CRAN metadata munger since it is _o
 
 ## Conclusion
 
+In this post we gave an overview of `pkgsearch` functionalities. It could become your go-to packages for searching and exploring CRAN packages thanks to its exposing CRAN metadata in different ways: packages related to a keyword, trending packages, information about a package, etc. And you can use it either from the R console or a GUI!
+
 The best place to get to know `pkgsearch` is [its brand-new documentation website built with `pkgdown`](https://r-hub.github.io/pkgsearch), and the best place to provide feedback or contribute is [its GitHub repo](https://github.com/r-hub/pkgsearch). We look forward to hearing from your use cases, and hope your enthusiasm for the package can push it to the `cran_trending()` VIP list! :wink:
 
 
@@ -257,7 +254,7 @@ pkg_search("search CRAN")
 ```
 
 ```
-## - "search CRAN" ----------------------------- 15676 packages in 0.015 seconds -
+## - "search CRAN" ----------------------------- 15676 packages in 0.023 seconds -
 ##   #     package       version   by                   @ title                   
 ##   1 100 pkgsearch     3.0.0     Gábor Csárdi        5d Search and Query CRAN...
 ##   2  63 packagefinder 0.1.5     Joachim Zuckarelli 18d Comfortable Search fo...
