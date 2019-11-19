@@ -37,7 +37,13 @@ This release, compared to `pkgsearch` 2.0.0, brings
 
 That's... a lot! Let's have some fun with the package.
 
-## Use cases
+## Explore packages in a GUI
+
+SCREENCAST ONCE ADDIN FIXED. Show all tabs!
+
+Use case for search, Wikidata, amazon, aws.
+
+## Other use cases
 
 The `pkgsearch` package is the answer to many questions you might have about CRAN metadata, thanks to its exposing it through different endpoints.
 
@@ -68,9 +74,10 @@ cran_package_history("igraph")[, c("Package", "Version", "dependencies")] %>%
   tidyr::unnest(dependencies)
 ```
 
-Or of one particular version of `igraph`, then we can run `cran_package()` with its `version` argument.
+Or of one particular version of `igraph`, then we can run `cran_packages()` (or `cran_package()` with its `version` argument, that returns a list).
 
 ```{r igraph2}
+cran_packages("igraph@0.5.1")
 cran_package("igraph", version = "0.5.1")
 ```
 
@@ -122,6 +129,5 @@ The best place to get to know `pkgsearch` is [its brand-new documentation websit
 
 
 ```{r last-ex}
-library("pkgsearch")
-cran_package("pkgsearch")[1:3]
+pkg_search("search CRAN")
 ```

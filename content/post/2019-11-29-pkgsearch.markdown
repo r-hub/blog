@@ -37,7 +37,13 @@ This release, compared to `pkgsearch` 2.0.0, brings
 
 That's... a lot! Let's have some fun with the package.
 
-## Use cases
+## Explore packages in a GUI
+
+SCREENCAST ONCE ADDIN FIXED. Show all tabs!
+
+Use case for search, Wikidata, amazon, aws.
+
+## Other use cases
 
 The `pkgsearch` package is the answer to many questions you might have about CRAN metadata, thanks to its exposing it through different endpoints.
 
@@ -57,7 +63,7 @@ pkg_search("mocking")
 ```
 
 ```
-## - "mocking" ------------------------------------- 8 packages in 0.007 seconds -
+## - "mocking" ------------------------------------- 8 packages in 0.011 seconds -
 ##   #     package   version by                         @ title                   
 ##  1  100 mockery   0.4.2   Jim Hester                3M Mocking Library for R   
 ##  2   43 mockr     0.1     Kirill Müller             3y Mocking in R            
@@ -104,8 +110,21 @@ cran_package_history("igraph")[, c("Package", "Version", "dependencies")] %>%
 ## # … with 363 more rows
 ```
 
-Or of one particular version of `igraph`, then we can run `cran_package()` with its `version` argument.
+Or of one particular version of `igraph`, then we can run `cran_packages()` (or `cran_package()` with its `version` argument, that returns a list).
 
+
+```r
+cran_packages("igraph@0.5.1")
+```
+
+```
+## # A tibble: 1 x 13
+##   Package Version Date  Title Author Maintainer Description License URL  
+##   <chr>   <chr>   <chr> <chr> <chr>  <chr>      <chr>       <chr>   <chr>
+## 1 igraph  0.5.1   Feb … Rout… Gabor… Gabor Csa… Routines f… GPL (>… http…
+## # … with 4 more variables: Packaged <chr>, crandb_file_date <chr>, date <chr>,
+## #   dependencies <list>
+```
 
 ```r
 cran_package("igraph", version = "0.5.1")
@@ -234,17 +253,20 @@ The best place to get to know `pkgsearch` is [its brand-new documentation websit
 
 
 ```r
-library("pkgsearch")
-cran_package("pkgsearch")[1:3]
+pkg_search("search CRAN")
 ```
 
 ```
-## $Package
-## [1] "pkgsearch"
-## 
-## $Title
-## [1] "Search and Query CRAN R Packages"
-## 
-## $Version
-## [1] "3.0.0"
+## - "search CRAN" ----------------------------- 15676 packages in 0.018 seconds -
+##   #     package       version   by                   @ title                   
+##   1 100 pkgsearch     3.0.0     Gábor Csárdi        5d Search and Query CRAN...
+##   2  63 packagefinder 0.1.5     Joachim Zuckarelli 18d Comfortable Search fo...
+##   3  62 CRANsearcher  1.0.0     Agustin Calatroni   2y RStudio Addin for Sea...
+##   4  55 RWsearch      4.6.2     Patrice Kiener      3M Lazy Search in R Pack...
+##   5  20 XML           3.98.1.20 ORPHANED            6M Tools for Parsing and...
+##   6  17 RCurl         1.95.4.12 Duncan Temple Lang  9M General Network (HTTP...
+##   7  12 NCmisc        1.1.6     Nicholas Cooper     1y Miscellaneous Functio...
+##   8  11 badgecreatr   0.2.0     Roel M. Hogervorst 11M Create Badges for 'Tr...
+##   9  11 pROC          1.15.3    Xavier Robin        4M Display and Analyze R...
+##  10  10 FNN           1.1.3     Shengqiao Li        9M Fast Nearest Neighbor...
 ```
