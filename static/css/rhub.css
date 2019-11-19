@@ -12,3 +12,35 @@
   top: 0.15rem;
   position: relative;
 }
+
+pre {
+  font-size: 16px;
+}
+
+.article-content a {
+  text-decoration: none;
+  color: inherit;
+  background: transparent;
+  transition: background 150ms ease;
+}
+
+.content {
+  max-width: 90vw;
+  margin: 40px auto 10px;
+  padding: 0 15px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #333;
+}
+
+.nav {
+  max-width: 90vw;
+}
+
+.toc ul {
+  list-style: none;
+}
+
+.container {
+  position: relative;
+}

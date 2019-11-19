@@ -52,7 +52,7 @@ In the Art of README, noffle [includes a checklist](https://github.com/noffle/ar
 
 ### Sampling READMEs
 
-We shall start by merging the lists of top downloaded and trending CRAN packages one can obtain using [`pkgsearch`](https://github.com/r-hub/pkgsearch/).
+We shall start by merging the lists of top downloaded and trending CRAN packages one can obtain using [`pkgsearch`](https://r-hub.github.io/pkgsearch/).
 
 ```{r sample-readmes}
 library("magrittr")
