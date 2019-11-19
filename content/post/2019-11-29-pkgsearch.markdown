@@ -1,6 +1,6 @@
 ---
 title: Search and discover CRAN packages with pkgsearch!
-date: '2019-11-29'
+date: '2019-10-29'
 slug: pkgsearch
 tags:
   - pkgsearch
@@ -63,7 +63,7 @@ pkg_search("mocking")
 ```
 
 ```
-## - "mocking" ------------------------------------- 8 packages in 0.011 seconds -
+## - "mocking" ------------------------------------- 8 packages in 0.006 seconds -
 ##   #     package   version by                         @ title                   
 ##  1  100 mockery   0.4.2   Jim Hester                3M Mocking Library for R   
 ##  2   43 mockr     0.1     Kirill Müller             3y Mocking in R            
@@ -257,7 +257,7 @@ pkg_search("search CRAN")
 ```
 
 ```
-## - "search CRAN" ----------------------------- 15676 packages in 0.018 seconds -
+## - "search CRAN" ----------------------------- 15676 packages in 0.015 seconds -
 ##   #     package       version   by                   @ title                   
 ##   1 100 pkgsearch     3.0.0     Gábor Csárdi        5d Search and Query CRAN...
 ##   2  63 packagefinder 0.1.5     Joachim Zuckarelli 18d Comfortable Search fo...
