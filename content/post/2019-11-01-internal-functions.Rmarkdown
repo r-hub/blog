@@ -6,13 +6,13 @@ tags:
   - package development
 ---
 
-An R package can be viewed as a [set of functions](https://github.com/ropensci/software-review/issues/350#issue-518124603), part of which are exposed to the user, part of which are not. In this blog post we shall explain what the latter, internal functions, are good for, and we shall present the best practice for documenting and testing them.
+An R package can be viewed as a [set of functions](https://github.com/ropensci/software-review/issues/350#issue-518124603), of which only a part are exposed to the user. In this blog post we shall concentrate of the functions that are not exposed to the user, so called internal functions: what are they, how does one handle them in one's own package, and how can one explore them?
 
 ## Internal functions 101
 
 ### What is an internal function? 
 
-It's a function that your package functions know about, but that isn't surfaced to the user. You could also call it unexported function or helper function as opposed to exported functions, and user-facing functions.
+It's a function that lives in your package, but that isn't surfaced to the user. You could also call it unexported function or helper function; as opposed to exported functions and user-facing functions.
 
 For instance, in the usethis package there's a `base_and_recommended()` function.
 
@@ -35,7 +35,7 @@ There are at least these two reasons:
 
 ### Why write internal functions?
 
-Why writing internal functions instead of having everything in one block of code inside each exported functions?
+Why write internal functions instead of having everything in one block of code inside each exported functions?
 
 When writing R code in general [there are several reasons to write functions](https://r4ds.had.co.nz/functions.html) and it is the same within R packages: you can re-use a bit of code in several places (e.g. an epoch converter used for the output of several endpoints from a web API), and you can give it a self-explaining name (e.g. `convert_epoch()`). 
 
@@ -51,11 +51,23 @@ There is a balance to be found between writing your own helpers for everything a
 
 You could save internal functions used in one function only in the R file defining that function, and internal functions used in several other functions in a single utils.R file or specialized utils-dates.R, utils-encoding.R files.
 
+Another possible approach to helper functions when used in several packages is to pack them up in a package such as [Yihui Xie's `xfun`](https://github.com/yihui/xfun). So then they're no longer internal functions. :dizzy_face: 
+
 ### How to document internal functions?
 
 You should at least add a few comments in their code as usual. Best practice recommended in the [tidyverse style guide](https://style.tidyverse.org/documentation.html#internal-functions) and the [rOpenSci dev guide](https://devguide.ropensci.org/building.html) is to document them with roxygen2 tags like other functions, but to use `#' @NoRd` to prevent manual pages to be created. 
 
-The keyword `@keyword internal` would mean [a manual page is created but not present in the function index](https://roxygen2.r-lib.org/articles/rd.html#indexing).
+```r
+#' Compare x to 1
+#' @param x an integer
+#' @NoRd
+is_one <- function(x) {
+  x == 1
+}
+
+```
+
+The keyword `@keyword internal` would mean [a manual page is created but not present in the function index](https://roxygen2.r-lib.org/articles/rd.html#indexing). A confusing aspect is that you could use it for an *exported, not internal* function you don't want to be too visible, e.g. a function returning the default app for OAuth in a package wrapping a web API.
 
 ## Explore internal functions
 
@@ -68,16 +80,16 @@ Say you've started working on a new-to-you package (or resumed work on a long fo
 One first way to understand what a given helper does is looking at its code, but also searching for occurrences of its names across R scripts, and using the [browser() function inside it or inside functions calling it](
 One first way to understand). The first two tasks are static code analysis (well unless your brain really executes R code by reading it!), the latter is dynamic.
 
-An useful tool is also the `pkgapi` package. Let's look at the [rversions source code](/2019/04/15/rversions-1-1-0/).
+An useful tool is also the [in development `pkgapi` package](https://github.com/r-lib/pkgapi). Let's look at the [cranlogs source code](/2019/05/02/cranlogs-2-1-1/).
 
 ```{r pkgapi}
-map <- pkgapi::map_package("/home/maelle/Documents/R-hub/rversions")
+map <- pkgapi::map_package("/home/maelle/Documents/R-hub/cranlogs")
 ```
 
 We can see all defined functions, exported or not.
 
 ```{r}
-knitr::kable(map$defs)
+str(map$defs)
 ```
 
 We can see all calls inside the package code, to functions from the package and other packages.
@@ -90,13 +102,74 @@ We can filter that data.frame to only keep calls between functions defined in th
 
 ```{r}
 library("magrittr")
-map$calls[map$calls$to %in% glue::glue("{map$name}::{map$defs$name}"),] %>%
-  dplyr::arrange(to) %>%
-  knitr::kable()
+internal_calls <- map$calls[map$calls$to %in% glue::glue("{map$name}::{map$defs$name}"),]
+
+internal_calls %>%
+  dplyr::arrange(to)
 ```
 
 That table can help understand how a package works. One could combine that with a network visualization.
 
+
+
+```r
+library("visNetwork")
+internal_calls <- internal_calls %>%
+  dplyr::mutate(to = gsub("cranlogs\\:\\:", "", to))
+
+nodes <- tibble::tibble(id = map$defs$name,
+                        title = map$defs$name,
+                        label = map$defs$name,
+                        shape = dplyr::if_else(map$defs$exported,
+                                               "triangle",
+                                               "square"))
+nodes <- nodes[nodes$id %in% c(internal_calls$from, internal_calls$to),]
+edges <- internal_calls[, c("from", "to")]
+
+
+visNetwork(nodes, edges, height = "500px") %>%
+  visLayout(randomSeed = 42) %>%
+  visNodes(size = 10)
+```
+
+```{r, echo = FALSE}
+library("visNetwork")
+internal_calls <- internal_calls %>%
+  dplyr::mutate(to = gsub("cranlogs\\:\\:", "", to))
+
+nodes <- tibble::tibble(id = map$defs$name,
+                        label = map$defs$name,
+                        shape = dplyr::if_else(map$defs$exported,
+                                               "triangle",
+                                               "square"))
+nodes <- nodes[nodes$id %in% c(internal_calls$from, internal_calls$to),]
+edges <- internal_calls[, c("from", "to")]
+
+
+visNetwork(nodes, edges, height = "500px") %>%
+  visLayout(randomSeed = 42) %>%
+  visNodes(size = 10) -> w
+
+# from https://github.com/reconhub/learn/blob/551f5ed823c72078ffe8eae316dd728338dfe35b/R/save_and_use_widget.R#L13
+filename <- "cranlogs-2019-11-01.html"
+root     <- rprojroot::has_file("config.toml")
+htmlwidgets::saveWidget(w, 
+                        root$find_file("static", filename), selfcontained = TRUE)
+htmltools::tags$iframe(src = paste0("/", filename),
+                         width = "100%",
+                         height = "500px")
+
+
+```
+
+Such a network visualization might not be that useful for bigger packages, and in our workflow is limited to `pkgapi`'s capabilities (e.g. not memoised functions)... but it's at least quite pretty.
+
 ### Explore internal functions across packages
 
+Looking at helpers in other packages can help you write your own, e.g. looking at a package elegantly wrapping a web API could help you wrap another one elegantly too.
+
 Bob Rudis [wrote a very interesting blog post about his exploration of R packages "utility belts" i.e. the utils.R files](https://rud.is/b/2018/04/08/dissecting-r-package-utility-belts/). We also recommend our own blog post [about reading the R source](/2019/05/14/read-the-source/).
+
+## Conclusion
+
+In this post we explained what internal functions are, and gave a few tips as to how to explore them within a package and across packages. We hope the post can help clear up a few doubts. Feel free to comment about further ideas or questions you may have.
