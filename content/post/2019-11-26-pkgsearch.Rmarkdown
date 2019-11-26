@@ -80,7 +80,8 @@ Or of one particular version of `tsibble`, then we can run `cran_packages()` (or
 
 ```{r tsibble2}
 cran_packages("tsibble@0.2.0")
-cran_package("tsibble", version = "0.2.0")
+info <- cran_package("tsibble", version = "0.2.0")
+info[c("Imports", "Suggests", "Depends")]
 ```
 
 ### When was the CRAN incoming queue closed?

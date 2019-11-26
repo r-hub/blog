@@ -63,7 +63,7 @@ pkg_search("mocking")
 ```
 
 ```
-## - "mocking" ------------------------------------- 8 packages in 0.008 seconds -
+## - "mocking" ------------------------------------- 8 packages in 0.009 seconds -
 ##   #     package   version by                         @ title                   
 ##  1  100 mockery   0.4.2   Jim Hester                3M Mocking Library for R   
 ##  2   43 mockr     0.1     Kirill Müller             3y Mocking in R            
@@ -125,36 +125,11 @@ cran_packages("tsibble@0.2.0")
 ```
 
 ```r
-cran_package("tsibble", version = "0.2.0")
+info <- cran_package("tsibble", version = "0.2.0")
+info[c("Imports", "Suggests", "Depends")]
 ```
 
 ```
-## $Package
-## [1] "tsibble"
-## 
-## $Type
-## [1] "Package"
-## 
-## $Title
-## [1] "Tidy Temporal Data Frames and Tools"
-## 
-## $Version
-## [1] "0.2.0"
-## 
-## $Date
-## [1] "2018-05-11"
-## 
-## $`Authors@R`
-## [1] "c(\nperson(\"Earo\", \"Wang\", email = \"earo.wang@gmail.com\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0001-6448-5260\")),\nperson(\"Di\", \"Cook\", role = c(\"aut\", \"ths\"), comment = c(ORCID = \"0000-0002-3813-7155\")),\nperson(\"Rob\", \"Hyndman\", role = c(\"aut\", \"ths\"), comment = c(ORCID = \"0000-0002-2140-5352\")),\nperson(\"Mitchell\", \"O'Hara-Wild\", role = c(\"ctb\"))\n)"
-## 
-## $Description
-## [1] "Provides a 'tbl_ts' class (the 'tsibble') to store and manage\ntemporal-context data in a data-centric format, which is built on top of\nthe 'tibble'. The 'tsibble' aims at easily manipulating and analysing temporal\ndata, including counting and filling time gaps, aggregate over calendar periods,\nperforming rolling window calculations, and etc."
-## 
-## $Depends
-## $Depends$R
-## [1] ">= 3.1.3"
-## 
-## 
 ## $Imports
 ## $Imports$rlang
 ## [1] ">= 0.2.0"
@@ -210,67 +185,9 @@ cran_package("tsibble", version = "0.2.0")
 ## [1] ">= 2.2.0"
 ## 
 ## 
-## $LinkingTo
-## $LinkingTo$Rcpp
-## [1] ">= 0.12.0"
-## 
-## 
-## $ByteCompile
-## [1] "true"
-## 
-## $VignetteBuilder
-## [1] "knitr"
-## 
-## $License
-## [1] "GPL (>= 3)"
-## 
-## $URL
-## [1] "https://pkg.earo.me/tsibble"
-## 
-## $BugReports
-## [1] "https://github.com/tidyverts/tsibble/issues"
-## 
-## $Encoding
-## [1] "UTF-8"
-## 
-## $LazyData
-## [1] "true"
-## 
-## $RoxygenNote
-## [1] "6.0.1"
-## 
-## $NeedsCompilation
-## [1] "yes"
-## 
-## $Packaged
-## [1] "2018-05-11 08:07:56 UTC; earo"
-## 
-## $Author
-## [1] "Earo Wang [aut, cre] (<https://orcid.org/0000-0001-6448-5260>),\nDi Cook [aut, ths] (<https://orcid.org/0000-0002-3813-7155>),\nRob Hyndman [aut, ths] (<https://orcid.org/0000-0002-2140-5352>),\nMitchell O'Hara-Wild [ctb]"
-## 
-## $Maintainer
-## [1] "Earo Wang <earo.wang@gmail.com>"
-## 
-## $Repository
-## [1] "CRAN"
-## 
-## $`Date/Publication`
-## [1] "2018-05-11 08:58:28 UTC"
-## 
-## $crandb_file_date
-## [1] "2018-05-11 09:02:20"
-## 
-## $MD5sum
-## [1] "7350c661bb9d48b2c16bfee8d6cc0314"
-## 
-## $date
-## [1] "2018-05-11T07:58:28+00:00"
-## 
-## $releases
-## list()
-## 
-## attr(,"class")
-## [1] "cran_package"
+## $Depends
+## $Depends$R
+## [1] ">= 3.1.3"
 ```
 
 ### When was the CRAN incoming queue closed?
@@ -333,7 +250,7 @@ pkg_search("search CRAN")
 ```
 
 ```
-## - "search CRAN" ----------------------------- 15699 packages in 0.016 seconds -
+## - "search CRAN" ----------------------------- 15699 packages in 0.015 seconds -
 ##   #     package       version   by                   @ title                   
 ##   1 100 pkgsearch     3.0.1     Gábor Csárdi       17h Search and Query CRAN...
 ##   2  63 packagefinder 0.1.5     Joachim Zuckarelli 25d Comfortable Search fo...
