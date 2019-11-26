@@ -6,7 +6,7 @@ tags:
   - pkgsearch
 ---
 
-Version 3.0.1 of the `pkgsearch` package has been [released on CRAN](https://cran.r-project.org/package=pkgsearch)! :tada: `pkgsearch` munges CRAN metadata and lets you
+We have just released version 3.0.1 of the `pkgsearch` package [on CRAN](https://cran.r-project.org/package=pkgsearch)! :tada: `pkgsearch` munges CRAN metadata and lets you
 access it through several lenses: **search packages by keyword, popularity, recent activity, package name and more.** 
 
 Get `pkgsearch`'s latest version from 
@@ -25,7 +25,7 @@ This release, compared to `pkgsearch` 2.0.0, brings
 
 * New function `advanced_search()` for more search flexibility.
 
-:mag_right: New functionality adopted from former crandb
+:mag_right: New functionality
 
 * `cran_package()`, `cran_packages()` and `cran_package_history()` functions to query metadata about certain packages.
     
@@ -45,7 +45,7 @@ You can use `pkgsearch` with an interface. See more in the video below. You can 
 
 ## Other use cases
 
-The `pkgsearch` package is the answer to many questions you might have about CRAN metadata, thanks to its exposing it through different endpoints.
+The `pkgsearch` package is the answer to many questions you might have about CRAN packages, thanks to its exposing it through different lenses.
 
 
 
@@ -63,7 +63,7 @@ pkg_search("mocking")
 ```
 
 ```
-## - "mocking" ------------------------------------- 8 packages in 0.007 seconds -
+## - "mocking" ------------------------------------- 8 packages in 0.008 seconds -
 ##   #     package   version by                         @ title                   
 ##  1  100 mockery   0.4.2   Jim Hester                3M Mocking Library for R   
 ##  2   43 mockr     0.1     Kirill Müller             3y Mocking in R            
@@ -79,131 +79,210 @@ pkg_search("mocking")
 
 <!--html_preserve-->{{% tweet "1186667832718876673" %}}<!--/html_preserve-->
 
-YES, we know!  :grin: :raised_hand: So say we want to query the dependencies of `igraph`, we can use `cran_package_history()` for that.
+YES, we know!  :grin: :raised_hand: So say we want to query the dependencies of `tsibble`, we can use `cran_package_history()` for that.
 
 
 ```r
 library("magrittr")
-cran_package_history("igraph")[, c("Package", "Version", "dependencies")] %>%
+cran_package_history("tsibble")[, c("Package", "Version", "dependencies")] %>%
   tidyr::unnest(dependencies)
 ```
 
 ```
-## # A tibble: 373 x 5
-##    Package Version type     package version
-##    <chr>   <chr>   <chr>    <chr>   <chr>  
-##  1 igraph  0.3.1   Suggests stats4  *      
-##  2 igraph  0.3.1   Suggests rgl     *      
-##  3 igraph  0.3.2   Suggests stats4  *      
-##  4 igraph  0.3.2   Suggests rgl     *      
-##  5 igraph  0.3.3   Suggests stats4  *      
-##  6 igraph  0.3.3   Suggests rgl     *      
-##  7 igraph  0.4     Suggests stats4  *      
-##  8 igraph  0.4     Suggests rgl     *      
-##  9 igraph  0.4     Depends  stats   *      
-## 10 igraph  0.4.1   Suggests stats4  *      
-## # … with 363 more rows
+## # A tibble: 447 x 5
+##    Package Version type    package    version  
+##    <chr>   <chr>   <chr>   <chr>      <chr>    
+##  1 tsibble 0.1.0   Depends R          >= 3.1.3 
+##  2 tsibble 0.1.0   Imports rlang      *        
+##  3 tsibble 0.1.0   Imports tidyr      *        
+##  4 tsibble 0.1.0   Imports purrr      *        
+##  5 tsibble 0.1.0   Imports tibble     >= 1.4.1 
+##  6 tsibble 0.1.0   Imports pillar     >= 1.0.1 
+##  7 tsibble 0.1.0   Imports lubridate  *        
+##  8 tsibble 0.1.0   Imports dplyr      >= 0.7.3 
+##  9 tsibble 0.1.0   Imports Rcpp       >= 0.12.3
+## 10 tsibble 0.1.0   Imports tidyselect *        
+## # … with 437 more rows
 ```
 
-Or of one particular version of `igraph`, then we can run `cran_packages()` (or `cran_package()` with its `version` argument, that returns a list).
+Or of one particular version of `tsibble`, then we can run `cran_packages()` (or `cran_package()` with its `version` argument, that returns a list).
 
 
 ```r
-cran_packages("igraph@0.5.1")
+cran_packages("tsibble@0.2.0")
 ```
 
 ```
-## # A tibble: 1 x 13
-##   Package Version Date  Title Author Maintainer Description License URL  
-##   <chr>   <chr>   <chr> <chr> <chr>  <chr>      <chr>       <chr>   <chr>
-## 1 igraph  0.5.1   Feb … Rout… Gabor… Gabor Csa… Routines f… GPL (>… http…
-## # … with 4 more variables: Packaged <chr>, crandb_file_date <chr>, date <chr>,
-## #   dependencies <list>
+## # A tibble: 1 x 25
+##   Package Type  Title Version Date  `Authors@R` Description ByteCompile
+##   <chr>   <chr> <chr> <chr>   <chr> <chr>       <chr>       <chr>      
+## 1 tsibble Pack… Tidy… 0.2.0   2018… "c(\nperso… "Provides … true       
+## # … with 17 more variables: VignetteBuilder <chr>, License <chr>, URL <chr>,
+## #   BugReports <chr>, Encoding <chr>, LazyData <chr>, RoxygenNote <chr>,
+## #   NeedsCompilation <chr>, Packaged <chr>, Author <chr>, Maintainer <chr>,
+## #   Repository <chr>, `Date/Publication` <chr>, crandb_file_date <chr>,
+## #   MD5sum <chr>, date <chr>, dependencies <list>
 ```
 
 ```r
-cran_package("igraph", version = "0.5.1")
+cran_package("tsibble", version = "0.2.0")
 ```
 
 ```
 ## $Package
-## [1] "igraph"
+## [1] "tsibble"
 ## 
-## $Version
-## [1] "0.5.1"
-## 
-## $Date
-## [1] "Feb 14, 2008"
+## $Type
+## [1] "Package"
 ## 
 ## $Title
-## [1] "Routines for simple graphs, network analysis."
+## [1] "Tidy Temporal Data Frames and Tools"
 ## 
-## $Author
-## [1] "Gabor Csardi <csardi@rmki.kfki.hu>"
+## $Version
+## [1] "0.2.0"
 ## 
-## $Maintainer
-## [1] "Gabor Csardi <csardi@rmki.kfki.hu>"
+## $Date
+## [1] "2018-05-11"
+## 
+## $`Authors@R`
+## [1] "c(\nperson(\"Earo\", \"Wang\", email = \"earo.wang@gmail.com\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0001-6448-5260\")),\nperson(\"Di\", \"Cook\", role = c(\"aut\", \"ths\"), comment = c(ORCID = \"0000-0002-3813-7155\")),\nperson(\"Rob\", \"Hyndman\", role = c(\"aut\", \"ths\"), comment = c(ORCID = \"0000-0002-2140-5352\")),\nperson(\"Mitchell\", \"O'Hara-Wild\", role = c(\"ctb\"))\n)"
 ## 
 ## $Description
-## [1] "Routines for simple graphs and network analysis. igraph can<U+000a>handle large graphs very well and provides functions for generating random<U+000a>and regular graphs, graph visualization, centrality indices and much more."
-## 
-## $License
-## [1] "GPL (>= 2)"
-## 
-## $URL
-## [1] "http://cneurocvs.rmki.kfki.hu/igraph"
-## 
-## $Packaged
-## [1] "Sat Jul 12 12:44:04 2008; csardi"
-## 
-## $crandb_file_date
-## [1] "2008-07-12 14:35:05"
-## 
-## $Suggests
-## $Suggests$stats4
-## [1] "*"
-## 
-## $Suggests$rgl
-## [1] "*"
-## 
-## $Suggests$tcltk
-## [1] "*"
-## 
-## $Suggests$RSQLite
-## [1] "*"
-## 
-## $Suggests$digest
-## [1] "*"
-## 
-## $Suggests$graph
-## [1] "*"
-## 
-## $Suggests$Matrix
-## [1] "*"
-## 
+## [1] "Provides a 'tbl_ts' class (the 'tsibble') to store and manage\ntemporal-context data in a data-centric format, which is built on top of\nthe 'tibble'. The 'tsibble' aims at easily manipulating and analysing temporal\ndata, including counting and filling time gaps, aggregate over calendar periods,\nperforming rolling window calculations, and etc."
 ## 
 ## $Depends
-## $Depends$stats
+## $Depends$R
+## [1] ">= 3.1.3"
+## 
+## 
+## $Imports
+## $Imports$rlang
+## [1] ">= 0.2.0"
+## 
+## $Imports$tidyr
+## [1] "*"
+## 
+## $Imports$purrr
+## [1] ">= 0.2.3"
+## 
+## $Imports$tibble
+## [1] ">= 1.4.1"
+## 
+## $Imports$pillar
+## [1] ">= 1.0.1"
+## 
+## $Imports$lubridate
+## [1] "*"
+## 
+## $Imports$dplyr
+## [1] ">= 0.7.3"
+## 
+## $Imports$Rcpp
+## [1] ">=\n0.12.3"
+## 
+## $Imports$tidyselect
 ## [1] "*"
 ## 
 ## 
+## $Suggests
+## $Suggests$knitr
+## [1] "*"
+## 
+## $Suggests$rmarkdown
+## [1] "*"
+## 
+## $Suggests$testthat
+## [1] "*"
+## 
+## $Suggests$covr
+## [1] "*"
+## 
+## $Suggests$hts
+## [1] "*"
+## 
+## $Suggests$hms
+## [1] "*"
+## 
+## $Suggests$nycflights13
+## [1] "*"
+## 
+## $Suggests$ggplot2
+## [1] ">= 2.2.0"
+## 
+## 
+## $LinkingTo
+## $LinkingTo$Rcpp
+## [1] ">= 0.12.0"
+## 
+## 
+## $ByteCompile
+## [1] "true"
+## 
+## $VignetteBuilder
+## [1] "knitr"
+## 
+## $License
+## [1] "GPL (>= 3)"
+## 
+## $URL
+## [1] "https://pkg.earo.me/tsibble"
+## 
+## $BugReports
+## [1] "https://github.com/tidyverts/tsibble/issues"
+## 
+## $Encoding
+## [1] "UTF-8"
+## 
+## $LazyData
+## [1] "true"
+## 
+## $RoxygenNote
+## [1] "6.0.1"
+## 
+## $NeedsCompilation
+## [1] "yes"
+## 
+## $Packaged
+## [1] "2018-05-11 08:07:56 UTC; earo"
+## 
+## $Author
+## [1] "Earo Wang [aut, cre] (<https://orcid.org/0000-0001-6448-5260>),\nDi Cook [aut, ths] (<https://orcid.org/0000-0002-3813-7155>),\nRob Hyndman [aut, ths] (<https://orcid.org/0000-0002-2140-5352>),\nMitchell O'Hara-Wild [ctb]"
+## 
+## $Maintainer
+## [1] "Earo Wang <earo.wang@gmail.com>"
+## 
+## $Repository
+## [1] "CRAN"
+## 
+## $`Date/Publication`
+## [1] "2018-05-11 08:58:28 UTC"
+## 
+## $crandb_file_date
+## [1] "2018-05-11 09:02:20"
+## 
+## $MD5sum
+## [1] "7350c661bb9d48b2c16bfee8d6cc0314"
+## 
 ## $date
-## [1] "2008-07-12T16:44:04+00:00"
+## [1] "2018-05-11T07:58:28+00:00"
 ## 
 ## $releases
-## [1] "2.7.2" "2.8.0" "2.8.1"
+## list()
 ## 
 ## attr(,"class")
 ## [1] "cran_package"
 ```
 
-### When was CRAN incoming queue closed?
+### When was the CRAN incoming queue closed?
 
 From time to time [CRAN incoming queue is closed](https://stat.ethz.ch/pipermail/r-package-devel/2019q3/004242.html), for instance earlier this year from August 9 to August 18. Can we see that in the data?
 
 
+
+
 ```r
 library("ggplot2")
+
 cran_events <- cran_events(limit = 5000)
 events_df <- tibble::tibble(
   date = anytime::anytime(purrr::map_chr(cran_events, "date")),
@@ -254,7 +333,7 @@ pkg_search("search CRAN")
 ```
 
 ```
-## - "search CRAN" ----------------------------- 15699 packages in 0.017 seconds -
+## - "search CRAN" ----------------------------- 15699 packages in 0.016 seconds -
 ##   #     package       version   by                   @ title                   
 ##   1 100 pkgsearch     3.0.1     Gábor Csárdi       17h Search and Query CRAN...
 ##   2  63 packagefinder 0.1.5     Joachim Zuckarelli 25d Comfortable Search fo...
