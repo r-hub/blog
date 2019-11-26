@@ -1,12 +1,12 @@
 ---
 title: Search and discover CRAN packages with pkgsearch!
-date: '2019-10-29'
+date: '2019-10-26'
 slug: pkgsearch
 tags:
   - pkgsearch
 ---
 
-Version 3.0.1 of the `pkgsearch` package has been [released on CRAN](https://cran.r-project.org/package=pkgsearch)! `pkgsearch` munges CRAN metadata and lets you
+Version 3.0.1 of the `pkgsearch` package has been [released on CRAN](https://cran.r-project.org/package=pkgsearch)! :tada: `pkgsearch` munges CRAN metadata and lets you
 access it through several lenses: **search packages by keyword, popularity, recent activity, package name and more.** 
 
 Get `pkgsearch`'s latest version from 
@@ -39,9 +39,9 @@ That's... a lot! Let's have some fun with the package.
 
 ## Explore packages in a GUI
 
-SCREENCAST ONCE ADDIN FIXED. Show all tabs!
+You can use `pkgsearch` with an interface. See more in the video below. You can also launch the interface in a browser without RStudio, [refer to the addin docs](https://r-hub.github.io/pkgsearch/reference/pkg_search_addin.html).
 
-Use case for search, Wikidata, amazon, aws.
+<!--html_preserve-->{{% vimeo "375618736" %}}<!--/html_preserve-->
 
 ## Other use cases
 
@@ -67,19 +67,19 @@ pkg_search("mocking")
 ##   #     package   version by                         @ title                   
 ##  1  100 mockery   0.4.2   Jim Hester                3M Mocking Library for R   
 ##  2   43 mockr     0.1     Kirill Müller             3y Mocking in R            
-##  3   19 crul      0.9.0   Scott Chamberlain        13d HTTP Client             
-##  4   14 fakemake  1.5.0   Andreas Dominik Cullmann 15d Mock the Unix Make Ut...
+##  3   19 crul      0.9.0   Scott Chamberlain        20d HTTP Client             
+##  4   14 fakemake  1.5.0   Andreas Dominik Cullmann 22d Mock the Unix Make Ut...
 ##  5    9 httptest  3.2.2   Neal Richardson           1y A Test Environment fo...
 ##  6    4 spongebob 0.4.0   Jay Qi                    9M SpongeBob-Case Conver...
 ##  7    0 vcr       0.3.0   Scott Chamberlain         3M Record 'HTTP' Calls t...
-##  8    0 webmockr  0.4.0   Scott Chamberlain         3M Stubbing and Setting ...
+##  8    0 webmockr  0.4.0   Scott Chamberlain         4M Stubbing and Setting ...
 ```
 
 ### Dependencies of a package over time?
 
 <!--html_preserve-->{{% tweet "1186667832718876673" %}}<!--/html_preserve-->
 
-YES, we know! :nerd: :raised_hand: So say we want to query the dependencies of `igraph`, we can use `cran_package_history()` for that.
+YES, we know!  :grin: :raised_hand: So say we want to query the dependencies of `igraph`, we can use `cran_package_history()` for that.
 
 
 ```r
@@ -228,7 +228,7 @@ ggplot(events_df) +
           subtitle = "Data obtained via the R-hub pkgsearch R package")
 ```
 
-<img src="/post/2019-11-29-pkgsearch_files/figure-html/cranvacay-1.png" width="672" />
+<img src="/post/2019-11-26-pkgsearch_files/figure-html/cranvacay-1.png" width="672" />
 
 So yes, we do see the CRAN (well-deserved!) break in the data! 
 
@@ -243,7 +243,7 @@ Without surprise `pkgsearch` is our favorite CRAN metadata munger since it is _o
 
 ## Conclusion
 
-In this post we gave an overview of `pkgsearch` functionalities. It could become your go-to packages for searching and exploring CRAN packages thanks to its exposing CRAN metadata in different ways: packages related to a keyword, trending packages, information about a package, etc. And you can use it either from the R console or a GUI!
+In this post we gave an overview of `pkgsearch` functionalities. It could become your go-to package for searching and exploring CRAN packages thanks to its exposing CRAN metadata in different ways: packages related to a keyword, trending packages, information about a package, etc. And you can use it either from the R console or a GUI!
 
 The best place to get to know `pkgsearch` is [its brand-new documentation website built with `pkgdown`](https://r-hub.github.io/pkgsearch), and the best place to provide feedback or contribute is [its GitHub repo](https://github.com/r-hub/pkgsearch). We look forward to hearing from your use cases, and hope your enthusiasm for the package can push it to the `cran_trending()` VIP list! :wink:
 
@@ -254,10 +254,10 @@ pkg_search("search CRAN")
 ```
 
 ```
-## - "search CRAN" ----------------------------- 15676 packages in 0.023 seconds -
+## - "search CRAN" ------------------------------ 15699 packages in 0.02 seconds -
 ##   #     package       version   by                   @ title                   
-##   1 100 pkgsearch     3.0.0     Gábor Csárdi        5d Search and Query CRAN...
-##   2  63 packagefinder 0.1.5     Joachim Zuckarelli 18d Comfortable Search fo...
+##   1 100 pkgsearch     3.0.1     Gábor Csárdi       17h Search and Query CRAN...
+##   2  63 packagefinder 0.1.5     Joachim Zuckarelli 25d Comfortable Search fo...
 ##   3  62 CRANsearcher  1.0.0     Agustin Calatroni   2y RStudio Addin for Sea...
 ##   4  55 RWsearch      4.6.2     Patrice Kiener      3M Lazy Search in R Pack...
 ##   5  20 XML           3.98.1.20 ORPHANED            6M Tools for Parsing and...

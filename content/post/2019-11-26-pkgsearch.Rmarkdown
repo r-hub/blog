@@ -1,12 +1,12 @@
 ---
 title: Search and discover CRAN packages with pkgsearch!
-date: '2019-10-29'
+date: '2019-10-26'
 slug: pkgsearch
 tags:
   - pkgsearch
 ---
 
-Version 3.0.1 of the `pkgsearch` package has been [released on CRAN](https://cran.r-project.org/package=pkgsearch)! `pkgsearch` munges CRAN metadata and lets you
+Version 3.0.1 of the `pkgsearch` package has been [released on CRAN](https://cran.r-project.org/package=pkgsearch)! :tada: `pkgsearch` munges CRAN metadata and lets you
 access it through several lenses: **search packages by keyword, popularity, recent activity, package name and more.** 
 
 Get `pkgsearch`'s latest version from 
@@ -39,9 +39,11 @@ That's... a lot! Let's have some fun with the package.
 
 ## Explore packages in a GUI
 
-SCREENCAST ONCE ADDIN FIXED. Show all tabs!
+You can use `pkgsearch` with an interface. See more in the video below. You can also launch the interface in a browser without RStudio, [refer to the addin docs](https://r-hub.github.io/pkgsearch/reference/pkg_search_addin.html).
 
-Use case for search, Wikidata, amazon, aws.
+```{r addin, echo = FALSE}
+blogdown::shortcode("vimeo", "375618736")
+```
 
 ## Other use cases
 
@@ -66,7 +68,7 @@ pkg_search("mocking")
 blogdown::shortcode("tweet", "1186667832718876673")
 ```
 
-YES, we know! :nerd: :raised_hand: So say we want to query the dependencies of `igraph`, we can use `cran_package_history()` for that.
+YES, we know!  :grin: :raised_hand: So say we want to query the dependencies of `igraph`, we can use `cran_package_history()` for that.
 
 ```{r igraph1}
 library("magrittr")
@@ -125,7 +127,7 @@ Without surprise `pkgsearch` is our favorite CRAN metadata munger since it is _o
 
 ## Conclusion
 
-In this post we gave an overview of `pkgsearch` functionalities. It could become your go-to packages for searching and exploring CRAN packages thanks to its exposing CRAN metadata in different ways: packages related to a keyword, trending packages, information about a package, etc. And you can use it either from the R console or a GUI!
+In this post we gave an overview of `pkgsearch` functionalities. It could become your go-to package for searching and exploring CRAN packages thanks to its exposing CRAN metadata in different ways: packages related to a keyword, trending packages, information about a package, etc. And you can use it either from the R console or a GUI!
 
 The best place to get to know `pkgsearch` is [its brand-new documentation website built with `pkgdown`](https://r-hub.github.io/pkgsearch), and the best place to provide feedback or contribute is [its GitHub repo](https://github.com/r-hub/pkgsearch). We look forward to hearing from your use cases, and hope your enthusiasm for the package can push it to the `cran_trending()` VIP list! :wink:
 
