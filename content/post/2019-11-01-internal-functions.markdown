@@ -213,7 +213,7 @@ visNetwork(nodes, edges, height = "500px") %>%
 
 <!--html_preserve--><iframe src="/cranlogs-2019-11-01.html" width="100%" height="500px"></iframe><!--/html_preserve-->
 
-In this interactive visualization one sees three exported functions (triangles), with only one that calls internal functions.Such a network visualization might not be that useful for bigger packages, and in our workflow is limited to `pkgapi`'s capabilities (e.g. not memoised functions)... but it's at least quite pretty.
+In this interactive visualization one sees three exported functions (triangles), with only one that calls internal functions. Such a network visualization might not be that useful for bigger packages, and in our workflow is limited to `pkgapi`'s capabilities (e.g. not memoised functions)... but it's at least quite pretty.
 
 ### Explore internal functions across packages
 

@@ -172,7 +172,7 @@ htmltools::tags$iframe(src = paste0("/", filename),
 
 ```
 
-In this interactive visualization one sees three exported functions (triangles), with only one that calls internal functions.Such a network visualization might not be that useful for bigger packages, and in our workflow is limited to `pkgapi`'s capabilities (e.g. not memoised functions)... but it's at least quite pretty.
+In this interactive visualization one sees three exported functions (triangles), with only one that calls internal functions. Such a network visualization might not be that useful for bigger packages, and in our workflow is limited to `pkgapi`'s capabilities (e.g. not memoised functions)... but it's at least quite pretty.
 
 ### Explore internal functions across packages
 
