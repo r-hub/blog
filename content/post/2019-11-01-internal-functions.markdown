@@ -93,6 +93,16 @@ is_one <- function(x) {
 
 The keyword `@keyword internal` would mean [a manual page is created but not present in the function index](https://roxygen2.r-lib.org/articles/rd.html#indexing). A confusing aspect is that you could use it for an *exported, not internal* function you don't want to be too visible, e.g. a function returning the default app for OAuth in a package wrapping a web API.
 
+```r
+#' A function rather aimed at developers
+#' @description A function that does blabla, blabla.
+#' @keywords internal
+#' @export
+does_thing <- function(){
+ message("I am an exported function")
+}
+```
+
 ## Explore internal functions
 
 You might need to have a look at the guts of a package when wanting to contribute to it, or at the guts of several packages to get some inspiration for your code.
