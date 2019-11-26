@@ -29,7 +29,7 @@ usethis:::base_and_recommended()
 
 There are at least these two reasons:
 
-* In a package you want to provide your user an API that is useful and stable. You can vouch for a few functions, that work well, serve the package main goals, are documented enough, and that you'd only change[with great care](https://devguide.ropensci.org/evolution.html) [if need be](https://ropensci.org/blog/2019/04/30/qualtrics-relaunch/). If your package users rely of an internal function that you decide to ditch when re-factoring code, they won't be happy, so only export what you want to maintain.
+* In a package you want to provide your user an API that is useful and stable. You can vouch for a few functions, that work well, serve the package main goals, are documented enough, and that you'd only change [with great care](https://devguide.ropensci.org/evolution.html) [if need be](https://ropensci.org/blog/2019/04/30/qualtrics-relaunch/). If your package users rely of an internal function that you decide to ditch when re-factoring code, they won't be happy, so only export what you want to maintain.
 
 * If all packages exposed all their internal functions, the user environment would be flooded and the namespace conflicts would be out of control.
 
