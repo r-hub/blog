@@ -73,7 +73,7 @@ There is a balance to be found between writing your own helpers for everything a
 
 ### Where to put internal functions?
 
-You could save internal functions used in one function only in the R file defining that function, and internal functions used in several other functions in a single utils.R file or specialized utils-dates.R, utils-encoding.R files.
+You could save internal functions used in one function only in the R file defining that function, and internal functions used in several other functions in a single utils.R file or specialized utils-dates.R, utils-encoding.R files. Choose a system that helps you and your collaborators find the internal functions easily, R will never have trouble finding them. :wink:
 
 Another possible approach to helper functions when used in several packages is to pack them up in a package such as [Yihui Xie's `xfun`](https://github.com/yihui/xfun). So then they're no longer internal functions. :dizzy_face: 
 
