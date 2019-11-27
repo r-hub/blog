@@ -197,7 +197,7 @@ internal_calls <- internal_calls %>%
   dplyr::mutate(to = gsub("cranlogs\\:\\:", "", to))
 
 nodes <- tibble::tibble(id = map$defs$name,
-                        title = map$defs$name,
+                        title = map$defs$file,
                         label = map$defs$name,
                         shape = dplyr::if_else(map$defs$exported,
                                                "triangle",
