@@ -115,6 +115,6 @@ Note that you could do the same for the BugReports field.
 
 ## Conclusion
 
-In this note, we explained why having URLs in DESCRIPTION of your package can help users and contributors finding the right venues for their needs, and we had a look at URLs currently stored in the DESCRIPTIONs of CRAN packages, underlining the current domination of GitHub. How do _you_ ensure the users of your package can find its best online home? How do you look for online homes of the packages you use?
+In this note, we explained why having URLs in DESCRIPTION of your package can help users and contributors find the right venues for their needs, and we had a look at URLs currently stored in the DESCRIPTIONs of CRAN packages, underlining the current domination of GitHub. How do _you_ ensure the users of your package can find its best online home? How do you look for online homes of the packages you use?
 
 

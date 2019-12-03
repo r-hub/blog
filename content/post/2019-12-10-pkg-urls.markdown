@@ -8,7 +8,7 @@ tags:
 
 
 
-Among DESCRIPTION usual fields is the free-text URL field where the package authors can store various links to the development website, docs, upstream tool, etc. In this post, we shall explain why URLs in DESCRIPTION is important, where else you should add URLs and what kind of URLs are stored in CRAN packages these days.
+Among DESCRIPTION usual fields is the free-text URL field where the package authors can store various links to the development website, docs, upstream tool, etc. In this post, we shall explain why storing URLs in DESCRIPTION is important, where else you should add URLs and what kind of URLs are stored in CRAN packages these days.
 
 ## Why put URLs in DESCRIPTION?
 
@@ -48,14 +48,126 @@ Have you used any of your package's URLs?
 
 * In the slides of [your talk about the package](https://www.tidyverse.org/blog/2018/07/carpe-talk/)?
 
-Don't miss any opportunity!
+Don't miss any opportunity to point users and contributors in the right direction!
 
 ## What URLs in DESCRIPTION files of CRAN packages?
 
+In the following, we shall parse the URL field of the CRAN packages database.
 
+
+```r
+db <- tools::CRAN_package_db()
+
+db <- tibble::as_tibble(db[, c("Package", "URL")])
+db <- dplyr::distinct(db)
+nrow(db)
+```
+
+```
+## [1] 15300
+```
+
+```r
+sum(is.na(db$URL))
+```
+
+```
+## [1] 8041
+```
+
+
+```r
+db <- db[!is.na(db$URL),]
+
+library("magrittr")
+
+# function from https://github.com/r-hub/pkgsearch/blob/26c4cc24b9296135b6238adc7631bc5250509486/R/addin.R#L490-L496
+
+url_regex <- function() "(https?://[^\\s,;>]+)"
+
+find_urls <- function(txt) {
+  mch <- gregexpr(url_regex(), txt, perl = TRUE)
+  res <- regmatches(txt, mch)[[1]]
+
+  if(length(res) == 0) {
+    return(list(NULL))
+  } else {
+    list(unique(res))
+  }
+}
+
+db %>%
+  dplyr::group_by(Package)  %>%
+  dplyr::mutate(actual_url = find_urls(URL))%>%
+  dplyr::ungroup() %>%
+  tidyr::unnest(actual_url) %>%
+  dplyr::group_by(Package, actual_url) %>%
+  dplyr::mutate(url_parts = list(urltools::url_parse(actual_url))) %>%
+  dplyr::ungroup() %>%
+  tidyr::unnest(url_parts) %>%
+  dplyr::mutate(scheme = trimws(scheme)) -> parsed_db
+```
+
+
+```r
+dplyr::count(parsed_db, Package, sort = TRUE)
+```
+
+```
+## # A tibble: 7,192 x 2
+##    Package           n
+##    <chr>         <int>
+##  1 RcppAlgos         7
+##  2 BIFIEsurvey       5
+##  3 BigQuic           5
+##  4 dendextend        5
+##  5 PGRdup            5
+##  6 vwline            5
+##  7 ammistability     4
+##  8 augmentedRCBD     4
+##  9 dcGOR             4
+## 10 dialr             4
+## # … with 7,182 more rows
+```
+
+
+```r
+dplyr::count(parsed_db, scheme, sort = TRUE)
+```
+
+```
+## # A tibble: 2 x 2
+##   scheme     n
+##   <chr>  <int>
+## 1 https   5910
+## 2 http    2496
+```
+
+```r
+dplyr::count(parsed_db, domain, sort = TRUE)
+```
+
+```
+## # A tibble: 1,855 x 2
+##    domain                    n
+##    <chr>                 <int>
+##  1 github.com             4660
+##  2 www.r-project.org       164
+##  3 cran.r-project.org      143
+##  4 r-forge.r-project.org    82
+##  5 bitbucket.org            67
+##  6 sites.google.com         54
+##  7 arxiv.org                52
+##  8 gitlab.com               44
+##  9 docs.ropensci.org        38
+## 10 www.github.com           32
+## # … with 1,845 more rows
+```
+
+Note that you could do the same for the BugReports field.
 
 ## Conclusion
 
-In this note, we explained why having URLs in DESCRIPTION of your package can help users and contributors finding the right venues for their needs, and we had a look at URLs currently stored in the DESCRIPTIONs of CRAN packages, underlining the current domination of GitHub. How do _you_ ensure the users of your package can find its best online home? How do you look for online homes of the packages you use?
+In this note, we explained why having URLs in DESCRIPTION of your package can help users and contributors find the right venues for their needs, and we had a look at URLs currently stored in the DESCRIPTIONs of CRAN packages, underlining the current domination of GitHub. How do _you_ ensure the users of your package can find its best online home? How do you look for online homes of the packages you use?
 
 
