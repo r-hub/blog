@@ -12,9 +12,9 @@ An R package can be viewed as a [set of functions](https://github.com/ropensci/s
 
 ### What is an internal function? 
 
-It's a function that lives in your package, but that isn't surfaced to the user. You could also call it unexported function or helper function; as opposed to exported functions and user-facing functions.
+It's a function that lives in your package, but that isn't surfaced to the user. You could also call it unexported function or helper function; as opposed to [exported functions](https://r-pkgs.org/namespace.html#exports) and user-facing functions.
 
-For instance, in the usethis package there's a `base_and_recommended()` function.
+For instance, in the usethis package there's a `base_and_recommended()` function that is not exported.
 
 ```{r examples, error = TRUE}
 # doesn't work
@@ -37,9 +37,9 @@ There are at least these two reasons:
 
 Why write internal functions instead of having everything in one block of code inside each exported functions?
 
-When writing R code in general [there are several reasons to write functions](https://r4ds.had.co.nz/functions.html) and it is the same within R packages: you can re-use a bit of code in several places (e.g. an epoch converter used for the output of several endpoints from a web API), and you can give it a self-explaining name (e.g. `convert_epoch()`). 
+When writing R code in general [there are several reasons to write functions](https://r4ds.had.co.nz/functions.html) and it is the same within R packages: you can re-use a bit of code in several places (e.g. an epoch converter used for the output of several endpoints from a web API), and you can give it a self-explaining name (e.g. `convert_epoch()`). Any function defined in your package is usable by other functions of your package (unless it is defined _inside_ a function of your package, in which case only that parent function can use it).
 
-Having internal functions also means you can test these bits of code on their own. That said [if you test internals too much re-factoring your code will mean breaking tests so you might want to focus testing on external functions](https://r-pkgs.org/tests.html).
+Having internal functions also means you can test these bits of code on their own. That said [if you test internals too much re-factoring your code will mean breaking tests](https://r-pkgs.org/tests.html).
 
 To find blocks of code that could be replaced with a function used several times, you could use [the `dupree` package](https://cran.r-project.org/web/packages/dupree/index.html) whose planned enhancements [include highlighting or printing the similar blocks](https://github.com/russHyde/dupree/issues/48).
 

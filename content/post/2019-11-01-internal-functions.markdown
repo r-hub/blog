@@ -12,9 +12,9 @@ An R package can be viewed as a [set of functions](https://github.com/ropensci/s
 
 ### What is an internal function? 
 
-It's a function that lives in your package, but that isn't surfaced to the user. You could also call it unexported function or helper function; as opposed to exported functions and user-facing functions.
+It's a function that lives in your package, but that isn't surfaced to the user. You could also call it unexported function or helper function; as opposed to [exported functions](https://r-pkgs.org/namespace.html#exports) and user-facing functions.
 
-For instance, in the usethis package there's a `base_and_recommended()` function.
+For instance, in the usethis package there's a `base_and_recommended()` function that is not exported.
 
 
 ```r
@@ -61,9 +61,9 @@ There are at least these two reasons:
 
 Why write internal functions instead of having everything in one block of code inside each exported functions?
 
-When writing R code in general [there are several reasons to write functions](https://r4ds.had.co.nz/functions.html) and it is the same within R packages: you can re-use a bit of code in several places (e.g. an epoch converter used for the output of several endpoints from a web API), and you can give it a self-explaining name (e.g. `convert_epoch()`). 
+When writing R code in general [there are several reasons to write functions](https://r4ds.had.co.nz/functions.html) and it is the same within R packages: you can re-use a bit of code in several places (e.g. an epoch converter used for the output of several endpoints from a web API), and you can give it a self-explaining name (e.g. `convert_epoch()`). Any function defined in your package is usable by other functions of your package (unless it is defined _inside_ a function of your package, in which case only that parent function can use it).
 
-Having internal functions also means you can test these bits of code on their own. That said [if you test internals too much re-factoring your code will mean breaking tests so you might want to focus testing on external functions](https://r-pkgs.org/tests.html).
+Having internal functions also means you can test these bits of code on their own. That said [if you test internals too much re-factoring your code will mean breaking tests](https://r-pkgs.org/tests.html).
 
 To find blocks of code that could be replaced with a function used several times, you could use [the `dupree` package](https://cran.r-project.org/web/packages/dupree/index.html) whose planned enhancements [include highlighting or printing the similar blocks](https://github.com/russHyde/dupree/issues/48).
 
@@ -132,9 +132,9 @@ str(map$defs)
 ## 'data.frame':	8 obs. of  7 variables:
 ##  $ name    : chr  "check_date" "cran_downloads" "cran_top_downloads" "cranlogs_badge" ...
 ##  $ file    : chr  "R/utils.R" "R/cranlogs.R" "R/cranlogs.R" "R/badge.R" ...
-##  $ line1   : int  1 61 183 16 136 104 116 125
+##  $ line1   : int  1 61 184 16 137 105 117 126
 ##  $ col1    : int  1 1 1 1 1 1 1 1
-##  $ line2   : int  6 102 206 33 152 114 123 134
+##  $ line2   : int  6 103 208 33 153 115 124 135
 ##  $ col2    : int  1 1 1 1 1 1 1 1
 ##  $ exported: logi  FALSE TRUE TRUE TRUE FALSE FALSE ...
 ```
@@ -147,7 +147,7 @@ str(map$calls)
 ```
 
 ```
-## 'data.frame':	82 obs. of  9 variables:
+## 'data.frame':	84 obs. of  9 variables:
 ##  $ file : chr  "R/badge.R" "R/badge.R" "R/badge.R" "R/badge.R" ...
 ##  $ from : chr  "cranlogs_badge" "cranlogs_badge" "cranlogs_badge" "cranlogs_badge" ...
 ##  $ to   : chr  "base::c" "base::match.arg" "base::paste0" "base::paste0" ...
@@ -174,10 +174,10 @@ internal_calls %>%
 ##           file           from                      to type line1 line2 col1
 ## 1 R/cranlogs.R cran_downloads    cranlogs::check_date call    69    69    7
 ## 2 R/cranlogs.R cran_downloads    cranlogs::check_date call    73    73    7
-## 3 R/cranlogs.R        to_df_1 cranlogs::fill_in_dates call   122   122    3
-## 4 R/cranlogs.R cran_downloads         cranlogs::to_df call   100   100    3
-## 5 R/cranlogs.R          to_df       cranlogs::to_df_1 call   108   108    5
-## 6 R/cranlogs.R          to_df       cranlogs::to_df_r call   106   106    5
+## 3 R/cranlogs.R        to_df_1 cranlogs::fill_in_dates call   123   123    3
+## 4 R/cranlogs.R cran_downloads         cranlogs::to_df call   101   101    3
+## 5 R/cranlogs.R          to_df       cranlogs::to_df_1 call   109   109    5
+## 6 R/cranlogs.R          to_df       cranlogs::to_df_r call   107   107    5
 ##   col2           str
 ## 1   16    check_date
 ## 2   16    check_date
