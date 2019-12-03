@@ -1,0 +1,61 @@
+{{ partial "header.html" . }}
+
+<main class="content" role="main">
+
+  <article class="article">
+    {{ if eq .Section "post" }}
+    <span class="article-duration">{{ .ReadingTime }} min read</span>
+    
+    {{ end }}
+
+    <h1 class="article-title">{{ .Title }}</h1>
+
+    {{ if eq .Section "post" }}
+    <span class="article-date">{{ .Date.Format "2006/01/02" }}</span>
+    {{ end }}
+      <!--this adds github edit button to all posts-->
+{{ if $.File.Path }}
+
+{{ $Rmd := (print $.File.BaseFileName ".Rmarkdown") }}
+
+{{ if (where (readDir (print "content/" $.File.Dir)) "Name" $Rmd) }}
+  {{ $.Scratch.Set "FilePath" (print $.File.Dir $Rmd) }}
+{{ else }}
+  {{ $.Scratch.Set "FilePath" $.File.Path }}
+{{ end }}
+
+  {{ with $.Site.Params.githubsource }}  
+  <span class="article-date">
+    {{ partial "fontawesome.html" "github" }}
+    <a href="{{ . }}{{ $.Scratch.Get "FilePath" }}" target="_blank">Amend source</a>&nbsp</span>{{ else }}@{{ . }}
+ 
+  {{ end }}
+{{ end }}
+<!--end github edit code-->
+
+  <div class="container">
+    <div class="row">
+    <div class="article-content col-sm-8 position-relative">
+      {{ .Content }}
+    </div>
+    <div class = "col-sm-4 toc" id = "sidebar">
+      {{.TableOfContents}}
+      </div>
+    </div>
+    </div>
+  </article>
+
+  {{ partial "disqus.html" .}}
+
+</main>
+
+<script src="https://utteranc.es/client.js"
+        repo="r-hub/blog"
+        issue-term="title"
+        label="comments :speech_balloon:"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+{{ partial "footer.html" . }}
