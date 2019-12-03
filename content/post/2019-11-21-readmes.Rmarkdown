@@ -371,7 +371,29 @@ To create the README, you can use either [`usethis::use_readme_rmd()` (for an R 
 
 #### Re-use of Rmd portions in other Rmds
 
-Then, instead of writing everything in one .Rmd and then copying entire sections of it in a vignette, you can re-use Rmd chunks as explained in [this blog post by Garrick Aden-Buie presenting an idea by Brodie Gaslam](https://www.garrickadenbuie.com/blog/dry-vignette-and-readme/).
+Then, instead of writing everything in one .Rmd and then copying entire sections of it in a vignette, you can re-use Rmd chunks as explained in [this blog post by Garrick Aden-Buie presenting an idea by Brodie Gaslam](https://www.garrickadenbuie.com/blog/dry-vignette-and-readme/). Compared to that blog post, we recommend keeping re-usable Rmd pieces in man/rmdhunks/ so that they're available to build vignettes. In the vignettes, use
+
+````markdown
+
+```{r child='../man/rmdhunks/child.Rmd'} `r ''`
+```
+
+````
+
+In the README, use
+
+````markdown
+
+```{r child='man/rmdhunks/child.Rmd'} `r ''`
+```
+
+````
+
+In the R files use
+
+```r
+#' @includeRmd man/rmdhunks/child.Rmd
+```
 
 #### Re-use of Rmd portions in manual pages
 

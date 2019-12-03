@@ -46,7 +46,7 @@ In the Art of README, noffle [includes a checklist](https://github.com/noffle/ar
 
 ### Sampling READMEs
 
-We shall start by merging the lists of top downloaded and trending CRAN packages one can obtain using [`pkgsearch`](https://github.com/r-hub/pkgsearch/).
+We shall start by merging the lists of top downloaded and trending CRAN packages one can obtain using [`pkgsearch`](https://r-hub.github.io/pkgsearch/).
 
 
 ```r
@@ -56,7 +56,7 @@ top <- pkgsearch::cran_top_downloaded()
 pkglist <- unique(c(trending[["package"]], top[["package"]]))
 ```
 
-This is a list of 198 package names, including igraph0, dplyr.teradata, fable, feasts, fabletools and AzureGraph. Then, again with `pkgsearch`, we'll extract their metadata, before keeping only those that have a GitHub README. More arbitrary choices. :grimacing:
+This is a list of 184 package names, including effectsize, Copula.Markov, leaflet.providers, farver, renv and httptest. Then, again with `pkgsearch`, we'll extract their metadata, before keeping only those that have a GitHub README. More arbitrary choices. :grimacing:
 
 
 ```r
@@ -77,17 +77,17 @@ str(meta)
 ```
 
 ```
-## Classes 'tbl_df', 'tbl' and 'data.frame':	121 obs. of  7 variables:
-##  $ Package: chr  "dplyr.teradata" "AzureGraph" "fastmap" "mltools" ...
-##  $ Title  : chr  "A 'Teradata' Backend for 'dplyr'" "Simple Interface to 'Microsoft Graph'" "Fast Implementation of a Key-Value Store" "Machine Learning Tools" ...
+## Classes 'tbl_df', 'tbl' and 'data.frame':	122 obs. of  7 variables:
+##  $ Package: chr  "effectsize" "leaflet.providers" "farver" "httptest" ...
+##  $ Title  : chr  "Indices of Effect Size and Standardized Parameters" "Leaflet Providers" "High Performance Colour Space Manipulation" "A Test Environment for HTTP Requests" ...
 ##  $ Date   : chr  NA NA NA NA ...
-##  $ Version: chr  "0.3.2" "1.1.0" "1.0.1" "0.3.5" ...
-##  $ URL    : chr  "https://github.com/hoxo-m/dplyr.teradata" "https://github.com/Azure/AzureGraph\nhttps://github.com/Azure/AzureR" "https://github.com/r-lib/fastmap" "https://github.com/ben519/mltools" ...
-##  $ owner  : chr  "hoxo-m" "Azure" "r-lib" "ben519" ...
-##  $ repo   : chr  "dplyr.teradata" "AzureGraph\nhttps:" "fastmap" "mltools" ...
+##  $ Version: chr  "0.0.1" "1.9.0" "2.0.1" "3.2.2" ...
+##  $ URL    : chr  "https://github.com/easystats/effectsize" "https://github.com/rstudio/leaflet.providers" "https://github.com/thomasp85/farver" "https://github.com/nealrichardson/httptest" ...
+##  $ owner  : chr  "easystats" "rstudio" "thomasp85" "nealrichardson" ...
+##  $ repo   : chr  "effectsize" "leaflet.providers" "farver" "httptest" ...
 ```
 
-At this point we have 121 packages with 121 unique GitHub repo URLs, pfiew.
+At this point we have 122 packages with 122 unique GitHub repo URLs, pfiew.
 
 We'll then extract their [preferred README from GitHub V3 API](https://developer.github.com/v3/repos/contents/#get-the-readme). Some of them won't even have one so we'll lose them from the sample. 
 
@@ -124,7 +124,7 @@ readmes <- purrr::map2_df(.x = meta$owner, .y = meta$repo,
                           .f = get_readme)
 ```
 
-The `readmes` data.frame has 114 lines so we lost a few more packages. 
+The `readmes` data.frame has 117 lines so we lost a few more packages. 
 
 ### Assessing README size
 
@@ -146,7 +146,7 @@ readmes <- dplyr::group_by(readmes, owner, repo) %>%
   dplyr::ungroup()
 ```
 
-How long are usual READMEs? Their number of lines range from 4 to 715 with a median of 84.
+How long are usual READMEs? Their number of lines range from 2 to 1426 with a median of 85.
 
 
 ```r
@@ -203,26 +203,26 @@ readmes$xml_readme[[1]]
 ```
 ## {xml_document}
 ## <document>
-##  [1] <html_block xml:space="preserve">&lt;!-- README.md is generated fro ...
-##  [2] <heading level="1">\n  <text xml:space="preserve">A Teradata Backen ...
-##  [3] <heading level="4">\n  <emph>\n    <text xml:space="preserve">Koji  ...
-##  [4] <html_block xml:space="preserve">&lt;!-- badges: start --&gt;\n</ht ...
-##  [5] <paragraph>\n  <link destination="https://travis-ci.org/hoxo-m/dply ...
-##  [6] <html_block xml:space="preserve">&lt;!-- badges: end --&gt;\n</html ...
-##  [7] <heading level="2">\n  <text xml:space="preserve">1 Overview</text> ...
-##  [8] <paragraph>\n  <text xml:space="preserve">The package provides a Te ...
-##  [9] <paragraph>\n  <text xml:space="preserve">It makes it possible to o ...
-## [10] <code_block info="r" xml:space="preserve">library(dplyr.teradata)\n ...
-## [11] <heading level="2">\n  <text xml:space="preserve">2 Installation</t ...
-## [12] <paragraph>\n  <text xml:space="preserve">You can install the </tex ...
-## [13] <code_block info="r" xml:space="preserve">install.packages("dplyr.t ...
-## [14] <paragraph>\n  <text xml:space="preserve">You can also install the  ...
-## [15] <code_block info="r" xml:space="preserve">install.packages("devtool ...
-## [16] <paragraph>\n  <text xml:space="preserve">The source code for </tex ...
-## [17] <list type="bullet" tight="true">\n  <item>\n    <paragraph>\n      ...
-## [18] <heading level="2">\n  <text xml:space="preserve">3 Details</text>\ ...
-## [19] <paragraph>\n  <text xml:space="preserve">The package provides a Te ...
-## [20] <paragraph>\n  <text xml:space="preserve">Therefore, you can comple ...
+##  [1] <heading level="1">\n  <text xml:space="preserve">effectsize </text>\n   ...
+##  [2] <paragraph>\n  <link destination="https://cran.r-project.org/package=eff ...
+##  [3] <paragraph>\n  <emph>\n    <strong>\n      <text xml:space="preserve">Si ...
+##  [4] <paragraph>\n  <text xml:space="preserve">The goal of this package is to ...
+##  [5] <heading level="2">\n  <text xml:space="preserve">Installation</text>\n< ...
+##  [6] <paragraph>\n  <text xml:space="preserve">Run the following:</text>\n</p ...
+##  [7] <code_block info="r" xml:space="preserve">install.packages("devtools")\n ...
+##  [8] <code_block info="r" xml:space="preserve">library("effectsize")\n</code_ ...
+##  [9] <heading level="2">\n  <text xml:space="preserve">Documentation</text>\n ...
+## [10] <paragraph>\n  <link destination="https://easystats.github.io/effectsize ...
+## [11] <paragraph>\n  <text xml:space="preserve">Click on the buttons above to  ...
+## [12] <list type="bullet" tight="true">\n  <item>\n    <paragraph>\n      <lin ...
+## [13] <heading level="1">\n  <text xml:space="preserve">Features</text>\n</hea ...
+## [14] <paragraph>\n  <text xml:space="preserve">This package is focused on ind ...
+## [15] <heading level="2">\n  <text xml:space="preserve">Effect Size Computatio ...
+## [16] <heading level="3">\n  <text xml:space="preserve">Basic Indices (Cohen’s ...
+## [17] <paragraph>\n  <text xml:space="preserve">The package provides functions ...
+## [18] <code_block info="r" xml:space="preserve">cohens_d(iris$Sepal.Length, ir ...
+## [19] <heading level="3">\n  <text xml:space="preserve">ANOVAs (Eta</text>\n   ...
+## [20] <code_block info="r" xml:space="preserve">model &lt;- aov(Sepal.Length ~ ...
 ## ...
 ```
 
@@ -248,7 +248,7 @@ loc <- readmes %>%
   dplyr::summarise(loc = get_code_lines(xml_readme[[1]]))
 ```
 
-The number of lines of code of READMEs range from 0 (for 28 READMEs) to 41 with a median of 2. The README with the most lines of code is https://github.com/r-lib/ps.
+The number of lines of code of READMEs range from 0 (for 31 READMEs) to 41 with a median of 2. The README with the most lines of code is https://github.com/r-lib/ps.
 
 What about words in text?
 
@@ -273,7 +273,7 @@ get_wordcount <- function(xml, package) {
   dplyr::summarise(wordcount = get_wordcount(xml_readme[[1]]))
 ```
 
-The number of words in READMEs range from 14 to 1622 with a median of 280.5. The READMEs with respectively the most words and least words are https://github.com/jonclayden/ore and https://github.com/rstudio/htmltools.
+The number of words in READMEs range from 13 to 2105 with a median of 278. The READMEs with respectively the most words and least words are https://github.com/jonclayden/RNifti and https://github.com/jvbraun/AlgDesign.
 
 The README size might depend on the package interface size itself, i.e. a package with a single function/dataset probably doesn't warrant many lines. Beyond a certain interface size or complexity, one might want to make it easier on potential users by breaking up documentation into smaller articles, instead of showing all there is in one page. 
 
@@ -314,17 +314,21 @@ structure$structure[42][[1]]
 ```
 
 ```
-## # A tibble: 8 x 3
-##   text                                 position level
-##   <chr>                                   <int> <chr>
-## 1 Rcpp: Seamless R and C++ Integration        1 2    
-## 2 Synopsis                                    2 3    
-## 3 Documentation                               3 3    
-## 4 Examples                                    4 3    
-## 5 Installation                                5 3    
-## 6 Support                                     6 3    
-## 7 Authors                                     7 3    
-## 8 License                                     8 3
+## # A tibble: 12 x 3
+##    text                                      position level
+##    <chr>                                        <int> <chr>
+##  1 Creating Pretty Documents From R Markdown        1 2    
+##  2 Themes for R Markdown                            2 3    
+##  3 The prettydoc Engine                             3 3    
+##  4 Options and Themes                               4 3    
+##  5 Offline Math Expressions                         5 3    
+##  6 Related Projects                                 6 3    
+##  7 Gallery                                          7 3    
+##  8 Cayman (demo page)                               8 4    
+##  9 Tactile (demo page)                              9 4    
+## 10 Architect (demo page)                           10 4    
+## 11 Leonids (demo page)                             11 4    
+## 12 HPSTR (demo page)                               12 4
 ```
 
 We wrote an ugly long function to visualize the structure of any of the sampled READMEs, inspired by not ugly code in [`fs`](https://github.com/r-lib/fs/blob/master/R/tree.R).
@@ -396,41 +400,22 @@ print_readme_structure(structure$structure[42][[1]])
 ```
 
 ```
-##    └─ Rcpp: Seamless R and C++ Integration
-##       ├── Synopsis
-##       ├── Documentation
-##       ├── Examples
-##       ├── Installation
-##       ├── Support
-##       ├── Authors
-##       └── License
+##    └─ Creating Pretty Documents From R Markdown
+##       ├── Themes for R Markdown
+##       ├── The prettydoc Engine
+##       ├── Options and Themes
+##       ├── Offline Math Expressions
+##       ├── Related Projects
+##       └── Gallery
+##          ├─── Cayman (demo page)
+##          ├─── Tactile (demo page)
+##          ├─── Architect (demo page)
+##          ├─── Leonids (demo page)
+##          └─── HPSTR (demo page)
 ```
 
 ```r
 print_readme_structure(structure$structure[7][[1]])
-```
-
-```
-## waffle
-##    ├─ Description
-##    ├─ What’s Inside the Tin
-##    ├─ Installation
-##    ├─ Usage
-##       ├── Some new bits up first
-##       ├── Geoms!
-##       ├── Waffle Bar Charts with scales!
-##       ├── Basic example
-##       ├── Use a data frame
-##       ├── Slightly more complex example
-##       ├── Replicating an old favourite
-##       ├── More replication
-##       └── Keeps factor by default levels now
-##    ├─ Package Code Metrics
-##    └─ Code of Conduct
-```
-
-```r
-print_readme_structure(structure$structure[1][[1]])
 ```
 
 ```
@@ -450,6 +435,25 @@ print_readme_structure(structure$structure[1][[1]])
 ##    └─ 4 Related work
 ```
 
+```r
+print_readme_structure(structure$structure[1][[1]])
+```
+
+```
+## effectsize <img src='man/figures/logo.png' align="right" height="139" />
+##    ├─ Installation
+##    └─ Documentation
+## Features
+##    ├─ Effect Size Computation
+##       ├── Basic Indices (Cohen’s d, Hedges’ g, Glass’ delta)
+##       ├── ANOVAs (Eta<sup>2</sup>, Omega<sup>2</sup>, …)
+##       └── Regression Models
+##    ├─ Effect Size Interpretation
+##    ├─ Effect Size Conversion
+##    └─ Standardization
+##       └── Data standardization, normalization and rank-transformation
+```
+
 What are the most common headers?
 
 
@@ -463,19 +467,18 @@ structure %>%
 
 
 
-|text                |  n|
-|:-------------------|--:|
-|Installation        | 87|
-|Usage               | 47|
-|Overview            | 26|
-|License             | 16|
-|Code of Conduct     | 15|
-|Cheatsheet          | 10|
-|Features            |  8|
-|Example             |  7|
-|Development version |  6|
-|Examples            |  5|
-|Getting help        |  5|
+|text            |  n|
+|:---------------|--:|
+|Installation    | 85|
+|Usage           | 45|
+|Overview        | 23|
+|Code of Conduct | 17|
+|License         | 15|
+|Example         | 10|
+|Cheatsheet      |  9|
+|Features        |  9|
+|Getting help    |  5|
+|Related work    |  5|
 
 This seems to be quite in line with noffle's checklist (e.g. having installation instructions). Headers related to the background and to examples might have a title specific to the package, in which case they don't appear in the table above.
 
@@ -497,7 +500,29 @@ To create the README, you can use either [`usethis::use_readme_rmd()` (for an R 
 
 #### Re-use of Rmd portions in other Rmds
 
-Then, instead of writing everything in one .Rmd and then copying entire sections of it in a vignette, you can re-use Rmd chunks as explained in [this blog post by Garrick Aden-Buie presenting an idea by Brodie Gaslam](https://www.garrickadenbuie.com/blog/dry-vignette-and-readme/).
+Then, instead of writing everything in one .Rmd and then copying entire sections of it in a vignette, you can re-use Rmd chunks as explained in [this blog post by Garrick Aden-Buie presenting an idea by Brodie Gaslam](https://www.garrickadenbuie.com/blog/dry-vignette-and-readme/). Compared to that blog post, we recommend keeping re-usable Rmd pieces in man/rmdhunks/ so that they're available to build vignettes. In the vignettes, use
+
+````markdown
+
+```{r child='../man/rmdhunks/child.Rmd'} 
+```
+
+````
+
+In the README, use
+
+````markdown
+
+```{r child='man/rmdhunks/child.Rmd'} 
+```
+
+````
+
+In the R files use
+
+```r
+#' @includeRmd man/rmdhunks/child.Rmd
+```
 
 #### Re-use of Rmd portions in manual pages
 
