@@ -42,7 +42,7 @@ For the same reasons as previously, you should make the most of all places that 
 
 * in the GitHub repo URL field, or the equivalent for your development platform?
 
-Have you used any of your package's URLs?
+Have you used any of your package's URLs
 
 * In your public message about your package, e.g. as an answer to someone's question?
 
