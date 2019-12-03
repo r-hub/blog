@@ -48,7 +48,7 @@ Other parts of a pitch are good talk fodder, blog post introductions, vignette s
 
 ## What is a good README
 
-In the Art of README, noffle [includes a checklist](https://github.com/noffle/art-of-readme#bonus-the-readme-checklist); and rOpenSci dev guide [features guidance about the README](https://devguide.ropensci.org/building.html#readme). Now, what about good READMEs in the wild? In this section, we'll have a look at a small sample of READMEs. 
+In the Art of README, noffle [includes a checklist](https://github.com/noffle/art-of-readme#bonus-the-readme-checklist); and the rOpenSci dev guide [features guidance about the README](https://devguide.ropensci.org/building.html#readme). Now, what about good READMEs in the wild? In this section, we'll have a look at a small sample of READMEs. 
 
 ### Sampling READMEs
 
@@ -82,7 +82,7 @@ str(meta)
 
 At this point we have `r nrow(meta)` packages with `r length(unique(meta$URL))` unique GitHub repo URLs, pfiew.
 
-We'll then extract their [preferred README from GitHub V3 API](https://developer.github.com/v3/repos/contents/#get-the-readme). Some of them won't even have one so we'll lose them from the sample. 
+We'll then extract their [preferred README from the GitHub V3 API](https://developer.github.com/v3/repos/contents/#get-the-readme). Some of them won't even have one so we'll lose them from the sample. 
 
 ```{r, get-readmes}
 
@@ -97,8 +97,9 @@ get_readme <- function(owner, repo){
   }
   
   lines <- suppressWarnings(
-    readLines(readme$download_url
-              )
+    readLines(
+      readme$download_url
+      )
     )
   
   if (length(lines) == 1){
@@ -207,7 +208,7 @@ loc <- readmes %>%
 
 ```
 
-The number of lines of code of READMEs range from `r min(loc$loc)` (for `r sum(loc$loc == min(loc$loc))` READMEs) to `r max(loc$loc)` with a median of `r median(loc$loc)`. The README with the most lines of code is `r glue::glue("https://github.com/{loc$owner[loc$loc == max(loc$loc)]}/{loc$repo[loc$loc == max(loc$loc)]}")`.
+The number of lines of code of READMEs range from `r min(loc$loc)` (for `r sum(loc$loc == min(loc$loc))` READMEs) to `r max(loc$loc)` with a median of `r median(loc$loc)`. The README with the most lines of code is `r glue::glue("https://github.com/{loc$owner[loc$loc == max(loc$loc)]}/{loc$repo[loc$loc == max(loc$loc)]}#readme")`.
 
 What about words in text?
 
@@ -232,7 +233,7 @@ get_wordcount <- function(xml, package) {
 
 ``` 
 
-The number of words in READMEs range from `r min(words$wordcount)` to `r max(words$wordcount)` with a median of `r median(words$wordcount)`. The READMEs with respectively the most words and least words are `r glue::glue("https://github.com/{words$owner[words$wordcount == max(words$wordcount)]}/{words$repo[words$wordcount == max(words$wordcount)]}")` and `r glue::glue("https://github.com/{words$owner[words$wordcount == min(words$wordcount)]}/{words$repo[words$wordcount == min(words$wordcount)]}")`.
+The number of words in READMEs range from `r min(words$wordcount)` to `r max(words$wordcount)` with a median of `r median(words$wordcount)`. The READMEs with respectively the most words and least words are `r glue::glue("https://github.com/{words$owner[words$wordcount == max(words$wordcount)]}/{words$repo[words$wordcount == max(words$wordcount)]}#readme")` and `r glue::glue("https://github.com/{words$owner[words$wordcount == min(words$wordcount)]}/{words$repo[words$wordcount == min(words$wordcount)]}#readme")`.
 
 The README size might depend on the package interface size itself, i.e. a package with a single function/dataset probably doesn't warrant many lines. Beyond a certain interface size or complexity, one might want to make it easier on potential users by breaking up documentation into smaller articles, instead of showing all there is in one page. 
 
@@ -399,9 +400,9 @@ In the R files use
 #' @includeRmd man/rmdhunks/child.Rmd
 ```
 
-#### Table of content
+#### Table of contents
 
-If your README is a bit long you might need to add a table of contents at the top, [as done for `cli` README](https://github.com/r-lib/cli/blob/ad6410aee086f374e974eb7e794fa0d475815320/README.Rmd#L6). In a pkgdown website, the README does not get a table of content in the sidebar, which might be an argument for keeping it small as opposed to articles that do get a table of contents in the sidebar.
+If your README is a bit long you might need to add a table of contents at the top, [as done for `pkgsearch` README](https://github.com/r-hub/pkgsearch/blob/846ccec71b4dfcc4d7a72257187320c94be8e454/README.Rmd#L5). In a pkgdown website, the README does not get a table of content in the sidebar, which might be an argument for keeping it small as opposed to articles that do get a table of contents in the sidebar.
 
 #### Hide clutter in details tags
 

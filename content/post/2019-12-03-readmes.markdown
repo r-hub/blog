@@ -42,7 +42,7 @@ Other parts of a pitch are good talk fodder, blog post introductions, vignette s
 
 ## What is a good README
 
-In the Art of README, noffle [includes a checklist](https://github.com/noffle/art-of-readme#bonus-the-readme-checklist); and rOpenSci dev guide [features guidance about the README](https://devguide.ropensci.org/building.html#readme). Now, what about good READMEs in the wild? In this section, we'll have a look at a small sample of READMEs. 
+In the Art of README, noffle [includes a checklist](https://github.com/noffle/art-of-readme#bonus-the-readme-checklist); and the rOpenSci dev guide [features guidance about the README](https://devguide.ropensci.org/building.html#readme). Now, what about good READMEs in the wild? In this section, we'll have a look at a small sample of READMEs. 
 
 ### Sampling READMEs
 
@@ -89,7 +89,7 @@ str(meta)
 
 At this point we have 122 packages with 122 unique GitHub repo URLs, pfiew.
 
-We'll then extract their [preferred README from GitHub V3 API](https://developer.github.com/v3/repos/contents/#get-the-readme). Some of them won't even have one so we'll lose them from the sample. 
+We'll then extract their [preferred README from the GitHub V3 API](https://developer.github.com/v3/repos/contents/#get-the-readme). Some of them won't even have one so we'll lose them from the sample. 
 
 
 ```r
@@ -104,8 +104,9 @@ get_readme <- function(owner, repo){
   }
   
   lines <- suppressWarnings(
-    readLines(readme$download_url
-              )
+    readLines(
+      readme$download_url
+      )
     )
   
   if (length(lines) == 1){
@@ -162,7 +163,7 @@ ggplot(readmes) +
 ```
 
 <div class="figure">
-<img src="/post/2019-1-03-readmes_files/figure-html/nolinesplot-1.png" alt="Dot plot of the number of lines in READMEs" width="672" />
+<img src="/post/2019-12-03-readmes_files/figure-html/nolinesplot-1.png" alt="Dot plot of the number of lines in READMEs" width="672" />
 <p class="caption">Figure 1: Dot plot of the number of lines in READMEs</p>
 </div>
 
@@ -248,7 +249,7 @@ loc <- readmes %>%
   dplyr::summarise(loc = get_code_lines(xml_readme[[1]]))
 ```
 
-The number of lines of code of READMEs range from 0 (for 31 READMEs) to 41 with a median of 2. The README with the most lines of code is https://github.com/r-lib/ps.
+The number of lines of code of READMEs range from 0 (for 31 READMEs) to 41 with a median of 2. The README with the most lines of code is https://github.com/r-lib/ps#readme.
 
 What about words in text?
 
@@ -273,7 +274,7 @@ get_wordcount <- function(xml, package) {
   dplyr::summarise(wordcount = get_wordcount(xml_readme[[1]]))
 ```
 
-The number of words in READMEs range from 13 to 2105 with a median of 278. The READMEs with respectively the most words and least words are https://github.com/jonclayden/RNifti and https://github.com/jvbraun/AlgDesign.
+The number of words in READMEs range from 13 to 2105 with a median of 278. The READMEs with respectively the most words and least words are https://github.com/jonclayden/RNifti#readme and https://github.com/jvbraun/AlgDesign#readme.
 
 The README size might depend on the package interface size itself, i.e. a package with a single function/dataset probably doesn't warrant many lines. Beyond a certain interface size or complexity, one might want to make it easier on potential users by breaking up documentation into smaller articles, instead of showing all there is in one page. 
 
@@ -528,9 +529,9 @@ In the R files use
 #' @includeRmd man/rmdhunks/child.Rmd
 ```
 
-#### Table of content
+#### Table of contents
 
-If your README is a bit long you might need to add a table of contents at the top, [as done for `cli` README](https://github.com/r-lib/cli/blob/ad6410aee086f374e974eb7e794fa0d475815320/README.Rmd#L6). In a pkgdown website, the README does not get a table of content in the sidebar, which might be an argument for keeping it small as opposed to articles that do get a table of contents in the sidebar.
+If your README is a bit long you might need to add a table of contents at the top, [as done for `pkgsearch` README](https://github.com/r-hub/pkgsearch/blob/846ccec71b4dfcc4d7a72257187320c94be8e454/README.Rmd#L5). In a pkgdown website, the README does not get a table of content in the sidebar, which might be an argument for keeping it small as opposed to articles that do get a table of contents in the sidebar.
 
 #### Hide clutter in details tags
 
