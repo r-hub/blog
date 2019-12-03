@@ -146,7 +146,7 @@ How long are usual READMEs? Their number of lines range from `r min(readmes$line
 library("ggplot2")
 
 ggplot(readmes) +
-  geom_dotplot(aes(lines_no), binwidth = 5) +
+  geom_histogram(aes(lines_no), binwidth = 5) +
   xlab("No. of lines") +
   scale_y_continuous(NULL, breaks = NULL) +
   hrbrthemes::theme_ipsum(base_size = 16,
