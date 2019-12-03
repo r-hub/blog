@@ -518,15 +518,15 @@ In the README, use
 
 ````
 
+#### Re-use of Rmd portions in manual pages
+
+Since `roxygen2`'s latest release, you can include md/Rmd in manual pages. What a handy thing for, say, your [package-level documentation](https://usethis.r-lib.org/reference/use_package_doc.html)! [Refer to `roxygen2`'s documentation](https://roxygen2.r-lib.org/articles/rd.html#including-external--rmd-md-files).
+
 In the R files use
 
 ```r
 #' @includeRmd man/rmdhunks/child.Rmd
 ```
-
-#### Re-use of Rmd portions in manual pages
-
-Since `roxygen2`'s latest release, you can include md/Rmd in manual pages. What a handy thing for, say, your [package-level documentation](https://usethis.r-lib.org/reference/use_package_doc.html)! [Refer to `roxygen2`'s documentation](https://roxygen2.r-lib.org/articles/rd.html#including-external--rmd-md-files).
 
 #### Table of content
 
