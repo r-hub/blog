@@ -1,6 +1,6 @@
 ---
 title: Internal functions in R packages
-date: '2019-11-01'
+date: '2019-12-04'
 slug: internal functions
 tags:
   - package development
@@ -53,7 +53,7 @@ usethis:::base_and_recommended()
 
 There are at least these two reasons:
 
-* In a package you want to provide your user an API that is useful and stable. You can vouch for a few functions, that work well, serve the package main goals, are documented enough, and that you'd only change [with great care](https://devguide.ropensci.org/evolution.html) [if need be](https://ropensci.org/blog/2019/04/30/qualtrics-relaunch/). If your package users rely of an internal function that you decide to ditch when re-factoring code, they won't be happy, so only export what you want to maintain.
+* In a package you want to provide your user an API that is useful and stable. You can vouch for a few functions, that serve the package main goals, are documented enough, and that you'd only change [with great care](https://devguide.ropensci.org/evolution.html) [if need be](https://ropensci.org/blog/2019/04/30/qualtrics-relaunch/). If your package users rely on an internal function that you decide to ditch when re-factoring code, they won't be happy, so only export what you want to maintain.
 
 * If all packages exposed all their internal functions, the user environment would be flooded and the namespace conflicts would be out of control.
 
@@ -91,7 +91,7 @@ is_one <- function(x) {
 
 ```
 
-The keyword `@keyword internal` would mean [a manual page is created but not present in the function index](https://roxygen2.r-lib.org/articles/rd.html#indexing). A confusing aspect is that you could use it for an *exported, not internal* function you don't want to be too visible, e.g. a function returning the default app for OAuth in a package wrapping a web API.
+The keyword `@keywords internal` would mean [a manual page is created but not present in the function index](https://roxygen2.r-lib.org/articles/rd.html#indexing). A confusing aspect is that you could use it for an *exported, not internal* function you don't want to be too visible, e.g. a function returning the default app for OAuth in a package wrapping a web API.
 
 ```r
 #' A function rather aimed at developers
@@ -111,9 +111,9 @@ You might need to have a look at the guts of a package when wanting to contribut
 
 Say you've started working on a new-to-you package (or resumed work on a long forgotten package of yours :wink:). How to know how it all hangs together?
 
-One first way to understand what a given helper does is looking at its code, [from within RStudio there are some useful tools for navigating functions](https://support.rstudio.com/hc/en-us/articles/200710523-Navigating-Code). You can then search for occurrences of its names across R scripts. These first two tasks are static code analysis (well unless your brain really executes R code by reading it!). Furthermore, a non static way to explore a function use [`browser()` inside it or inside functions calling it](https://resources.rstudio.com/rstudio-conf-2019/box-plots-a-case-study-in-debugging-and-perseverance).
+One first way to understand what a given helper does is looking at its code, [from within RStudio there are some useful tools for navigating functions](https://support.rstudio.com/hc/en-us/articles/200710523-Navigating-Code). You can then search for occurrences of its names across R scripts. These first two tasks are static code analysis (well unless your brain really executes R code by reading it!). Furthermore, a non static way to explore a function is to use [`browser()` inside it or inside functions calling it](https://resources.rstudio.com/rstudio-conf-2019/box-plots-a-case-study-in-debugging-and-perseverance).
 
-An useful tool is also the [in development `pkgapi` package](https://github.com/r-lib/pkgapi). Let's look at the [cranlogs source code](/2019/05/02/cranlogs-2-1-1/).
+Another useful tool is the [in development `pkgapi` package](https://github.com/r-lib/pkgapi). Let's look at the [cranlogs source code](/2019/05/02/cranlogs-2-1-1/).
 
 
 ```r
