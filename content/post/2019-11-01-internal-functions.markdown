@@ -111,7 +111,7 @@ You might need to have a look at the guts of a package when wanting to contribut
 
 Say you've started working on a new-to-you package (or resumed work on a long forgotten package of yours :wink:). How to know how it all hangs together?
 
-One first way to understand what a given helper does is looking at its code, [from within RStudio there are some useful tools for navigating functions](https://support.rstudio.com/hc/en-us/articles/200710523-Navigating-Code). You can then search for occurrences of its names across R scripts. These first two tasks are static code analysis (well unless your brain really executes R code by reading it!). Furthermore, a non static way to explore a function use [`browser()` inside it or inside functions calling it](https://resources.rstudio.com/rstudio-conf-2018/debugging-techniques-in-rstudio-amanda-gadrow).
+One first way to understand what a given helper does is looking at its code, [from within RStudio there are some useful tools for navigating functions](https://support.rstudio.com/hc/en-us/articles/200710523-Navigating-Code). You can then search for occurrences of its names across R scripts. These first two tasks are static code analysis (well unless your brain really executes R code by reading it!). Furthermore, a non static way to explore a function use [`browser()` inside it or inside functions calling it](https://resources.rstudio.com/rstudio-conf-2019/box-plots-a-case-study-in-debugging-and-perseverance).
 
 An useful tool is also the [in development `pkgapi` package](https://github.com/r-lib/pkgapi). Let's look at the [cranlogs source code](/2019/05/02/cranlogs-2-1-1/).
 
