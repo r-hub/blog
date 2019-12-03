@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE)
 ```
 
-Among DESCRIPTION usual fields is the free-text URL field where the package authors can store various links to the development website, docs, upstream tool, etc. In this post, we shall explain why URLs in DESCRIPTION is important, where else you should add URLs and what kind of URLs are stored in CRAN packages these days.
+Among DESCRIPTION usual fields is the free-text URL field where the package authors can store various links to the development website, docs, upstream tool, etc. In this post, we shall explain why storing URLs in DESCRIPTION is important, where else you should add URLs and what kind of URLs are stored in CRAN packages these days.
 
 ## Why put URLs in DESCRIPTION?
 
@@ -52,11 +52,66 @@ Have you used any of your package's URLs?
 
 * In the slides of [your talk about the package](https://www.tidyverse.org/blog/2018/07/carpe-talk/)?
 
-Don't miss any opportunity!
+Don't miss any opportunity to point users and contributors in the right direction!
 
 ## What URLs in DESCRIPTION files of CRAN packages?
 
+In the following, we shall parse the URL field of the CRAN packages database.
 
+```{r urls1}
+db <- tools::CRAN_package_db()
+
+db <- tibble::as_tibble(db[, c("Package", "URL")])
+db <- dplyr::distinct(db)
+nrow(db)
+sum(is.na(db$URL))
+```
+
+```{r urls2}
+db <- db[!is.na(db$URL),]
+
+library("magrittr")
+
+# function from https://github.com/r-hub/pkgsearch/blob/26c4cc24b9296135b6238adc7631bc5250509486/R/addin.R#L490-L496
+
+url_regex <- function() "(https?://[^\\s,;>]+)"
+
+find_urls <- function(txt) {
+  mch <- gregexpr(url_regex(), txt, perl = TRUE)
+  res <- regmatches(txt, mch)[[1]]
+
+  if(length(res) == 0) {
+    return(list(NULL))
+  } else {
+    list(unique(res))
+  }
+}
+
+db %>%
+  dplyr::group_by(Package)  %>%
+  dplyr::mutate(actual_url = find_urls(URL))%>%
+  dplyr::ungroup() %>%
+  tidyr::unnest(actual_url) %>%
+  dplyr::group_by(Package, actual_url) %>%
+  dplyr::mutate(url_parts = list(urltools::url_parse(actual_url))) %>%
+  dplyr::ungroup() %>%
+  tidyr::unnest(url_parts) %>%
+  dplyr::mutate(scheme = trimws(scheme)) -> parsed_db
+```
+
+```{r urlsno}
+dplyr::count(parsed_db, Package, sort = TRUE)
+```
+
+```{r scheme}
+dplyr::count(parsed_db, scheme, sort = TRUE)
+
+```{r domain}
+dplyr::count(parsed_db, domain, sort = TRUE)
+
+```
+
+Note that you could do the same for the BugReports field.
 
 ## Conclusion
 
