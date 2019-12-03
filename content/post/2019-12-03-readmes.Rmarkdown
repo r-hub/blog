@@ -271,7 +271,7 @@ Here's the structure of the 42th README.
 structure$structure[42][[1]]
 ```
 
-We wrote an ugly long function to visualize the structure of any of the sampled READMEs, inspired by not ugly code in [`fs`](https://github.com/r-lib/fs/blob/master/R/tree.R).
+We wrote an ugly long and imperfect function to visualize the structure of any of the sampled READMEs, inspired by not ugly and better code in [`fs`](https://github.com/r-lib/fs/blob/master/R/tree.R).
 
 <details>
 <summary>Click to see the function.</summary>
