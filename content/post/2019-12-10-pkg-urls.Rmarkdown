@@ -54,7 +54,7 @@ Have you used any of your package's URLs
 
 Don't miss any opportunity to point users and contributors in the right direction!
 
-## What URLs in DESCRIPTION files of CRAN packages?
+## What URLs do people use in DESCRIPTION files of CRAN packages?
 
 In the following, we shall parse the URL field of the CRAN packages database.
 
@@ -127,17 +127,6 @@ dplyr::count(parsed_db, domain, sort = TRUE)
 
 GitHub seems to be the most popular development platform, as least from this sample of CRAN packages that indicate an URL. It is also possible that some developers set up their own GitLab server with a own domain. 
 Many packages link to `www.r-project.org` which is not very informative, or to their own CRAN page which can be informative. 
-
-> By the way if you visit CRAN pages to get package metadata such as dependencies or reverse dependencies, you could also use [our `pkgsearch` package](/2019/11/29/pkgsearch/).
-
-```{r}
-# dependencies
-pkgsearch::cran_packages("rversions")$dependencies
-# reverse dependencies count
-pkgsearch::advanced_search(Package = "rversions")$revdeps
-# reverse imports
-pkgsearch::advanced_search(Imports = "rversions")$package
-```
 
 Other relatively popular domains are sites.google.com and arxiv.org. There are problably links to other venues for scientific publications than arxiv.org. What about doi.org? 
 
