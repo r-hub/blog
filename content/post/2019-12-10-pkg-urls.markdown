@@ -30,7 +30,7 @@ Why put URLs in DESCRIPTION?
 
 * Other tools such as [`helpdesk`](https://github.com/yonicd/helpdesk) and the [`pkgsearch` RStudio addin](https://r-hub.github.io/pkgsearch/reference/index.html#section-rstudio-addin) can help surface the URLs you store in DESCRIPTION.
 
-* Indirectly, having a link to the docs website and development repo will increLuseful comments in this discussion](https://community.rstudio.com/t/pkgdown-site-seo/26706), so potential users and contributors find them more easily by simply searching for your package.
+* Indirectly, having a link to the docs website and development repo will increase their page rank, [see useful comments in this discussion](https://community.rstudio.com/t/pkgdown-site-seo/26706), so potential users and contributors find them more easily by simply searching for your package.
 
 > Quick tip, you can add GitHub URLs (URL and BugReports) to DESCRIPTION by running [`usethis::use_github_links()`](https://usethis.r-lib.org/reference/use_github_links.html). :rocket:
 
