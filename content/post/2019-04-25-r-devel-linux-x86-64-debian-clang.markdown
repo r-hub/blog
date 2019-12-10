@@ -11,7 +11,7 @@ In this post, we shall introduce CRAN checks in general and use the recent chang
 
 # CRAN checks 101
 
-All CRAN packages are _R CMD Check_-ed regularly on 12 CRAN platforms called [_CRAN Package Check Flavors_](https://cran.r-project.org/web/checks/check_flavors.html), more platforms than at submission. The results of these checks are reported on each package's check results page, cf [e.g. `fpeek`'s one](https://cran.r-project.org/web/checks/check_results_fpeek.html). 
+All CRAN packages are _R CMD Check_-ed regularly on 12 CRAN platforms called [_CRAN Package Check Flavors_](https://cran.r-project.org/web/checks/check_flavors.htmlac), more platforms than at submission. The results of these checks are reported on each package's check results page, cf [e.g. `fpeek`'s one](https://cran.r-project.org/web/checks/check_results_fpeek.html). 
 
 ## CRAN checks failure
 
