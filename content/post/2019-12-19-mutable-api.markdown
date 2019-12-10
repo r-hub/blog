@@ -12,7 +12,9 @@ In R, most often, to change an object, you need to re-assign its new value to it
 
 ### What is mutable
 
-As explained in the [chapter "Names and values" of the Advanced R book by Hadley Wickham](https://adv-r.hadley.nz/names-values.html), in R objects are actually not mutable, because of the [copy-on-modify behaviour](https://adv-r.hadley.nz/names-values.html#copy-on-modify). Environments are mutable, they can be [modified in place](https://adv-r.hadley.nz/names-values.html#modify-in-place).
+As explained in the [chapter "Names and values" of the Advanced R book by Hadley Wickham](https://adv-r.hadley.nz/names-values.html), in R objects are actually not mutable, because of the [copy-on-modify behaviour](https://adv-r.hadley.nz/names-values.html#copy-on-modify). The book has very clear diagrams showing how a name is bound to a binding corresponding to an object. When you think you're modifying an object, a new object with a new value has been created and bound to the initial name. The original object is unchanged, it's not mutable.
+
+Environments are mutable, they can be [modified in place](https://adv-r.hadley.nz/names-values.html#modify-in-place). 
 
 ### What feels mutable
 
@@ -41,11 +43,11 @@ x
 ## [1]  1 NA
 ```
 
-One can say the code above is a bit odd.
+One can say the code above is a bit odd. This post is a collection of patterns that might feel odd. :dizzy:
 
 ### What's not mutable and doesn't feel mutable either
 
-data.frames, even with `dplyr::mutate()`: you don't write `dplyr::mutate(df, newval = 1)` to modify `df`, you need to write `df <- dplyr::mutate(df, newval = 1)`. :stuck_out_tongue_winking_eye:
+data.frames are not mutable and one doesn't feel they are, even with `dplyr::mutate()`: you don't write `dplyr::mutate(df, newcol = 1)` to modify `df`, you need to write `df <- dplyr::mutate(df, newcol = 1)`. :stuck_out_tongue_winking_eye:
 
 ## A replacement function in the urltools package
 
@@ -79,7 +81,7 @@ url
 ## [1] "https://docs.r-hub.io"
 ```
 
-The original url value is not modified, the url name is bound to a new bindings. Below we use the [`tracemem()` function](https://adv-r.hadley.nz/names-values.html#tracemem).
+The original url value is not modified, the url name is bound to a new binding. Below we use the [`tracemem()` function](https://adv-r.hadley.nz/names-values.html#tracemem).
 
 
 ```r
@@ -88,7 +90,7 @@ tracemem(url)
 ```
 
 ```
-## [1] "<0x5563b415dd40>"
+## [1] "<0x56391ed3ec98>"
 ```
 
 ```r
@@ -96,7 +98,7 @@ urltools::fragment(url) <- "intro"
 ```
 
 ```
-## tracemem[0x5563b415dd40 -> 0x5563b4db09d0]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x56391ed3ec98 -> 0x56391fd543c8]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -107,7 +109,7 @@ url
 ## [1] "https://docs.r-hub.io#intro"
 ```
 
-So how does the above work, exactly?
+So how does the above work, exactly? What's that `fragment` method?
 
 
 ```r
@@ -124,7 +126,7 @@ getMethod(urltools::"fragment<-")
 ##     }
 ##     return(set_component_f(x, 5, value, "#"))
 ## }
-## <bytecode: 0x5563b3265fd8>
+## <bytecode: 0x56391de153c0>
 ## <environment: namespace:urltools>
 ## 
 ## Signatures:
@@ -133,11 +135,80 @@ getMethod(urltools::"fragment<-")
 ## defined "ANY"
 ```
 
-Actually, the source above doesn't help us. Sure it creates a new string, but how on Earth is it the new string bound to the initial name? Well it's because the function is called `fragment<-` with an arrow at the end with a last argument called `value` which makes it a **replacement function** and the way it works is explained in [The R Language definition](https://cran.r-project.org/doc/manuals/R-lang.html#Subset-assignment) and [this StackOverflow thread](https://stackoverflow.com/questions/11563154/what-are-replacement-functions-in-r).
+Actually, reading the source above doesn't help us. Sure it creates a new string, but how on Earth is it the new string bound to the initial name? Well, it's because the function is called `fragment<-` with an arrow at the end and has a last argument called `value`, both criteria together make it a **replacement function**. Replacement functions are presented in [The R Language definition](https://cran.r-project.org/doc/manuals/R-lang.html#Subset-assignment), [this StackOverflow thread](https://stackoverflow.com/questions/11563154/what-are-replacement-functions-in-r) and [in the Advanced R book by Hadley Wickham](https://adv-r.hadley.nz/functions.html#replacement-functions).
 
 Let's create our own replacement function to make sure we got it right!
 
 
+```r
+x <- 1:5
+x
+```
+
+```
+## [1] 1 2 3 4 5
+```
+
+```r
+# function that will replace all values of x
+# with the new value
+`replace_all<-` <- function(x, value) {
+  x[seq_along(x)] <- value
+  x
+}
+
+# the argument called value is passed at the right of the arrow
+replace_all(x) <- 42
+x
+```
+
+```
+## [1] 42 42 42 42 42
+```
+
+```r
+# does it work with an equal sign
+replace_all(x) = 42
+x
+```
+
+```
+## [1] 42 42 42 42 42
+```
+
+So we've modified x, but not in place, see below the same code with `tracemem()`
+
+
+```r
+x <- 1:5
+tracemem(x)
+```
+
+```
+## [1] "<0x56391e5a2ce0>"
+```
+
+```r
+`replace_all<-` <- function(x, value) {
+  x[seq_along(x)] <- value
+  x
+}
+replace_all(x) <- 42
+```
+
+```
+## tracemem[0x56391e5a2ce0 -> 0x56391f9aee78]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x56391f9aee78 -> 0x56391f9aee28]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x56391f9aee28 -> 0x56391f9fe138]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+```
+
+```r
+x
+```
+
+```
+## [1] 42 42 42 42 42
+```
 
 ## Exposing the C API in xml2::xml_remove()
 
@@ -150,6 +221,8 @@ With `xml2` you can remove XML nodes from a tree which makes you feel the tree i
 external pointers
 
 ## R6: actually mutable objects
+
+MENTION RHUB CHECK CLASS.
 
 The [R6 class system](https://adv-r.hadley.nz/r6.html), created in R via the [R6 package](https://r6.r-lib.org/), allows to define objects that are mutable.
 
