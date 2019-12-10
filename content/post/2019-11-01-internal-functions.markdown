@@ -49,6 +49,8 @@ usethis:::base_and_recommended()
 ## [26] "survival"   "tcltk"      "tools"      "utils"
 ```
 
+As an user, you shouldn't use unexported functions of another package in your own code.
+
 ### Why not export all functions?
 
 There are at least these two reasons:
@@ -73,7 +75,7 @@ There is a balance to be found between writing your own helpers for everything a
 
 ### Where to put internal functions?
 
-You could save internal functions used in one function only in the R file defining that function, and internal functions used in several other functions in a single utils.R file or specialized utils-dates.R, utils-encoding.R files. Choose a system that helps you and your collaborators find the internal functions easily, R will never have trouble finding them. :wink:
+You could save internal functions used in one function only in the R file defining that function, and internal functions used in several other functions in a single utils.R file or specialized utils-dates.R, utils-encoding.R files. Choose a system that helps you and your collaborators find the internal functions easily, R will never have trouble finding them as long they're somewhere in the R/ directory. :wink:
 
 Another possible approach to helper functions when used in several packages is to pack them up in a package such as [Yihui Xie's `xfun`](https://github.com/yihui/xfun). So then they're no longer internal functions. :dizzy_face: 
 
@@ -88,7 +90,6 @@ You should at least add a few comments in their code as usual. Best practice rec
 is_one <- function(x) {
   x == 1
 }
-
 ```
 
 The keyword `@keywords internal` would mean [a manual page is created but not present in the function index](https://roxygen2.r-lib.org/articles/rd.html#indexing). A confusing aspect is that you could use it for an *exported, not internal* function you don't want to be too visible, e.g. a function returning the default app for OAuth in a package wrapping a web API.
@@ -109,7 +110,7 @@ You might need to have a look at the guts of a package when wanting to contribut
 
 ### Explore internal functions within a package
 
-Say you've started working on a new-to-you package (or resumed work on a long forgotten package of yours :wink:). How to know how it all hangs together?
+Say you've started working on a new-to-you package (or resumed work on a long forgotten package of yours :wink:). How to know how it all hangs together? **You can use the same methods as for debugging code, exploring code is like debugging it and vice versa!**
 
 One first way to understand what a given helper does is looking at its code, [from within RStudio there are some useful tools for navigating functions](https://support.rstudio.com/hc/en-us/articles/200710523-Navigating-Code). You can then search for occurrences of its names across R scripts. These first two tasks are static code analysis (well unless your brain really executes R code by reading it!). Furthermore, a non static way to explore a function is to use [`browser()` inside it or inside functions calling it](https://resources.rstudio.com/rstudio-conf-2019/box-plots-a-case-study-in-debugging-and-perseverance).
 
@@ -187,8 +188,6 @@ internal_calls %>%
 ```
 
 That table can help understand how a package works. One could combine that with a network visualization.
-
-
 
 ```r
 library("visNetwork")
