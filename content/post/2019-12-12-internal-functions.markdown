@@ -1,6 +1,6 @@
 ---
 title: Internal functions in R packages
-date: '2019-12-04'
+date: '2019-12-12'
 slug: internal functions
 tags:
   - package development
