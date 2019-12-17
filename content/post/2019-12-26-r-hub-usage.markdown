@@ -9,7 +9,7 @@ slug: r-hub-usage
 
 Earlier this year when launching this blog we [explained why R package developers should care about R-hub](/2019/03/26/why-care/). So, does anyone care? :wink: Yes! Let's summarize R-hub usage.
 
-## Getting the data
+## Usage data
 
 As specified in our [use terms](https://builder.r-hub.io/terms.html) we do not store user data. However we do store some usage data. In the table loaded below, emails and packages are unidentified -- but you can know whether an email or package comes up several times. 
 
@@ -125,7 +125,7 @@ So all in all, the R-hub package builder is serving more and more users and pack
 
 ## Platform usage
 
-Choosing a platform or platforms for your package check might seem daunting. Luckily we've written up [some guidance in our docs](https://docs.r-hub.io/#which-platform)
+Choosing a platform or platforms for your package check might seem daunting. Luckily we've written up [some guidance in our docs](https://docs.r-hub.io/#which-platform)!
 
 ### Platform age
 
@@ -194,3 +194,7 @@ builds %>%
 |macos-elcapitan-release     |  2942|
 
 The most frequent platforms reflect the default platforms (from R, `rhub::platforms()[1,1]` which is debian-clang-devel, from the web interface "ubuntu-gcc-release"), including the default platforms mix for `rhub::check_for_cran()` ("windows-x86_64-devel", "ubuntu-gcc-release", "fedora-clang-devel" and if the package needs compilation "linux-x86_64-rocker-gcc-san").
+
+## Conclusion
+
+In total, over time, the R-hub package builder has been used by 2405 users for 4255 packages. For comparison at the time of writing there are 15348 packages on CRAN. We hope to keep helping package developers check their packages and debug issues, thanks to the package builder, [its docs](https://docs.r-hub.io/), and this blog. Thanks to all users who notified problems and suggested enhancements via [GitHub](https://docs.r-hub.io/#pkg-dev-help) or [gitter](https://gitter.im/r-hub/community), keep your feedback and questions coming!
