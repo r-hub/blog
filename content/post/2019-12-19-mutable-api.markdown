@@ -90,7 +90,7 @@ tracemem(url)
 ```
 
 ```
-## [1] "<0x56391ed3ec98>"
+## [1] "<0x55c34b35ed70>"
 ```
 
 ```r
@@ -98,7 +98,7 @@ urltools::fragment(url) <- "intro"
 ```
 
 ```
-## tracemem[0x56391ed3ec98 -> 0x56391fd543c8]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x55c34b35ed70 -> 0x55c34bd1bca8]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -126,7 +126,7 @@ getMethod(urltools::"fragment<-")
 ##     }
 ##     return(set_component_f(x, 5, value, "#"))
 ## }
-## <bytecode: 0x56391de153c0>
+## <bytecode: 0x55c3498b9c38>
 ## <environment: namespace:urltools>
 ## 
 ## Signatures:
@@ -166,16 +166,6 @@ x
 ## [1] 42 42 42 42 42
 ```
 
-```r
-# does it work with an equal sign
-replace_all(x) = 42
-x
-```
-
-```
-## [1] 42 42 42 42 42
-```
-
 So we've modified x, but not in place, see below the same code with `tracemem()`
 
 
@@ -185,7 +175,7 @@ tracemem(x)
 ```
 
 ```
-## [1] "<0x56391e5a2ce0>"
+## [1] "<0x55c3494cfd38>"
 ```
 
 ```r
@@ -197,9 +187,9 @@ replace_all(x) <- 42
 ```
 
 ```
-## tracemem[0x56391e5a2ce0 -> 0x56391f9aee78]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x56391f9aee78 -> 0x56391f9aee28]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x56391f9aee28 -> 0x56391f9fe138]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x55c3494cfd38 -> 0x55c3494b3e18]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x55c3494b3e18 -> 0x55c3494b3eb8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x55c3494b3eb8 -> 0x55c34948d8b8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -210,35 +200,131 @@ x
 ## [1] 42 42 42 42 42
 ```
 
-## Exposing the C API in xml2::xml_remove()
+So replacement functions are a standard way to give a mutable flavour to R code. Let's move on to another mutable feel.
 
-With `xml2` you can remove XML nodes from a tree which makes you feel the tree is mutable.
+## Exposing the C API in xml2
 
-[`xml2` docs explain how one should be careful when doing so because of possible memory issues](https://xml2.r-lib.org/articles/modification.html#removing-nodes). The reasons it works this way is that it's not really R code, `xml2` gives you the C API, where you are supposed to manage memory allocation manually. 
+With `xml2` you can modify and remove XML nodes from a tree which makes you feel the tree is mutable.
 
-## processx::ps(): interfacing an external process that's actually mutable
+See for instance the code in [our blog post about READMEs](/2019/12/03/readmes/#other-size-indicators)
 
-external pointers
+```r
+xml2::xml_replace(xml2::xml_find_all(xml, "//softbreak"),
+                      xml2::read_xml("<text>\n</text>"))
+```
 
-## R6: actually mutable objects
+That code changes nodes in the `xml` object without our assigning it back to it.
 
-MENTION RHUB CHECK CLASS.
+The reasons `xml2` works this way is that the package is a binding to [the C libxml2 API](http://xmlsoft.org/), where you are supposed to manage memory allocation manually. [`xml2` does handle memory management for you](https://xml2.r-lib.org/#compared-to-the-xml-package) but [`xml2` docs explain how one should be careful when removing nodes because of possible memory issues](https://xml2.r-lib.org/articles/modification.html#removing-nodes). 
 
-The [R6 class system](https://adv-r.hadley.nz/r6.html), created in R via the [R6 package](https://r6.r-lib.org/), allows to define objects that are mutable.
+Maybe XML data in itself is unusual for you, and maybe the behaviour above is even more unusual for you, but it's a handy package, [if only to tinker with READMEs](/2019/12/03/readmes/#other-size-indicators). :grin:
 
-<!--html_preserve-->{{% tweet "1197868489442246656" %}}<!--/html_preserve-->
+## Interfacing an external process that's actually mutable in ps::ps_handle()
 
-R6 is built around environments.
+Now, speaking of objects that are actually mutable, the [`ps` package](http://ps.r-lib.org/) offers an interesting example: the `ps_handle()` function creates an object that's essentially a pointer to a system process. System processes are of course mutable, they run, then die, can be suspended, etc.
+
+In the example below we launch a system call using `processx`, create a `ps_handle` object corresponding to it i.e. just an external pointer with an S3 class, and we query its status using `ps`. 
+
+
+```r
+p <- processx::process$new("sleep", "5")
+```
+
+With such a definition, after 5 seconds the process will no longer exist. 
+
+
+```r
+p$get_pid()
+```
+
+```
+## [1] 27911
+```
+
+```r
+phandle <- ps::ps_handle(p$get_pid())
+class(phandle)
+```
+
+```
+## [1] "ps_handle"
+```
+
+```r
+phandle
+```
+
+```
+## <ps::ps_handle> PID=27911, NAME=sleep, AT=2019-12-17 15:47:57
+```
+
+```r
+ps::ps_status(phandle)
+```
+
+```
+## [1] "sleeping"
+```
+
+```r
+Sys.sleep(5)
+ps::ps_status(phandle)
+```
+
+```
+## Error: No such process, pid 27911, ???
+```
+
+This example corresponded to an object in R referring to something mutable outside of R. What about an object corresponding to something mutable outside _or inside_ of R that can be mutable? An answer is: R6 objects!
+
+## Actually mutable objects with R6
+
+The [R6 class system](https://adv-r.hadley.nz/r6.html), created in R via the [R6 package](https://r6.r-lib.org/), allows to define objects that are mutable. As written in the preamble, in R, environments are mutable, so R6 actually builds around environments. 
+
+An example of a package using R6 is `desc`. Let's create an object corresponding to the DESCRIPTION of the `rhub` package.
+
+
+```r
+rhub_desc <- desc::desc(text = readLines("https://raw.githubusercontent.com/r-hub/rhub/master/DESCRIPTION"))
+rhub_desc$get_authors()
+```
+
+```
+## [1] "Gábor Csárdi <csardi.gabor@gmail.com> [aut, cre]"                                      
+## [2] "Maëlle Salmon <maelle.salmon@yahoo.se> [aut] (<https://orcid.org/0000-0002-2815-0399>)"
+## [3] "R Consortium [fnd]"
+```
+
+```r
+rhub_desc$add_author_gh("testingjerry")
+rhub_desc$get_authors()
+```
+
+```
+## [1] "Gábor Csárdi <csardi.gabor@gmail.com> [aut, cre]"                                      
+## [2] "Maëlle Salmon <maelle.salmon@yahoo.se> [aut] (<https://orcid.org/0000-0002-2815-0399>)"
+## [3] "R Consortium [fnd]"                                                                    
+## [4] "Testing Jerry [ctb]"
+```
 
 There are downsides to using R6 [as presented in the OOP trade-offs chapter of Hadley Wickham's Advanded R book](https://adv-r.hadley.nz/oo-tradeoffs.html):
 
 > " Firstly, if you use R6 it’s very easy to create a non-idiomatic API that will feel very odd to native R users, and will have surprising pain points because of the reference semantics."
 
+Yep, the mutable aspect can feel odd, otherwise we wouldn't write a whole post about it. :wink:
+
+In the case of `desc` all methods exist both as methods and as functions, the functions operating on the DESCRIPTION of the current folder which is handy when working on a package. E.g. say you're working on a package inside its folder and want to add a contributor to DESCRIPTION, you can do
+
+```r
+desc::desc_add_author_gh("<githubhandle>")
+```
+
+so what's become mutable is the DESCRIPTION file itself via an object that's written to disk each time it's changed!
+
 ## Conclusion
 
-In this post we have shown different reasons and ways to provide a mutable _API_ to R users. As a summary, in almost all cases, when you want a mutable API, setter methods that are in fact **replacement functions** are the way to go, like `urltools`. If you need to represent an external object, that is mutable itself (e.g system process like processx or database connection, etc.), then external pointers. If you want to avoid copying for performance or other reasons, then R6.
+In this post we have shown different reasons and ways to provide a mutable _API_/interface to R users. As a summary, in almost all cases, when you want a mutable API, setter methods that are in fact **replacement functions** are the way to go, like `urltools`. If you need to represent an external object, that is mutable itself (e.g system process like processx or database connection, etc.), then external pointers. If you want to avoid copying for performance or other reasons, then R6.
 
-We recommend consulting the [Advanced R book](https://adv-r.hadley.nz) for further learning.
-
+We recommend consulting the [Advanced R book](https://adv-r.hadley.nz) for further learning. Don't hesitate to add some cases of objects that feel or are mutable in the comments below!
 
 Thanks to [Peter Meissner](https://petermeissner.de/) whose remark ["In #rstats nearly everything is immutable by default, it's the default and makes a lot of stuff very simple."](https://twitter.com/peterlovesdata/status/1198629883766857728) inspired this post.
