@@ -36,6 +36,14 @@ Why put URLs in DESCRIPTION?
 
 * Indirectly, having a link to the docs website and development repo will increase their page rank, [see useful comments in this discussion](https://community.rstudio.com/t/pkgdown-site-seo/26706), so potential users and contributors find them more easily by simply searching for your package.
 
+* __edit after [Hugo Gruson's comment](https://github.com/r-hub/blog/issues/47#issuecomment-564065538)__ *"It's also worth noting that these URLs are used by `pkgdown`:*
+
+    - *the GitHub URL is used to automatically find out the repo containing the source code, and display a handy GitHub icon which links to the repo on the right of the top navbar (with the default theme).*
+    - *the URL to the `pkgdown` website is used to crosslink to this site from other `pkgdown` websites, as [explained in this vignette](https://pkgdown.r-lib.org/articles/linking.html#across-packages), creating a decentralized mesh for documentation, instead of relying on a centralized entity such as http://rdrr.io/."*
+    
+* __edit after [Jim Hester's tweet](https://twitter.com/jimhester_/status/1204411373708611584)__ *"Another reason for URLs in DESCRIPTION, [`remotes::install_dev()`](https://remotes.r-lib.org/reference/install_dev.html) uses them to find the dev repo!"*
+
+
 > Quick tip, you can add GitHub URLs (URL and BugReports) to DESCRIPTION by running [`usethis::use_github_links()`](https://usethis.r-lib.org/reference/use_github_links.html). :rocket:
 
 ## Where else put your URLs?

@@ -32,6 +32,14 @@ Why put URLs in DESCRIPTION?
 
 * Indirectly, having a link to the docs website and development repo will increase their page rank, [see useful comments in this discussion](https://community.rstudio.com/t/pkgdown-site-seo/26706), so potential users and contributors find them more easily by simply searching for your package.
 
+* __edit after [Hugo Gruson's comment](https://github.com/r-hub/blog/issues/47#issuecomment-564065538)__ *"It's also worth noting that these URLs are used by `pkgdown`:*
+
+    - *the GitHub URL is used to automatically find out the repo containing the source code, and display a handy GitHub icon which links to the repo on the right of the top navbar (with the default theme).*
+    - *the URL to the `pkgdown` website is used to crosslink to this site from other `pkgdown` websites, as [explained in this vignette](https://pkgdown.r-lib.org/articles/linking.html#across-packages), creating a decentralized mesh for documentation, instead of relying on a centralized entity such as http://rdrr.io/."*
+    
+* __edit after [Jim Hester's tweet](https://twitter.com/jimhester_/status/1204411373708611584)__ *"Another reason for URLs in DESCRIPTION, [`remotes::install_dev()`](https://remotes.r-lib.org/reference/install_dev.html) uses them to find the dev repo!"*
+
+
 > Quick tip, you can add GitHub URLs (URL and BugReports) to DESCRIPTION by running [`usethis::use_github_links()`](https://usethis.r-lib.org/reference/use_github_links.html). :rocket:
 
 ## Where else put your URLs?
@@ -62,7 +70,7 @@ db <- tibble::as_tibble(db[, c("Package", "URL")])
 db <- dplyr::distinct(db)
 ```
 
-There are 15315 packages on CRAN at the time of writing, among which 8040 with something written in the URL field. We can parse this data.
+There are 15317 packages on CRAN at the time of writing, among which 8042 with something written in the URL field. We can parse this data.
 
 
 ```r
@@ -97,7 +105,7 @@ db %>%
   dplyr::mutate(scheme = trimws(scheme)) -> parsed_db
 ```
 
-There are 7192 with at least one valid URL.
+There are 7208 with at least one valid URL.
 
 What are the packages with most links?
 
@@ -108,7 +116,7 @@ mostlinks
 ```
 
 ```
-## # A tibble: 7,192 x 2
+## # A tibble: 7,208 x 2
 ##    Package           n
 ##    <chr>         <int>
 ##  1 RcppAlgos         7
@@ -121,7 +129,7 @@ mostlinks
 ##  8 augmentedRCBD     4
 ##  9 dcGOR             4
 ## 10 dialr             4
-## # … with 7,182 more rows
+## # … with 7,198 more rows
 ```
 
 The package with the most links in `URL` is [RcppAlgos]( https://CRAN.R-project.org/package=RcppAlgos).
@@ -137,8 +145,8 @@ dplyr::count(parsed_db, scheme, sort = TRUE)
 ## # A tibble: 2 x 2
 ##   scheme     n
 ##   <chr>  <int>
-## 1 https   5910
-## 2 http    2496
+## 1 https   5936
+## 2 http    2492
 ```
 
 There is a bit less that one third of http links.
@@ -151,20 +159,20 @@ dplyr::count(parsed_db, domain, sort = TRUE)
 ```
 
 ```
-## # A tibble: 1,855 x 2
+## # A tibble: 1,861 x 2
 ##    domain                    n
 ##    <chr>                 <int>
-##  1 github.com             4660
+##  1 github.com             4670
 ##  2 www.r-project.org       164
-##  3 cran.r-project.org      143
+##  3 cran.r-project.org      144
 ##  4 r-forge.r-project.org    82
 ##  5 bitbucket.org            67
 ##  6 sites.google.com         54
 ##  7 arxiv.org                52
-##  8 gitlab.com               44
-##  9 docs.ropensci.org        38
+##  8 gitlab.com               46
+##  9 docs.ropensci.org        39
 ## 10 www.github.com           32
-## # … with 1,845 more rows
+## # … with 1,851 more rows
 ```
 
 GitHub seems to be the most popular development platform, as least from this sample of CRAN packages that indicate an URL. It is also possible that some developers set up their own GitLab server with a own domain. 
