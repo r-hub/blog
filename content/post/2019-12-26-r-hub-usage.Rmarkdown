@@ -1,0 +1,117 @@
+---
+title: R-hub usage
+date: '2019-12-26'
+slug: r-hub-usage
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      cache = TRUE,
+                      warning = FALSE)
+```
+
+
+Earlier this year when launching this blog we [explained why R package developers should care about R-hub](/2019/03/26/why-care/). So, does anyone care? :wink: Yes! Let's summarize R-hub usage.
+
+## Getting the data
+
+As specified in our [use terms](https://builder.r-hub.io/terms.html) we do not store user data. However we do store some usage data. In the table loaded below, emails and packages are unidentified -- but you can know whether an email or package comes up several times. 
+
+```{r, echo = FALSE}
+my_not_portable_path <- "/home/maelle/Documents/R-hub/rhub-usage/rhub-builds.rds"
+```
+
+```{r}
+builds <- readRDS(my_not_portable_path)
+builds <- dplyr::mutate_at(builds, c("submitted", "started"), anytime::anytime)
+str(builds)
+```
+
+## An increase compared to last year
+
+### Towards 1,000 builds a week? 
+
+```{r usage-week, fig.cap="Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a little less than 1,000 builds a week"}
+library("ggplot2")
+library("magrittr")
+dplyr::mutate(builds, 
+             week = as.Date(cut(submitted, "week"))) %>%
+  dplyr::count(week) %>%
+ggplot(aes(week, n)) +
+  geom_point() +
+  geom_smooth() +
+  ylab("No. of buids") +
+  xlab("Time (weeks)") +
+  hrbrthemes::theme_ipsum(base_size = 16,
+                          axis_title_size = 16)
+```
+
+When plotting the weekly count of builds as below, it is quite clear that usage stepped up at the end of last year. A delayed effect of the [RStudio webinar about R-hub](https://resources.rstudio.com/the-essentials-of-data-science/r-hub-overview-ga-bor-csa-rdi)?
+
+### Number of packages built per week
+
+```{r usage-week-pkg, fig.cap="Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week"}
+dplyr::mutate(builds, 
+             week = as.Date(cut(submitted, "week"))) %>%
+  dplyr::group_by(week) %>%
+  dplyr::summarise(n = length(unique(package))) %>%
+ggplot(aes(week, n)) +
+  geom_point() +
+  ylab("No. of packages built") +
+  xlab("Time (weeks)")  +
+  geom_smooth() +
+  hrbrthemes::theme_ipsum(base_size = 16,
+                          axis_title_size = 16)
+```
+
+The number of packages built mostly follow the number of builds apart from a stagnation last year.
+
+### Number of unique users per week
+
+What about the number of users?
+
+```{r usage-week-user, fig.cap="Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a bit more than 100 users a week"}
+dplyr::mutate(builds, 
+             week = as.Date(cut(submitted, "week"))) %>%
+  dplyr::group_by(week) %>%
+  dplyr::summarise(n = length(unique(email))) %>%
+ggplot(aes(week, n)) +
+  geom_point() +
+  geom_smooth() +
+  ylab("No. of distinct email addresses") +
+  xlab("Time (weeks)") +
+  hrbrthemes::theme_ipsum(base_size = 16,
+                          axis_title_size = 16)
+```
+
+So all in all, the R-hub package builder is serving more and more users and packages.
+
+## Platform usage
+
+Choosing a platform or platforms for your package check might seem daunting. Luckily we've written up [some guidance in our docs](https://docs.r-hub.io/#which-platform)
+
+### Platform age
+
+When was each platform added to the pool?
+
+```{r}
+builds %>%
+  dplyr::group_by(platform) %>%
+  dplyr::summarise(first = as.Date(min(submitted)),
+                   last = as.Date(max(submitted))) %>%
+  dplyr::arrange(first) %>%
+  knitr::kable()
+```
+
+The youngest platforms include [r-devel-linux-x86_64-debian-clang and its special encoding](/2019/04/25/r-devel-linux-x86-64-debian-clang/), [a noLD platform](/2019/05/21/nold/), [the experimental Windows Rtools4.0 platform](https://twitter.com/rhub_/status/1102510360337268737). Most platforms are still up today, with the exception of macos-mavericks-release and macos-elcapitan-devel.
+
+### Most frequent platforms
+
+```{r}
+builds %>%
+  dplyr::count(platform, sort = TRUE) %>%
+  head(n = 7) %>%
+  knitr::kable()
+```
+
+The most frequent platforms reflect the default platforms (from R, `rhub::platforms()[1,1]` which is `r rhub::platforms()[1,1]`, from the web interface "ubuntu-gcc-release"), including the default platforms mix for `rhub::check_for_cran()` ("windows-x86_64-devel", "ubuntu-gcc-release", "fedora-clang-devel" and if the package needs compilation "linux-x86_64-rocker-gcc-san").
