@@ -90,7 +90,7 @@ tracemem(url)
 ```
 
 ```
-## [1] "<0x562e8e4a4d70>"
+## [1] "<0x55e2a9819d70>"
 ```
 
 ```r
@@ -98,7 +98,7 @@ urltools::fragment(url) <- "intro"
 ```
 
 ```
-## tracemem[0x562e8e4a4d70 -> 0x562e8ee61b58]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x55e2a9819d70 -> 0x55e2aa1d68e8]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -126,7 +126,7 @@ getMethod(urltools::"fragment<-")
 ##     }
 ##     return(set_component_f(x, 5, value, "#"))
 ## }
-## <bytecode: 0x562e8c9ffc38>
+## <bytecode: 0x55e2a7d74c38>
 ## <environment: namespace:urltools>
 ## 
 ## Signatures:
@@ -175,7 +175,7 @@ tracemem(x)
 ```
 
 ```
-## [1] "<0x562e8c615d38>"
+## [1] "<0x55e2a798ad70>"
 ```
 
 ```r
@@ -187,9 +187,9 @@ replace_all(x) <- 42
 ```
 
 ```
-## tracemem[0x562e8c615d38 -> 0x562e8c5f9e18]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x562e8c5f9e18 -> 0x562e8c5f9eb8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x562e8c5f9eb8 -> 0x562e8c5d38b8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x55e2a798ad70 -> 0x55e2a796ee18]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x55e2a796ee18 -> 0x55e2a796eeb8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x55e2a796eeb8 -> 0x55e2a79488b8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -238,7 +238,7 @@ p$get_pid()
 ```
 
 ```
-## [1] 29829
+## [1] 30307
 ```
 
 ```r
@@ -255,7 +255,7 @@ phandle
 ```
 
 ```
-## <ps::ps_handle> PID=29829, NAME=sleep, AT=2019-12-17 16:01:36
+## <ps::ps_handle> PID=30307, NAME=sleep, AT=2019-12-17 16:06:40
 ```
 
 ```r
@@ -272,7 +272,7 @@ ps::ps_status(phandle)
 ```
 
 ```
-## Error: No such process, pid 29829, ???
+## Error: No such process, pid 30307, ???
 ```
 
 This example corresponded to an object in R referring to something mutable outside of R. What about an object corresponding to something mutable outside _or inside_ of R that can be mutable? An answer is: R6 objects!
@@ -323,7 +323,7 @@ And the local DESCRIPTION file will be updated. So what's become mutable is the 
 
 ## Conclusion
 
-In this post we have shown different reasons and ways to provide a mutable _API_/interface to R users. As a summary, in almost all cases, when you want a mutable API, setter methods that are in fact **replacement functions** are the way to go, like `urltools`. If you need to represent an external object, that is mutable itself (e.g system process like processx or database connection, etc.), then external pointers. If you want to avoid copying for performance or other reasons, then R6.
+In this post we have shown different reasons and ways to provide a mutable _API_/interface to R users. As a summary, in many cases, when you want a mutable API, setter methods that are in fact **replacement functions** are the way to go, like `urltools`. If you need to represent an external object, that is mutable itself (e.g system process like processx or database connection, etc.), then external pointers. If you want to avoid copying for performance or other reasons, then R6.
 
 We recommend consulting the [Advanced R book](https://adv-r.hadley.nz) for further learning. Don't hesitate to add some cases of objects that feel or are mutable in the comments below!
 

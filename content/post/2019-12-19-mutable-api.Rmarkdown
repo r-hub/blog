@@ -177,7 +177,7 @@ And the local DESCRIPTION file will be updated. So what's become mutable is the 
 
 ## Conclusion
 
-In this post we have shown different reasons and ways to provide a mutable _API_/interface to R users. As a summary, in almost all cases, when you want a mutable API, setter methods that are in fact **replacement functions** are the way to go, like `urltools`. If you need to represent an external object, that is mutable itself (e.g system process like processx or database connection, etc.), then external pointers. If you want to avoid copying for performance or other reasons, then R6.
+In this post we have shown different reasons and ways to provide a mutable _API_/interface to R users. As a summary, in many cases, when you want a mutable API, setter methods that are in fact **replacement functions** are the way to go, like `urltools`. If you need to represent an external object, that is mutable itself (e.g system process like processx or database connection, etc.), then external pointers. If you want to avoid copying for performance or other reasons, then R6.
 
 We recommend consulting the [Advanced R book](https://adv-r.hadley.nz) for further learning. Don't hesitate to add some cases of objects that feel or are mutable in the comments below!
 
