@@ -6,10 +6,6 @@ authors:
 date: 2019-12-20
 tags:
 - package development
-# delete the line below
-# if you have no preferred image
-# for Twitter cards
-twitterImg: blog/2019/12/20/informative-title/name-of-image.png
 output: 
   html_document:
     keep_md: true
