@@ -6,7 +6,7 @@ tags:
   - package development
 ---
 
-In R, most often, to change an object, you need to re-assign its new value to it. But sometimes, things feel different because objects are mutable or it seems they are, be it in base R code or in the code of packages. Why and how provide a mutable API/interface in R code? In this blog post, we shall explore a few examples to better understand mutable APIs in R.
+In R, most often, to change an object, you need to re-assign its new value to it. But sometimes, things feel different because objects are mutable or it seems they are, be it in base R code or in the code of packages. Why and how provide a mutable API/interface in R code? In this blog post, we shall explore <s>few odd examples</s> a few examples to better understand mutable APIs in R.
 
 ## Preamble: what do we mean by mutable?
 
@@ -90,7 +90,7 @@ tracemem(url)
 ```
 
 ```
-## [1] "<0x55c70e20ad70>"
+## [1] "<0x562e8e4a4d70>"
 ```
 
 ```r
@@ -98,7 +98,7 @@ urltools::fragment(url) <- "intro"
 ```
 
 ```
-## tracemem[0x55c70e20ad70 -> 0x55c70ebc8078]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x562e8e4a4d70 -> 0x562e8ee61b58]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -126,7 +126,7 @@ getMethod(urltools::"fragment<-")
 ##     }
 ##     return(set_component_f(x, 5, value, "#"))
 ## }
-## <bytecode: 0x55c70c765c38>
+## <bytecode: 0x562e8c9ffc38>
 ## <environment: namespace:urltools>
 ## 
 ## Signatures:
@@ -175,7 +175,7 @@ tracemem(x)
 ```
 
 ```
-## [1] "<0x55c70c37bd38>"
+## [1] "<0x562e8c615d38>"
 ```
 
 ```r
@@ -187,9 +187,9 @@ replace_all(x) <- 42
 ```
 
 ```
-## tracemem[0x55c70c37bd38 -> 0x55c70c35fe18]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x55c70c35fe18 -> 0x55c70c35feb8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x55c70c35feb8 -> 0x55c70c3398b8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x562e8c615d38 -> 0x562e8c5f9e18]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x562e8c5f9e18 -> 0x562e8c5f9eb8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x562e8c5f9eb8 -> 0x562e8c5d38b8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -221,7 +221,7 @@ Maybe XML data in itself is unusual for you, and maybe the behaviour above is ev
 
 ## Interfacing an external process that's actually mutable in ps::ps_handle()
 
-Now, speaking of objects that are actually mutable, the [`ps` package](http://ps.r-lib.org/) offers an interesting example: the `ps_handle()` function creates an object that's essentially a pointer to a system process. System processes are of course mutable, they run, then die, can be suspended, etc.
+Now, speaking of objects that are actually mutable, the [`ps` package](http://ps.r-lib.org/) offers an interesting example: the [`ps_handle()`](http://ps.r-lib.org/reference/ps_handle.html) function creates an object that's essentially a pointer to a system process. System processes are of course mutable, they run, then die, can be suspended, etc.
 
 In the example below we launch a system call using `processx`, create a `ps_handle` object corresponding to it i.e. just an external pointer with an S3 class, and we query its status using `ps`. 
 
@@ -238,7 +238,7 @@ p$get_pid()
 ```
 
 ```
-## [1] 28237
+## [1] 29829
 ```
 
 ```r
@@ -255,7 +255,7 @@ phandle
 ```
 
 ```
-## <ps::ps_handle> PID=28237, NAME=sleep, AT=2019-12-17 15:49:37
+## <ps::ps_handle> PID=29829, NAME=sleep, AT=2019-12-17 16:01:36
 ```
 
 ```r
@@ -272,7 +272,7 @@ ps::ps_status(phandle)
 ```
 
 ```
-## Error: No such process, pid 28237, ???
+## Error: No such process, pid 29829, ???
 ```
 
 This example corresponded to an object in R referring to something mutable outside of R. What about an object corresponding to something mutable outside _or inside_ of R that can be mutable? An answer is: R6 objects!

@@ -6,7 +6,7 @@ tags:
   - package development
 ---
 
-In R, most often, to change an object, you need to re-assign its new value to it. But sometimes, things feel different because objects are mutable or it seems they are, be it in base R code or in the code of packages. Why and how provide a mutable API/interface in R code? In this blog post, we shall explore a few examples to better understand mutable APIs in R.
+In R, most often, to change an object, you need to re-assign its new value to it. But sometimes, things feel different because objects are mutable or it seems they are, be it in base R code or in the code of packages. Why and how provide a mutable API/interface in R code? In this blog post, we shall explore <s>few odd examples</s> a few examples to better understand mutable APIs in R.
 
 ## Preamble: what do we mean by mutable?
 
@@ -126,7 +126,7 @@ Maybe XML data in itself is unusual for you, and maybe the behaviour above is ev
 
 ## Interfacing an external process that's actually mutable in ps::ps_handle()
 
-Now, speaking of objects that are actually mutable, the [`ps` package](http://ps.r-lib.org/) offers an interesting example: the `ps_handle()` function creates an object that's essentially a pointer to a system process. System processes are of course mutable, they run, then die, can be suspended, etc.
+Now, speaking of objects that are actually mutable, the [`ps` package](http://ps.r-lib.org/) offers an interesting example: the [`ps_handle()`](http://ps.r-lib.org/reference/ps_handle.html) function creates an object that's essentially a pointer to a system process. System processes are of course mutable, they run, then die, can be suspended, etc.
 
 In the example below we launch a system call using `processx`, create a `ps_handle` object corresponding to it i.e. just an external pointer with an S3 class, and we query its status using `ps`. 
 
