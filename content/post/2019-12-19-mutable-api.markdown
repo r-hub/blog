@@ -90,7 +90,7 @@ tracemem(url)
 ```
 
 ```
-## [1] "<0x55c34b35ed70>"
+## [1] "<0x55c70e20ad70>"
 ```
 
 ```r
@@ -98,7 +98,7 @@ urltools::fragment(url) <- "intro"
 ```
 
 ```
-## tracemem[0x55c34b35ed70 -> 0x55c34bd1bca8]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x55c70e20ad70 -> 0x55c70ebc8078]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -126,7 +126,7 @@ getMethod(urltools::"fragment<-")
 ##     }
 ##     return(set_component_f(x, 5, value, "#"))
 ## }
-## <bytecode: 0x55c3498b9c38>
+## <bytecode: 0x55c70c765c38>
 ## <environment: namespace:urltools>
 ## 
 ## Signatures:
@@ -175,7 +175,7 @@ tracemem(x)
 ```
 
 ```
-## [1] "<0x55c3494cfd38>"
+## [1] "<0x55c70c37bd38>"
 ```
 
 ```r
@@ -187,9 +187,9 @@ replace_all(x) <- 42
 ```
 
 ```
-## tracemem[0x55c3494cfd38 -> 0x55c3494b3e18]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x55c3494b3e18 -> 0x55c3494b3eb8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x55c3494b3eb8 -> 0x55c34948d8b8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x55c70c37bd38 -> 0x55c70c35fe18]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x55c70c35fe18 -> 0x55c70c35feb8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x55c70c35feb8 -> 0x55c70c3398b8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -238,7 +238,7 @@ p$get_pid()
 ```
 
 ```
-## [1] 27911
+## [1] 28237
 ```
 
 ```r
@@ -255,7 +255,7 @@ phandle
 ```
 
 ```
-## <ps::ps_handle> PID=27911, NAME=sleep, AT=2019-12-17 15:47:57
+## <ps::ps_handle> PID=28237, NAME=sleep, AT=2019-12-17 15:49:37
 ```
 
 ```r
@@ -272,7 +272,7 @@ ps::ps_status(phandle)
 ```
 
 ```
-## Error: No such process, pid 27911, ???
+## Error: No such process, pid 28237, ???
 ```
 
 This example corresponded to an object in R referring to something mutable outside of R. What about an object corresponding to something mutable outside _or inside_ of R that can be mutable? An answer is: R6 objects!
@@ -319,7 +319,7 @@ In the case of `desc` all methods exist both as methods and as functions, the fu
 desc::desc_add_author_gh("<githubhandle>")
 ```
 
-so what's become mutable is the DESCRIPTION file itself via an object that's written to disk each time it's changed!
+And the local DESCRIPTION file will be updated. So what's become mutable is the DESCRIPTION file itself via an object that's written to disk each time it's changed!
 
 ## Conclusion
 

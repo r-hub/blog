@@ -173,7 +173,7 @@ In the case of `desc` all methods exist both as methods and as functions, the fu
 desc::desc_add_author_gh("<githubhandle>")
 ```
 
-so what's become mutable is the DESCRIPTION file itself via an object that's written to disk each time it's changed!
+And the local DESCRIPTION file will be updated. So what's become mutable is the DESCRIPTION file itself via an object that's written to disk each time it's changed!
 
 ## Conclusion
 
