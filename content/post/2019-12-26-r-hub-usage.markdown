@@ -193,7 +193,7 @@ builds %>%
 |windows-x86_64-release      |  4008|
 |macos-elcapitan-release     |  2942|
 
-The most frequently used platforms reflect the default platforms (ubuntu-gcc-release), including the default platforms mix for `rhub::check_for_cran()` (windows-x86_64-devel, ubuntu-gcc-release, fedora-clang-devel and if the package needs compilation linux-x86_64-rocker-gcc-san).
+The most frequently used platforms reflect the default platforms (ubuntu-gcc-release for the web interface), including the default platforms mix for `rhub::check_for_cran()` (windows-x86_64-devel, ubuntu-gcc-release, fedora-clang-devel and if the package needs compilation linux-x86_64-rocker-gcc-san).
 
 ## Web interface or R package?
 
