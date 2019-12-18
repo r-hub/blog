@@ -1,5 +1,5 @@
 ---
-title: R-hub usage
+title: R-hub usage in a few figures
 date: '2019-12-26'
 slug: r-hub-usage
 ---
@@ -27,7 +27,7 @@ builds <- dplyr::mutate_at(builds, c("submitted", "started"), anytime::anytime)
 str(builds)
 ```
 
-## An increase compared to last year
+## A recent increase in usage
 
 ### Towards 1,000 builds a week? 
 
@@ -50,7 +50,7 @@ When plotting the weekly count of builds as below, it is quite clear that usage 
 
 ### Number of packages built per week
 
-```{r usage-week-pkg, fig.cap="Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week"}
+```{r usage-week-pkg, fig.cap="Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week. WHAT TO SAY ABOUT THE HIGH NUMBER OF PACKAGES SOME WEEKS IN 2017?"}
 dplyr::mutate(builds, 
              week = as.Date(cut(submitted, "week"))) %>%
   dplyr::group_by(week) %>%
@@ -105,7 +105,7 @@ builds %>%
 
 The youngest platforms include [r-devel-linux-x86_64-debian-clang and its special encoding](/2019/04/25/r-devel-linux-x86-64-debian-clang/), [a noLD platform](/2019/05/21/nold/), [the experimental Windows Rtools4.0 platform](https://twitter.com/rhub_/status/1102510360337268737). Most platforms are still up today, with the exception of macos-mavericks-release and macos-elcapitan-devel.
 
-### Most frequent platforms
+### Most frequently used platforms
 
 ```{r}
 builds %>%
@@ -114,8 +114,10 @@ builds %>%
   knitr::kable()
 ```
 
-The most frequent platforms reflect the default platforms (from R, `rhub::platforms()[1,1]` which is `r rhub::platforms()[1,1]`, from the web interface "ubuntu-gcc-release"), including the default platforms mix for `rhub::check_for_cran()` ("windows-x86_64-devel", "ubuntu-gcc-release", "fedora-clang-devel" and if the package needs compilation "linux-x86_64-rocker-gcc-san").
+The most frequently used platforms reflect the default platforms (from R, `rhub::platforms()[1,1]` which is `r rhub::platforms()[1,1]`, from the web interface ubuntu-gcc-release), including the default platforms mix for `rhub::check_for_cran()` (windows-x86_64-devel, ubuntu-gcc-release, fedora-clang-devel and if the package needs compilation linux-x86_64-rocker-gcc-san).
 
 ## Conclusion
 
-In total, over time, the R-hub package builder has been used by `r length(unique(builds$email))` users for `r length(unique(builds$package))` packages. For comparison at the time of writing there are `r nrow(available.packages())` packages on CRAN. We hope to keep helping package developers check their packages and debug issues, thanks to the package builder, [its docs](https://docs.r-hub.io/), and this blog. Thanks to all users who notified problems and suggested enhancements via [GitHub](https://docs.r-hub.io/#pkg-dev-help) or [gitter](https://gitter.im/r-hub/community), keep your feedback and questions coming!
+in this post we presented a few figures underlining the growth in R-hub usage, and the variety of platforms used for checking packages -- one of [R-hub's selling points](https://deploy-preview-53--admiring-allen-9a00b2.netlify.com/2019/03/26/why-care/#so-many-platforms). In total, over time, the R-hub package builder has been used by `r length(unique(builds$email))` users for `r length(unique(builds$package))` packages. For comparison at the time of writing there are `r nrow(available.packages())` packages on CRAN. 
+
+We hope to keep helping package developers check their packages and debug issues, in particular thanks to the package builder, [its docs](https://docs.r-hub.io/), and this blog. Thanks to all users who notified problems and suggested enhancements via [GitHub](https://docs.r-hub.io/#pkg-dev-help) or [gitter](https://gitter.im/r-hub/community), keep your feedback and questions coming!

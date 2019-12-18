@@ -1,5 +1,5 @@
 ---
-title: R-hub usage
+title: R-hub usage in a few figures
 date: '2019-12-26'
 slug: r-hub-usage
 ---
@@ -34,7 +34,7 @@ str(builds)
 ##  $ ui        : chr  NA NA NA NA ...
 ```
 
-## An increase compared to last year
+## A recent increase in usage
 
 ### Towards 1,000 builds a week? 
 
@@ -87,8 +87,8 @@ ggplot(aes(week, n)) +
 ```
 
 <div class="figure">
-<img src="/post/2019-12-26-r-hub-usage_files/figure-html/usage-week-pkg-1.png" alt="Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week" width="672" />
-<p class="caption">Figure 2: Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week</p>
+<img src="/post/2019-12-26-r-hub-usage_files/figure-html/usage-week-pkg-1.png" alt="Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week. WHAT TO SAY ABOUT THE HIGH NUMBER OF PACKAGES SOME WEEKS IN 2017?" width="672" />
+<p class="caption">Figure 2: Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week. WHAT TO SAY ABOUT THE HIGH NUMBER OF PACKAGES SOME WEEKS IN 2017?</p>
 </div>
 
 The number of packages built mostly follow the number of builds apart from a stagnation last year.
@@ -171,7 +171,7 @@ builds %>%
 
 The youngest platforms include [r-devel-linux-x86_64-debian-clang and its special encoding](/2019/04/25/r-devel-linux-x86-64-debian-clang/), [a noLD platform](/2019/05/21/nold/), [the experimental Windows Rtools4.0 platform](https://twitter.com/rhub_/status/1102510360337268737). Most platforms are still up today, with the exception of macos-mavericks-release and macos-elcapitan-devel.
 
-### Most frequent platforms
+### Most frequently used platforms
 
 
 ```r
@@ -193,8 +193,10 @@ builds %>%
 |windows-x86_64-release      |  4008|
 |macos-elcapitan-release     |  2942|
 
-The most frequent platforms reflect the default platforms (from R, `rhub::platforms()[1,1]` which is debian-clang-devel, from the web interface "ubuntu-gcc-release"), including the default platforms mix for `rhub::check_for_cran()` ("windows-x86_64-devel", "ubuntu-gcc-release", "fedora-clang-devel" and if the package needs compilation "linux-x86_64-rocker-gcc-san").
+The most frequently used platforms reflect the default platforms (from R, `rhub::platforms()[1,1]` which is debian-clang-devel, from the web interface ubuntu-gcc-release), including the default platforms mix for `rhub::check_for_cran()` (windows-x86_64-devel, ubuntu-gcc-release, fedora-clang-devel and if the package needs compilation linux-x86_64-rocker-gcc-san).
 
 ## Conclusion
 
-In total, over time, the R-hub package builder has been used by 2405 users for 4255 packages. For comparison at the time of writing there are 15348 packages on CRAN. We hope to keep helping package developers check their packages and debug issues, thanks to the package builder, [its docs](https://docs.r-hub.io/), and this blog. Thanks to all users who notified problems and suggested enhancements via [GitHub](https://docs.r-hub.io/#pkg-dev-help) or [gitter](https://gitter.im/r-hub/community), keep your feedback and questions coming!
+in this post we presented a few figures underlining the growth in R-hub usage, and the variety of platforms used for checking packages -- one of [R-hub's selling points](https://deploy-preview-53--admiring-allen-9a00b2.netlify.com/2019/03/26/why-care/#so-many-platforms). In total, over time, the R-hub package builder has been used by 2405 users for 4255 packages. For comparison at the time of writing there are 15347 packages on CRAN. 
+
+We hope to keep helping package developers check their packages and debug issues, in particular thanks to the package builder, [its docs](https://docs.r-hub.io/), and this blog. Thanks to all users who notified problems and suggested enhancements via [GitHub](https://docs.r-hub.io/#pkg-dev-help) or [gitter](https://gitter.im/r-hub/community), keep your feedback and questions coming!
