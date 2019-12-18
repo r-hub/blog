@@ -114,10 +114,20 @@ builds %>%
   knitr::kable()
 ```
 
-The most frequently used platforms reflect the default platforms (from R, `rhub::platforms()[1,1]` which is `r rhub::platforms()[1,1]`, from the web interface ubuntu-gcc-release), including the default platforms mix for `rhub::check_for_cran()` (windows-x86_64-devel, ubuntu-gcc-release, fedora-clang-devel and if the package needs compilation linux-x86_64-rocker-gcc-san).
+The most frequently used platforms reflect the default platforms (ubuntu-gcc-release), including the default platforms mix for `rhub::check_for_cran()` (windows-x86_64-devel, ubuntu-gcc-release, fedora-clang-devel and if the package needs compilation linux-x86_64-rocker-gcc-san).
+
+## Web interface or R package?
+
+Although R-hub package builder has a working web interface, we [recommend using the `rhub` package for submitting builds](https://docs.r-hub.io/#pkg-vs-web). Since March this year, for builds we record whether they were submitted via the web interface or the package.
+
+```{r}
+ui <- table(builds$ui)
+```
+
+So, `r round(ui[1]/(sum(ui)), digits = 3)*100`% of builds were submitted via the [`rhub` package](https://r-hub.github.io/rhub/). Great!
 
 ## Conclusion
 
-in this post we presented a few figures underlining the growth in R-hub usage, and the variety of platforms used for checking packages -- one of [R-hub's selling points](https://deploy-preview-53--admiring-allen-9a00b2.netlify.com/2019/03/26/why-care/#so-many-platforms). In total, over time, the R-hub package builder has been used by `r length(unique(builds$email))` users for `r length(unique(builds$package))` packages. For comparison at the time of writing there are `r nrow(available.packages())` packages on CRAN. 
+In this post we presented a few figures underlining the growth in R-hub usage, and the variety of platforms used for checking packages -- one of [R-hub's selling points](https://deploy-preview-53--admiring-allen-9a00b2.netlify.com/2019/03/26/why-care/#so-many-platforms). In total, over time, the R-hub package builder has been used by `r length(unique(builds$email))` users for `r length(unique(builds$package))` packages. For comparison at the time of writing there are `r nrow(available.packages())` packages on CRAN. 
 
 We hope to keep helping package developers check their packages and debug issues, in particular thanks to the package builder, [its docs](https://docs.r-hub.io/), and this blog. Thanks to all users who notified problems and suggested enhancements via [GitHub](https://docs.r-hub.io/#pkg-dev-help) or [gitter](https://gitter.im/r-hub/community), keep your feedback and questions coming!
