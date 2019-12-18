@@ -201,7 +201,13 @@ Although R-hub package builder has a working web interface, we [recommend using 
 
 
 ```r
-ui <- table(builds$ui)
+(ui <- table(builds$ui))
+```
+
+```
+## 
+##   api   web 
+## 29374  2026
 ```
 
 So, 93.5% of builds were submitted via the [`rhub` package](https://r-hub.github.io/rhub/). Great!

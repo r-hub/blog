@@ -121,7 +121,7 @@ The most frequently used platforms reflect the default platforms (ubuntu-gcc-rel
 Although R-hub package builder has a working web interface, we [recommend using the `rhub` package for submitting builds](https://docs.r-hub.io/#pkg-vs-web). Since March this year, for builds we record whether they were submitted via the web interface or the package.
 
 ```{r}
-ui <- table(builds$ui)
+(ui <- table(builds$ui))
 ```
 
 So, `r round(ui[1]/(sum(ui)), digits = 3)*100`% of builds were submitted via the [`rhub` package](https://r-hub.github.io/rhub/). Great!
