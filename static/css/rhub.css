@@ -57,3 +57,16 @@ pre {
   top: 0px;
   margin-left: 2px;
 }
+
+table {
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid gray;
+  padding: 15px;
+  text-align: left;
+  height: 30px;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
