@@ -1,6 +1,6 @@
 ---
 title: R-hub usage in a few figures
-date: '2019-12-26'
+date: '2019-12-19'
 slug: r-hub-usage
 ---
 
@@ -17,25 +17,25 @@ As specified in our [use terms](https://builder.r-hub.io/terms.html) we do not s
 
 
 ```r
-builds <- readRDS(my_not_portable_path)
+builds <- tibble::as_tibble(readRDS(my_not_portable_path))
 builds
 ```
 
 ```
-## # A tibble: 80,681 x 8
+## # A tibble: 84,996 x 8
 ##    email package platform status submitted           started            
 ##    <chr> <chr>   <chr>    <chr>  <dttm>              <dttm>             
-##  1 8415… 9ea910… windows… error  2018-03-15 07:23:17 NA                 
-##  2 8415… 9ea910… macos-e… ok     2018-03-16 05:44:39 2018-03-16 05:44:43
-##  3 8415… 9ea910… debian-… ok     2018-03-16 05:48:19 2018-03-16 05:48:24
-##  4 8415… 9ea910… windows… ok     2018-03-16 06:03:35 NA                 
-##  5 8415… 9ea910… linux-x… ok     2018-03-16 06:05:23 2018-03-16 06:05:28
-##  6 8415… 9ea910… ubuntu-… ok     2018-03-16 06:09:44 2018-03-16 06:09:49
-##  7 8415… 9ea910… debian-… ok     2018-03-16 06:25:04 2018-03-16 06:25:08
-##  8 8415… 9ea910… debian-… ok     2018-03-16 06:36:19 2018-03-16 06:36:24
-##  9 8415… 9ea910… debian-… ok     2018-03-16 06:43:25 2018-03-16 06:43:29
-## 10 8415… 9ea910… windows… error  2018-03-16 06:57:38 NA                 
-## # … with 80,671 more rows, and 2 more variables: build_time <dbl>, ui <chr>
+##  1 9a16… b64e51… windows… error  2018-03-15 07:23:17 NA                 
+##  2 9a16… b64e51… macos-e… ok     2018-03-16 05:44:39 2018-03-16 05:44:43
+##  3 9a16… b64e51… debian-… ok     2018-03-16 05:48:19 2018-03-16 05:48:24
+##  4 9a16… b64e51… windows… ok     2018-03-16 06:03:35 NA                 
+##  5 9a16… b64e51… linux-x… ok     2018-03-16 06:05:23 2018-03-16 06:05:28
+##  6 9a16… b64e51… ubuntu-… ok     2018-03-16 06:09:44 2018-03-16 06:09:49
+##  7 9a16… b64e51… debian-… ok     2018-03-16 06:25:04 2018-03-16 06:25:08
+##  8 9a16… b64e51… debian-… ok     2018-03-16 06:36:19 2018-03-16 06:36:24
+##  9 9a16… b64e51… debian-… ok     2018-03-16 06:43:25 2018-03-16 06:43:29
+## 10 9a16… b64e51… windows… error  2018-03-16 06:57:38 NA                 
+## # … with 84,986 more rows, and 2 more variables: build_time <dbl>, ui <chr>
 ```
 
 ## A recent increase in usage
@@ -63,7 +63,7 @@ ggplot(aes(week, n)) +
 ```
 
 <div class="figure">
-<img src="/post/2019-12-26-r-hub-usage_files/figure-html/usage-week-1.png" alt="Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a little less than 1,000 builds a week" width="672" />
+<img src="/post/2019-12-19-r-hub-usage_files/figure-html/usage-week-1.png" alt="Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a little less than 1,000 builds a week" width="672" />
 <p class="caption">Figure 1: Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a little less than 1,000 builds a week</p>
 </div>
 
@@ -91,7 +91,7 @@ ggplot(aes(week, n)) +
 ```
 
 <div class="figure">
-<img src="/post/2019-12-26-r-hub-usage_files/figure-html/usage-week-pkg-1.png" alt="Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week. Some weeks have a surprising high number of packages built." width="672" />
+<img src="/post/2019-12-19-r-hub-usage_files/figure-html/usage-week-pkg-1.png" alt="Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week. Some weeks have a surprising high number of packages built." width="672" />
 <p class="caption">Figure 2: Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week. Some weeks have a surprising high number of packages built.</p>
 </div>
 
@@ -121,7 +121,7 @@ ggplot(aes(week, n)) +
 ```
 
 <div class="figure">
-<img src="/post/2019-12-26-r-hub-usage_files/figure-html/usage-week-user-1.png" alt="Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a bit more than 100 users a week" width="672" />
+<img src="/post/2019-12-19-r-hub-usage_files/figure-html/usage-week-user-1.png" alt="Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a bit more than 100 users a week" width="672" />
 <p class="caption">Figure 3: Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a bit more than 100 users a week</p>
 </div>
 
@@ -197,6 +197,6 @@ So, 93.5% of builds were submitted via the [`rhub` package](https://r-hub.github
 
 ## Conclusion
 
-In this post we presented a few figures underlining the growth in R-hub usage, and the variety of platforms used for checking packages -- one of [R-hub's selling points](https://deploy-preview-53--admiring-allen-9a00b2.netlify.com/2019/03/26/why-care/#so-many-platforms). In total, over time, the R-hub package builder has been used by 2405 users for 4255 packages. For comparison at the time of writing there are 15357 packages on CRAN. 
+In this post we presented a few figures underlining the growth in R-hub usage, and the variety of platforms used for checking packages -- one of [R-hub's selling points](https://deploy-preview-53--admiring-allen-9a00b2.netlify.com/2019/03/26/why-care/#so-many-platforms). In total, over time, the R-hub package builder has been used by 2507 users for 4418 packages. For comparison at the time of writing there are 15357 packages on CRAN. 
 
 We hope to keep helping package developers check their packages and debug issues, in particular thanks to the package builder, [its docs](https://docs.r-hub.io/), and this blog. Thanks to all users who notified problems and suggested enhancements via [GitHub](https://docs.r-hub.io/#pkg-dev-help) or [gitter](https://gitter.im/r-hub/community), keep your feedback and questions coming!

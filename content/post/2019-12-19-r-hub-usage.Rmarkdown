@@ -1,6 +1,6 @@
 ---
 title: R-hub usage in a few figures
-date: '2019-12-26'
+date: '2019-12-19'
 slug: r-hub-usage
 ---
 
@@ -22,7 +22,7 @@ my_not_portable_path <- "/home/maelle/Documents/R-hub/rhub-usage/rhub-builds.rds
 ```
 
 ```{r}
-builds <- readRDS(my_not_portable_path)
+builds <- tibble::as_tibble(readRDS(my_not_portable_path))
 builds
 ```
 
