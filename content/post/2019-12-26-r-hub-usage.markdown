@@ -18,20 +18,24 @@ As specified in our [use terms](https://builder.r-hub.io/terms.html) we do not s
 
 ```r
 builds <- readRDS(my_not_portable_path)
-builds <- dplyr::mutate_at(builds, c("submitted", "started"), anytime::anytime)
-str(builds)
+builds
 ```
 
 ```
-## Classes 'tbl_df', 'tbl' and 'data.frame':	80681 obs. of  8 variables:
-##  $ email     : chr  "84157fcacbd507a47eaa4b6372d9c6c34857c9e106ebc0580b2fbd152ae9da6e" "84157fcacbd507a47eaa4b6372d9c6c34857c9e106ebc0580b2fbd152ae9da6e" "84157fcacbd507a47eaa4b6372d9c6c34857c9e106ebc0580b2fbd152ae9da6e" "84157fcacbd507a47eaa4b6372d9c6c34857c9e106ebc0580b2fbd152ae9da6e" ...
-##  $ package   : chr  "9ea9109344df4f3fe561e18025b5b22ed6051cd3c53d2d60a14679bb7bf95a70" "9ea9109344df4f3fe561e18025b5b22ed6051cd3c53d2d60a14679bb7bf95a70" "9ea9109344df4f3fe561e18025b5b22ed6051cd3c53d2d60a14679bb7bf95a70" "9ea9109344df4f3fe561e18025b5b22ed6051cd3c53d2d60a14679bb7bf95a70" ...
-##  $ platform  : chr  "windows-x86_64-release" "macos-elcapitan-release" "debian-gcc-release" "windows-x86_64-release" ...
-##  $ status    : chr  "error" "ok" "ok" "ok" ...
-##  $ submitted : POSIXct, format: "2018-03-15 07:23:17" "2018-03-16 05:44:39" ...
-##  $ started   : POSIXct, format: NA "2018-03-16 05:44:43" ...
-##  $ build_time: num  1.52e+12 1.45e+05 8.78e+05 1.52e+12 1.79e+06 ...
-##  $ ui        : chr  NA NA NA NA ...
+## # A tibble: 80,681 x 8
+##    email package platform status submitted           started            
+##    <chr> <chr>   <chr>    <chr>  <dttm>              <dttm>             
+##  1 8415… 9ea910… windows… error  2018-03-15 07:23:17 NA                 
+##  2 8415… 9ea910… macos-e… ok     2018-03-16 05:44:39 2018-03-16 05:44:43
+##  3 8415… 9ea910… debian-… ok     2018-03-16 05:48:19 2018-03-16 05:48:24
+##  4 8415… 9ea910… windows… ok     2018-03-16 06:03:35 NA                 
+##  5 8415… 9ea910… linux-x… ok     2018-03-16 06:05:23 2018-03-16 06:05:28
+##  6 8415… 9ea910… ubuntu-… ok     2018-03-16 06:09:44 2018-03-16 06:09:49
+##  7 8415… 9ea910… debian-… ok     2018-03-16 06:25:04 2018-03-16 06:25:08
+##  8 8415… 9ea910… debian-… ok     2018-03-16 06:36:19 2018-03-16 06:36:24
+##  9 8415… 9ea910… debian-… ok     2018-03-16 06:43:25 2018-03-16 06:43:29
+## 10 8415… 9ea910… windows… error  2018-03-16 06:57:38 NA                 
+## # … with 80,671 more rows, and 2 more variables: build_time <dbl>, ui <chr>
 ```
 
 ## A recent increase in usage
@@ -65,7 +69,7 @@ ggplot(aes(week, n)) +
 
 When plotting the weekly count of builds as below, it is quite clear that usage stepped up at the end of last year. A delayed effect of the [RStudio webinar about R-hub](https://resources.rstudio.com/the-essentials-of-data-science/r-hub-overview-ga-bor-csa-rdi)?
 
-### Number of packages built per week
+### Number of unique packages built per week
 
 
 ```r
@@ -87,11 +91,11 @@ ggplot(aes(week, n)) +
 ```
 
 <div class="figure">
-<img src="/post/2019-12-26-r-hub-usage_files/figure-html/usage-week-pkg-1.png" alt="Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week. WHAT TO SAY ABOUT THE HIGH NUMBER OF PACKAGES SOME WEEKS IN 2017?" width="672" />
-<p class="caption">Figure 2: Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week. WHAT TO SAY ABOUT THE HIGH NUMBER OF PACKAGES SOME WEEKS IN 2017?</p>
+<img src="/post/2019-12-26-r-hub-usage_files/figure-html/usage-week-pkg-1.png" alt="Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week. Some weeks have a surprising high number of packages built." width="672" />
+<p class="caption">Figure 2: Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week. Some weeks have a surprising high number of packages built.</p>
 </div>
 
-The number of packages built mostly follow the number of builds apart from a stagnation last year.
+The number of unique packages built mostly follow the number of builds apart from a stagnation last year.
 
 ### Number of unique users per week
 
@@ -127,50 +131,6 @@ So all in all, the R-hub package builder is serving more and more users and pack
 
 Choosing a platform or platforms for your package check might seem daunting. Luckily we've written up [some guidance in our docs](https://docs.r-hub.io/#which-platform)!
 
-### Platform age
-
-When was each platform added to the pool?
-
-
-```r
-builds %>%
-  dplyr::group_by(platform) %>%
-  dplyr::summarise(first = as.Date(min(submitted)),
-                   last = as.Date(max(submitted))) %>%
-  dplyr::arrange(first) %>%
-  knitr::kable()
-```
-
-
-
-|platform                      |first      |last       |
-|:-----------------------------|:----------|:----------|
-|debian-gcc-devel              |2016-10-10 |2019-11-26 |
-|windows-x86_64-release        |2016-10-10 |2019-11-26 |
-|debian-gcc-release            |2016-10-11 |2019-11-26 |
-|fedora-clang-devel            |2016-10-11 |2019-11-26 |
-|fedora-gcc-devel              |2016-10-11 |2019-11-25 |
-|linux-x86_64-centos6-epel     |2016-10-11 |2019-11-25 |
-|ubuntu-gcc-devel              |2016-10-11 |2019-11-25 |
-|ubuntu-gcc-release            |2016-10-11 |2019-11-26 |
-|windows-x86_64-devel          |2016-10-11 |2019-11-26 |
-|linux-x86_64-rocker-gcc-san   |2016-10-14 |2019-11-26 |
-|windows-x86_64-oldrel         |2016-10-14 |2019-11-26 |
-|windows-x86_64-patched        |2016-10-14 |2019-11-23 |
-|linux-x86_64-centos6-epel-rdt |2016-10-17 |2019-11-25 |
-|debian-gcc-patched            |2016-10-18 |2019-11-23 |
-|macos-mavericks-release       |2017-01-31 |2017-07-01 |
-|macos-elcapitan-devel         |2017-03-01 |2017-03-01 |
-|macos-elcapitan-release       |2017-07-01 |2019-11-25 |
-|macos-mavericks-oldrel        |2017-07-01 |2019-06-14 |
-|ubuntu-rchk                   |2017-07-02 |2019-11-26 |
-|solaris-x86-patched           |2017-07-24 |2019-11-25 |
-|windows-x86_64-devel-rtools4  |2019-03-01 |2019-11-25 |
-|debian-clang-devel            |2019-04-12 |2019-11-26 |
-|debian-gcc-devel-nold         |2019-05-16 |2019-11-24 |
-
-The youngest platforms include [r-devel-linux-x86_64-debian-clang and its special encoding](/2019/04/25/r-devel-linux-x86-64-debian-clang/), [a noLD platform](/2019/05/21/nold/), [the experimental Windows Rtools4.0 platform](https://twitter.com/rhub_/status/1102510360337268737). Most platforms are still up today, with the exception of macos-mavericks-release and macos-elcapitan-devel.
-
 ### Most frequently used platforms
 
 
@@ -193,7 +153,30 @@ builds %>%
 |windows-x86_64-release      |  4008|
 |macos-elcapitan-release     |  2942|
 
-The most frequently used platforms reflect the default platforms (ubuntu-gcc-release for the web interface), including the default platforms mix for `rhub::check_for_cran()` (windows-x86_64-devel, ubuntu-gcc-release, fedora-clang-devel and if the package needs compilation linux-x86_64-rocker-gcc-san).
+The most frequently used platforms reflect the default platforms (ubuntu-gcc-release for the web interface), including the default platforms mix for [`rhub::check_for_cran()`](https://r-hub.github.io/rhub/reference/check_for_cran.html) (windows-x86_64-devel, ubuntu-gcc-release, fedora-clang-devel and if the package needs compilation linux-x86_64-rocker-gcc-san).
+
+### Newest platforms
+
+What platforms were added to the pool this year?
+
+
+```r
+builds %>%
+  dplyr::group_by(platform) %>%
+  dplyr::filter(lubridate::year(as.Date(min(submitted))) == 2019) %>%
+  dplyr::summarise(first = as.Date(min(submitted))) %>%
+  knitr::kable()
+```
+
+
+
+|platform                     |first      |
+|:----------------------------|:----------|
+|debian-clang-devel           |2019-04-12 |
+|debian-gcc-devel-nold        |2019-05-16 |
+|windows-x86_64-devel-rtools4 |2019-03-01 |
+
+The youngest platforms are [r-devel-linux-x86_64-debian-clang and its special encoding](/2019/04/25/r-devel-linux-x86-64-debian-clang/), [a noLD platform](/2019/05/21/nold/), [the experimental Windows Rtools4.0 platform](https://twitter.com/rhub_/status/1102510360337268737). 
 
 ## Web interface or R package?
 
@@ -214,6 +197,6 @@ So, 93.5% of builds were submitted via the [`rhub` package](https://r-hub.github
 
 ## Conclusion
 
-In this post we presented a few figures underlining the growth in R-hub usage, and the variety of platforms used for checking packages -- one of [R-hub's selling points](https://deploy-preview-53--admiring-allen-9a00b2.netlify.com/2019/03/26/why-care/#so-many-platforms). In total, over time, the R-hub package builder has been used by 2405 users for 4255 packages. For comparison at the time of writing there are 15347 packages on CRAN. 
+In this post we presented a few figures underlining the growth in R-hub usage, and the variety of platforms used for checking packages -- one of [R-hub's selling points](https://deploy-preview-53--admiring-allen-9a00b2.netlify.com/2019/03/26/why-care/#so-many-platforms). In total, over time, the R-hub package builder has been used by 2405 users for 4255 packages. For comparison at the time of writing there are 15357 packages on CRAN. 
 
 We hope to keep helping package developers check their packages and debug issues, in particular thanks to the package builder, [its docs](https://docs.r-hub.io/), and this blog. Thanks to all users who notified problems and suggested enhancements via [GitHub](https://docs.r-hub.io/#pkg-dev-help) or [gitter](https://gitter.im/r-hub/community), keep your feedback and questions coming!
