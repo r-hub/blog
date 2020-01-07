@@ -77,7 +77,7 @@ If you want to test more locally, and importantly, if you want to test visualiza
 
 ## R-hub locally
 
-In my case, I am not registered as the main maintainer of Haplin, and I wanted to test locally, so I decided to use one of the `rhub` functions, [`local_check_linux()`](https://r-hub.github.io/rhub/reference/local_check_linux.html). This seemed like a very easy way to run locally tests on a platform that is exactly the same as CRAN uses! And it is... only not in my case ;)
+In my case, I wanted to test locally, so I decided to use one of the `rhub` functions, [`local_check_linux()`](https://r-hub.github.io/rhub/reference/local_check_linux.html). This seemed like a very easy way to run locally tests on a platform that is exactly the same as CRAN uses! And it is... only not in my case :wink:
 
 After getting the same error for the nth time, I decided to get help [at the source](https://github.com/r-hub/rhub/issues/322). I tried several things, including digging into the `rhub` code locally, but nothing worked. Long story short - my Docker installation by default gave no access to internet to the containers it launched.
 
