@@ -69,7 +69,7 @@ There are two services that are worth mentioning:
 - [rhub](https://r-hub.github.io/rhub/), which is an R package for using the [R-hub package builder](https://docs.r-hub.io/#package-builder),
 - and the [Rocker project](https://www.rocker-project.org/), which distributes various docker images useful for R and RStudio testing
 
-If you are a maintainer of an R package and don't want to install docker locally, you will find the `rhub` very useful, as you can push your package to the server for testing with one command! Check out e.g., [this blog post](https://blog.r-hub.io/2019/04/25/r-devel-linux-x86-64-debian-clang/)
+If you are a maintainer of an R package and don't want to install Docker locally, you will find the `rhub` package very useful, as you can push your package to the server for testing with one command! Check out e.g., [the package docs](https://r-hub.github.io/rhub/)
 
 If you want to test more locally, and importantly, if you want to test visualizations, GUI, or specific behavior of the code in RStudio, you should take a look on the `Rocker project`. They provide easy-to-run docker images with pre-installed R and RStudio, which you can play with through a browser window.
 
