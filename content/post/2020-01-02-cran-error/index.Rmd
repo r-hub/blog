@@ -95,7 +95,7 @@ Thanks to `rhub` and other tools available online, it's relatively easy to test 
 While writing this post, I've come upon another R package [dockr](https://cran.r-project.org/package=dockr), which helps creating a Docker container with the package one wants to test already available within the container. I haven't tried it yet, but [it seems very promising](http://smaakage85.netlify.com/2019/12/21/dockr-easy-containerization-for-r/)!
 
 
-> Find Julia on [github](https://github.com/jromanowska), [bitbucket](https://bitbucket.org/jrom/profile/repositories), or [facebook](https://www.facebook.com/julia.romanowska.733)
+> Find Julia on [GitHub](https://github.com/jromanowska), [Bitbucket](https://bitbucket.org/jrom/profile/repositories), or [Facebook](https://www.facebook.com/julia.romanowska.733)
 
 
 [^1]: I repeatedly refuse to use Google [to protect my privacy](https://spreadprivacy.com/how-to-remove-google/)
