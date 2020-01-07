@@ -165,7 +165,7 @@ There are downsides to using R6 [as presented in the OOP trade-offs chapter of H
 
 > " Firstly, if you use R6 it’s very easy to create a non-idiomatic API that will feel very odd to native R users, and will have surprising pain points because of the reference semantics."
 
-Yep, the mutable aspect can feel odd, otherwise we wouldn't write a whole post about it. :wink:
+Yep, the mutable aspect can feel odd, otherwise we wouldn't write a whole post about it. :wink: (Other aspects of R6 are odd, e.g. the use of `$` to call _methods_ on _objects_.)
 
 In the case of `desc` all methods exist both as methods and as functions, the functions operating on the DESCRIPTION of the current folder which is handy when working on a package. E.g. say you're working on a package inside its folder and want to add a contributor to DESCRIPTION, you can do
 
