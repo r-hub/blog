@@ -57,7 +57,7 @@ Thus, important :sparkles: tip \#1 :sparkles: *read the e-mail from CRAN careful
 
 OK, let's get to work! Firstly, check the "checks" webpage on CRAN. These CRAN checks come in different _flavors_ and hopefully, not all checks failed. In our case, the flavor that produced the error was `r-devel-linux-x86_64-debian-clang` and I had no wish to install the developmental version of R and other packages on my local laptop just to try mimicking this setup. That's when I thought about checking [*Docker*](https://www.docker.com/).
 
-Installing `docker` and running a test went well, but what one needs is a VM that would be exactly the same as the platforms CRAN uses for testing. I realized that it would take too much time to re-create it, so again my DuckDuckGo search engine[^1] came to the rescue.
+Installing `Docker` and running a test went well, but what one needs is a VM that would be exactly the same as the platforms CRAN uses for testing. I realized that it would take too much time to re-create it, so again my DuckDuckGo search engine[^1] came to the rescue.
 
 :sparkles: Tip \#2 :sparkles: *search the net!*
 
