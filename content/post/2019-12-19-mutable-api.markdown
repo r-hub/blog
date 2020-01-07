@@ -90,7 +90,7 @@ tracemem(url)
 ```
 
 ```
-## [1] "<0x5572913a9d70>"
+## [1] "<0x55af37a4dd70>"
 ```
 
 ```r
@@ -98,7 +98,7 @@ urltools::fragment(url) <- "intro"
 ```
 
 ```
-## tracemem[0x5572913a9d70 -> 0x557291d66718]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x55af37a4dd70 -> 0x55af3840a718]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -126,7 +126,7 @@ getMethod(urltools::"fragment<-")
 ##     }
 ##     return(set_component_f(x, 5, value, "#"))
 ## }
-## <bytecode: 0x55728f904c38>
+## <bytecode: 0x55af35fa8c38>
 ## <environment: namespace:urltools>
 ## 
 ## Signatures:
@@ -175,7 +175,7 @@ tracemem(x)
 ```
 
 ```
-## [1] "<0x55728f51ad70>"
+## [1] "<0x55af35bbed38>"
 ```
 
 ```r
@@ -187,9 +187,9 @@ replace_all(x) <- 42
 ```
 
 ```
-## tracemem[0x55728f51ad70 -> 0x55728f4fee18]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x55728f4fee18 -> 0x55728f4feeb8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x55728f4feeb8 -> 0x55728f4d88b8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x55af35bbed38 -> 0x55af35ba2e18]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x55af35ba2e18 -> 0x55af35ba2eb8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x55af35ba2eb8 -> 0x55af35b7c8b8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -238,7 +238,7 @@ p$get_pid()
 ```
 
 ```
-## [1] 11124
+## [1] 12139
 ```
 
 ```r
@@ -255,7 +255,7 @@ phandle
 ```
 
 ```
-## <ps::ps_handle> PID=11124, NAME=sleep, AT=2020-01-07 09:03:25
+## <ps::ps_handle> PID=12139, NAME=sleep, AT=2020-01-07 09:09:37
 ```
 
 ```r
@@ -272,7 +272,7 @@ ps::ps_status(phandle)
 ```
 
 ```
-## Error: No such process, pid 11124, ???
+## Error: No such process, pid 12139, ???
 ```
 
 This example corresponded to an object in R referring to something mutable outside of R. What about an object corresponding to something mutable outside _or inside_ of R that can be mutable? An answer is: R6 objects!
@@ -313,7 +313,7 @@ There are downsides to using R6 [as presented in the OOP trade-offs chapter of H
 
 Yep, the mutable aspect can feel odd, otherwise we wouldn't write a whole post about it. :wink: (Other aspects of R6 are odd, e.g. the use of `$` to call _methods_ on _objects_.)
 
-In the case of `desc` all methods exist both as methods and as functions, the functions operating on the DESCRIPTION of the current folder which is handy when working on a package. E.g. say you're working on a package inside its folder and want to add a contributor to DESCRIPTION, you can do
+In the case of `desc` all methods exist both as methods and as functions. The functions operate on the DESCRIPTION of the current folder which is handy when working on a package. E.g. say you're working on a package inside its folder and want to add a contributor to DESCRIPTION, you can do
 
 ```r
 desc::desc_add_author_gh("<githubhandle>")

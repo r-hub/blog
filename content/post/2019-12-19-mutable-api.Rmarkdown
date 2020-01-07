@@ -167,7 +167,7 @@ There are downsides to using R6 [as presented in the OOP trade-offs chapter of H
 
 Yep, the mutable aspect can feel odd, otherwise we wouldn't write a whole post about it. :wink: (Other aspects of R6 are odd, e.g. the use of `$` to call _methods_ on _objects_.)
 
-In the case of `desc` all methods exist both as methods and as functions, the functions operating on the DESCRIPTION of the current folder which is handy when working on a package. E.g. say you're working on a package inside its folder and want to add a contributor to DESCRIPTION, you can do
+In the case of `desc` all methods exist both as methods and as functions. The functions operate on the DESCRIPTION of the current folder which is handy when working on a package. E.g. say you're working on a package inside its folder and want to add a contributor to DESCRIPTION, you can do
 
 ```r
 desc::desc_add_author_gh("<githubhandle>")
