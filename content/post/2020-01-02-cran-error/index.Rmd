@@ -45,7 +45,7 @@ knitr::knit_hooks$set(
   - creating a script that runs everything manually, using the image provided by rhub
 -->
 
-I'm involved in development of the [Haplin](https://cran.r-project.org/package=Haplin) R package, which enables fast genetic association analyses (very useful for those involved in genetic epidemiology research). We are a team of scientists that have various background, from genetics, through bioinformatics and statistics. Here's a short text about our latest "adventure" with CRAN and how it taught us some useful stuff.
+I'm involved in development of the [Haplin](https://folk.uib.no/gjessing/genetics/software/haplin) R package, which enables fast genetic association analyses (very useful for those involved in genetic epidemiology research). We are a team of scientists that have various background, from genetics, through bioinformatics and statistics. Here's a short text about our latest "adventure" with CRAN and how it taught us some useful stuff.
 
 ## OMG, CRAN wrote to me!
 
