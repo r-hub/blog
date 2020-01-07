@@ -83,7 +83,7 @@ After getting the same error for the nth time, I decided to get help [at the sou
 
 ## Script for semi-manual checks
 
-Another couple of days and I talked with my husband, who showed me a script he used in one of his projects. [The script](https://bitbucket.org/Grantlab/bio3d/src/master/ver_devel/util/run_dockercheck.sh) uses a local docker installation, fetches one of the images hosted by `rhub`, and runs tests locally. *Bingo!* As this was the second time I tried using docker, I needed some attempts to adjust the script to my purposes, but it finally worked!
+Another couple of days and I talked with my husband, who showed me a script he used in one of his projects. [The script](https://bitbucket.org/Grantlab/bio3d/src/master/ver_devel/util/run_dockercheck.sh) uses a local Docker installation, fetches one of [the images hosted by R-hub](https://github.com/r-hub/rhub-linux-builders#rhub-linux-builders), and runs tests locally. *Bingo!* As this was the second time I tried using docker, I needed some attempts to adjust the script to my purposes, but it finally worked!
 
 ## Conclusion
 
