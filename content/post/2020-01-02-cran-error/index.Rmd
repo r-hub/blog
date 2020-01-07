@@ -98,4 +98,4 @@ While writing this post, I've come upon another R package [dockr](https://cran.r
 > Find Julia on [github](https://github.com/jromanowska), [bitbucket](https://bitbucket.org/jrom/profile/repositories), or [facebook](https://www.facebook.com/julia.romanowska.733)
 
 
-[^1]: I repeatedly refuse to use google - check out [here](https://spreadprivacy.com/how-to-remove-google/)
+[^1]: I repeatedly refuse to use Google [to protect my privacy](https://spreadprivacy.com/how-to-remove-google/)
