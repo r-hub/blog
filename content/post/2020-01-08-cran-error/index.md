@@ -3,7 +3,7 @@ slug: cran-error
 title: "From Shock to Competence: How Not to Panic When You Receive E-mail from CRAN about Failed Checks"
 authors:
   - Julia Romanowska
-date: "2020-01-07"
+date: "2020-01-08"
 tags:
 - package development
 output: 
@@ -50,15 +50,15 @@ Installing `Docker` and running a test went well, but what one needs is a VM tha
 There are two services that are worth mentioning:
 
 - [rhub](https://r-hub.github.io/rhub/), which is an R package for using the [R-hub package builder](https://docs.r-hub.io/#package-builder),
-- and the [Rocker project](https://www.rocker-project.org/), which distributes various Docker images useful for R and RStudio testing
+- and the [Rocker project](https://www.rocker-project.org/), which distributes various Docker images useful for R and RStudio testing.
 
-If you are a maintainer of an R package and don't want to install Docker locally, you will find the `rhub` package very useful, as you can push your package to the server for testing with one command! Check out e.g., [the package docs](https://r-hub.github.io/rhub/)
+If you are a maintainer of an R package and don't want to install Docker locally, you will find the `rhub` package very useful, as you can push your package to the server for testing with one command! Check out e.g., [the package docs](https://r-hub.github.io/rhub/).
 
-If you want to test more locally, and importantly, if you want to test visualizations, GUI, or specific behavior of the code in RStudio, you should take a look on the `Rocker project`. They provide easy-to-run Docker images with pre-installed R and RStudio, which you can play with through a browser window.
+If you want to test more locally, and importantly, if you want to test visualizations, GUI, or specific behavior of the code in RStudio, you should take a look at the `Rocker project`. They provide easy-to-run Docker images with pre-installed R and RStudio, which you can play with through a browser window.
 
 ## R-hub locally
 
-In my case, I am not registered as the main maintainer of Haplin, and I wanted to test locally, so I decided to use one of the `rhub` functions, [`local_check_linux()`](https://r-hub.github.io/rhub/reference/local_check_linux.html). This seemed like a very easy way to run locally tests on a platform that is exactly the same as CRAN uses! And it is... only not in my case ;)
+In my case, I wanted to test locally, so I decided to use one of the `rhub` functions, [`local_check_linux()`](https://r-hub.github.io/rhub/reference/local_check_linux.html). This seemed like a very easy way to run locally tests on a platform that is exactly the same as CRAN uses! And it is... only not in my case :wink:
 
 After getting the same error for the nth time, I decided to get help [at the source](https://github.com/r-hub/rhub/issues/322). I tried several things, including digging into the `rhub` code locally, but nothing worked. Long story short - my Docker installation by default gave no access to internet to the containers it launched.
 
@@ -71,7 +71,7 @@ Another couple of days and I talked with my husband, who showed me a script he u
 
 ## Conclusion
 
-Since I could now reproduce the exact error and I knew roughly which parts of the code caused it, I fixed the problems relatively fast. The main issue, as mentioned above, was with the identification of a class of the objects, which I've re-written now to ``is( obj, "myClass")`` instead, which is also a recommended way of checking class memebership.
+Since I could now reproduce the exact error and I knew roughly which parts of the code caused it, I fixed the problems relatively fast. The main issue, as mentioned above, was with the identification of a class of the objects, which I've re-written now to ``is( obj, "myClass")`` instead, which is also a recommended way of checking class membership.
 
 Thanks to `rhub` and other tools available online, it's relatively easy to test a CRAN package - just remember not to panic and read the check reports thoroughly.
 

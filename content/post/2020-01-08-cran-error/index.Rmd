@@ -3,7 +3,7 @@ slug: cran-error
 title: "From Shock to Competence: How Not to Panic When You Receive E-mail from CRAN about Failed Checks"
 authors:
   - Julia Romanowska
-date: "`r Sys.Date()`"
+date: "2020-01-08"
 tags:
 - package development
 output: 
