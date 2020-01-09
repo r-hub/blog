@@ -89,7 +89,7 @@ Another couple of days and I talked with my husband, who showed me a script he u
 
 ## Conclusion
 
-Since I could now reproduce the exact error and I knew roughly which parts of the code caused it, I fixed the problems relatively fast. The main issue, as mentioned above, was with the identification of a class of the objects, which I've re-written now to ``is( obj, "myClass" )`` (for S4 objects) and ``inherits( obj, "myClass" )`` (for S3 objects).
+Since I could now reproduce the exact error and I knew roughly which parts of the code caused it, I fixed the problems relatively fast. The main issue, as mentioned above, was with the identification of a class of the objects, which I've re-written now to ``is( obj, "myClass" )`` (for S4 objects) and ``inherits( obj, "myClass" )`` (for S3 objects) (Edited on 2020-01-09, thanks to a comment by [Henrik Bengtsson](https://github.com/HenrikBengtsson)).
 
 Thanks to `rhub` and other tools available online, it's relatively easy to test a CRAN package - just remember not to panic and read the check reports thoroughly.
 
