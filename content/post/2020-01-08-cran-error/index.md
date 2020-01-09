@@ -13,18 +13,10 @@ output:
 
 > This post was contributed by [Julia Romanowska](https://jrom.bitbucket.io/homepage/), Researcher at the University of Bergen, Norway. Thank you, Julia!
 
+> Edited on 2020-01-09
 
 
-<!--
-  - how we got to know about it
-  - raising an issue on bitbucket(?)
-  - installing docker and checking the docs
-  - searching for R and docker
-  - found r-hub and rocker
-  - running r-hub - problems
-  - figure out where the problem is (docker images didn't have access to the net)
-  - creating a script that runs everything manually, using the image provided by rhub
--->
+
 
 I'm involved in development of the [Haplin](https://folk.uib.no/gjessing/genetics/software/haplin) R package, which enables fast genetic association analyses (very useful for those involved in genetic epidemiology research). We are a team of scientists that have various background, from genetics, through bioinformatics and statistics. Here's a short text about our latest "adventure" with CRAN and how it taught us some useful stuff.
 
@@ -47,8 +39,9 @@ Installing `Docker` and running a test went well, but what one needs is a VM tha
 ## R and Docker
 
 <!-- r-hub and rocker - which is good for what -->
-There are two services that are worth mentioning:
+There are three services that are worth mentioning:
 
+- [winbuilder](https://win-builder.r-project.org/), which is running on the same Windows machine with the same setup as the CRAN incoming submission checks, works from any operating system, and is very useful for reproducing CRAN errors.  It's also _recommended_ to be used prior to CRAN submissions, (Edited on 2020-01-09, thanks to a comment by [Henrik Bengtsson](https://github.com/HenrikBengtsson)).
 - [rhub](https://r-hub.github.io/rhub/), which is an R package for using the [R-hub package builder](https://docs.r-hub.io/#package-builder),
 - and the [Rocker project](https://www.rocker-project.org/), which distributes various Docker images useful for R and RStudio testing.
 
@@ -58,7 +51,7 @@ If you want to test more locally, and importantly, if you want to test visualiza
 
 ## R-hub locally
 
-In my case, I wanted to test locally, so I decided to use one of the `rhub` functions, [`local_check_linux()`](https://r-hub.github.io/rhub/reference/local_check_linux.html). This seemed like a very easy way to run locally tests on a platform that is exactly the same as CRAN uses! And it is... only not in my case :wink:
+In my case, I wanted to test locally and not on Windows, so I decided to use one of the `rhub` functions, [`local_check_linux()`](https://r-hub.github.io/rhub/reference/local_check_linux.html). This seemed like a very easy way to run locally tests on a platform that is exactly the same as CRAN uses! And it is... only not in my case :wink:
 
 After getting the same error for the nth time, I decided to get help [at the source](https://github.com/r-hub/rhub/issues/322). I tried several things, including digging into the `rhub` code locally, but nothing worked. Long story short - my Docker installation by default gave no access to internet to the containers it launched.
 
@@ -71,7 +64,7 @@ Another couple of days and I talked with my husband, who showed me a script he u
 
 ## Conclusion
 
-Since I could now reproduce the exact error and I knew roughly which parts of the code caused it, I fixed the problems relatively fast. The main issue, as mentioned above, was with the identification of a class of the objects, which I've re-written now to ``is( obj, "myClass")`` instead, which is also a recommended way of checking class membership.
+Since I could now reproduce the exact error and I knew roughly which parts of the code caused it, I fixed the problems relatively fast. The main issue, as mentioned above, was with the identification of a class of the objects, which I've re-written now to ``is( obj, "myClass" )`` (for S4 objects) and ``inherits( obj, "myClass" )`` (for S3 objects) (Edited on 2020-01-09, thanks to a comment by [Henrik Bengtsson](https://github.com/HenrikBengtsson)).
 
 Thanks to `rhub` and other tools available online, it's relatively easy to test a CRAN package - just remember not to panic and read the check reports thoroughly.
 
