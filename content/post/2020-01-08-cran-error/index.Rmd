@@ -13,7 +13,7 @@ output:
 
 > This post was contributed by [Julia Romanowska](https://jrom.bitbucket.io/homepage/), Researcher at the University of Bergen, Norway. Thank you, Julia!
 
-> Edited on 2020-01-09, thanks to comments from [Henrik Bengtsson](https://github.com/HenrikBengtsson)
+> Edited on 2020-01-09
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.path = "", comment = "")
@@ -60,17 +60,11 @@ Installing `Docker` and running a test went well, but what one needs is a VM tha
 <!-- r-hub and rocker - which is good for what -->
 There are three services that are worth mentioning:
 
-- [winbuilder](https://win-builder.r-project.org/), which is running on the same Windows machine with the same setup as the CRAN incoming submission checks, works from any operating system, and is very useful for reproducing CRAN errors.  It's also _recommended_ to be used prior to CRAN submissions,
+- [winbuilder](https://win-builder.r-project.org/), which is running on the same Windows machine with the same setup as the CRAN incoming submission checks, works from any operating system, and is very useful for reproducing CRAN errors.  It's also _recommended_ to be used prior to CRAN submissions, (Edited on 2020-01-09, thanks to a comment by [Henrik Bengtsson](https://github.com/HenrikBengtsson)).
 - [rhub](https://r-hub.github.io/rhub/), which is an R package for using the [R-hub package builder](https://docs.r-hub.io/#package-builder),
 - and the [Rocker project](https://www.rocker-project.org/), which distributes various Docker images useful for R and RStudio testing.
 
 If you are a maintainer of an R package and don't want to install Docker locally, you will find the `rhub` package very useful, as you can push your package to the server for testing with one command! Check out e.g., [the package docs](https://r-hub.github.io/rhub/).
-
-If you want to easily run a check on the Windows system, use the Win-builder webpage or, from R:
-
-```
-devtools::check_win_devel(email = "my_email@address.org")
-```
 
 If you want to test more locally, and importantly, if you want to test visualizations, GUI, or specific behavior of the code in RStudio, you should take a look at the [Rocker project](https://www.rocker-project.org/). They provide easy-to-run Docker images with pre-installed R and RStudio, which you can play with through a browser window.
 
