@@ -1,0 +1,60 @@
+---
+slug: examples
+title: "Examples for your R package in manual pages: resources roundup"
+authors:
+  - Maëlle Salmon
+date: "2020-01-15"
+tags:
+- package development
+output: 
+  html_document:
+    keep_md: true
+---
+
+After posts exploring [READMEs](/2019/12/03/readmes/), [URLs in DESCRIPTION](/2019/12/10/urls/), today we shall look at another important aspect of documentation: examples in the manual pages of your functions! Why write them, how to write them, and how to ensure R CMD Check doesn't try to run examples that don't work out-of-the-box (or that shows errors).
+
+## Why to write examples in manual pages?
+
+We've made the point for users discovering packages through READMEs. Now, for functions, they might type `?foo` or open a `pkgdown` reference page and go straight to the example parts rather than read the previous sections (about parameters, details, etc). 
+
+Users might do that either to get a quick feel for how the functions work, or refresh their memories of it. Say you discovered the [great `pkgsearch` package](/2019/11/26/pkgsearch/) and decide to try it out. You might look at the local [or online](https://r-hub.github.io/pkgsearch/reference/index.html) reference index and then nagivate to [the help for `package_search()`](https://r-hub.github.io/pkgsearch/reference/pkg_search.html) to [read examples](https://r-hub.github.io/pkgsearch/reference/pkg_search.html#examples).
+
+So your package should have examples for each function. The long-form docs (README, vignette) can still show functions working together and give a bigger picture, but adding executable code to your manual pages is crucial.
+
+## How to run examples
+
+As the user of an R package, how can you run examples you see in a package doc? (This is useful to know as a developer too!)
+
+### How to run all examples from a man page
+
+Locally, you could run
+
+```r
+example("pkg_search", package = "pkgsearch")
+```
+
+or 
+
+```r
+library("pkgsearch)
+example("pkg_search")
+```
+
+### How to run specific examples from a man page
+
+If you want to run only one of the examples you're reading
+
+* You can select the lines and then run Command+Enter (Ctrl+Enter on Linux). Below is a screenshot created by [Mine Çetinkaya-Rundel](https://twitter.com/minebocek) when she curated the [We are R-Ladies Twitter account](https://twitter.com/WeAreRLadies)
+
+```{r echo=FALSE}
+
+blogdown::shortcode("tweet", "1064734591641104384")
+```
+
+* From an online `pkgdown` website, you'd use the copy button and then paste the result in your R console.
+
+
+
+## How to write examples?
+
+## How to safeguard examples?
