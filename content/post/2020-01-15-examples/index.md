@@ -48,10 +48,7 @@ If you want to run only one of the examples you're reading
 
 * You can select the lines and then run Command+Enter (Ctrl+Enter on Linux), be it in the R GUI or in RStudio. Below is a screenshot created by [Mine Çetinkaya-Rundel](https://twitter.com/minebocek) when she curated the [We are R-Ladies Twitter account](https://twitter.com/WeAreRLadies).
 
-```{r echo=FALSE}
-
-blogdown::shortcode("tweet", "1064734591641104384")
-```
+<!--html_preserve-->{{% tweet "1064734591641104384" %}}<!--/html_preserve-->
 
 * From an online `pkgdown` website, you'd use the copy button and then paste the result in your R console.
 
