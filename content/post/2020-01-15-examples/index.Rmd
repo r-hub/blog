@@ -99,11 +99,11 @@ The former solution (`@examples` tag: examples with other docs for the function)
 
 ## How to know there are enough examples?
 
-You could judge whether the man page of each function shows the most important behaviours as you see them. You could also use the output of [`covr::package_coverage(<path-to-your-package>, type = "examples")`](https://covr.r-lib.org/reference/package_coverage.html) to reveal major gaps!
+You could judge whether the man page of each function shows the most important behaviours by reading said man pages. You could also use the output of [`covr::package_coverage(<path-to-your-package>, type = "examples")`](https://covr.r-lib.org/reference/package_coverage.html) to reveal major gaps!
 
 ## How to safeguard examples?
 
-Examples are supposed to be _executable_ i.e. to run without error. As writing in ["Writing R Extensions"](https://cran.r-project.org/doc/manuals/R-exts.html#index-_005cdontrun), "By default, text inside `\examples{}` will be displayed in the output of the help page and run by `example()` and by `R CMD check`.".
+Examples are supposed to be _executable_ i.e. to run without error. As writing in ["Writing R Extensions"](https://cran.r-project.org/doc/manuals/R-exts.html#index-_005cdontrun), _"By default, text inside `\examples{}` will be displayed in the output of the help page and run by `example()` and by `R CMD check`."_.
 
 Now comes one of the trickiest aspects of creating examples for the manual pages: how to execute them only they work? We're not encouraging cheating but
 
