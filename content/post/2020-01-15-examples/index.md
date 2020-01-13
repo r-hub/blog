@@ -114,9 +114,9 @@ To complicate things a bit more, `example()` and `R CMD check` have toggles too!
 
 Here's a summary
 
-* Example that works out of the box but long or interactive :arrow_right: donttest (used [19,065 times in CRAN packages at the time of writing](https://github.com/search?utf8=%E2%9C%93&q=%22%5Cdontrun%7B%22+user%3Acran+extension%3ARd&type=Code&ref=advsearch&l=&l=))
+* Example that works out of the box but long or interactive :arrow_right: donttest (used [2,019 times in CRAN packages at the time of writing](https://github.com/search?utf8=%E2%9C%93&q=%22%5Cdontrun%7B%22+user%3Acran+extension%3ARd&type=Code&ref=advsearch&l=&l=))
 
-* Example that doesn't work out of the box or doesn't work at all :arrow_right: dontrun (used [2,019 times in CRAN packages at the time of writing](https://github.com/search?utf8=%E2%9C%93&q=%22%5Cdontrun%7B%22+user%3Acran+extension%3ARd&type=Code&ref=advsearch&l=&l=))
+* Example that doesn't work out of the box or doesn't work at all :arrow_right: dontrun (used [19,065 times in CRAN packages at the time of writing](https://github.com/search?utf8=%E2%9C%93&q=%22%5Cdontrun%7B%22+user%3Acran+extension%3ARd&type=Code&ref=advsearch&l=&l=))
 
 > For a CRAN submission you might be told to use `donttest` for examples using a token.
 
@@ -130,7 +130,7 @@ You could run `R CMD check` with the options you want. Or you could use
 
 * [`devtools::run_examples()`](https://devtools.r-lib.org/reference/run_examples.html) that has `run` and `test` toggles.
 
-* [`testthat::test_examples()`](https://testthat.r-lib.org/reference/test_examples.html). This function doesn't pass any argument to `tools::Rd2ex()` that it uses to extract the examples from the docs, so it will test `donttest` examples but not test `dontrun` examples (`commentDontrun = TRUE, commentDonttest = FALSE`). You can use `test_examples()` in a testthat test file to have examples run by `devtools::test()`.
+* [`testthat::test_examples()`](https://testthat.r-lib.org/reference/test_examples.html). This function doesn't pass any argument to `tools::Rd2ex()` that it uses to extract the examples from the docs, so it will test `donttest` examples but not test `dontrun` examples (`commentDontrun = TRUE, commentDonttest = FALSE`). You can use `test_examples()` in a testthat test file to have examples run by `devtools::test()` but note that the docs state that _"Generally, this is redundant with R CMD check, and is not recommended in routine practice."_.
 
 ## What can't code in examples do?
 
