@@ -1,6 +1,6 @@
 ---
 slug: examples
-title: "Examples for your R package in manual pages: resources roundup"
+title: "Examples for your R package in manual pages"
 authors:
   - Maëlle Salmon
 date: "2020-01-15"
@@ -106,20 +106,21 @@ Now comes one of the trickiest aspects of creating examples for the manual pages
 
 * Examples can show an error, to exemplify the behaviour of the function in such cases.
 * Examples can need user setup such as storing an API key in `.Renviron`.
+* Examples can be too long for `R CMD check`.
 
-Thankfully there are few toggles that you can use for your examples. From "Writing R extensions", "You can use `\dontrun{}` for text that should only be shown, but not run, and `\dontshow{}` for extra commands for testing that should not be shown to users" and "Finally, there is `\donttest`, used (at the beginning of a separate line) to mark code that should be run by example() but not by R CMD check (by default: the option `--run-donttest` can be used).". That's a lot of information to process, but `roxygen2` docs feature [a handy reference table](https://roxygen2.r-lib.org/articles/rd.html#functions).
+Thankfully there are few toggles that you can use for your examples. From "Writing R extensions", _"You can use `\dontrun{}` for text that should only be shown, but not run, and `\dontshow{}` for extra commands for testing that should not be shown to users"_ and _"Finally, there is `\donttest`, used (at the beginning of a separate line) to mark code that should be run by example() but not by R CMD check (by default: the option `--run-donttest` can be used)."_. That's a lot of information to process, but `roxygen2` docs feature [a handy reference table](https://roxygen2.r-lib.org/articles/rd.html#functions).
 
-To complicate things a bit more, the `example()` and `R CMD check` have toggles too! You could run `example(<topic>, run.dontrun = TRUE)` and `R CMD check` with the `--run-donttest` options. :dizzy:
+To complicate things a bit more, `example()` and `R CMD check` have toggles too! You could run `example(<topic>, run.dontrun = TRUE)` and `R CMD check` with the `--run-donttest` options. :dizzy_face:
 
 Here's a summary
 
-* Example that works out of the box but long or interactive :right_arrow: donttest
+* Example that works out of the box but long or interactive :arrow_right: donttest (used [19,065 times in CRAN packages at the time of writing](https://github.com/search?utf8=%E2%9C%93&q=%22%5Cdontrun%7B%22+user%3Acran+extension%3ARd&type=Code&ref=advsearch&l=&l=))
 
-* Example that doesn't work out of the box or doesn't work at all :right_arrow: dontrun
+* Example that doesn't work out of the box or doesn't work at all :arrow_right: dontrun (used [2,019 times in CRAN packages at the time of writing](https://github.com/search?utf8=%E2%9C%93&q=%22%5Cdontrun%7B%22+user%3Acran+extension%3ARd&type=Code&ref=advsearch&l=&l=))
 
-* Example where you want to [sneakily a subset of the example data](https://kbroman.org/pkg_primer/pages/cran.html) (to make it run faster) :right_arrow: dontshow
+* Example where you want to [sneakily a subset of the example data](https://kbroman.org/pkg_primer/pages/cran.html) (to make it run faster) :arrow_right: dontshow (used [1,209 times in CRAN packages at the time of writing](https://github.com/search?q=%22%5Cdontshow%7B%22+user%3Acran+extension%3ARd&type=Code))
 
-More flexibility is possible, [for instance refer to the WIP `roxygen2labs` package](https://github.com/gaborcsardi/roxygenlabs#conditional-examples).
+Depending on why you choose to pack some examples in `\dontrun`, you might enjoy the [`run_dont_run` option of `pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html#arguments), e.g. if your examples depend on having authentication tokens that _are_ present when building the pkgdown website.
 
 ## How to check your examples?
 
@@ -135,8 +136,8 @@ Two items from the [CRAN policies](https://cran.r-project.org/web/packages/polic
 
 * _"Examples should run for no more than a few seconds each: they are intended to exemplify to the would-be user how to use the functions in the package."_ :hourglass:
 
-* _"The code and examples provided in a package should never do anything which might be regarded as malicious or anti-social."_  :smiling_imp: The policies give examples of such behaviour such as _"Packages should not write in the user’s home filespace (including clipboards), nor anywhere else on the file system apart from the R session’s temporary directory"_.
+* _"The code and examples provided in a package should never do anything which might be regarded as malicious or anti-social."_  :smiling_imp: The policies give examples of such behaviour such as _"Packages should not write in the user’s home filespace (including clipboards), nor anywhere else on the file system apart from the R session’s temporary directory"_. So make good use of `tempdir()`!
 
 ## Conclusion
 
-In this post we answered questions around the preparation of examples for manual pages of R packages.
+In this post we answered questions around the preparation of examples for manual pages of R packages. If you wish there were even more flexibility, be on the lookout for future developments for examples written with `roxygen2`, [for instance check out the WIP `roxygen2labs` package](https://github.com/gaborcsardi/roxygenlabs#conditional-examples).
