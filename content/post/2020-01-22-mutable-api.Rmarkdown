@@ -1,6 +1,6 @@
 ---
 title: Objects that feel mutable in R
-date: '2019-12-26'
+date: '2020-01-22'
 slug: mutable-api
 tags:
   - package development
@@ -158,11 +158,12 @@ In the example below we launch a process using `processx`, create a `ps_handle` 
 p <- processx::process$new("sleep", "0.5")
 ```
 
-With such a definition, after 5 seconds the process will no longer exist. 
+With such a definition, after half a second the process will no longer exist. 
 
 ```{r, error=TRUE}
-(p$get_pid())
-(phandle <- p$as_ps_handle())
+p$get_pid()
+phandle <- p$as_ps_handle()
+phandle
 ps::ps_status(phandle)
 Sys.sleep(0.5)
 ps::ps_status(phandle)
