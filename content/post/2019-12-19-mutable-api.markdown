@@ -6,19 +6,46 @@ tags:
   - package development
 ---
 
-In R, most often, to change an object, you need to re-assign its new value to it. But sometimes, things feel different because objects are mutable or it seems they are, be it in base R code or in the code of packages. Why and how provide a mutable API/interface in R code? In this blog post, we shall explore <s>few odd examples</s> a few examples to better understand mutable APIs in R.
+In R, most often, to change an object, you need to re-assign its new value to it. But sometimes, things feel different because objects are mutable or it seems they are, be it in base R code or in the code of packages. Why and how to provide a mutable API/interface in R code? In this blog post, we shall explore <s>a few odd examples</s> a few examples to better understand mutable APIs in R.
 
 ## Preamble: what do we mean by mutable?
 
 ### What is mutable
 
-As explained in the [chapter "Names and values" of the Advanced R book by Hadley Wickham](https://adv-r.hadley.nz/names-values.html), in R objects are actually not mutable, because of the [copy-on-modify behaviour](https://adv-r.hadley.nz/names-values.html#copy-on-modify). The book has very clear diagrams showing how a name is bound to a binding corresponding to an object. When you think you're modifying an object, a new object with a new value has been created and bound to the initial name. The original object is unchanged, it's not mutable.
+As explained in the [chapter "Names and values" of the Advanced R book by Hadley Wickham](https://adv-r.hadley.nz/names-values.html), in R, most objects are actually not mutable. In particular, there's the [copy-on-modify behaviour](https://adv-r.hadley.nz/names-values.html#copy-on-modify). The book has very clear diagrams showing how an object is bound to a name. Often, when you think you're modifying an object, 
 
-Environments are mutable, they can be [modified in place](https://adv-r.hadley.nz/names-values.html#modify-in-place). 
+```r
+x <- c(1, 7)
+x[2] <- 2
+```
+
+a new object with a new value has been created and bound to the initial name. The original object is unchanged, it's not mutable. In the "Advanced R" book, a [subsection is dedicated to `tracemem()`](https://adv-r.hadley.nz/names-values.html#tracemem) and explains "Once you call that function with an object, you’ll get the object's current address".
+
+
+
+```r
+x <- c(1, 7)
+tracemem(x)
+```
+
+```
+## [1] "<0x55fee7265d78>"
+```
+
+```r
+x[2] <- 2
+```
+
+```
+## tracemem[0x55fee7265d78 -> 0x55fee72cdc28]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+```
+
+We see that the address of "x" changes, a new object has been bound to that name, it's not the original object with the original address that has been modified.
+Environments are one of the R object types that _are_ mutable, they can be [modified in place](https://adv-r.hadley.nz/names-values.html#modify-in-place). 
 
 ### What feels mutable
 
-In this post, we're actually interested in any hack or tool that makes something _feel_ mutable.
+In this post, we're actually interested in any method or tool that makes something _feel_ mutable.
 
 We're used to code such as
 
@@ -47,7 +74,18 @@ One can say the code above is a bit odd. This post is a collection of patterns t
 
 ### What's not mutable and doesn't feel mutable either
 
-data.frames are not mutable and one doesn't feel they are, even with `dplyr::mutate()`: you don't write `dplyr::mutate(df, newcol = 1)` to modify `df`, you need to write `df <- dplyr::mutate(df, newcol = 1)`. :stuck_out_tongue_winking_eye:
+data.frames are not mutable and one doesn't feel they are, even with `dplyr::mutate()`: you don't write 
+
+```r
+dplyr::mutate(df, newcol = 1)
+```
+
+to modify `df`, you need to write 
+
+```r
+df <- dplyr::mutate(df, newcol = 1)
+```
+:stuck_out_tongue_winking_eye:
 
 ## A replacement function in the urltools package
 
@@ -81,7 +119,7 @@ url
 ## [1] "https://docs.r-hub.io"
 ```
 
-The original url value is not modified, the url name is bound to a new binding. Below we use the [`tracemem()` function](https://adv-r.hadley.nz/names-values.html#tracemem).
+The original url value is not modified. Below we use the [`tracemem()` function](https://adv-r.hadley.nz/names-values.html#tracemem).
 
 
 ```r
@@ -90,7 +128,7 @@ tracemem(url)
 ```
 
 ```
-## [1] "<0x55af37a4dd70>"
+## [1] "<0x55fee7183cc0>"
 ```
 
 ```r
@@ -98,7 +136,7 @@ urltools::fragment(url) <- "intro"
 ```
 
 ```
-## tracemem[0x55af37a4dd70 -> 0x55af3840a718]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x55fee7183cc0 -> 0x55fee6984050]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -126,7 +164,7 @@ getMethod(urltools::"fragment<-")
 ##     }
 ##     return(set_component_f(x, 5, value, "#"))
 ## }
-## <bytecode: 0x55af35fa8c38>
+## <bytecode: 0x55fee426d780>
 ## <environment: namespace:urltools>
 ## 
 ## Signatures:
@@ -175,7 +213,7 @@ tracemem(x)
 ```
 
 ```
-## [1] "<0x55af35bbed38>"
+## [1] "<0x55fee4174a20>"
 ```
 
 ```r
@@ -187,9 +225,9 @@ replace_all(x) <- 42
 ```
 
 ```
-## tracemem[0x55af35bbed38 -> 0x55af35ba2e18]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x55af35ba2e18 -> 0x55af35ba2eb8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x55af35ba2eb8 -> 0x55af35b7c8b8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x55fee4174a20 -> 0x55fee4b8b0b8]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x55fee4b8b0b8 -> 0x55fee4b8b108]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x55fee4b8b108 -> 0x55fee4b966c8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -215,47 +253,36 @@ xml2::xml_replace(xml2::xml_find_all(xml, "//softbreak"),
 
 That code changes nodes in the `xml` object without our assigning it back to it.
 
-The reasons `xml2` works this way is that the package is a binding to [the C libxml2 API](http://xmlsoft.org/), where you are supposed to manage memory allocation manually. [`xml2` does handle memory management for you](https://xml2.r-lib.org/#compared-to-the-xml-package) but [`xml2` docs explain how one should be careful when removing nodes because of possible memory issues](https://xml2.r-lib.org/articles/modification.html#removing-nodes). 
-
-Maybe XML data in itself is unusual for you, and maybe the behaviour above is even more unusual for you, but it's a handy package, [if only to tinker with READMEs](/2019/12/03/readmes/#other-size-indicators). :grin:
+The reasons `xml2` works this way is that the package is a binding to [the C libxml2 API](http://xmlsoft.org/), and the XML objects in the libxml2 C API _are_ mutable. [`xml2` does handle memory management for you](https://xml2.r-lib.org/#compared-to-the-xml-package). 
 
 ## Interfacing an external process that's actually mutable in ps::ps_handle()
 
 Now, speaking of objects that are actually mutable, the [`ps` package](http://ps.r-lib.org/) offers an interesting example: the [`ps_handle()`](http://ps.r-lib.org/reference/ps_handle.html) function creates an object that's essentially a pointer to a system process. System processes are of course mutable, they run, then die, can be suspended, etc.
 
-In the example below we launch a system call using `processx`, create a `ps_handle` object corresponding to it i.e. just an external pointer with an S3 class, and we query its status using `ps`. 
+In the example below we launch a process using `processx`, create a `ps_handle` object corresponding to it i.e. just an external pointer with an S3 class, and we query its status using `ps`. `ps` can't _create_ processes but it can query, list and manipulate them.
 
 
 ```r
-p <- processx::process$new("sleep", "5")
+p <- processx::process$new("sleep", "0.5")
 ```
 
 With such a definition, after 5 seconds the process will no longer exist. 
 
 
 ```r
-p$get_pid()
+(p$get_pid())
 ```
 
 ```
-## [1] 12139
-```
-
-```r
-phandle <- ps::ps_handle(p$get_pid())
-class(phandle)
-```
-
-```
-## [1] "ps_handle"
+## [1] 19022
 ```
 
 ```r
-phandle
+(phandle <- p$as_ps_handle())
 ```
 
 ```
-## <ps::ps_handle> PID=12139, NAME=sleep, AT=2020-01-07 09:09:37
+## <ps::ps_handle> PID=19022, NAME=sleep, AT=2020-01-21 14:23:10
 ```
 
 ```r
@@ -267,15 +294,15 @@ ps::ps_status(phandle)
 ```
 
 ```r
-Sys.sleep(5)
+Sys.sleep(0.5)
 ps::ps_status(phandle)
 ```
 
 ```
-## Error: No such process, pid 12139, ???
+## Error: No such process, pid 19022, ???
 ```
 
-This example corresponded to an object in R referring to something mutable outside of R. What about an object corresponding to something mutable outside _or inside_ of R that can be mutable? An answer is: R6 objects!
+This example corresponded to an object in R referring to something mutable _outside_ of R. What about an object corresponding to something mutable that can also be _inside_ of R and mutable? An answer is: R6 objects!
 
 ## Actually mutable objects with R6
 
@@ -320,6 +347,8 @@ desc::desc_add_author_gh("<githubhandle>")
 ```
 
 And the local DESCRIPTION file will be updated. So what's become mutable is the DESCRIPTION file itself via an object that's written to disk each time it's changed!
+
+To mention another `R6` example and to come back to system processes: `processx` uses R6 + Xptr, because some of the mutable state is in R. `ps` uses Xptr and then all the mutable state is in C (e.g. `ps::ps_suspend()`) or is external (what happens to the process outside of R).
 
 ## Conclusion
 
