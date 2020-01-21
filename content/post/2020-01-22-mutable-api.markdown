@@ -29,7 +29,7 @@ tracemem(x)
 ```
 
 ```
-## [1] "<0x560207f77608>"
+## [1] "<0x563e56e8ddb8>"
 ```
 
 ```r
@@ -37,7 +37,7 @@ x[2] <- 2
 ```
 
 ```
-## tracemem[0x560207f77608 -> 0x560207fdf888]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x563e56e8ddb8 -> 0x563e56ef4118]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 We see that the address of "x" changes, a new object has been bound to that name, it's not the original object with the original address that has been modified.
@@ -128,7 +128,7 @@ tracemem(url)
 ```
 
 ```
-## [1] "<0x560207e980e8>"
+## [1] "<0x563e56dace78>"
 ```
 
 ```r
@@ -136,7 +136,7 @@ urltools::fragment(url) <- "intro"
 ```
 
 ```
-## tracemem[0x560207e980e8 -> 0x5602076979f0]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x563e56dace78 -> 0x563e565ac9f0]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -164,7 +164,7 @@ getMethod(urltools::"fragment<-")
 ##     }
 ##     return(set_component_f(x, 5, value, "#"))
 ## }
-## <bytecode: 0x560204f7da98>
+## <bytecode: 0x563e53e92a98>
 ## <environment: namespace:urltools>
 ## 
 ## Signatures:
@@ -213,7 +213,7 @@ tracemem(x)
 ```
 
 ```
-## [1] "<0x560204e880b0>"
+## [1] "<0x563e53d9d078>"
 ```
 
 ```r
@@ -225,9 +225,9 @@ replace_all(x) <- 42
 ```
 
 ```
-## tracemem[0x560204e880b0 -> 0x56020589e0b8]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x56020589e0b8 -> 0x56020589e108]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x56020589e108 -> 0x5602058a96c8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x563e53d9d078 -> 0x563e547b30b8]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x563e547b30b8 -> 0x563e547b3108]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x563e547b3108 -> 0x563e547be6c8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -274,7 +274,7 @@ p$get_pid()
 ```
 
 ```
-## [1] 23323
+## [1] 23717
 ```
 
 ```r
@@ -283,7 +283,7 @@ phandle
 ```
 
 ```
-## <ps::ps_handle> PID=23323, NAME=sleep, AT=2020-01-21 15:03:53
+## <ps::ps_handle> PID=23717, NAME=sleep, AT=2020-01-21 15:06:22
 ```
 
 ```r
@@ -300,7 +300,7 @@ ps::ps_status(phandle)
 ```
 
 ```
-## Error: No such process, pid 23323, ???
+## Error: No such process, pid 23717, ???
 ```
 
 This example corresponded to an object in R referring to something mutable _outside_ of R. What about an object corresponding to something mutable that can also be _inside_ of R and mutable? An answer is: R6 objects!
@@ -349,7 +349,7 @@ desc::desc_add_author_gh("<githubhandle>")
 
 And the local DESCRIPTION file will be updated. So what's become mutable is the DESCRIPTION file itself via an object that's written to disk each time it's changed!
 
-To mention another `R6` example and to come back to system processes: `processx` uses R6 + Xptr, because some of the mutable state is in R. `ps` uses Xptr and then all the mutable state is in C (e.g. `ps::ps_suspend()`) or is external (what happens to the process outside of R).
+To mention another `R6` example and to come back to system processes: `processx` uses R6 and an external pointer, because some of the mutable state is in R. `ps` uses an external pointer and then all the mutable state is in C or is external.
 
 ## Conclusion
 

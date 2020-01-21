@@ -198,7 +198,7 @@ desc::desc_add_author_gh("<githubhandle>")
 
 And the local DESCRIPTION file will be updated. So what's become mutable is the DESCRIPTION file itself via an object that's written to disk each time it's changed!
 
-To mention another `R6` example and to come back to system processes: `processx` uses R6 + Xptr, because some of the mutable state is in R. `ps` uses Xptr and then all the mutable state is in C (e.g. `ps::ps_suspend()`) or is external (what happens to the process outside of R).
+To mention another `R6` example and to come back to system processes: `processx` uses R6 and an external pointer, because some of the mutable state is in R. `ps` uses an external pointer and then all the mutable state is in C or is external.
 
 ## Conclusion
 
