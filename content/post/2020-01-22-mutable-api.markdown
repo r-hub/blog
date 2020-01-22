@@ -29,7 +29,7 @@ tracemem(x)
 ```
 
 ```
-## [1] "<0x563e56e8ddb8>"
+## [1] "<0x564b0de79f38>"
 ```
 
 ```r
@@ -37,7 +37,7 @@ x[2] <- 2
 ```
 
 ```
-## tracemem[0x563e56e8ddb8 -> 0x563e56ef4118]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x564b0de79f38 -> 0x564b0dedfc18]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 We see that the address of "x" changes, a new object has been bound to that name, it's not the original object with the original address that has been modified.
@@ -128,7 +128,7 @@ tracemem(url)
 ```
 
 ```
-## [1] "<0x563e56dace78>"
+## [1] "<0x564b0e61ac88>"
 ```
 
 ```r
@@ -136,7 +136,7 @@ urltools::fragment(url) <- "intro"
 ```
 
 ```
-## tracemem[0x563e56dace78 -> 0x563e565ac9f0]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x564b0e61ac88 -> 0x564b0d5cc928]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -164,7 +164,7 @@ getMethod(urltools::"fragment<-")
 ##     }
 ##     return(set_component_f(x, 5, value, "#"))
 ## }
-## <bytecode: 0x563e53e92a98>
+## <bytecode: 0x564b0abe7410>
 ## <environment: namespace:urltools>
 ## 
 ## Signatures:
@@ -213,7 +213,7 @@ tracemem(x)
 ```
 
 ```
-## [1] "<0x563e53d9d078>"
+## [1] "<0x564b0b93b3f8>"
 ```
 
 ```r
@@ -225,9 +225,9 @@ replace_all(x) <- 42
 ```
 
 ```
-## tracemem[0x563e53d9d078 -> 0x563e547b30b8]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x563e547b30b8 -> 0x563e547b3108]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
-## tracemem[0x563e547b3108 -> 0x563e547be6c8]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
+## tracemem[0x564b0b93b3f8 -> 0x564b0b7a07b8]: eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x564b0b7a07b8 -> 0x564b0b7a0808]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local 
+## tracemem[0x564b0b7a0808 -> 0x564b0b7ac168]: replace_all<- eval eval withVisible withCallingHandlers handle timing_fn evaluate_call <Anonymous> evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file <Anonymous> <Anonymous> eval eval eval eval eval.parent local
 ```
 
 ```r
@@ -244,7 +244,7 @@ So replacement functions are a standard way to give a mutable flavour to R code.
 
 With `xml2` you can modify and remove XML nodes from a tree which makes you feel the tree is mutable.
 
-See for instance the code in [our blog post about READMEs](/2019/12/03/readmes/#other-size-indicators)
+See for instance the code in [our blog post about READMEs](/2019/12/03/readmes/#other-size-indicators):
 
 ```r
 xml2::xml_replace(xml2::xml_find_all(xml, "//softbreak"),
@@ -274,7 +274,7 @@ p$get_pid()
 ```
 
 ```
-## [1] 23717
+## [1] 10148
 ```
 
 ```r
@@ -283,7 +283,7 @@ phandle
 ```
 
 ```
-## <ps::ps_handle> PID=23717, NAME=sleep, AT=2020-01-21 15:06:22
+## <ps::ps_handle> PID=10148, NAME=sleep, AT=2020-01-22 08:48:38
 ```
 
 ```r
@@ -300,7 +300,7 @@ ps::ps_status(phandle)
 ```
 
 ```
-## Error: No such process, pid 23717, ???
+## Error: No such process, pid 10148, ???
 ```
 
 This example corresponded to an object in R referring to something mutable _outside_ of R. What about an object corresponding to something mutable that can also be _inside_ of R and mutable? An answer is: R6 objects!

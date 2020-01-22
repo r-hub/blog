@@ -137,7 +137,7 @@ So replacement functions are a standard way to give a mutable flavour to R code.
 
 With `xml2` you can modify and remove XML nodes from a tree which makes you feel the tree is mutable.
 
-See for instance the code in [our blog post about READMEs](/2019/12/03/readmes/#other-size-indicators)
+See for instance the code in [our blog post about READMEs](/2019/12/03/readmes/#other-size-indicators):
 
 ```r
 xml2::xml_replace(xml2::xml_find_all(xml, "//softbreak"),
