@@ -36,7 +36,7 @@ example("pkg_search", package = "pkgsearch")
 or 
 
 ```r
-library("pkgsearch)
+library("pkgsearch")
 example("pkg_search")
 ```
 
