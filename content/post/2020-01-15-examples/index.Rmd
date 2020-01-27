@@ -1,6 +1,6 @@
 ---
 slug: examples
-title: "Examples for your R package in manual pages"
+title: "Examples in R package"
 authors:
   - Maëlle Salmon
 date: "2020-01-15"
@@ -13,7 +13,7 @@ output:
 
 After posts exploring [READMEs](/2019/12/03/readmes/), [URLs in DESCRIPTION](/2019/12/10/urls/), today we shall look at another important aspect of documentation: examples in the manual pages of your functions! Why write them, how to write them, and how to control their execution in different contexts (CRAN or not :wink:).
 
-## Why to write examples in manual pages?
+## Why write examples in manual pages?
 
 We've made the point for users discovering packages through READMEs. Now, for functions, they might type `?foo` or open a `pkgdown` reference page and go straight to the example parts rather than read the previous sections (about parameters, details, etc). 
 
@@ -95,7 +95,7 @@ foo(basic = TRUE)
 foo(basic = FALSE)
 ``` 
 
-The former solution (`@examples` tag: examples with other docs for the function) means you can work on the function code and examples at the same time more smoothly but all your lines start with `#'`; the latter solution (`@example` tag without an s: examples in dedicated files) means you can write examples as usual R code without `#'`. 
+The former solution (`@examples` tag: examples with other docs for the function inside the function R file) means you can work on the function code and examples at the same time more smoothly, but all your lines start with `#'`; the latter solution (`@example` tag without an s: examples in dedicated files) means you can write examples as usual R code without `#'`. 
 
 ## How to know there are enough examples?
 
@@ -103,9 +103,9 @@ You could judge whether the man page of each function shows the most important b
 
 ## How to safeguard examples?
 
-Examples are supposed to be _executable_ i.e. to run without error. As writing in ["Writing R Extensions"](https://cran.r-project.org/doc/manuals/R-exts.html#index-_005cdontrun), _"By default, text inside `\examples{}` will be displayed in the output of the help page and run by `example()` and by `R CMD check`."_.
+Examples are supposed to be _executable_ i.e. to run without error. As writing in ["Writing R Extensions"](https://cran.r-project.org/doc/manuals/R-exts.html#index-_005cdontrun), _"By default, text inside `\examples{}` will be displayed in the output of the help page and run by `example()` and by `R CMD check`."_. `R CMD check`'s running example could be described as a [_smoke test_](https://en.wikipedia.org/wiki/Smoke_testing_(software)).
 
-Now comes one of the trickiest aspects of creating examples for the manual pages: how to execute them only they work? We're not encouraging cheating but
+Now comes one of the trickiest aspects of creating examples for the manual pages: how to execute them only when they work? We're not encouraging cheating but
 
 * Examples can show an error, to exemplify the behaviour of the function in such cases.
 * Examples can need user setup such as storing an API key in `.Renviron`.
