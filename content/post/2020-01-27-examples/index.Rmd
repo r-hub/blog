@@ -1,9 +1,9 @@
 ---
 slug: examples
-title: "Examples in R package"
+title: "Code examples in the R package manuals"
 authors:
   - Maëlle Salmon
-date: "2020-01-15"
+date: "2020-01-27"
 tags:
 - package development
 output: 
@@ -19,7 +19,7 @@ We've made the point for users discovering packages through READMEs. Now, for fu
 
 Users might do that either to get a quick feel for how the functions work, or refresh their memories of it. Say you discovered the [great `pkgsearch` package](/2019/11/26/pkgsearch/) and decided to try it out. You might look at the local [or online](https://r-hub.github.io/pkgsearch/reference/index.html) reference index and then nagivate to [the help for `package_search()`](https://r-hub.github.io/pkgsearch/reference/pkg_search.html) to [read examples](https://r-hub.github.io/pkgsearch/reference/pkg_search.html#examples).
 
-Therefore, ideally your package should have examples for every function. The long-form docs (README, vignette) can still show functions working together and give a bigger picture, but adding executable code to your manual pages is crucial.
+Ideally your package should have examples for every function. The long-form docs (README, vignette) can still show functions working together and give a bigger picture, but adding executable code to your manual pages is crucial.
 
 ## How to run examples
 
@@ -105,11 +105,11 @@ You could judge whether the man page of each function shows the most important b
 
 Examples are supposed to be _executable_ i.e. to run without error. As writing in ["Writing R Extensions"](https://cran.r-project.org/doc/manuals/R-exts.html#index-_005cdontrun), _"By default, text inside `\examples{}` will be displayed in the output of the help page and run by `example()` and by `R CMD check`."_. `R CMD check`'s running example could be described as a [_smoke test_](https://en.wikipedia.org/wiki/Smoke_testing_(software)).
 
-Now comes one of the trickiest aspects of creating examples for the manual pages: how to execute them only when they work? We're not encouraging cheating but
+Now comes one of the trickiest aspects of creating examples for the manual pages: sometimes the two goals of examples (examples for the user to try or read; examples for smoke testing) can conflict.
 
 * Examples can show an error, to exemplify the behaviour of the function in such cases.
-* Examples can need user setup such as storing an API key in `.Renviron`.
-* Examples can be too long for `R CMD check`.
+* Examples may need user setup such as having an API key available.
+* Examples can be too long for CRAN.
 
 Thankfully there are few toggles that you can use for your examples. From "Writing R extensions", _"You can use `\dontrun{}` for text that should only be shown, but not run, and `\dontshow{}` for extra commands for testing that should not be shown to users"_ and _"Finally, there is `\donttest`, used (at the beginning of a separate line) to mark code that should be run by example() but not by R CMD check (by default: the option `--run-donttest` can be used)."_. In the help files the user reads, `\dontshow{}` lines are well, not shown; `dontrun{}` blocks come between `## Not run:` and `## End(Not run)` lines; `\donttest{}` lines look like all other lines. (See ` lookup::lookup(tools::Rd2HTML)`) That's a lot of information to process, but `roxygen2` docs feature [a handy reference table](https://roxygen2.r-lib.org/articles/rd.html#functions).
 
@@ -117,13 +117,13 @@ To complicate things a bit more, `example()` and `R CMD check` have toggles too!
 
 Here's a summary
 
-* Example that works out of the box but long or interactive :arrow_right: donttest (used [2,019 times in CRAN packages at the time of writing](https://github.com/search?utf8=%E2%9C%93&q=%22%5Cdontrun%7B%22+user%3Acran+extension%3ARd&type=Code&ref=advsearch&l=&l=))
+* Example that works out of the box but long or interactive :arrow_right: donttest (used [2,019 times in CRAN packages at the time of writing](https://github.com/search?utf8=%E2%9C%93&q=%22%5Cdontrun%7B%22+user%3Acran+extension%3ARd&type=Code&ref=advsearch&l=&l=)).
 
-* Example that doesn't work out of the box or doesn't work at all :arrow_right: dontrun (used [19,065 times in CRAN packages at the time of writing](https://github.com/search?utf8=%E2%9C%93&q=%22%5Cdontrun%7B%22+user%3Acran+extension%3ARd&type=Code&ref=advsearch&l=&l=))
+* Example that doesn't work out of the box or doesn't work at all :arrow_right: dontrun (used [19,065 times in CRAN packages at the time of writing](https://github.com/search?utf8=%E2%9C%93&q=%22%5Cdontrun%7B%22+user%3Acran+extension%3ARd&type=Code&ref=advsearch&l=&l=)).
 
 > For a CRAN submission you might be told to use `donttest` for examples using a token.
 
-* Example where you want to [sneakily a subset of the example data](https://kbroman.org/pkg_primer/pages/cran.html) (to make it run faster) :arrow_right: dontshow (used [1,209 times in CRAN packages at the time of writing](https://github.com/search?q=%22%5Cdontshow%7B%22+user%3Acran+extension%3ARd&type=Code))
+* Example where you want to [sneakily subset of the example data](https://kbroman.org/pkg_primer/pages/cran.html) (to make it run faster) :arrow_right: dontshow (used [1,209 times in CRAN packages at the time of writing](https://github.com/search?q=%22%5Cdontshow%7B%22+user%3Acran+extension%3ARd&type=Code)). _Note that in that case the user gets different results when copy-pasting the example vs. running `example()`._
 
 Depending on why you choose to pack some examples in `\dontrun`, you might enjoy the [`run_dont_run` option of `pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html#arguments), e.g. if your examples depend on having authentication tokens that _are_ present when building the pkgdown website.
 
@@ -135,7 +135,7 @@ You could run `R CMD check` with the options you want. Or you could use
 
 * [`testthat::test_examples()`](https://testthat.r-lib.org/reference/test_examples.html). This function doesn't pass any argument to `tools::Rd2ex()` that it uses to extract the examples from the docs, so it will test `donttest` examples but not test `dontrun` examples (`commentDontrun = TRUE, commentDonttest = FALSE`). You can use `test_examples()` in a testthat test file to have examples run by `devtools::test()` but note that the docs state that _"Generally, this is redundant with R CMD check, and is not recommended in routine practice."_.
 
-## What can't code in examples do?
+## What can't example code do?
 
 Two items from the [CRAN policies](https://cran.r-project.org/web/packages/policies.html) should be borne in mind when creating examples (and when choosing dontrun/donttest/dontshow toggles :wink:).
 
