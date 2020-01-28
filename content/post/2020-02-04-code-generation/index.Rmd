@@ -39,8 +39,81 @@ Even without getting to the dream situation of code being cleanly generated, it 
 
 ## Generating code
 
-> "odin works using code generation; the nice thing about this approach is that it never gets bored. So if the generated code has lots of tedious repetitive bits, they're at least likely to be correct (compared with implementing yourself)." Rich FitzJohn, [odin README](https://github.com/mrc-ide/odin).
+> "odin works using code generation; the nice thing about this approach is that it never gets bored. So if the generated code has lots of tedious repetitive bits, they're at least likely to be correct (compared with implementing yourself)." Rich FitzJohn, [odin README](https://mrc-ide.github.io/odin/articles/odin.html).
 
+Quite convincing, right? But _how_ does one generate code for an R package? The first question is _when_ does one generate code.
+
+### Generating code once or once in a while
+
+* For the package whose development prompted him to start the Twitter thread mentioned earlier, Miles McBain used code generation. The package creates wrappers around `dplyr` functions, that can in particular automatically `ungroup()` your data. Now say Miles decides to wrap a further `dplyr` function. 
+    * He updates the [list of wrappers](https://github.com/MilesMcBain/wisegroup/blob/master/group_aware_functions.R)
+    * He can then [run a make.R script](https://github.com/MilesMcBain/wisegroup/blob/master/make.R) that will [source a build.R script](https://github.com/MilesMcBain/wisegroup/blob/master/build.R) that creates R files with actual R code and lines with `roxygen2` code, before running `devtools::document()`.
+    
+Code generating a function
+
+```r
+
+build_fn <- function(fn) {
+
+  fn_name <- name(fn)
+
+  glue::glue("{fn_name} <- function(...) {{\n",
+             "  dplyr::ungroup(\n",
+             "    {fn}(...)\n",
+             "  )\n",
+             "}}\n")
+
+}
+```
+
+Code generating docs
+
+```r
+build_fn_doco <- function(fn) {
+
+  fn_name <- name(fn)
+
+  glue::glue(
+    "##' Ungrouping wrapper for {fn_name}\n",
+    "##'\n",
+    "##' The {PKGNAME} package provides a wrapper for {fn_name} that always returns\n",
+    "##' ungrouped data. This avoids mistakes associated with forgetting to call ungroup().\n",
+    "##'\n",
+    "##' For original documentation see [{fn}()].\n",
+    "##'\n",
+    "##' Use [{fn_name}...()] to retain groups as per `{fn}`, whilst\n",
+    "##' signalling this in your code.\n",
+    "##'\n",
+    "##' @title {fn_name}\n",
+    "##' @param ... parameters for {fn}\n",
+    "##' @return an ungrouped dataframe\n",
+    "##' @author Miles McBain\n",
+    "##' @export\n",
+    "##' @seealso {fn}, {fn_name}..."
+  )
+
+}
+
+```
+
+    
+Voilà, there's an updated `R/` folder, `man/` folder and `NAMESPACE`, and it all works.
+    
+* A similar setup is used by Carl Boettiger in [`eml.build` for generating functions based on an XML spec](https://github.com/cboettig/build.eml/blob/master/data-raw/create-functions.R). [Tweet](https://twitter.com/cboettig/status/1199489890527805440).
+
+* A further example is [`redux` by Rich FitzJohn](https://github.com/richfitz/redux/blob/master/extra/generate.R) where code is generated based on [Redis docs](https://github.com/antirez/redis-doc). [Tweet](https://twitter.com/rgfitzjohn/status/1199467409301749762).
+
+* Last example for this post, `xaringanthemer` by Garrick Aden-Buie [generates functions](https://github.com/gadenbuie/xaringanthemer/blob/master/inst/scripts/generate_theme_functions.R) based [on a `tibble`](https://github.com/gadenbuie/xaringanthemer/blob/master/R/theme_settings.R) containg "Function arguments, doc strings and theme-specific defaults " that's also used to generate [a docs page](https://pkg.garrickadenbuie.com/xaringanthemer/articles/template-variables.html). [Tweet](https://twitter.com/grrrck/status/1199483617770115073).
+    
+### Generating code at installation
+
+### Generating code on-the-fly
+
+chromote
+
+generating code based on a specification given by an user [like what `odin` does for IDE](https://mrc-ide.github.io/odin/articles/odin.html).
+
+Easy to get out of scope here.
 
 ## Conclusion
 
