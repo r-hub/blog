@@ -104,12 +104,30 @@ Voilà, there's an updated `R/` folder, `man/` folder and `NAMESPACE`, and it al
 * A further example is [`redux` by Rich FitzJohn](https://github.com/richfitz/redux/blob/master/extra/generate.R) where code is generated based on [Redis docs](https://github.com/antirez/redis-doc). [Tweet](https://twitter.com/rgfitzjohn/status/1199467409301749762).
 
 * Last example for this post, `xaringanthemer` by Garrick Aden-Buie [generates functions](https://github.com/gadenbuie/xaringanthemer/blob/master/inst/scripts/generate_theme_functions.R) based [on a `tibble`](https://github.com/gadenbuie/xaringanthemer/blob/master/R/theme_settings.R) containg "Function arguments, doc strings and theme-specific defaults " that's also used to generate [a docs page](https://pkg.garrickadenbuie.com/xaringanthemer/articles/template-variables.html). [Tweet](https://twitter.com/grrrck/status/1199483617770115073).
+
+When to update (remember, Make, etc.)
+
+#### Code generator in a dedicated package
+
+Similar to previous setups https://twitter.com/ijlyttle/status/1199454056638537728?s=20
     
 ### Generating code at installation
 
+icon https://github.com/ropenscilabs/icon/blob/a5bc1cc928b15a5296b06f66faa9e08264ad4064/R/fa.R#L28-L37 in icons there are two things that happen, the function generation at built time and the documenting that's before then (using @evalRd in particular).  @exportPattern
+
+civis twitter.com/patr1ck_mil/status/1199456574105882625?s=20
+
+civisanalytics/civis-r#updating (so two installation modes, from source that'll use the generator, the other won't)
+
+Look in WRE what's written about configure scripts.
+
+"If your configure script needs auxiliary files, it is recommended that you ship them in a tools directory (as R itself does). "
+
+"If your package has a configure script, provide a configure.win script to be used on Windows"
+
 ### Generating code on-the-fly
 
-chromote
+chromote https://twitter.com/alandipert/status/1199456564442062848?s=20 https://github.com/rstudio/chromote/blob/f5ed9105a0e8c06639ec4ca3f1ce498fe1b61729/R/chromote.R#L69
 
 generating code based on a specification given by an user [like what `odin` does for IDE](https://mrc-ide.github.io/odin/articles/odin.html).
 
