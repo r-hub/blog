@@ -1,0 +1,16 @@
+---
+slug: code-generation
+title: "Code generation in R packages"
+authors:
+  - Maëlle Salmon
+date: "2020-02-04"
+tags:
+- package development
+output: 
+  html_document:
+    keep_md: true
+---
+
+If you use the same code three times, write a function. If you write several such related functions, set up a package. But if you write several embarrassingly similar functions... write code to generate them for you? In this post, we'll deal with source code generation. We'll differentiate scaffolding from generating code, and we'll present various strategies observed in the wild.
+
+## If you can repeat yourself, you're lucky
