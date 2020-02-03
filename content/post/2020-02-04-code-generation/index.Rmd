@@ -15,13 +15,15 @@ If you use the [same code three times](https://en.wikipedia.org/wiki/Rule_of_thr
 
 _This post was inspired by an [excellent Twitter thread started by Miles McBain](https://twitter.com/MilesMcBain/status/1199451518090395649), from which we gathered examples. Thank you Miles!_
 
+_Miles furthermore mentioned [Alicia Schep's rstudio::conf talk "Auto-nmagic package development"](https://github.com/vegawidget/vlbuildr#vlbuildr) to us, that was a great watch/read!_
+
 ## Introduction
 
 ### If you can repeat yourself, you're lucky
 
-When would you need to generate code with code? A possible use case is web API with many, many endpoints that have a predictable structure (parameters, output format) that's well documented ("API specs").
+When would you need to generate code? A possible use case is wrapping a web API with many, many endpoints that have a predictable structure (parameters, output format) that's well documented ("API specs").
 
-In any case, to be able to generate code, you'll have some sort of underlying data/ontology. Having that data (specs of a web API, of an external tool you're wrapping, list of all your ideas, etc.), and some consistency in the different items, is quite cool, lucky you! Some of us deal with less tidy web APIs. :wink:
+In any case, to be able to generate code, you'll have some sort of underlying data/ontology. Having that data (specs of a web API, of an external tool you're wrapping, structured list of all your ideas, etc.), and some consistency in the different items, is quite cool, lucky you! Some of us deal with less tidy web APIs. :wink:
 
 ### Scope of this post 
 
@@ -36,6 +38,10 @@ Even without getting to the dream situation of code being cleanly generated, it 
 * The [quote by Bob Rudis above](https://github.com/rstudio/swagger/issues/1#issuecomment-395627756) refers to his work on [`crumpets`](https://github.com/hrbrmstr/crumpets/) where he used the [Swagger](https://en.wikipedia.org/wiki/Swagger_(software)) spec of the Gitea API to generate drafts of many, many functions. The idea was to have following commits edit functions enough to make them work without, as he said, starting from scratch.
 
 * When dealing with a less consistent web API, e.g. the [Hubspot API](https://developers.hubspot.com/docs/overview), a one-off webscraping of the docs can help list endpoints to be implemented and, say, open [tickets in a issue tracker](https://github.com/lockedata/hubspot/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22New+endpoint+%3Around_pushpin%3A%22) with some skeletons in them. One could use [the `projmgr` package by Emily Riederer](https://emilyriederer.github.io/projmgr/index.html) in such a context to open issues/list of tasks.
+
+* The experimental [`scaffolder` package](https://terrytangyuan.github.io/scaffolder) by Yuan Tang _"provides a comprehensive set of tools to automate the process of scaffolding interfaces to modules, classes, functions, and documentations written in other programming languages. As initial proof of concept, scaffolding R interfaces to Python packages is supported via reticulate."_. The [`scaffold_py_function_wrappe`](https://terrytangyuan.github.io/scaffolder/reference/scaffold_py_function_wrapper.html) takes a Python function as input and generates a R script skeleton (R code, and docs, both of them needing further editing).
+
+In these three cases, what's generated is a template for both R code and the corresponding `roxygen2` docs.
 
 ## Generating code
 
@@ -135,6 +141,6 @@ Easy to get out of scope here.
 
 ## Conclusion
 
-In this post we explored different aspects of source code scaffolding and generation in R packages. In the more general context of [automatic programming](https://en.wikipedia.org/wiki/Automatic_programming), one also finds "generative programming", and "low-code applications" (like [tidyblocks](https://tidyblocks.tech/)?). As much as one enjoys writing R code, it's great to be able to write less of it sometimes. 
+In this post we explored different aspects of source code scaffolding and generation in R packages. In the more general context of [automatic programming](https://en.wikipedia.org/wiki/Automatic_programming), one also finds "generative programming", and "low-code applications" (like [tidyblocks](https://tidyblocks.tech/)?). As much as one enjoys writing R code, it's great to be able to write less of it sometimes, especially when it gets too routine. 
 
 Do _you_ use source code generation in R? Don't hesitate to add your own use case and setup in the comments below.
