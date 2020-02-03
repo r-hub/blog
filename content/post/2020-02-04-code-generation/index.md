@@ -220,7 +220,7 @@ _Thanks to Rich for many useful comments on this post._
 ## Conclusion
 
 In this post we explored different aspects of source code scaffolding and generation in R packages. 
-We've mentioned examples of code scaffolding (`gitea`, `hubspot`, `scaffolder`), of code generation by a script (`wisegroup`, `eml.build`, `redux`, `xaringanthemer`) or by a meta package (`vlbuildr` and `vlmetabuildr`) before package shipping, of code generation at build time (`icon`, `civis`, `minicss`) and of code generation at run time (chromote, stevedore). 
+We've mentioned examples of code scaffolding (`gitea`, `hubspot`, `scaffolder`), of code generation by a script (`wisegroup`, `eml.build`, `redux`, `xaringanthemer`) or by a meta package (`vlbuildr` and `vlmetabuildr`) before package shipping, of code generation at build time (`icon`, `civis`, `minicss`) and of code generation at run time (`chromote`, `stevedore`). 
 Many of these examples used some form of string manipulation, in base R or with `glue`, to either generate an R script and its `roxygen2` docs **or** code using `eval()` and `parse()` (`minicss`). 
 One of them doesn't use any text representation and `as.function` and `call`/`as.call` instead (`stevedore`).
 
