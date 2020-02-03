@@ -146,7 +146,7 @@ See e.g. [the PR updating `vlbuildr` to support Vegalite 4.0](https://github.com
 In the previous cases of code generation, the R package source was similar to many R package sources out there. 
 Now, we've also seen cases where the code is generated when building the package. 
 It means that the code generation has to be perfect, since there isn't be any human edit between the code generation and the code use. 
-Let's dive into two examples.
+Let's dive into a few examples.
 
 #### Generating icon aliases in `icon`
 
