@@ -103,7 +103,7 @@ build_fn_doco <- function(fn) {
 ```
 
     
-Voilà, there's an updated `R/` folder, `man/` folder and `NAMESPACE`, and it all works.
+  Voilà, there's an updated `R/` folder, `man/` folder and `NAMESPACE`, and it all works. You'll have noticed the use of the [`glue` package](https://glue.tidyverse.org/), that Alicia Schep also praised in her rstudio::conf talk, and that we've seen in many of the examples we've collected for this post.
     
 * A similar setup is used by Carl Boettiger in [`eml.build` for generating functions based on an XML spec](https://github.com/cboettig/build.eml/blob/master/data-raw/create-functions.R). [Tweet](https://twitter.com/cboettig/status/1199489890527805440).
 
@@ -111,15 +111,40 @@ Voilà, there's an updated `R/` folder, `man/` folder and `NAMESPACE`, and it al
 
 * Last example for this post, `xaringanthemer` by Garrick Aden-Buie [generates functions](https://github.com/gadenbuie/xaringanthemer/blob/master/inst/scripts/generate_theme_functions.R) based [on a `tibble`](https://github.com/gadenbuie/xaringanthemer/blob/master/R/theme_settings.R) containg "Function arguments, doc strings and theme-specific defaults " that's also used to generate [a docs page](https://pkg.garrickadenbuie.com/xaringanthemer/articles/template-variables.html). [Tweet](https://twitter.com/grrrck/status/1199483617770115073).
 
-When to update (remember, Make, etc.)
-
 #### Code generator in a dedicated package
 
-Similar to previous setups https://twitter.com/ijlyttle/status/1199454056638537728?s=20
-    
-### Generating code at installation
+All the examples from the previous subsections had some sort of build scripts living in their package repo. There's no convention on what to call them and where to store them. Now, R developers like their code packaged in package form, and Alicia Schep actually stores a package in the `build/` folder of `vlbuildr`, [`vlmetabuildr`](https://github.com/vegawidget/vlbuildr/tree/master/build/vlmetabuildr), that creates `vlbuildr` anew from the Vegalite schema! That's meta indeed! Fret not, the `build/` folder also holds a [script called `build.R`](https://github.com/vegawidget/vlbuildr/blob/master/build/build.R) that unleashes the auto-magic. _Let us mention [Alicia's rstudio::conf talk again](https://github.com/vegawidget/vlbuildr#vlbuildr)._
 
-icon https://github.com/ropenscilabs/icon/blob/a5bc1cc928b15a5296b06f66faa9e08264ad4064/R/fa.R#L28-L37 in icons there are two things that happen, the function generation at built time and the documenting that's before then (using @evalRd in particular).  @exportPattern
+#### When to update the package?
+
+We haven't seen any code generating workflow relying on a Makefile or on a hook to an external source, so we assume such packages are updated once in a while when their maintainer amends, or notices an amendment of, the underlying ontology. See e.g. [the PR updating `vlbuildr` to support Vegalite 4.0](https://github.com/vegawidget/vlbuildr/pull/43), or [the commit regenerating redis commands for 3.2 in `redux`](https://github.com/richfitz/redux/commit/575e9ccd68b529cacb5bc376ed7cb402392205f2).
+
+### Generating code at build time
+
+In the previous cases of code generation, the R package source was similar to many R package sources out there. Now, we've also seen cases where the code is generated when building the package. It means that the code generation has to be perfect, since there isn't be any human edit between the code generation and the code use. Let's dive into two examples.
+
+#### Generating icon aliases in `icon`
+
+In `icon`, an R package by Mitchell O'Hara-Wild that allows easy insertion of icons from Font Awesome, Academicons and Ionicons into R Markdown, to insert an archive icon one can type `icon::fa("archive")` or `icon::fa_archive()`, i.e. every possible icon has its own alias function which pairs well with autocompletion e.g. in RStudio when starting to type `icon::fa_`. When typing `?icon::fa_archive` one gets a man page entitled "Font awesome alias", the same for all aliases. How does it work?
+
+Font files related to the fonts are stored in [`inst/`](https://github.com/ropenscilabs/icon/tree/master/inst/fonts). It's the case for all three fonts, but let's focus on what happens for Font Awesome. Among the R code (that's executed when building the package), there's [a line reading the icon names from a font file](https://github.com/ropenscilabs/icon/blob/a5bc1cc928b15a5296b06f66faa9e08264ad4064/R/fa.R#L9). Further below [are a few very interesting lines](https://github.com/ropenscilabs/icon/blob/master/R/fa.R#L28-L37)
+
+```r
+#' @evalRd paste("\\keyword{internal}", paste0('\\alias{fa_', gsub('-', '_', fa_iconList), '}'), collapse = '\n')
+#' @name fa-alias
+#' @rdname fa-alias
+#' @exportPattern ^fa_
+fa_constructor <- function(...) fa(name = name, ...)
+for (icon in fa_iconList) {
+  formals(fa_constructor)$name <- icon
+  assign(paste0("fa_", gsub("-", "_", icon)), fa_constructor)
+}
+rm(fa_constructor)
+```
+
+When _documenting_ the package, the man page "fa-alias" is created. The `@evalRd` tags ensures aliases for all icons from `fa_iconList` get an `alias{}` line in the ["fa-alias" man page](https://github.com/ropenscilabs/icon/blob/master/man/fa-alias.Rd). The `@exportPattern` tag ensures a line [exporting all functions whose starts with `fa_` is added to NAMESPACE](https://github.com/ropenscilabs/icon/blob/a5bc1cc928b15a5296b06f66faa9e08264ad4064/NAMESPACE#L16).This part happens before building the package, every time the documentation is updated by the package maintainer. When are the `fa_` functions created? Well, at build time by the for loop. 
+
+The code generation allows an easy update to new Font Awesome versions. Its working this way i.e. with functions defined at build time and a single man page for all aliases, allows for a very compact source code. Each alias function doesn't need more documentation than the shared man page.
 
 civis twitter.com/patr1ck_mil/status/1199456574105882625?s=20
 
