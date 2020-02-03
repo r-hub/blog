@@ -202,7 +202,7 @@ The approach used by `civis` has the clear advantage of allowing a perfect synch
 
 #### Creating functions lists and R6 methods in `minicss`
 
-In [`mimicss`](https://github.com/coolbutuseless/minicss/) by mikefc, "Lists of CSS property information is turned into function lists and R6 methods."](https://twitter.com/coolbutuseless/status/1199458806092034049). 
+In [`mimicss`](https://github.com/coolbutuseless/minicss/) by mikefc, ["Lists of CSS property information is turned into function lists and R6 methods."](https://twitter.com/coolbutuseless/status/1199458806092034049). 
 See [aaa.R](https://github.com/coolbutuseless/minicss/blob/fe378f6e040405e51fb07cb74fd2f0bac8a85b26/R/aaa.R) and [prop_transform.R](https://github.com/coolbutuseless/minicss/blob/fe378f6e040405e51fb07cb74fd2f0bac8a85b26/R/prop_transform.R). 
 As in most examples the code is generated as a string, but in that case it's not written to disk, it becomes code via the use of [`eval()` and `parse()`](http://adv-r.had.co.nz/Expressions.html#parsing-and-deparsing).
 
