@@ -118,7 +118,7 @@ build_fn_doco <- function(fn) {
 ```
 
     
-Voilà, there's an updated `R/` folder, `man/` folder and `NAMESPACE`, and it all works. 
+Voilà, there's an updated `R/` folder, and after running `devtools::document()` an updated `man/` folder and `NAMESPACE`, and it all works. 
 You'll have noticed the use of the [`glue` package](https://glue.tidyverse.org/), that Alicia Schep also praised in her rstudio::conf talk, and that we've seen in many of the examples we've collected for this post.
     
 * A similar setup is used by Carl Boettiger in [`eml.build` for generating functions based on an XML spec](https://github.com/cboettig/build.eml/blob/master/data-raw/create-functions.R). [Tweet](https://twitter.com/cboettig/status/1199489890527805440).
