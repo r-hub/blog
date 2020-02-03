@@ -168,7 +168,7 @@ One step further, one might generate code on-the-fly, i.e. as users run the pack
 
 * The [`chromote`](https://github.com/rstudio/chromote) package ["generates auto-completable R6 methods at runtime"](https://twitter.com/alandipert/status/1199456564442062848).
 
-* In [`stevedore`](https://richfitz.github.io/stevedore/) by Rich FitzJohn, Docker client for R, functions are generated when one connects to the Docker server via `stevedore::docker_client()`, detecting specs from the server's version (possible specs are stored in [inst/spec](https://github.com/richfitz/stevedore/tree/master/inst/spec) as compressed YAML files). In the author's own words, in this package the approach is "not going through the text representation at all and using things like `as.function` and `call`/`as.call` to build up functions and expressions directly". This happens in [swagger_args.R](https://github.com/richfitz/stevedore/blob/c98b0fd24771d6a2e96340fe032896323855de11/R/swagger_args.R).
+* In [`stevedore`](https://richfitz.github.io/stevedore/) by Rich FitzJohn, Docker client for R, functions are generated when one connects to the Docker server via `stevedore::docker_client()`, detecting specs from the server's version (possible specs are stored in [inst/spec](https://github.com/richfitz/stevedore/tree/master/inst/spec) as compressed YAML files). In the author's own words, in this package the approach is "not going through the text representation at all and using things like `as.function` and `call`/`as.call` to build up functions and expressions directly". This happens in [swagger_args.R](https://github.com/richfitz/stevedore/blob/c98b0fd24771d6a2e96340fe032896323855de11/R/swagger_args.R). _Thanks to Rich for many useful comments on this post._
 
 ## Conclusion
 
