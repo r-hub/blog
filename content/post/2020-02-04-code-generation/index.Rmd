@@ -46,13 +46,10 @@ Even without getting to the dream situation of code being cleanly generated, it 
 * The [quote by Bob Rudis above](https://github.com/rstudio/swagger/issues/1#issuecomment-395627756) refers to his work on [`crumpets`](https://github.com/hrbrmstr/crumpets/) where he used the [Swagger](https://en.wikipedia.org/wiki/Swagger_(software)) spec of the Gitea API to generate drafts of many, many functions. 
 The idea was to have following commits edit functions enough to make them work without, as he said, starting from scratch.
 
-* When dealing with a less consistent web API, e.g. the [Hubspot API](https://developers.hubspot.com/docs/overview), a one-off webscraping of the docs can help list endpoints to be implemented and, say, open [tickets in a issue tracker](https://github.com/lockedata/hubspot/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22New+endpoint+%3Around_pushpin%3A%22) with some skeletons in them. 
-One could use [the `projmgr` package by Emily Riederer](https://emilyriederer.github.io/projmgr/index.html) in such a context to open issues/list of tasks.
-
 * The experimental [`scaffolder` package](https://terrytangyuan.github.io/scaffolder) by Yuan Tang _"provides a comprehensive set of tools to automate the process of scaffolding interfaces to modules, classes, functions, and documentations written in other programming languages. As initial proof of concept, scaffolding R interfaces to Python packages is supported via reticulate."_. 
 The [`scaffold_py_function_wrappe`](https://terrytangyuan.github.io/scaffolder/reference/scaffold_py_function_wrapper.html) takes a Python function as input and generates a R script skeleton (R code, and docs, both of them needing further editing).
 
-In these three cases, what's generated is a template for both R code and the corresponding `roxygen2` docs.
+In these two cases, what's generated is a template for both R code and the corresponding `roxygen2` docs.
 
 ## Generating code
 
@@ -125,13 +122,14 @@ You'll have noticed the use of the [`glue` package](https://glue.tidyverse.org/)
 
 * A further example is [`redux` by Rich FitzJohn](https://github.com/richfitz/redux/blob/master/extra/generate.R) where code is generated based on [Redis docs](https://github.com/antirez/redis-doc). [Tweet](https://twitter.com/rgfitzjohn/status/1199467409301749762).
 
-* Last example for this post, `xaringanthemer` by Garrick Aden-Buie [generates functions](https://github.com/gadenbuie/xaringanthemer/blob/master/inst/scripts/generate_theme_functions.R) based [on a `tibble`](https://github.com/gadenbuie/xaringanthemer/blob/master/R/theme_settings.R) containing "Function arguments, doc strings and theme-specific defaults " that's also used to generate [a docs page](https://pkg.garrickadenbuie.com/xaringanthemer/articles/template-variables.html). [Tweet](https://twitter.com/grrrck/status/1199483617770115073).
+* `xaringanthemer` by Garrick Aden-Buie [generates functions](https://github.com/gadenbuie/xaringanthemer/blob/master/inst/scripts/generate_theme_functions.R) based [on a `tibble`](https://github.com/gadenbuie/xaringanthemer/blob/master/R/theme_settings.R) containing "Function arguments, doc strings and theme-specific defaults " that's also used to generate [a docs page](https://pkg.garrickadenbuie.com/xaringanthemer/articles/template-variables.html). [Tweet](https://twitter.com/grrrck/status/1199483617770115073).
 
 #### Code generator in a dedicated package
 
 All the examples from the previous subsections had some sort of build scripts living in their package repo. 
 There's no convention on what to call them and where to store them. 
-Now, R developers like their code packaged in package form, and Alicia Schep actually stores a package in the `build/` folder of `vlbuildr`, [`vlmetabuildr`](https://github.com/vegawidget/vlbuildr/tree/master/build/vlmetabuildr), that creates `vlbuildr` anew from the Vegalite schema! 
+Now, R developers like their code packaged in package form. 
+Alicia Schep actually stores a package in the `build/` folder of `vlbuildr`, [`vlmetabuildr`](https://github.com/vegawidget/vlbuildr/tree/master/build/vlmetabuildr), that creates `vlbuildr` anew from the Vegalite schema! 
 That's meta indeed! 
 Fret not, the `build/` folder also holds a [script called `build.R`](https://github.com/vegawidget/vlbuildr/blob/master/build/build.R) that unleashes the auto-magic. 
 _Let us mention [Alicia's rstudio::conf talk again](https://github.com/vegawidget/vlbuildr#vlbuildr)._
@@ -176,8 +174,7 @@ When _documenting_ the package, the man page "fa-alias" is created.
 The `@evalRd` tags ensures aliases for all icons from `fa_iconList` get an `alias{}` line in the ["fa-alias" man page](https://github.com/ropenscilabs/icon/blob/master/man/fa-alias.Rd). 
 The `@exportPattern` tag ensures a line [exporting all functions whose starts with `fa_` is added to NAMESPACE](https://github.com/ropenscilabs/icon/blob/a5bc1cc928b15a5296b06f66faa9e08264ad4064/NAMESPACE#L16).
 This part happens before building the package, every time the documentation is updated by the package maintainer. 
-When are the `fa_` functions created? 
-Well, at build time by the for loop. 
+The `fa_` functions are created at build time by the for loop. 
 The function factory `fa_constructor` is then removed.
 
 The code generation allows an easy update to new Font Awesome versions. 
@@ -190,7 +187,8 @@ Another interesting example is provided by [the `civis` package](twitter.com/pat
 Its [installation instructions](https://github.com/civisanalytics/civis-r#updating) state that when installing the package from source, all functions corresponding to the latest API version will be created. 
 _What_ happens exactly when the package is installed from source? 
 A configure script is run ([configure](https://github.com/civisanalytics/civis-r/blob/master/configure) or [configure.win](https://github.com/civisanalytics/civis-r/blob/master/configure.win)). 
-Such scripts are automatically run when building a package from source. Here's what this script does
+Such scripts are automatically run when building a package from source. 
+Here's what this script does: sourcing `tools/run_generate_client.R`.
 
 ```r
 "${R_HOME}"/bin/Rscript tools/run_generate_client.R
@@ -206,6 +204,12 @@ In [`mimicss`](https://github.com/coolbutuseless/minicss/) by mikefc, ["Lists of
 See [aaa.R](https://github.com/coolbutuseless/minicss/blob/fe378f6e040405e51fb07cb74fd2f0bac8a85b26/R/aaa.R) and [prop_transform.R](https://github.com/coolbutuseless/minicss/blob/fe378f6e040405e51fb07cb74fd2f0bac8a85b26/R/prop_transform.R). 
 As in most examples the code is generated as a string, but in that case it's not written to disk, it becomes code via the use of [`eval()` and `parse()`](http://adv-r.had.co.nz/Expressions.html#parsing-and-deparsing).
 
+#### Generate C++ bindings with `Rcpp::compileAttributes()`
+
+`Rcpp::compileAttributes()` generates code (the bindings required to call C++ functions from R) after scanning a package source files. Find more information [in the `Rcpp` vignette about attributes](https://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-attributes.pdf). You could call the function "whenever functions areadded, removed, or have their signatures changed." but the aforementioned vignette also states " if you are using either RStudio or `devtools`to build your package then the `compileAttributes` function is called automatically whenever your package is built".
+
+`Rcpp::compileAttributes()` is with `scaffolder` one of the only "general" solutions mentioned in this post, as opposed as other approaches developed for and within a given package.
+
 ### Generating code on-the-fly
 
 One step further, one might generate code on-the-fly, i.e. as users run the package.
@@ -220,9 +224,11 @@ _Thanks to Rich for many useful comments on this post._
 ## Conclusion
 
 In this post we explored different aspects of source code scaffolding and generation in R packages. 
-We've mentioned examples of code scaffolding (`gitea`, `hubspot`, `scaffolder`), of code generation by a script (`wisegroup`, `eml.build`, `redux`, `xaringanthemer`) or by a meta package (`vlbuildr` and `vlmetabuildr`) before package shipping, of code generation at build time (`icon`, `civis`, `minicss`) and of code generation at run time (`chromote`, `stevedore`). 
+We've mentioned examples of code scaffolding (`gitea`, `scaffolder`), of code generation by a script (`wisegroup`, `eml.build`, `redux`, `xaringanthemer`) or by a meta package (`vlbuildr` and `vlmetabuildr`) before package shipping, of code generation at build time (`icon`, `civis`, `minicss`, `Rcpp::compileAttributes()`) and of code generation at run time (`chromote`, `stevedore`). 
 Many of these examples used some form of string manipulation, in base R or with `glue`, to either generate an R script and its `roxygen2` docs **or** code using `eval()` and `parse()` (`minicss`). 
-One of them doesn't use any text representation and `as.function` and `call`/`as.call` instead (`stevedore`).
+Two of them doesn't use any text representation, and `as.function` and `call`/`as.call` instead (`stevedore`).
+`icon` also doesn't write R files.
+The ability to use string manipulation
 
 In the more general context of [automatic programming](https://en.wikipedia.org/wiki/Automatic_programming), one also finds "generative programming", and "low-code applications" (like [tidyblocks](https://tidyblocks.tech/)?). 
 As much as one enjoys writing R code, it's great to be able to write less of it sometimes, especially when it gets too routine. 
