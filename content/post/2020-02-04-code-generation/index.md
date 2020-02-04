@@ -20,7 +20,7 @@ We'll differentiate scaffolding from generating code, and we'll present various 
 
 _This post was inspired by an [excellent Twitter thread started by Miles McBain](https://twitter.com/MilesMcBain/status/1199451518090395649), from which we gathered examples. Thank you Miles!_
 
-_Miles furthermore mentioned [Alicia Schep's rstudio::conf talk "Auto-nmagic package development"](https://github.com/vegawidget/vlbuildr#vlbuildr) to us, that was a great watch/read!_
+_Miles furthermore mentioned [Alicia Schep's rstudio::conf talk "Auto-magic package development"](https://github.com/vegawidget/vlbuildr#vlbuildr) to us, that was a great watch/read!_
 
 ## Introduction
 
