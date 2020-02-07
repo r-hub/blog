@@ -22,8 +22,9 @@ and how I fixed it. It is a good showcase of the some debugging tools.
 [processx](https://processx.r-lib.org) is an R package to start and manage
 external processes. It is used by the [callr](https://call.r-lib.org)
 package to run code in another R session. The
-[original bug](https://github.com/r-lib/processx/issues/240) report has a
-nice, clean [reproducible example](https://reprex.tidyverse.org/):
+[original bug](https://github.com/r-lib/processx/issues/240) report
+by [Will Landau](https://github.com/wlandau) has a nice, clean
+[reproducible example](https://reprex.tidyverse.org/):
 
 > https://github.com/r-lib/processx/pull/237 seems to solve
 > https://github.com/r-lib/processx/issues/236 for `processx`,
@@ -44,12 +45,12 @@ nice, clean [reproducible example](https://reprex.tidyverse.org/):
 ## A red herring
 
 The references to [PR #237](https://github.com/r-lib/processx/pull/237) and
-[issue #236](https://github.com/r-lib/processx/issues/236) are a red
-herring, and a tricky one! The error message is exactly the same there,
-but the reasons are very different. That issue is about an interference
-between processx and the parallel package. This one must be something else,
-because callr does not load processx (or any other R package) in the R
-subprocess it creates:
+[issue #236](https://github.com/r-lib/processx/issues/236) are a
+[red herring](https://en.wikipedia.org/wiki/Red_herring), and a tricky one!
+The error message is exactly the same there, but the reasons are very
+different. That issue is about an interference between processx and the
+parallel package. This one must be something else, because callr does not
+load processx (or any other R package) in the R subprocess it creates:
 
 ```r
 callr::r(function() loadedNamespaces())
@@ -109,11 +110,11 @@ processx/callr.
 
 The parallel package sets up a
 [finalizer, that runs when R exits](https://github.com/wch/r-source/blob/50dca8f210058532ee0837fad69b1ae78dcac23e/src/library/parallel/R/zzz.R#L33).
-This finalizer tries to eliminate all sub-processes that were started by
+This finalizer tries to eliminate all subprocesses that were started by
 parallel, and if it fails to do that, it emits the error message that we
 see above.
 
-When eliminating sub-processes, parallel sends them a `SIGKILL` signal, which
+When eliminating subprocesses, parallel sends them a `SIGKILL` signal, which
 is not possible to catch and handle, so it is sure that their execution
 has finished, and they are in a zombie state. In fact, `mclapply()` already
 tries to clean up the subprocesses it has started, so they are probably
@@ -136,7 +137,7 @@ tmp <- callr::r(
 ## Error while shutting down parallel: unable to terminate some child processes
 ```
 
-Indeed, both sub-processes of the callr R process are zombies.
+Indeed, both subprocesses of the callr R process are zombies.
 Clearly, the callr R process did not receive or did not handle their
 `SIGCHLD` signals. To make sure that the `SIGCHLD` signal handler is
 properly set up in parallel, we need to debug parallel's C code, in the
@@ -307,7 +308,7 @@ Target 0: (R) stopped.
 (lldb)
 ```
 
-Interestingly, we got to `mc_cleanup`, even tough the `SIGCHLD` signal(s)
+Interestingly, we got to `mc_cleanup`, even though the `SIGCHLD` signal(s)
 should have arrived first. From another R session, we can check that the
 subprocesses of parallel are zombies already:
 
@@ -338,7 +339,8 @@ Process 4196 exited with status = 0 (0x00000000)
 ```
 
 Clearly, the signal handler is properly set up in parallel, but the
-signals are not delivered to the process.
+signals are not delivered to the process. No doubt, this is a bug in
+the processx or callr code.
 
 ## Some hypotheses
 
@@ -359,7 +361,7 @@ that would be a good explanation for the OS not sending it.
 ## Validating the hypothesis
 
 The `sigprocmask(2)` system call can be used to query or manipulate the
-set of blocked signals. So we could re-run our `callr::r()` reprex, with
+set of blocked signals. So we can re-run our `callr::r()` reprex, with
 lldb on the callr subprocess again, and examine the state of the
 `SIGCHLD` signal:
 
@@ -456,3 +458,17 @@ If you enjoyed reading this, you might like similar debugging stories by
 [Jim Hester](https://www.jimhester.com/post/2018-03-30-debugging-journey/)
 and
 [Rich FitzJohn](https://reside-ic.github.io/blog/debugging-and-fixing-crans-additional-checks-errors/).
+
+## Resources
+
+Some resources for debugging C/C++ code in R packages:
+
+* Winston Chang's https://github.com/wch/r-debug#readme
+  has Docker containers and lots of tips for debugging various problems.
+* Jim Hester's video about getting started with lldb:
+  https://www.jimhester.com/post/2019-04-05-lldb-debugging/
+* The official lldb tutorial:
+  https://lldb.llvm.org/use/tutorial.html
+* Apple's quick start guide for lldb:
+  https://developer.apple.com/library/archive/documentation/IDEs/Conceptual/gdb_to_lldb_transition_guide/document/Introduction.html
+  This uses XCode, but it is a good summary of the features.
