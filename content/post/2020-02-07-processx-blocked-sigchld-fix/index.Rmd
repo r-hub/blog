@@ -1,6 +1,6 @@
 ---
 slug: processx-blocked-sigchld
-title: "Advanced debugging: Signals and Subprocesses"
+title: "Debugging: Signals and Subprocesses"
 authors:
   - Gábor Csárdi
 date: "2020-02-07"
@@ -19,18 +19,19 @@ options(width = 60)
 This is a short story about a non-trivial bug in the processx package,
 and how I fixed it. It is a good showcase of the some debugging tools.
 
-## What's the bug?
+## The bug
 
 [processx](https://processx.r-lib.org) is an R package to start and manage
 external processes. It is used by the [callr](https://call.r-lib.org)
-package to run code in another R session. The original bug report has a
+package to run code in another R session. The
+[original bug](https://github.com/r-lib/processx/issues/240) report has a
 nice, clean [reproducible example](https://reprex.tidyverse.org/):
 
 > https://github.com/r-lib/processx/pull/237 seems to solve
 > https://github.com/r-lib/processx/issues/236 for `processx`,
 > but not for `callr`.
 > 
-> ``` r
+> ```r
 > fun <- function() {
 >   parallel::mclapply(1:2, function(x) x)
 > }
@@ -41,21 +42,20 @@ nice, clean [reproducible example](https://reprex.tidyverse.org/):
 > tmp <- callr::r(fun, env = env, show = TRUE)
 > #> Error while shutting down parallel: unable to terminate some child processes
 > ```
+> 
 
-(https://github.com/r-lib/processx/issues/240)
+## A red herring
 
-## The first red herring
-
-The references to https://github.com/r-lib/processx/pull/237 and
-https://github.com/r-lib/processx/issues/236 are a red herring, and a tricky
-one! The error message is exactly the same there, but the reasons are
-very different. That issue is about an interference between processx and
-the parallel package. This one must be something else, because callr does
-not load processx (or any other R package) in the R subprocess it creates:
+The references to [PR #237](https://github.com/r-lib/processx/pull/237) and
+[issue #236](https://github.com/r-lib/processx/issues/236) are a red
+herring, and a tricky one! The error message is exactly the same there,
+but the reasons are very different. That issue is about an interference
+between processx and the parallel package. This one must be something else,
+because callr does not load processx (or any other R package) in the R
+subprocess it creates:
 ```{r}
 callr::r(function() loadedNamespaces())
 ```
-only lists the base R packages, R loads these by default.
 
 ## About `SIGCHLD` signals
 
@@ -66,9 +66,9 @@ that an important event has happened, and the process's normal execution
 is interrupted. For some signal types, the process gets a chance to handle
 the signal gracefully and then continue execution. The `SIGCHLD` signal is
 such a signal. It is sent by the operating system when a subprocess of
-the process has finished its execution. When the parent process receives
-`SIGCHLD`, the subprocess has already finished, but it is still in the
-OS's process table. It is dead but still hanging around: it is a
+the (parent) process has finished its execution. When the parent process
+receives `SIGCHLD`, the subprocess has already finished, but it is still
+in the OS's process table. It is dead but still hanging around: it is a
 [zombie process](https://en.wikipedia.org/wiki/Zombie_process).
 
 To completely eliminate the subprocess, the parent process needs to either
@@ -77,7 +77,7 @@ exit status. The parent process can also pre-emptively tell the OS that
 it is not interested in the exit status of its subprocesses, and in this
 case no `SIGCHLD` signals are delivered to it at all.
 
-## Making sure the bug is indeed in my code
+## Of course it is my bad
 
 To make sure that this issue is specific to processx or callr, I tried if
 a subprocess started with `system()` has the same issue, and it does not:
@@ -93,23 +93,23 @@ tmp <- callr::r(
 )
 ```
 
-Based on this, it is still possible (unlikely, though :wink:) that the bug
+Still, it is possible (however unlikely :wink:) that the bug
 is in the parallel package, e.g. because it does not set up the signal
 handler for `SIGCHLD` properly, when the R session was started by
 processx/callr.
 
-The parallel package sets up a finalizer, that runs when R exits:
-https://github.com/wch/r-source/blob/50dca8f210058532ee0837fad69b1ae78dcac23e/src/library/parallel/R/zzz.R#L33
+The parallel package sets up a
+[finalizer, that runs when R exits](https://github.com/wch/r-source/blob/50dca8f210058532ee0837fad69b1ae78dcac23e/src/library/parallel/R/zzz.R#L33).
 This finalizer tries to eliminate all sub-processes that were started by
-parallel, and it is fails to do that, it emits the error message that we
-see here.
+parallel, and if it fails to do that, it emits the error message that we
+see above.
 
-When eliminating sub-processes, parallel sends them a SIGKILL signal, which
+When eliminating sub-processes, parallel sends them a `SIGKILL` signal, which
 is not possible to catch and handle, so it is sure that their execution
 has finished, and they are in a zombie state. In fact, `mclapply()` already
-tried to clean up the subprocesses it has started, so they are probably
-already in the zombie state when `mclapply()` returns. This is easy to
-check with the [ps](https://ps.r-lib.org/) package:
+tries to clean up the subprocesses it has started, so they are probably
+already in the zombie state when `mclapply()` returns. This is
+easy to check with the [ps](https://ps.r-lib.org/) package:
 
 ```{r, cache = TRUE}
 tmp <- callr::r(
@@ -125,7 +125,7 @@ Indeed, both sub-processes of the callr R process are zombies.
 Clearly, the callr R process did not receive or did not handle their
 `SIGCHLD` signals. To make sure that the `SIGCHLD` signal handler is
 properly set up in parallel, we need to debug parallel's C code, in the
-call subprocess.
+callr subprocess.
 
 We will use the [lldb](https://lldb.llvm.org/) debugger here, as that is
 the default on macOS. gdb has similar functionality, you probably want to
@@ -163,12 +163,11 @@ Architecture set to: x86_64h-apple-macosx-.
 (lldb)
 ```
 
-Now we can set some break points and continue the process. See 
-https://github.com/wch/r-source/blob/50dca8f210058532ee0837fad69b1ae78dcac23e/src/library/parallel/src/fork.c
-for the source code we set break points on. For a better debugging
-experience, it makes sense to recompile R without optimization, so we
-can actually see the original C source code in the debugger. But for now
-we can get away without that:
+Now we can set break points on
+[parallel C functions](https://github.com/wch/r-source/blob/50dca8f210058532ee0837fad69b1ae78dcac23e/src/library/parallel/src/fork.c).
+For a better debugging experience, it makes sense to recompile R without
+optimization, and with debug symbols, so we can actually see the original C
+source code in the debugger. But for now we can get away without that.
 
 ```
 (lldb) b mc_fork
@@ -202,7 +201,7 @@ Target 0: (R) stopped.
 
 lldb stops the process at `mc_fork()`. parallel is just about to start a
 subprocess here. We step throught `mc_fork()` a bit (there is not easy way
-to step until the end of a function in lldb, but FIXME). We go on until we
+to step until the end of a function in lldb, AFAICT). We go on until we
 see that `sigaction(2)` is called, this should set up the signal handler:
 
 ```
@@ -228,8 +227,8 @@ parallel.so`mc_fork:
 Target 0: (R) stopped.
 ```
 
-If you look at the source code, `sigaction(2)` is called from another
-function `setup_sig_handler()`, but the compiler inlined that function.
+If you look at the source code, `sigaction(2)` is called from
+`setup_sig_handler()`, but the compiler inlined that function.
 Now that lldb has resolved the break points to the loaded `parallel.so`
 shared lib, we can double check that:
 
@@ -239,8 +238,8 @@ shared lib, we can double check that:
 ```
 
 Never mind, `sigaction(2)` was already called, so the signal handler
-should be set up. Let's check. We cann `sigaction(2)` to query the current
-`SIGCHLD` handler:
+should be set up. Let's check it. We can call `sigaction(2)` to query the
+current `SIGCHLD` handler:
 
 ```
 (lldb) call (void*) malloc(sizeof(struct sigaction))                                                               (void *) $0 = 0x00007fe6c7e305f0
@@ -254,7 +253,7 @@ should be set up. Let's check. We cann `sigaction(2)` to query the current
 
 20 is the number of `SIGCHLD`, see `man signal`, and for the (platform
 dependent) structure of `struct sigaction` see `man sigaction`.
-In any case `parallel.so`'s `parent_sig_handler` is indeed set up properly.
+In any case, `parallel.so`'s `parent_sig_handler` is indeed set up properly.
 Now we tell lldb to stop on receiving a `SIGCHLD` signal:
 
 ```
@@ -264,7 +263,7 @@ SIGCHLD      true   true   true
 ```
 
 and we are ready to continue the process. It will stop again at `mc_fork()`,
-because we are starting two subprocesses in parallel. Then we continue
+because we are starting two subprocesses in `mclapply()`. Then we continue
 again:
 
 ```
@@ -332,9 +331,9 @@ There are very few possible reasons for the OS not sending out `SIGCHLD`
 signals. The first is that the parent process explicitly tells the OS that
 it is not interested. This is done by setting the signal handler to
 `SIG_IGN` with `sigaction(2)`. This is unlikely to be the case for us,
-since we saw that that parallel did set up a signal handler properly. By
-searching the R source code and the source code of processx and callr, it
-is obvious that none of them sets does this.
+since we saw that parallel did set up a signal handler properly. By
+searching the R source code and the source code of processx and callr for
+`SIG_IGN`, it is obvious that none of them sets does this.
 
 The other reason is that the `SIGCHLD` signal is blocked by the process.
 Blocking a signal means that the process tells the OS, that it is currently
@@ -342,11 +341,12 @@ not ready to process it, and it should be delivered later, when the process
 has unblocked the signal. If `SIGCHLD` was blocked in the callr subprocess,
 that would be a good explanation for the OS not sending it.
 
-## Validating the hypotheses
+## Validating the hypothesis
 
 The `sigprocmask(2)` system call can be used to query or manipulate the
 set of blocked signals. So we could re-run our `callr::r()` reprex, with
-lldb on the callr subprocess again, and examine the state of the signals:
+lldb on the callr subprocess again, and examine the state of the
+`SIGCHLD` signal:
 
 ```
 (lldb) call (void*) malloc(sizeof(sigset_t))
@@ -357,7 +357,7 @@ lldb on the callr subprocess again, and examine the state of the signals:
 (int) $7 = 1
 ```
 
-`SIGCHLD` is indeed blocked!
+`SIGCHLD` is indeed blocked! We got it!
 
 ## Fixing the bug
 
@@ -366,13 +366,15 @@ do not, that means that processx causes the `SIGCHLD` to be blocked in the
 subprocess.
 
 When processx starts a subprocess, it first calls `fork(2)` to create a
-copy of the current process, and then `execvp(3)` to replace that will
+copy of the current process, and then `execvp(3)` to replace that with
 another executable. `fork()` creates an identical copy, i.e. the signal
 handlers and the blocked signals are the same in the subprocess.
 `execvp(3)` resets the signal handlers to their defaults, which is great,
 but apparently, it does not reset the set of blocked signals. So if
 `SIGCHLD` was blocked when processx called `fork(2)` then it will be blocked
-in the subprocess as well. Indeed, this is how processx start the subprocess:
+in the subprocess as well. Indeed,
+[this is how processx started the subprocess](https://github.com/r-lib/processx/blob/8baaa7ead58a39fda72974ccb0e5a288d9757e4a/src/unix/processx.c#L486-L511)
+before fixing this bug:
 
 ```c
   processx__block_sigchld();
@@ -391,26 +393,23 @@ in the subprocess as well. Indeed, this is how processx start the subprocess:
 
   /* CHILD */
   if (pid == 0) {
-    /* LCOV_EXCL_START */
     if (cpty) close(pty_master_fd);
     processx__child_init(handle, pipes, num_connections, ccommand, cargs,
-			 signal_pipe[1], cstdin, cstdout, cstderr,
+                         signal_pipe[1], cstdin, cstdout, cstderr,
                          pty_name, cenv, &options, ctree_id);
     R_THROW_SYSTEM_ERROR("Cannot start child process when running '%s'",
                          ccommand);
-    /* LCOV_EXCL_STOP */
   }
 
 ```
-
-(https://github.com/r-lib/processx/blob/8baaa7ead58a39fda72974ccb0e5a288d9757e4a/src/unix/processx.c#L486-L511)
 
 processx blocks `SIGCHLD` before forking, for simplicity, so it does not
 have to worry about concurrency. `processx__child_init()` does a number
 of things, but it does _not_ unblock this signal, so it stays blocked.
 
-The fix is clearly to unblock the signal in the child process, before
-calling `execvp(3)`. I.e.
+The [fix](https://github.com/r-lib/processx/commit/d5369fdd0075ff9570b2ea0405fa897624a91b94)
+is clearly to unblock the signal in the child process, before calling
+`execvp(3)` in `processx__child_init()`:
 
 ```c
   /* CHILD */
@@ -427,15 +426,18 @@ calling `execvp(3)`. I.e.
   }
 ```
 
-The commit with the patch is at
-https://github.com/r-lib/processx/commit/d5369fdd0075ff9570b2ea0405fa897624a91b94
-
 ## Conclusion
 
-I guess the conclusion is that debugging is hard, but debuggers like
-lldb help you greatly.
+Debugging is hard, but debuggers like lldb help you greatly. It is worth
+to invest some time into learning what they can do: wait for a process to
+attach to, call functions and system calls, catch signals, and a lot more.
 
 The fact that the signal mask is _not_ reset at `execvp(3)` is of course
-documented in the manual page of `execve(2)` (on macOS), this is the system
-call that `execvp(3)` uses internally. So I guess another lesson is to
+documented in the manual page of `execve(2)` (on macOS). This is the system
+call that `execvp(3)` uses internally. I guess another lesson is to
 read the manual...
+
+If you enjoyed reading this, you might like similar debugging stories by
+[Jim Hester](https://www.jimhester.com/post/2018-03-30-debugging-journey/)
+and
+[Rich FitzJohn](https://reside-ic.github.io/blog/debugging-and-fixing-crans-additional-checks-errors/).
