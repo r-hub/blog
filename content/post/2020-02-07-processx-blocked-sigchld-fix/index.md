@@ -39,8 +39,7 @@ nice, clean [reproducible example](https://reprex.tidyverse.org/):
 > )
 > tmp <- callr::r(fun, env = env, show = TRUE)
 > #> Error while shutting down parallel: unable to terminate some child processes
-> ```
-> 
+```
 
 ## A red herring
 
