@@ -1,5 +1,7 @@
 ---
 title:  How to keep up with CRAN policies and processes?
+authors:
+  - Maëlle Salmon
 date: '2019-05-29'
 slug:  keep-up-with-cran
 tags:

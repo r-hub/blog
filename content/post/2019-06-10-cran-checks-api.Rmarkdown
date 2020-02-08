@@ -1,5 +1,7 @@
 ---
 title:  Overview of the CRAN checks API
+authors:
+  - Maëlle Salmon
 date: '2019-06-10'
 slug:  cran-checks-api
 tags:

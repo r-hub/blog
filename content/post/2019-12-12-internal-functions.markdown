@@ -1,5 +1,7 @@
 ---
 title: Internal functions in R packages
+authors:
+  - Maëlle Salmon
 date: '2019-12-12'
 slug: internal functions
 tags:

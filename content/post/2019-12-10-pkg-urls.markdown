@@ -1,5 +1,7 @@
 ---
 title: About URLs in DESCRIPTION
+authors:
+  - Maëlle Salmon
 date: '2019-12-10'
 slug: urls
 tags:

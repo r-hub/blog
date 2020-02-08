@@ -1,5 +1,7 @@
 ---
 title: Read the R source!
+authors:
+  - Maëlle Salmon
 date: '2019-05-14'
 slug: read-the-source
 tags:

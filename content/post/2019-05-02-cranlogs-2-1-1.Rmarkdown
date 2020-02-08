@@ -1,6 +1,8 @@
 ---
 title: cranlogs 2.1.1 is on CRAN!
 date: '2019-05-02'
+authors:
+  - Maëlle Salmon
 slug: cranlogs-2-1-1
 tags:
   - cranlogs

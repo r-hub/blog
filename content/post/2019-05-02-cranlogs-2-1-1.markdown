@@ -2,6 +2,8 @@
 title: cranlogs 2.1.1 is on CRAN!
 date: '2019-05-02'
 slug: cranlogs-2-1-1
+authors:
+  - Maëlle Salmon
 tags:
   - cranlogs
   - R package
