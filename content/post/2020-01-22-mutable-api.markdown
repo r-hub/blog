@@ -1,5 +1,8 @@
 ---
 title: Objects that feel mutable in R
+authors:
+  - Maëlle Salmon
+  - Gábor Csárdi
 date: '2020-01-22'
 slug: mutable-api
 tags:

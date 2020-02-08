@@ -1,5 +1,7 @@
 ---
 title: R-hub usage in a few figures
+authors:
+  - Maëlle Salmon
 date: '2019-12-19'
 slug: r-hub-usage
 ---

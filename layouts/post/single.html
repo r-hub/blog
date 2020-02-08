@@ -12,6 +12,9 @@
 
     {{ if eq .Section "post" }}
     <span class="article-date">{{ .Date.Format "2006/01/02" }}</span>
+    {{ end }}    
+    {{ if eq .Section "post" }}
+    <span class="article-date">| {{ delimit .Params.authors ", " }}</span>
     {{ end }}
       <!--this adds github edit button to all posts-->
 {{ if $.File.Path }}

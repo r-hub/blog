@@ -1,5 +1,7 @@
 ---
 title: Search and discover CRAN packages with pkgsearch!
+authors:
+  - Maëlle Salmon
 date: '2019-11-26'
 slug: pkgsearch
 tags:

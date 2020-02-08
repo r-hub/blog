@@ -1,5 +1,7 @@
 ---
 title:  A noLD platform on R-hub package builder
+authors:
+  - Maëlle Salmon
 date: '2019-05-21'
 slug:  nold
 tags:

@@ -2,6 +2,8 @@
 date: "2019-04-08"
 title: rhub 1.1.1 is on CRAN!
 slug: rhub-1.1.1
+authors:
+  - Maëlle Salmon
 tags:
   - rhub
   - R package
