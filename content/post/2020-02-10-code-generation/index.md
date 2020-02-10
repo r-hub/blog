@@ -3,7 +3,7 @@ slug: code-generation
 title: "Code generation in R packages"
 authors:
   - Maëlle Salmon
-date: "2020-02-04"
+date: "2020-02-10"
 tags:
 - package development
 output: 

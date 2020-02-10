@@ -3,7 +3,7 @@ slug: code-generation
 title: "Code generation in R packages"
 authors:
   - Maëlle Salmon
-date: "2020-02-04"
+date: "2020-02-10"
 tags:
 - package development
 output: 
@@ -47,7 +47,7 @@ Even without getting to the dream situation of code being cleanly generated, it 
 The idea was to have following commits edit functions enough to make them work without, as he said, starting from scratch.
 
 * The experimental [`scaffolder` package](https://terrytangyuan.github.io/scaffolder) by Yuan Tang _"provides a comprehensive set of tools to automate the process of scaffolding interfaces to modules, classes, functions, and documentations written in other programming languages. As initial proof of concept, scaffolding R interfaces to Python packages is supported via reticulate."_. 
-The [`scaffold_py_function_wrappe`](https://terrytangyuan.github.io/scaffolder/reference/scaffold_py_function_wrapper.html) takes a Python function as input and generates a R script skeleton (R code, and docs, both of them needing further editing).
+The [`scaffold_py_function_wrapper`](https://terrytangyuan.github.io/scaffolder/reference/scaffold_py_function_wrapper.html) takes a Python function as input and generates a R script skeleton (R code, and docs, both of them needing further editing).
 
 In these two cases, what's generated is a template for both R code and the corresponding `roxygen2` docs.
 
@@ -55,8 +55,7 @@ In these two cases, what's generated is a template for both R code and the corre
 
 > "odin works using code generation; the nice thing about this approach is that it never gets bored. So if the generated code has lots of tedious repetitive bits, they're at least likely to be correct (compared with implementing yourself)." Rich FitzJohn, [odin README](https://mrc-ide.github.io/odin/articles/odin.html).
 
-Quite convincing, right? But _how_ does one generate code for an R package? 
-The first question is _when_ does one generate code.
+Quite convincing, right? But when and how does one generate code for an R package? 
 
 ### Generating code once or once in a while
 
@@ -139,10 +138,10 @@ _Let us mention [Alicia's rstudio::conf talk again](https://github.com/vegawidge
 We haven't seen any code generating workflow relying on a Makefile or on a hook to an external source, so we assume such packages are updated once in a while when their maintainer amends, or notices an amendment of, the underlying ontology. 
 See e.g. [the PR updating `vlbuildr` to support Vegalite 4.0](https://github.com/vegawidget/vlbuildr/pull/43), or [the commit regenerating redis commands for 3.2 in `redux`](https://github.com/richfitz/redux/commit/575e9ccd68b529cacb5bc376ed7cb402392205f2).
 
-### Generating code at build time
+### Generating code at install time
 
 In the previous cases of code generation, the R package source was similar to many R package sources out there. 
-Now, we've also seen cases where the code is generated when building the package. 
+Now, we've also seen cases where the code is generated when installing the package. 
 It means that the code generation has to be perfect, since there isn't be any human edit between the code generation and the code use. 
 Let's dive into a few examples.
 
@@ -153,8 +152,8 @@ When typing `?icon::fa_archive` one gets a man page entitled "Font awesome alias
 How does it work?
 
 Font files related to the fonts are stored in [`inst/`](https://github.com/ropenscilabs/icon/tree/master/inst/fonts). 
-It's the case for all three fonts, but let's focus on what happens for Font Awesome. 
-Among the R code (that's executed when building the package), there's [a line reading the icon names from a font file](https://github.com/ropenscilabs/icon/blob/a5bc1cc928b15a5296b06f66faa9e08264ad4064/R/fa.R#L9). 
+It's the same for all three fonts, but let's focus on what happens for Font Awesome. 
+In the R code (that's executed when installing the package), there's [a line reading the icon names from a font file](https://github.com/ropenscilabs/icon/blob/a5bc1cc928b15a5296b06f66faa9e08264ad4064/R/fa.R#L9). 
 Further below [are a few very interesting lines](https://github.com/ropenscilabs/icon/blob/master/R/fa.R#L28-L37)
 
 ```r
@@ -171,15 +170,13 @@ rm(fa_constructor)
 ```
 
 When _documenting_ the package, the man page "fa-alias" is created. 
-The `@evalRd` tags ensures aliases for all icons from `fa_iconList` get an `alias{}` line in the ["fa-alias" man page](https://github.com/ropenscilabs/icon/blob/master/man/fa-alias.Rd). 
+The `@evalRd` tag ensures aliases for all icons from `fa_iconList` get an `alias{}` line in the ["fa-alias" man page](https://github.com/ropenscilabs/icon/blob/master/man/fa-alias.Rd). 
 The `@exportPattern` tag ensures a line [exporting all functions whose starts with `fa_` is added to NAMESPACE](https://github.com/ropenscilabs/icon/blob/a5bc1cc928b15a5296b06f66faa9e08264ad4064/NAMESPACE#L16).
-This part happens before building the package, every time the documentation is updated by the package maintainer. 
-The `fa_` functions are created at build time by the for loop. 
+This part happens before installing the package, every time the documentation is updated by the package maintainer. 
+The `fa_` functions are created at install time by the for loop. 
 The function factory `fa_constructor` is then removed.
 
-The code generation allows an easy update to new Font Awesome versions. 
-Its working this way i.e. with functions defined at build time and a single man page for all aliases, allows for a very compact source code. 
-Each alias function doesn't need more documentation than the shared man page.
+The code generation allows an easy update to new Font Awesome versions, with a very compact source code. 
 
 #### Generating an up-to-date API wrapper in `civis`
 
@@ -187,14 +184,14 @@ Another interesting example is provided by [the `civis` package](twitter.com/pat
 Its [installation instructions](https://github.com/civisanalytics/civis-r#updating) state that when installing the package from source, all functions corresponding to the latest API version will be created. 
 _What_ happens exactly when the package is installed from source? 
 A configure script is run ([configure](https://github.com/civisanalytics/civis-r/blob/master/configure) or [configure.win](https://github.com/civisanalytics/civis-r/blob/master/configure.win)). 
-Such scripts are automatically run when building a package from source. 
+Such scripts are automatically run when installing a package from source. 
 Here's what this script does: sourcing `tools/run_generate_client.R`.
 
 ```r
 "${R_HOME}"/bin/Rscript tools/run_generate_client.R
 ```
 
-And the script called sources R code from the package that fetches the API spec and writes code and `roxygen2` docs in `R/generated_client.R`. 
+And this script fetches the API spec and writes code and `roxygen2` docs in `R/generated_client.R`. 
 When the package is _not_ installed from source, the users get the `R/generated_client.R` that's last been generated by the package maintainer, so if the Civis platform itself was updated in the meantime, the users might find a platform endpoint is missing from the `civis` package.
 The approach used by `civis` has the clear advantage of allowing a perfect synchronization between the wrapped platform and the package.
 
@@ -206,15 +203,25 @@ As in most examples the code is generated as a string, but in that case it's not
 
 #### Generate C++ bindings with `Rcpp::compileAttributes()`
 
-`Rcpp::compileAttributes()` generates code (the bindings required to call C++ functions from R) after scanning a package source files. Find more information [in the `Rcpp` vignette about attributes](https://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-attributes.pdf). You could call the function "whenever functions areadded, removed, or have their signatures changed." but the aforementioned vignette also states " if you are using either RStudio or `devtools`to build your package then the `compileAttributes` function is called automatically whenever your package is built".
-
-`Rcpp::compileAttributes()` is with `scaffolder` one of the only "general" solutions mentioned in this post, as opposed as other approaches developed for and within a given package.
+`Rcpp::compileAttributes()` generates code (the bindings required to call C++ functions from R) after scanning a package source files. Find more information [in the `Rcpp` vignette about attributes](https://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-attributes.pdf). You could call the function "whenever functions are added, removed, or have their signatures changed." but the aforementioned vignette also states "if you are using either RStudio or `devtools`to build your package then the `compileAttributes` function is called automatically whenever your package is built".
 
 ### Generating code on-the-fly
 
 One step further, one might generate code on-the-fly, i.e. as users run the package.
 
-* The [`chromote`](https://github.com/rstudio/chromote) package ["generates auto-completable R6 methods at runtime"](https://twitter.com/alandipert/status/1199456564442062848).
+* The [`chromote`](https://github.com/rstudio/chromote) package ["generates auto-completable R6 methods at runtime"](https://twitter.com/alandipert/status/1199456564442062848), by which Alan Dipert probably referred to [these code lines](https://github.com/rstudio/chromote/blob/f5ed9105a0e8c06639ec4ca3f1ce498fe1b61729/R/chromote.R#L69-L74)
+
+```r
+# Populate methods while the connection is being established.
+protocol_spec <- jsonlite::fromJSON(self$url("/json/protocol"), simplifyVector = FALSE)
+self$protocol <- process_protocol(protocol_spec, self$.__enclos_env__)
+# self$protocol is a list of domains, each of which is a list of
+# methods. Graft the entries from self$protocol onto self
+list2env(self$protocol, self)
+```
+
+that are called when creating a [`chromote` object](https://github.com/rstudio/chromote#the-chromote-object-model). 
+The [`process_protocol()` function](https://github.com/rstudio/chromote/blob/master/R/protocol.R) converts the Chrome Devtools Protocol JSON to a list of functions.
 
 * In [`stevedore`](https://richfitz.github.io/stevedore/) by Rich FitzJohn, Docker client for R, functions are generated when one connects to the Docker server via `stevedore::docker_client()`, selecting the most appropriate version based on the server (possible specs are stored in [inst/spec](https://github.com/richfitz/stevedore/tree/master/inst/spec) as compressed YAML files). 
 In the author's own words, in this package the approach is "not going through the text representation at all and using things like `as.function` and `call`/`as.call` to build up functions and expressions directly". 
@@ -224,13 +231,12 @@ _Thanks to Rich for many useful comments on this post._
 ## Conclusion
 
 In this post we explored different aspects of source code scaffolding and generation in R packages. 
-We've mentioned examples of code scaffolding (`gitea`, `scaffolder`), of code generation by a script (`wisegroup`, `eml.build`, `redux`, `xaringanthemer`) or by a meta package (`vlbuildr` and `vlmetabuildr`) before package shipping, of code generation at build time (`icon`, `civis`, `minicss`, `Rcpp::compileAttributes()`) and of code generation at run time (`chromote`, `stevedore`). 
+We've mentioned examples of code scaffolding (`gitea`, `scaffolder`), of code generation by a script (`wisegroup`, `eml.build`, `redux`, `xaringanthemer`) or by a meta package (`vlbuildr` and `vlmetabuildr`) before package shipping, of code generation at install time (`icon`, `civis`, `minicss`, `Rcpp::compileAttributes()`) and of code generation at run time (`chromote`, `stevedore`). 
 Many of these examples used some form of string manipulation, in base R or with `glue`, to either generate an R script and its `roxygen2` docs **or** code using `eval()` and `parse()` (`minicss`). 
 One of them doesn't use any text representation, and `as.function` and `call`/`as.call` instead (`stevedore`).
 `icon` also doesn't write R files.
-The ability to use string manipulation
 
-In the more general context of [automatic programming](https://en.wikipedia.org/wiki/Automatic_programming), one also finds "generative programming", and "low-code applications" (like [tidyblocks](https://tidyblocks.tech/)?). 
+In the more general context of [automatic programming](https://en.wikipedia.org/wiki/Automatic_programming), there are also things called "generative programming", and "low-code applications" (like [tidyblocks](https://tidyblocks.tech/)?). 
 As much as one enjoys writing R code, it's great to be able to write less of it sometimes, especially when it gets too routine. 
 
 Do _you_ use source code generation in R? 
