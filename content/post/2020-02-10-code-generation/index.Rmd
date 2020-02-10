@@ -47,7 +47,7 @@ Even without getting to the dream situation of code being cleanly generated, it 
 The idea was to have following commits edit functions enough to make them work without, as he said, starting from scratch.
 
 * The experimental [`scaffolder` package](https://terrytangyuan.github.io/scaffolder) by Yuan Tang _"provides a comprehensive set of tools to automate the process of scaffolding interfaces to modules, classes, functions, and documentations written in other programming languages. As initial proof of concept, scaffolding R interfaces to Python packages is supported via reticulate."_. 
-The [`scaffold_py_function_wrapper`](https://terrytangyuan.github.io/scaffolder/reference/scaffold_py_function_wrapper.html) takes a Python function as input and generates a R script skeleton (R code, and docs, both of them needing further editing).
+The [`scaffold_py_function_wrapper()` function](https://terrytangyuan.github.io/scaffolder/reference/scaffold_py_function_wrapper.html) takes a Python function as input and generates a R script skeleton (R code, and docs, both of them needing further editing).
 
 In these two cases, what's generated is a template for both R code and the corresponding `roxygen2` docs.
 
