@@ -209,7 +209,19 @@ As in most examples the code is generated as a string, but in that case it's not
 
 One step further, one might generate code on-the-fly, i.e. as users run the package.
 
-* The [`chromote`](https://github.com/rstudio/chromote) package ["generates auto-completable R6 methods at runtime"](https://twitter.com/alandipert/status/1199456564442062848).
+* The [`chromote`](https://github.com/rstudio/chromote) package ["generates auto-completable R6 methods at runtime"](https://twitter.com/alandipert/status/1199456564442062848), by which Alan Dipert probably referred to [these code lines](https://github.com/rstudio/chromote/blob/f5ed9105a0e8c06639ec4ca3f1ce498fe1b61729/R/chromote.R#L69-L74)
+
+```r
+# Populate methods while the connection is being established.
+protocol_spec <- jsonlite::fromJSON(self$url("/json/protocol"), simplifyVector = FALSE)
+self$protocol <- process_protocol(protocol_spec, self$.__enclos_env__)
+# self$protocol is a list of domains, each of which is a list of
+# methods. Graft the entries from self$protocol onto self
+list2env(self$protocol, self)
+```
+
+that are called when creating a [`chromote` object](https://github.com/rstudio/chromote#the-chromote-object-model). 
+The [`process_protocol()` function](https://github.com/rstudio/chromote/blob/master/R/protocol.R) converts the Chrome Devtools Protocol JSON to a list of functions.
 
 * In [`stevedore`](https://richfitz.github.io/stevedore/) by Rich FitzJohn, Docker client for R, functions are generated when one connects to the Docker server via `stevedore::docker_client()`, selecting the most appropriate version based on the server (possible specs are stored in [inst/spec](https://github.com/richfitz/stevedore/tree/master/inst/spec) as compressed YAML files). 
 In the author's own words, in this package the approach is "not going through the text representation at all and using things like `as.function` and `call`/`as.call` to build up functions and expressions directly". 
