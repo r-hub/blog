@@ -223,9 +223,8 @@ We've mentioned examples of code scaffolding (`gitea`, `scaffolder`), of code ge
 Many of these examples used some form of string manipulation, in base R or with `glue`, to either generate an R script and its `roxygen2` docs **or** code using `eval()` and `parse()` (`minicss`). 
 One of them doesn't use any text representation, and `as.function` and `call`/`as.call` instead (`stevedore`).
 `icon` also doesn't write R files.
-The ability to use string manipulation
 
-In the more general context of [automatic programming](https://en.wikipedia.org/wiki/Automatic_programming), one also finds "generative programming", and "low-code applications" (like [tidyblocks](https://tidyblocks.tech/)?). 
+In the more general context of [automatic programming](https://en.wikipedia.org/wiki/Automatic_programming), there are also things called "generative programming", and "low-code applications" (like [tidyblocks](https://tidyblocks.tech/)?). 
 As much as one enjoys writing R code, it's great to be able to write less of it sometimes, especially when it gets too routine. 
 
 Do _you_ use source code generation in R? 
