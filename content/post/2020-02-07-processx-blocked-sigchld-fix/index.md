@@ -7,6 +7,12 @@ date: "2020-02-07"
 tags:
 - package development
 - debugging
+- subprocess
+- processx
+- lldb
+- gdbx
+- C
+- Unix signals
 output: 
   html_document:
     keep_md: true
