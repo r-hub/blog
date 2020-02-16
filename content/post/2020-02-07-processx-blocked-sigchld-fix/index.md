@@ -356,7 +356,7 @@ it is not interested. This is done by setting the signal handler to
 `SIG_IGN` with `sigaction(2)`. This is unlikely to be the case for us,
 since we saw that parallel did set up a signal handler properly. By
 searching the R source code and the source code of processx and callr for
-`SIG_IGN`, it is obvious that none of them sets does this.
+`SIG_IGN`, it is obvious that none of them does this.
 
 The other reason is that the `SIGCHLD` signal is blocked by the process.
 Blocking a signal means that the process tells the OS, that it is currently
