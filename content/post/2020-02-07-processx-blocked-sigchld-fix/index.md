@@ -3,7 +3,7 @@ slug: processx-blocked-sigchld
 title: "Debugging: Signals and Subprocesses"
 authors:
   - Gábor Csárdi
-date: "2020-02-07"
+date: "2020-02-20"
 tags:
 - package development
 - debugging
@@ -471,6 +471,7 @@ Some resources for debugging C/C++ code in R packages:
 
 * Winston Chang's https://github.com/wch/r-debug#readme
   has Docker containers and lots of tips for debugging various problems.
+  The containers also have gdb and an R build with debug symbols.
 * Jim Hester's video about getting started with lldb:
   https://www.jimhester.com/post/2019-04-05-lldb-debugging/
 * The official lldb tutorial:
