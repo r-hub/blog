@@ -5,7 +5,7 @@ theme = "hugo-lithium"
 enableEmoji = true
 googleAnalytics = "UA-141769052-1"
 disqusShortname = ""
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "index\\.html"]
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
