@@ -1,0 +1,20 @@
+---
+slug: user-preferences
+title: "Code generation in R packages"
+authors:
+  - Maëlle Salmon
+date: "2020-03-05"
+tags:
+- package development
+output: 
+  html_document:
+    keep_md: true
+---
+
+Something about customer service.
+
+Some notes.
+What: user's authentication information, preferences, data caches. look into rappdirs reverse dependencies.
+setup vs no setup (asking users to save stuff in .Renviron, .Rprofile = setup; might be less painful if you help them e.g. rtweet, usethis' helpers)
+guessing vs asking (rhub guesses, in general however per CRAN policies you need to ask for confirmation)
+being too invasive vs easing setup and usage
