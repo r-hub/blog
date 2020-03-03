@@ -44,6 +44,20 @@ config vs data (I have trouble differentiating all the dirs, but sometimes proba
 
 * config batchtools findConfFile. The user needs to set it up themselves at the moment. https://github.com/mllg/batchtools
 
+* user_cache_dir https://github.com/cran/getlandsat/blob/0609a329826b44267b8850e947453707a44d3773/R/cache.R
+
+* site_data_dir no CRAN package, user_log_dir same.
+
+Note caveats from rappdirs docs.
+
+Some observations
+
+* Documentation of where things are stored -- transparency
+
+* Asking, compulsory
+
+* Letting users manage caches (getlandsat for instance)
+
 ## rappdirs or not
 
 some package authors "roll their own" cf https://twitter.com/henrikbengtsson/status/1233495999982628865).
