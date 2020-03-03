@@ -1,6 +1,6 @@
 ---
 slug: user-preferences
-title: "Code generation in R packages"
+title: "Persistent data/cache "
 authors:
   - Maëlle Salmon
 date: "2020-03-05"
@@ -11,10 +11,48 @@ output:
     keep_md: true
 ---
 
-Something about customer service.
+Excellent R-pkg-devel thread https://stat.ethz.ch/pipermail/r-package-devel/2020q1/004854.html
 
-Some notes.
-What: user's authentication information, preferences, data caches. look into rappdirs reverse dependencies.
-setup vs no setup (asking users to save stuff in .Renviron, .Rprofile = setup; might be less painful if you help them e.g. rtweet, usethis' helpers)
+* Startup files (including options in .Rprofile), [pkg environment defined in onLoad](https://github.com/eddelbuettel/anytime/blob/caf5ae8f0824c212ac418eb3a1db3f95097153ed/R/init.R)
+
+* `rappdirs` (which is what `rhub` uses!)
+
+
+Where to find information without asking (whoami, what batchtools does for the config file).
+
+Where to save information... after asking (in an R package you have to ask)
+
+
+
+## from other contexts
+
+Older R-pkg-devel thread, excellent email https://www.mail-archive.com/r-package-devel@r-project.org/msg02460.html
+
+https://developer.android.com/guide/topics/data
+
+https://developer.android.com/jetpack/docs/guide#best-practices "Persist as much relevant and fresh data as possible."
+
+Reg whoami https://developer.android.com/training/id-auth/identify "Everyone likes it when you remember their name."
+
+## rappdirs usage
+
+General blabla.
+
+config vs data (I have trouble differentiating all the dirs, but sometimes probably important https://github.com/ropensci/getCRUCLdata/commit/b4a97c41ec741ebe5a694a3983e50aeb1c2a83b0, I'd recommend looking through similar examples **on CRAN** or from another trustworthy source -- e.g. a maintainer you know)
+
+* user_data_dir https://github.com/r-hub/rhub/blob/caa9bf7dddd64c36941f043575d10a6e7af6a7aa/R/email.R#L163
+
+* config batchtools findConfFile. The user needs to set it up themselves at the moment. https://github.com/mllg/batchtools
+
+## rappdirs or not
+
+some package authors "roll their own" cf https://twitter.com/henrikbengtsson/status/1233495999982628865).
+
+what is hoardr
+
+Future developments in base R! https://twitter.com/henrikbengtsson/status/1233487759412809734 why is the R-devel change big https://twitter.com/henrikbengtsson/status/1233496382608199683
+
+## conclusion
+
 guessing vs asking (rhub guesses, in general however per CRAN policies you need to ask for confirmation)
 being too invasive vs easing setup and usage
