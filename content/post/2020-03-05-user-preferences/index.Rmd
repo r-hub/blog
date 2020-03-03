@@ -1,6 +1,6 @@
 ---
 slug: user-preferences
-title: "Persistent data/cache "
+title: "Persistent config and data for R packages"
 authors:
   - Maëlle Salmon
 date: "2020-03-05"
@@ -10,6 +10,39 @@ output:
   html_document:
     keep_md: true
 ---
+
+Does your R package work best with some configuration? Does your R package download huge datasets that don't change much on the provider side? Maybe you want to save the corresponding data somewhere persistent so that things will go faster during the next R session. In this blog post we shall explain how an R package developer can go about this.
+
+## User preferences
+
+As written in [Android developer guidance](https://developer.android.com/training/id-auth/identify) and probably every customer service ever, _"Everyone likes it when you remember their name."_. Everyone probably likes it too when their barrista remembers their usual orders. As an R package developer, what can you do for your R package to remember that?
+
+### Using options
+
+In R, `options` _Allow the user to set and examine a variety of global options which affect the way in which R computes and displays its results._. For instance, for the usethis package, the [`usethis.quiet` option can control whether usethis is chatty](https://github.com/r-lib/usethis/blob/c0acd1b5e43f03773a5934c1d937bf70b77a2557/principles.md#communicating-with-the-user). Users either
+
+* write `options(usethis.quiet = TRUE)` at the beginning of a script or directly in the console;
+
+* or write that same line in their [.Rprofile that's loaded before every session](https://rstats.wtf/r-startup.html), which is more persistent.
+
+_Note that in tests `usethis` suppresses the chatty behaviour by the use of [`withr::local_options(list(usethis.quiet = FALSE))`](https://github.com/r-lib/usethis/blob/7af1aa2e0ac0b699fdd39f5cfbe4d1ccba41bc48/tests/testthat/test-use-pipe.R#L36)._
+
+The use of options in the .Rprofile startup file is great for workflow packages like `usethis`, `blogdown`, etc., but shouldn't be used for, say, arguments influencing the results of a statistical function.
+
+### Asking or guessing?
+
+For basic information such as username, email, GitHub username, the `whoami` package does pretty well.
+
+```{r whoami}
+whoami::whoami()
+whoami::email_address()
+```
+
+### A good default experience
+
+Obviously, on top of letting users set their own preferences, you probably want your package functions to have sensible defaults.
+
+## Not so temporary files[^1]
 
 Excellent R-pkg-devel thread https://stat.ethz.ch/pipermail/r-package-devel/2020q1/004854.html
 
@@ -26,13 +59,13 @@ Where to save information... after asking (in an R package you have to ask)
 
 ## from other contexts
 
-Older R-pkg-devel thread, excellent email https://www.mail-archive.com/r-package-devel@r-project.org/msg02460.html
+Older R-pkg-devel thread, excellent email https://www.mail-archive.com/r-package-devel@r-project.org/msg02460.html (and the title! "Dealing with not so temporary files")
 
 https://developer.android.com/guide/topics/data
 
 https://developer.android.com/jetpack/docs/guide#best-practices "Persist as much relevant and fresh data as possible."
 
-Reg whoami https://developer.android.com/training/id-auth/identify "Everyone likes it when you remember their name."
+
 
 ## rappdirs usage
 
@@ -40,9 +73,9 @@ General blabla.
 
 config vs data (I have trouble differentiating all the dirs, but sometimes probably important https://github.com/ropensci/getCRUCLdata/commit/b4a97c41ec741ebe5a694a3983e50aeb1c2a83b0, I'd recommend looking through similar examples **on CRAN** or from another trustworthy source -- e.g. a maintainer you know)
 
-* user_data_dir https://github.com/r-hub/rhub/blob/caa9bf7dddd64c36941f043575d10a6e7af6a7aa/R/email.R#L163
+* user_data_dir https://github.com/r-hub/rhub/blob/caa9bf7dddd64c36941f043575d10a6e7af6a7aa/R/email.R#L163 ok because the docs mention it'll be written somewhere.
 
-* config batchtools findConfFile. The user needs to set it up themselves at the moment. https://github.com/mllg/batchtools
+* config batchtools findConfFile. The user needs to set it up themselves at the moment. https://github.com/mllg/batchtools batchtools also accepts other locations such as _File “batchtools.conf.R” in the path specified by the environment variable "R_BATCHTOOLS_SEARCH_PATH"._
 
 * user_cache_dir https://github.com/cran/getlandsat/blob/0609a329826b44267b8850e947453707a44d3773/R/cache.R
 
@@ -54,9 +87,9 @@ Some observations
 
 * Documentation of where things are stored -- transparency
 
-* Asking, compulsory
+* Asking, compulsory?
 
-* Letting users manage caches (getlandsat for instance)
+* Letting users manage caches from R? (getlandsat for instance)
 
 ## rappdirs or not
 
@@ -70,3 +103,9 @@ Future developments in base R! https://twitter.com/henrikbengtsson/status/123348
 
 guessing vs asking (rhub guesses, in general however per CRAN policies you need to ask for confirmation)
 being too invasive vs easing setup and usage
+
+other things
+* data as package https://journal.r-project.org/archive/2017/RJ-2017-026/index.html
+* caching within the same session = memoising. See also polite package.
+
+[^1]: We're using the [very good email subject by Roy Mendelssohn](https://www.mail-archive.com/r-package-devel@r-project.org/msg02450.html) on [R-pkg-devel](/2019/04/11/r-package-devel/).
