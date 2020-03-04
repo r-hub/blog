@@ -48,8 +48,34 @@ _Note that in tests `usethis` suppresses the chatty behaviour by the use of [`wi
 
 The use of options in the .Rprofile startup file is great for workflow packages like `usethis`, `blogdown`, etc., but shouldn't be used for, say, arguments influencing the results of a statistical function.
 
+### Using environment variables
+
+Environment variables, found via `Sys.getenv()` rather than `getOption()`, are appropriate for storing secrets (like [`GITHUB_PAT` for the `gh` package](https://github.com/r-lib/gh#tokens)) or the path to secrets on disk (like [`TWITTER_PAT` for `rtweet`](https://rtweet.info/articles/auth.html)), or not secrets (e.g. the browser to use for `chromote`](https://github.com/rstudio/chromote#specifying-which-browser-to-use)).
+
+Similar to using `options()` in the console or at the top of a script the user could use `Sys.setenv()`.
+Obviously, secrets should not be written at the top of a script that's public.
+To make environment variables persistent they need to be stored in a startup file, .Renviron.
+.Renviron does not contain R code like .Rprofile, but rather key-value pairs that are only called via `Sys.getenv()`.
+
+As a package developer, you probably want to at least document how to set persistent variables or provide a link to such documentation; and you could even provide helper functions like what `rtweet` does.
+
+### Using standard locations for secrets
+
+Although say API keys can be stored in `.Renviron`, they could also be stored in a standard location depending on the operating system.
+The [`keyring` package](https://github.com/r-lib/keyring#keyring) allows to interact with such credential stores.
+You could either take it on as a dependency or recommend your user to use it and add a line like
+
+```r
+Sys.setenv(SUPERSECRETKEY = keyring::key_get("myservice"))
+```
+
+in their scripts.
+
 ### Using a config file
 
+The `batchtools` package expect its users to setup a config file somewhere if they don't want to use the defaults.
+That somewhere can be several locations, as [explained in the `batchtools::findConfFile()` manual page](https://mllg.github.io/batchtools/reference/findConfFile.html).
+Two of the possibilities are `rappdirs::user_config_dir("batchtools", expand = FALSE)` and `rappdirs::site_config_dir("batchtools")` which refer to standard locations that are different depending on the operating system.
 
 ### A good default experience
 
@@ -69,7 +95,6 @@ Similarly, the [`gert` package](https://jeroen.cran.dev/gert/) can find and retu
 
 In these cases where packages _guess_ something, their guessing is based on the use of standard locations for such information on different operating systems. 
 Unsurprisingly, in the next section, we'll recommend using such standard locations when caching _data_.
-
 
 ## Not so temporary files[^1]
 
@@ -104,7 +129,7 @@ config vs data (I have trouble differentiating all the dirs, but sometimes proba
 
 * user_data_dir https://github.com/r-hub/rhub/blob/caa9bf7dddd64c36941f043575d10a6e7af6a7aa/R/email.R#L163 ok because the docs mention it'll be written somewhere.
 
-* config batchtools findConfFile. The user needs to set it up themselves at the moment. https://github.com/mllg/batchtools batchtools also accepts other locations such as _File “batchtools.conf.R” in the path specified by the environment variable "R_BATCHTOOLS_SEARCH_PATH"._
+* config
 
 * user_cache_dir https://github.com/cran/getlandsat/blob/0609a329826b44267b8850e947453707a44d3773/R/cache.R
 
@@ -145,6 +170,7 @@ time()
 ```
 
 Only the first call to `time()` actually calls `Sys.time()`, after that the results is saved for the entire session unless `memoise::forget()` is called.
+It is great for speeding up code, and for [not abusing internet resources which is why the `polite` package wraps `memoise`](https://dmi3kno.github.io/polite/).
 
 ### Providing a ready-to-use dataset in a non-CRAN package
 
@@ -154,12 +180,8 @@ If your package depends on the use of a huge dataset, the same for all users, th
 
 In this blog post we presented ways of saving configuration options and data in a not so temporary way in R packages.
 We mentioned R startup files (options in .Rprofile and secrets in .Renviron), the `rappdirs` package as well as an exciting similar feature in R devel, the keyring package.
-
-guessing vs asking (rhub guesses, in general however per CRAN policies you need to ask for confirmation)
-being too invasive vs easing setup and usage
-
-other things
-* data as package 
-* caching within the same session = memoising. See also polite package.
+Writing in the user home directory can be viewed as invasive (and can trigger CRAN archival), hence there is a need for a good package design (asking for confirmation; providing cache management functions like `getlandsat` does) and documentation for transparency.
+Do _you_ use any form of caching on disk with a default location in one of your packages? 
+Did you know where your `rhub` email token lived? :wink:
 
 [^1]: We're using the [very good email subject by Roy Mendelssohn](https://www.mail-archive.com/r-package-devel@r-project.org/msg02450.html) on [R-pkg-devel](/2019/04/11/r-package-devel/).
