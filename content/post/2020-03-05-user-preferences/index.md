@@ -129,7 +129,7 @@ Two of the possibilities are `rappdirs::user_config_dir("batchtools", expand = F
 
 ### A good default experience
 
-Obviously, on top of letting users set their own preferences, you probably want your package functions to have sensible defaults. :simple_smile:
+Obviously, on top of letting users set their own preferences, you probably want your package functions to have sensible defaults. :grin:
 
 ### Asking or guessing?
 
@@ -276,7 +276,7 @@ time()
 ```
 
 ```
-## [1] "2020-03-04 13:32:30 CET"
+## [1] "2020-03-04 13:33:36 CET"
 ```
 
 ```r
@@ -285,7 +285,7 @@ time()
 ```
 
 ```
-## [1] "2020-03-04 13:32:30 CET"
+## [1] "2020-03-04 13:33:36 CET"
 ```
 
 Only the first call to `time()` actually calls `Sys.time()`, after that the results is saved for the entire session unless `memoise::forget()` is called.

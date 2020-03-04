@@ -112,7 +112,7 @@ Two of the possibilities are `rappdirs::user_config_dir("batchtools", expand = F
 
 ### A good default experience
 
-Obviously, on top of letting users set their own preferences, you probably want your package functions to have sensible defaults. :simple_smile:
+Obviously, on top of letting users set their own preferences, you probably want your package functions to have sensible defaults. :grin:
 
 ### Asking or guessing?
 
