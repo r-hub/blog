@@ -48,8 +48,8 @@ On top of these non-R specific standard locations, we'll also mention the standa
 
 ## User preferences
 
-As written in [Android developer guidance](https://developer.android.com/training/id-auth/identify) and probably every customer service guide ever, _"Everyone likes it when you remember their name."_. 
-Everyone probably likes it too when the barista at their favourite coffee shop remembers their usual orders. 
+As written in [Android developer guidance](https://developer.android.com/training/id-auth/identify) and probably every customer service guide ever, _"Everyone likes it when you remember their name"_. 
+Everyone probably likes it too when the barista at their favourite coffee shop remembers their usual order. 
 As an R package developer, what can you do for your R package to correctly assess user preferences and settings?
 
 ### Using options
@@ -276,7 +276,7 @@ time()
 ```
 
 ```
-## [1] "2020-03-04 13:37:20 CET"
+## [1] "2020-03-04 13:39:18 CET"
 ```
 
 ```r
@@ -285,7 +285,7 @@ time()
 ```
 
 ```
-## [1] "2020-03-04 13:37:20 CET"
+## [1] "2020-03-04 13:39:18 CET"
 ```
 
 Only the first call to `time()` actually calls `Sys.time()`, after that the results is saved for the entire session unless `memoise::forget()` is called.
