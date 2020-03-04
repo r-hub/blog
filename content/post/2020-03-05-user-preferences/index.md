@@ -78,14 +78,14 @@ The use of options in the .Rprofile startup file is great for workflow packages 
 
 ### Using environment variables
 
-Environment variables, found via `Sys.getenv()` rather than `getOption()`, are appropriate for storing secrets (like [`GITHUB_PAT` for the `gh` package](https://github.com/r-lib/gh#tokens)) or the path to secrets on disk (like [`TWITTER_PAT` for `rtweet`](https://rtweet.info/articles/auth.html)), or not secrets (e.g. the browser to use for `chromote`](https://github.com/rstudio/chromote#specifying-which-browser-to-use)).
+Environment variables, found via `Sys.getenv()` rather than `getOption()`, are appropriate for storing secrets (like [`GITHUB_PAT` for the `gh` package](https://github.com/r-lib/gh#tokens)) or the path to secrets on disk (like [`TWITTER_PAT` for `rtweet`](https://rtweet.info/articles/auth.html)), or not secrets (e.g. [the browser to use for `chromote`](https://github.com/rstudio/chromote#specifying-which-browser-to-use)).
 
 Similar to using `options()` in the console or at the top of a script the user could use `Sys.setenv()`.
 Obviously, secrets should not be written at the top of a script that's public.
 To make environment variables persistent they need to be stored in a startup file, .Renviron.
 .Renviron does not contain R code like .Rprofile, but rather key-value pairs that are only called via `Sys.getenv()`.
 
-As a package developer, you probably want to at least document how to set persistent variables or provide a link to such documentation; and you could even provide helper functions like what `rtweet` does.
+As a package developer, you probably want to at least document how to set persistent variables or provide a link to such documentation; and you could even provide helper functions like [what `rtweet` does](https://rtweet.info/reference/create_token.html).
 
 ### Using credential stores for secrets
 
@@ -276,7 +276,7 @@ time()
 ```
 
 ```
-## [1] "2020-03-04 13:31:04 CET"
+## [1] "2020-03-04 13:32:30 CET"
 ```
 
 ```r
@@ -285,7 +285,7 @@ time()
 ```
 
 ```
-## [1] "2020-03-04 13:31:04 CET"
+## [1] "2020-03-04 13:32:30 CET"
 ```
 
 Only the first call to `time()` actually calls `Sys.time()`, after that the results is saved for the entire session unless `memoise::forget()` is called.
