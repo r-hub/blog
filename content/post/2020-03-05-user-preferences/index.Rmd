@@ -207,12 +207,12 @@ It is great for speeding up code, and for [not abusing internet resources which 
 
 ### Providing a ready-to-use dataset in a non-CRAN package
 
-If your package depends on the use of a huge dataset, the same for all users, that is by definition too huge for CRAN, you can use [a setup like the one presented by Brooke Anderson and Dirk Eddelbuettel in which the data is packaged up in a separate package not on CRAN](https://journal.r-project.org/archive/2017/RJ-2017-026/index.html).
+If your package depends on the use of a huge dataset, the same for all users, that is by definition too huge for CRAN, you can use [a setup like the one presented by Brooke Anderson and Dirk Eddelbuettel in which the data is packaged up in a separate package not on CRAN](https://journal.r-project.org/archive/2017/RJ-2017-026/index.html), that the user will install therefore saving the data on disk somewhere where you can find it easily.
 
 ## Conclusion
 
 In this blog post we presented ways of saving configuration options and data in a not so temporary way in R packages.
-We mentioned R startup files (options in .Rprofile and secrets in .Renviron), the `rappdirs` package as well as an exciting similar feature in R devel, the keyring package.
+We mentioned R startup files (options in .Rprofile and secrets in .Renviron, the `startup` package); the `rappdirs` and `hoardr` packages as well as an exciting similar feature in R devel; the keyring package.
 Writing in the user home directory can be viewed as invasive (and can trigger CRAN archival), hence there is a need for a good package design (asking for confirmation; providing cache management functions like `getlandsat` does) and documentation for transparency.
 Do _you_ use any form of caching on disk with a default location in one of your packages? 
 Did you know where your `rhub` email token lived? :wink:
