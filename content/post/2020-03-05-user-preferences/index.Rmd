@@ -11,11 +11,17 @@ output:
     keep_md: true
 ---
 
-Does your R package work best with some configuration? Does your R package download huge datasets that don't change much on the provider side? Maybe you want to save the corresponding data somewhere persistent so that things will go faster during the next R session. In this blog post we shall explain how an R package developer can go about this.
+Does your R package work best with some configuration? 
+You probably want it to be easily found by your package.
+Does your R package download huge datasets that don't change much on the provider side? 
+Maybe you want to save the corresponding data somewhere persistent so that things will go faster during the next R session. 
+In this blog post we shall explain how an R package developer can go about using and setting persistent configuration and data on the user's machine.
 
 ## User preferences
 
-As written in [Android developer guidance](https://developer.android.com/training/id-auth/identify) and probably every customer service guide ever, _"Everyone likes it when you remember their name."_. Everyone probably likes it too when their barista remembers their usual orders. As an R package developer, what can you do for your R package to remember that?
+As written in [Android developer guidance](https://developer.android.com/training/id-auth/identify) and probably every customer service guide ever, _"Everyone likes it when you remember their name."_. 
+Everyone probably likes it too when their barista remembers their usual orders. 
+As an R package developer, what can you do for your R package to correctly assess user preferences?
 
 ### Using options
 
@@ -23,7 +29,20 @@ In R, `options` _Allow the user to set and examine a variety of global options w
 
 * write `options(usethis.quiet = TRUE)` at the beginning of a script or directly in the console;
 
-* or write that same line in their [.Rprofile that's loaded before every session](https://rstats.wtf/r-startup.html), which is more persistent.
+* or write that same line in their [.Rprofile that's loaded before every session](https://rstats.wtf/r-startup.html), which is more persistent. 
+
+Users can use a project-level or more global user-level .Rprofile. 
+The use of a project-level .Rprofile overrides the user-level .Rprofile unless the project-level .Rprofile contains the following lines [as mentioned in the `blogdown` book](https://bookdown.org/yihui/blogdown/global-options.html):
+
+```r
+# in .Rprofile of the project
+if (file.exists('~/.Rprofile')) {
+  base::sys.source('~/.Rprofile', envir = environment())
+}
+# then set project options
+```
+
+For more startup tweaks, the user could adopt [the `startup` package](https://cran.r-project.org/web/packages/startup/index.html).
 
 _Note that in tests `usethis` suppresses the chatty behaviour by the use of [`withr::local_options(list(usethis.quiet = FALSE))`](https://github.com/r-lib/usethis/blob/7af1aa2e0ac0b699fdd39f5cfbe4d1ccba41bc48/tests/testthat/test-use-pipe.R#L36)._
 
@@ -32,19 +51,25 @@ The use of options in the .Rprofile startup file is great for workflow packages 
 ### Using a config file
 
 
+### A good default experience
+
+Obviously, on top of letting users set their own preferences, you probably want your package functions to have sensible defaults.
 
 ### Asking or guessing?
 
-For basic information such as username, email, GitHub username, the `whoami` package does pretty well.
+For basic information such as username, email, GitHub username, the [`whoami` package](https://github.com/r-lib/whoami#readme) does pretty well.
 
 ```{r whoami}
 whoami::whoami()
 whoami::email_address()
 ```
 
-### A good default experience
+In particular, for the email address, if the R environment variable `EMAIL` isn't set, `whoami` uses a call to `git` to find Git's global configuration. 
+Similarly, the [`gert` package](https://jeroen.cran.dev/gert/) can find and return Git's preferences via [`gert::git_config_global()`](https://jeroen.cran.dev/gert/reference/git_config.html) (although it uses libgit2, not Git directly).
 
-Obviously, on top of letting users set their own preferences, you probably want your package functions to have sensible defaults.
+In these cases where packages _guess_ something, their guessing is based on the use of standard locations for such information on different operating systems. 
+Unsurprisingly, in the next section, we'll recommend using such standard locations when caching _data_.
+
 
 ## Not so temporary files[^1]
 
