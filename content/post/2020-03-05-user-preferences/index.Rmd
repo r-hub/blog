@@ -17,10 +17,27 @@ Does your R package download huge datasets that don't change much on the provide
 Maybe you want to save the corresponding data somewhere persistent so that things will go faster during the next R session. 
 In this blog post we shall explain how an R package developer can go about using and setting persistent configuration and data on the user's machine.
 
+## Preface: standard locations on the user's machine
+
+Throughout this post we'll often refer to standard locations on the user's machine.
+As [explained by Gábor Csárdi in an R-pkg-devel email](https://www.mail-archive.com/r-package-devel@r-project.org/msg02460.html), _"Applications can actually store user level configuration information, cached data, logs, etc. in the user's home directory, and there standard way to do this [depending on the operating system]."_
+R packages that are on CRAN cannot write to the home directory without warning, but they can and should use standard locations.
+To find where those are, package developers can use the `rappdirs` package.
+
+```{r rappdirs}
+# Using an R6 object
+rhub_app <- rappdirs::app_dir("rhub", "r-hub")
+rhub_app$cache()
+# or functions
+rappdirs::user_cache_dir("rhub")
+```
+
+On top of these non-R specific standard locations, we'll also mention the standard homes of R _options_ and _environment variables_, .Rprofile and .Renviron.
+
 ## User preferences
 
 As written in [Android developer guidance](https://developer.android.com/training/id-auth/identify) and probably every customer service guide ever, _"Everyone likes it when you remember their name."_. 
-Everyone probably likes it too when their barista remembers their usual orders. 
+Everyone probably likes it too when the barista at their favourite coffee shop remembers their usual orders. 
 As an R package developer, what can you do for your R package to correctly assess user preferences?
 
 ### Using options
@@ -46,6 +63,7 @@ For more startup tweaks, the user could adopt [the `startup` package](https://cr
 
 _Note that in tests `usethis` suppresses the chatty behaviour by the use of [`withr::local_options(list(usethis.quiet = FALSE))`](https://github.com/r-lib/usethis/blob/7af1aa2e0ac0b699fdd39f5cfbe4d1ccba41bc48/tests/testthat/test-use-pipe.R#L36)._
 
+As a package developer in your code you can retrieve options by using `getOption()` whose second argument is a fallback for when the option hasn't been set by the user.
 The use of options in the .Rprofile startup file is great for workflow packages like `usethis`, `blogdown`, etc., but shouldn't be used for, say, arguments influencing the results of a statistical function.
 
 ### Using environment variables
@@ -59,17 +77,34 @@ To make environment variables persistent they need to be stored in a startup fil
 
 As a package developer, you probably want to at least document how to set persistent variables or provide a link to such documentation; and you could even provide helper functions like what `rtweet` does.
 
-### Using standard locations for secrets
+### Using credential stores for secrets
 
 Although say API keys can be stored in `.Renviron`, they could also be stored in a standard location depending on the operating system.
 The [`keyring` package](https://github.com/r-lib/keyring#keyring) allows to interact with such credential stores.
-You could either take it on as a dependency or recommend your user to use it and add a line like
+You could either take it on as a dependency or recommend your user to use `keyring` and to add a line like
 
 ```r
 Sys.setenv(SUPERSECRETKEY = keyring::key_get("myservice"))
 ```
 
 in their scripts.
+
+### Using an app dir for storing secrets
+
+The `rhub` package stores and retrieves validated email addresses and corresponding tokens from [a standard location on disk](https://github.com/r-hub/rhub/blob/caa9bf7dddd64c36941f043575d10a6e7af6a7aa/R/email.R#L163), [as documented](https://r-hub.github.io/rhub/reference/validate_email.html#details):
+
+```r
+email_file <- function() {
+  rhub_data_dir <- rappdirs::user_data_dir("rhub", "rhub")
+  file.path(rhub_data_dir, "validated_emails.csv")
+}
+```
+
+e.g. in my case
+
+```{r}
+rhub:::email_file()
+```
 
 ### Using a config file
 
@@ -79,7 +114,7 @@ Two of the possibilities are `rappdirs::user_config_dir("batchtools", expand = F
 
 ### A good default experience
 
-Obviously, on top of letting users set their own preferences, you probably want your package functions to have sensible defaults.
+Obviously, on top of letting users set their own preferences, you probably want your package functions to have sensible defaults. :simple_smile:
 
 ### Asking or guessing?
 
@@ -91,67 +126,66 @@ whoami::email_address()
 ```
 
 In particular, for the email address, if the R environment variable `EMAIL` isn't set, `whoami` uses a call to `git` to find Git's global configuration. 
-Similarly, the [`gert` package](https://jeroen.cran.dev/gert/) can find and return Git's preferences via [`gert::git_config_global()`](https://jeroen.cran.dev/gert/reference/git_config.html) (although it uses libgit2, not Git directly).
+Similarly, the [`gert` package](https://jeroen.cran.dev/gert/) can find and return Git's preferences via [`gert::git_config_global()`](https://jeroen.cran.dev/gert/reference/git_config.html)[^2].
 
 In these cases where packages _guess_ something, their guessing is based on the use of standard locations for such information on different operating systems. 
 Unsurprisingly, in the next section, we'll recommend using such standard locations when caching _data_.
 
 ## Not so temporary files[^1]
 
-Excellent R-pkg-devel thread https://stat.ethz.ch/pipermail/r-package-devel/2020q1/004854.html
+To quote [Android developers guide](https://developer.android.com/jetpack/docs/guide#best-practices) again, _"Persist as much relevant and fresh data as possible."_.
 
-* Startup files (including options in .Rprofile), [pkg environment defined in onLoad](https://github.com/eddelbuettel/anytime/blob/caf5ae8f0824c212ac418eb3a1db3f95097153ed/R/init.R)
-
-* `rappdirs` (which is what `rhub` uses!)
-
-
-Where to find information without asking (whoami, what batchtools does for the config file).
-
-Where to save information... after asking (in an R package you have to ask)
+A package that exemplifies doing so is [`getlandsat`](https://docs.ropensci.org/getlandsat/) that downloads "Landsat 8 data from AWS public data sets" from the web.
+The first time the user [downloads an image](https://docs.ropensci.org/getlandsat/reference/lsat_image.html), the result is cached so next time no query needs to be made.
+A very nice aspect of `getlandsat` is its providing [cache management functions](https://docs.ropensci.org/getlandsat/reference/lsat_cache.html)
 
 
+```{r}
+# list files in cache
+lsat_cache_list()
 
-### from other contexts
+# List info for single files
+lsat_cache_details(files = lsat_cache_list()[1])
+lsat_cache_details(files = lsat_cache_list()[2])
 
-Older R-pkg-devel thread, excellent email https://www.mail-archive.com/r-package-devel@r-project.org/msg02460.html (and the title! "Dealing with not so temporary files")
+# List info for all files
+lsat_cache_details()
 
-https://developer.android.com/guide/topics/data
+# delete files by name in cache
+# lsat_cache_delete(files = lsat_cache_list()[1])
 
-https://developer.android.com/jetpack/docs/guide#best-practices "Persist as much relevant and fresh data as possible."
+# delete all files in cache
+# lsat_cache_delete_all()
+```
 
 
+The `getlandasat` [uses the `rappdirs` package](https://github.com/ropensci/getlandsat/blob/b753ec8a4254953565a2a8a5f200a70e34c68bbf/R/cache.R#L111) we mentioned earlier.
 
-### rappdirs usage
+```r
+lsat_path <- function() rappdirs::user_cache_dir("landsat-pds")
+```
 
-General blabla.
+When using `rappdirs`, keep [caveats](https://rdrr.io/cran/rappdirs/man/rappdirs-package.html#heading-3) in mind.
 
-config vs data (I have trouble differentiating all the dirs, but sometimes probably important https://github.com/ropensci/getCRUCLdata/commit/b4a97c41ec741ebe5a694a3983e50aeb1c2a83b0, I'd recommend looking through similar examples **on CRAN** or from another trustworthy source -- e.g. a maintainer you know)
-
-* user_data_dir https://github.com/r-hub/rhub/blob/caa9bf7dddd64c36941f043575d10a6e7af6a7aa/R/email.R#L163 ok because the docs mention it'll be written somewhere.
-
-* config
-
-* user_cache_dir https://github.com/cran/getlandsat/blob/0609a329826b44267b8850e947453707a44d3773/R/cache.R
-
-* site_data_dir no CRAN package, user_log_dir same.
-
-Note caveats from rappdirs docs.
-
-Some observations
-
-* Documentation of where things are stored -- transparency
-
-* Asking, compulsory?
-
-* Letting users manage caches from R? (getlandsat for instance)
+If you hesitate to use e.g. `rappdirs::user_cache_dir()` vs `rappdirs::user_data_dir()`, use a [GitHub code search](/2019/05/14/read-the-source/#how-to-search-the-source).
 
 ### rappdirs or not
 
-some package authors "roll their own" cf https://twitter.com/henrikbengtsson/status/1233495999982628865).
+To use an app directory from within your package you can use `rappdirs` as mentioned earlier, but also other tools.
 
-what is hoardr
+* Package developers might also like the [`hoardr` package](https://docs.ropensci.org/hoardr/) that basically creates an R6 object building on `rappdirs` with a few more methods (directory creation, deletion).
 
-Future developments in base R! https://twitter.com/henrikbengtsson/status/1233487759412809734 why is the R-devel change big https://twitter.com/henrikbengtsson/status/1233496382608199683
+```{r, echo = FALSE}
+blogdown::shortcode("tweet", "1233495999982628865")
+```
+
+* Some package authors "roll their own" like Henrik Bengtsson in [`R.cache`](https://github.com/HenrikBengtsson/R.cache).
+
+```{r, echo = FALSE}
+blogdown::shortcode("tweet", "1233487759412809734")
+```
+
+* R-devel "just gained support for OS-agile user-specific #rstats cache/config/data folders" [which is big](https://twitter.com/henrikbengtsson/status/1233496382608199683) (but if you use the base R implementation available after R 4.x.y, [unless your package depends on R above that version you'll need to backport the functionality](https://twitter.com/JennyBryan/status/1233506099292246016)).
 
 ## More or less temporary solutions
 
@@ -185,3 +219,4 @@ Do _you_ use any form of caching on disk with a default location in one of your 
 Did you know where your `rhub` email token lived? :wink:
 
 [^1]: We're using the [very good email subject by Roy Mendelssohn](https://www.mail-archive.com/r-package-devel@r-project.org/msg02450.html) on [R-pkg-devel](/2019/04/11/r-package-devel/).
+[^2]: The `gert` package uses libgit2, not Git directly.
