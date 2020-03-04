@@ -22,7 +22,7 @@ In this blog post we shall explain how an R package developer can go about using
 Throughout this post we'll often refer to standard locations on the user's machine.
 As [explained by Gábor Csárdi in an R-pkg-devel email](https://www.mail-archive.com/r-package-devel@r-project.org/msg02460.html), _"Applications can actually store user level configuration information, cached data, logs, etc. in the user's home directory, and there standard way to do this [depending on the operating system]."_
 R packages that are on CRAN cannot write to the home directory without warning, but they can and should use standard locations.
-To find where those are, package developers can use the `rappdirs` package.
+To find where those are, package developers can use the [`rappdirs` package](https://github.com/r-lib/rappdirs).
 
 
 ```r
@@ -50,11 +50,11 @@ On top of these non-R specific standard locations, we'll also mention the standa
 
 As written in [Android developer guidance](https://developer.android.com/training/id-auth/identify) and probably every customer service guide ever, _"Everyone likes it when you remember their name."_. 
 Everyone probably likes it too when the barista at their favourite coffee shop remembers their usual orders. 
-As an R package developer, what can you do for your R package to correctly assess user preferences?
+As an R package developer, what can you do for your R package to correctly assess user preferences and settings?
 
 ### Using options
 
-In R, `options` _Allow the user to set and examine a variety of global options which affect the way in which R computes and displays its results._. For instance, for the usethis package, the [`usethis.quiet` option can control whether usethis is chatty](https://github.com/r-lib/usethis/blob/c0acd1b5e43f03773a5934c1d937bf70b77a2557/principles.md#communicating-with-the-user). Users either:
+In R, `options` _allow the user to set and examine a variety of global options which affect the way in which R computes and displays its results_. For instance, for the usethis package, the [`usethis.quiet` option can control whether usethis is chatty](https://github.com/r-lib/usethis/blob/c0acd1b5e43f03773a5934c1d937bf70b77a2557/principles.md#communicating-with-the-user)[^1]. Users either:
 
 * write `options(usethis.quiet = TRUE)` at the beginning of a script or directly in the console;
 
@@ -72,8 +72,6 @@ if (file.exists('~/.Rprofile')) {
 ```
 
 For more startup tweaks, the user could adopt [the `startup` package](https://cran.r-project.org/web/packages/startup/index.html).
-
-_Note that in tests `usethis` suppresses the chatty behaviour by the use of [`withr::local_options(list(usethis.quiet = FALSE))`](https://github.com/r-lib/usethis/blob/7af1aa2e0ac0b699fdd39f5cfbe4d1ccba41bc48/tests/testthat/test-use-pipe.R#L36)._
 
 As a package developer in your code you can retrieve options by using `getOption()` whose second argument is a fallback for when the option hasn't been set by the user.
 The use of options in the .Rprofile startup file is great for workflow packages like `usethis`, `blogdown`, etc., but shouldn't be used for, say, arguments influencing the results of a statistical function.
@@ -163,7 +161,7 @@ Similarly, the [`gert` package](https://jeroen.cran.dev/gert/) can find and retu
 In these cases where packages _guess_ something, their guessing is based on the use of standard locations for such information on different operating systems. 
 Unsurprisingly, in the next section, we'll recommend using such standard locations when caching _data_.
 
-## Not so temporary files[^1]
+## Not so temporary files[^3]
 
 To quote [Android developers guide](https://developer.android.com/jetpack/docs/guide#best-practices) again, _"Persist as much relevant and fresh data as possible."_.
 
@@ -278,7 +276,7 @@ time()
 ```
 
 ```
-## [1] "2020-03-04 13:24:13 CET"
+## [1] "2020-03-04 13:31:04 CET"
 ```
 
 ```r
@@ -287,7 +285,7 @@ time()
 ```
 
 ```
-## [1] "2020-03-04 13:24:13 CET"
+## [1] "2020-03-04 13:31:04 CET"
 ```
 
 Only the first call to `time()` actually calls `Sys.time()`, after that the results is saved for the entire session unless `memoise::forget()` is called.
@@ -305,5 +303,6 @@ Writing in the user home directory can be viewed as invasive (and can trigger CR
 Do _you_ use any form of caching on disk with a default location in one of your packages? 
 Did you know where your `rhub` email token lived? :wink:
 
-[^1]: We're using the [very good email subject by Roy Mendelssohn](https://www.mail-archive.com/r-package-devel@r-project.org/msg02450.html) on [R-pkg-devel](/2019/04/11/r-package-devel/).
+[^1]: Note that in tests `usethis` suppresses the chatty behaviour by the use of [`withr::local_options(list(usethis.quiet = FALSE))`](https://github.com/r-lib/usethis/blob/7af1aa2e0ac0b699fdd39f5cfbe4d1ccba41bc48/tests/testthat/test-use-pipe.R#L36).
 [^2]: The `gert` package uses libgit2, not Git directly.
+[^3]: We're using the [very good email subject by Roy Mendelssohn](https://www.mail-archive.com/r-package-devel@r-project.org/msg02450.html) on [R-pkg-devel](/2019/04/11/r-package-devel/).
