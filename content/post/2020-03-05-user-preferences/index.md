@@ -24,12 +24,24 @@ As [explained by Gábor Csárdi in an R-pkg-devel email](https://www.mail-archiv
 R packages that are on CRAN cannot write to the home directory without warning, but they can and should use standard locations.
 To find where those are, package developers can use the `rappdirs` package.
 
-```{r rappdirs}
+
+```r
 # Using an R6 object
 rhub_app <- rappdirs::app_dir("rhub", "r-hub")
 rhub_app$cache()
+```
+
+```
+## [1] "/home/maelle/.cache/rhub"
+```
+
+```r
 # or functions
 rappdirs::user_cache_dir("rhub")
+```
+
+```
+## [1] "/home/maelle/.cache/rhub"
 ```
 
 On top of these non-R specific standard locations, we'll also mention the standard homes of R _options_ and _environment variables_, .Rprofile and .Renviron.
@@ -102,8 +114,13 @@ email_file <- function() {
 
 e.g. in my case
 
-```{r}
+
+```r
 rhub:::email_file()
+```
+
+```
+## [1] "/home/maelle/.local/share/rhub/validated_emails.csv"
 ```
 
 ### Using a config file
@@ -120,9 +137,24 @@ Obviously, on top of letting users set their own preferences, you probably want 
 
 For basic information such as username, email, GitHub username, the [`whoami` package](https://github.com/r-lib/whoami#readme) does pretty well.
 
-```{r whoami}
+
+```r
 whoami::whoami()
+```
+
+```
+##                 username                 fullname            email_address 
+##                 "maelle"          "Maëlle Salmon" "maelle.salmon@yahoo.se" 
+##              gh_username 
+##                 "maelle"
+```
+
+```r
 whoami::email_address()
+```
+
+```
+## [1] "maelle.salmon@yahoo.se"
 ```
 
 In particular, for the email address, if the R environment variable `EMAIL` isn't set, `whoami` uses a call to `git` to find Git's global configuration. 
@@ -140,18 +172,64 @@ The first time the user [downloads an image](https://docs.ropensci.org/getlandsa
 A very nice aspect of `getlandsat` is its providing [cache management functions](https://docs.ropensci.org/getlandsat/reference/lsat_cache.html)
 
 
-```{r}
+
+```r
 library("getlandsat")
 # list files in cache
 lsat_cache_list()
+```
 
+```
+## [1] "/home/maelle/.cache/landsat-pds/L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B3.TIF"
+## [2] "/home/maelle/.cache/landsat-pds/L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B4.TIF"
+## [3] "/home/maelle/.cache/landsat-pds/L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B7.TIF"
+```
+
+```r
 # List info for single files
 lsat_cache_details(files = lsat_cache_list()[1])
-lsat_cache_details(files = lsat_cache_list()[2])
+```
 
+```
+## <landsat cached files>
+##   directory: /home/maelle/.cache/landsat-pds
+## 
+##   file: /L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B3.TIF
+##   size: 64.624 mb
+```
+
+```r
+lsat_cache_details(files = lsat_cache_list()[2])
+```
+
+```
+## <landsat cached files>
+##   directory: /home/maelle/.cache/landsat-pds
+## 
+##   file: /L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B4.TIF
+##   size: 65.36 mb
+```
+
+```r
 # List info for all files
 lsat_cache_details()
+```
 
+```
+## <landsat cached files>
+##   directory: /home/maelle/.cache/landsat-pds
+## 
+##   file: /L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B3.TIF
+##   size: 64.624 mb
+## 
+##   file: /L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B4.TIF
+##   size: 65.36 mb
+## 
+##   file: /L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B7.TIF
+##   size: 62.974 mb
+```
+
+```r
 # delete files by name in cache
 # lsat_cache_delete(files = lsat_cache_list()[1])
 
@@ -176,15 +254,11 @@ To use an app directory from within your package you can use `rappdirs` as menti
 
 * Package developers might also like the [`hoardr` package](https://docs.ropensci.org/hoardr/) that basically creates an R6 object building on `rappdirs` with a few more methods (directory creation, deletion).
 
-```{r, echo = FALSE}
-blogdown::shortcode("tweet", "1233495999982628865")
-```
+<!--html_preserve-->{{% tweet "1233495999982628865" %}}<!--/html_preserve-->
 
 * Some package authors "roll their own" like Henrik Bengtsson in [`R.cache`](https://github.com/HenrikBengtsson/R.cache).
 
-```{r, echo = FALSE}
-blogdown::shortcode("tweet", "1233487759412809734")
-```
+<!--html_preserve-->{{% tweet "1233487759412809734" %}}<!--/html_preserve-->
 
 * R-devel "just gained support for OS-agile user-specific #rstats cache/config/data folders" [which is big](https://twitter.com/henrikbengtsson/status/1233496382608199683) (but if you use the base R implementation available after R 4.x.y, [unless your package depends on R above that version you'll need to backport the functionality](https://twitter.com/JennyBryan/status/1233506099292246016)).
 
@@ -197,11 +271,23 @@ A bit out-of-scope for this post but nonetheless interesting are solutions for c
 To cache results within an R session, you could use a temporary directory for data.
 For any function call you could use `memoise` that supports, well [memoization](https://en.wikipedia.org/wiki/Memoization) which is best explained with an example.
 
-```{r}
+
+```r
 time <- memoise::memoise(Sys.time)
 time()
+```
+
+```
+## [1] "2020-03-04 13:24:13 CET"
+```
+
+```r
 Sys.sleep(1)
 time()
+```
+
+```
+## [1] "2020-03-04 13:24:13 CET"
 ```
 
 Only the first call to `time()` actually calls `Sys.time()`, after that the results is saved for the entire session unless `memoise::forget()` is called.
