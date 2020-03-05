@@ -276,7 +276,7 @@ time()
 ```
 
 ```
-## [1] "2020-03-04 13:39:18 CET"
+## [1] "2020-03-05 09:33:00 CET"
 ```
 
 ```r
@@ -285,7 +285,7 @@ time()
 ```
 
 ```
-## [1] "2020-03-04 13:39:18 CET"
+## [1] "2020-03-05 09:33:00 CET"
 ```
 
 Only the first call to `time()` actually calls `Sys.time()`, after that the results is saved for the entire session unless `memoise::forget()` is called.
@@ -293,7 +293,7 @@ It is great for speeding up code, and for [not abusing internet resources which 
 
 ### Providing a ready-to-use dataset in a non-CRAN package
 
-If your package depends on the use of a huge dataset, the same for all users, that is by definition too huge for CRAN, you can use [a setup like the one presented by Brooke Anderson and Dirk Eddelbuettel in which the data is packaged up in a separate package not on CRAN](https://journal.r-project.org/archive/2017/RJ-2017-026/index.html), that the user will install therefore saving the data on disk somewhere where you can find it easily.
+If your package depends on the use of a huge dataset, the same for all users, that is by definition too huge for CRAN, you can use [a setup like the one presented by Brooke Anderson and Dirk Eddelbuettel in which the data is packaged up in a separate package not on CRAN](https://journal.r-project.org/archive/2017/RJ-2017-026/index.html), that the user will install therefore saving the data on disk somewhere where you can find it easily.[^4]
 
 ## Conclusion
 
@@ -306,3 +306,4 @@ Did you know where your `rhub` email token lived? :wink:
 [^1]: Note that in tests `usethis` suppresses the chatty behaviour by the use of [`withr::local_options(list(usethis.quiet = FALSE))`](https://github.com/r-lib/usethis/blob/7af1aa2e0ac0b699fdd39f5cfbe4d1ccba41bc48/tests/testthat/test-use-pipe.R#L36).
 [^2]: The `gert` package uses libgit2, not Git directly.
 [^3]: We're using the [very good email subject by Roy Mendelssohn](https://www.mail-archive.com/r-package-devel@r-project.org/msg02450.html) on [R-pkg-devel](/2019/04/11/r-package-devel/).
+[^4]: If your package has a helper for downloading and saving the dataset locally, and you don't control the dataset source (contrary to the aforementioned approach), you might want to register several URLs for that content, as [explained in the README of the conceptual `contenturi` package](https://github.com/cboettig/contenturi#programmatic-long-term-data-access).
