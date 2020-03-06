@@ -30,7 +30,7 @@ cranlogs::cran_downloads(packages = "HistData")
         date count  package
 1 2020-03-03   359 HistData
 ```
-  
+<br/>
 ```r
 cranDownloads(packages = "HistData")
 ```
@@ -50,7 +50,7 @@ cranDownloads(packages = "ggplot")
 ## Error in cranDownloads(packages = "ggplot") :
 ##   ggplot: misspelled or not on CRAN.
 ```
-\s\s
+<br/>
 ```r
 cranDownloads(packages = "ggplot2")
 ```
