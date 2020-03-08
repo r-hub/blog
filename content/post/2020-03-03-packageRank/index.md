@@ -26,16 +26,14 @@ Note that throughout this blog plot post, I'll refer to _active_ and _inactive_ 
 ```r
 cranlogs::cran_downloads(packages = "HistData")
 ```
-
 ```
         date count  package
 1 2020-03-03   359 HistData
 ```
-
+<br/>
 ```r
 cranDownloads(packages = "HistData")
 ```
-
 ```
         date count  package
 1 2020-03-03   359 HistData
@@ -45,7 +43,6 @@ But it adds four features:
 
 ### "spell check" for package names
 
-
 ```r
 cranDownloads(packages = "ggplot")
 ```
@@ -53,8 +50,7 @@ cranDownloads(packages = "ggplot")
 ## Error in cranDownloads(packages = "ggplot") :
 ##   ggplot: misspelled or not on CRAN.
 ```
-
-
+<br/>
 ```r
 cranDownloads(packages = "ggplot2")
 ```
@@ -154,6 +150,10 @@ plot(cranDownloads(packages = "HistData", from = "2020"))
 ```
 
 {{<figure src="cranDownloads_viz1-1.png" caption="Figure 1 'HistData' Year-to-Date Downloads" width="400" height="400">}}
+
+{{<figure src="cranDownloads_viz1-1.png" caption="Figure 1 'HistData' Year-to-Date Downloads" width="640" height="640">}}
+
+{{<figure src="cranDownloads_viz1-1.png" caption="Figure 1 'HistData' Year-to-Date Downloads">}}
 
 When you pass a vector of package names, the function will, by default, make use of `ggplot2` facets:
 
@@ -366,24 +366,24 @@ Even though the bias is pretty mechanical and deterministic, to show that exampl
 ```
 
 Call:
-lm(formula = log(bias) ~ log(popularity) + log(versions) + log(popularity) * 
+lm(formula = log(bias) ~ log(popularity) + log(versions) + log(popularity) *
     log(versions), data = p.data)
 
 Residuals:
-     Min       1Q   Median       3Q      Max 
--1.15194 -0.29496 -0.07894  0.18592  2.53147 
+     Min       1Q   Median       3Q      Max
+-1.15194 -0.29496 -0.07894  0.18592  2.53147
 
 Coefficients:
-                              Estimate Std. Error t value Pr(>|t|)    
+                              Estimate Std. Error t value Pr(>|t|)
 (Intercept)                    6.89264    0.10981  62.768   <2e-16 ***
 log(popularity)               -0.92101    0.02471 -37.280   <2e-16 ***
 log(versions)                  0.98727    0.07625  12.948   <2e-16 ***
-log(popularity):log(versions)  0.02570    0.01458   1.763   0.0794 .  
+log(popularity):log(versions)  0.02570    0.01458   1.763   0.0794 .
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 0.5038 on 195 degrees of freedom
-Multiple R-squared:  0.9567,	Adjusted R-squared:  0.956 
+Multiple R-squared:  0.9567,	Adjusted R-squared:  0.956
 F-statistic:  1435 on 3 and 195 DF,  p-value: < 2.2e-16
 ```
 
