@@ -151,6 +151,8 @@ plot(cranDownloads(packages = "HistData", from = "2020"))
 
 {{<figure src="cranDownloads_viz1-1.png" caption="Figure 1 'HistData' Year-to-Date Downloads" width="400" height="400">}}
 
+{{<figure src="cranDownloads_viz1-1.png" caption="Figure 1 'HistData' Year-to-Date Downloads" width="64"0 height="640">}}
+
 {{<figure src="cranDownloads_viz1-1.png" caption="Figure 1 'HistData' Year-to-Date Downloads">}}
 
 When you pass a vector of package names, the function will, by default, make use of `ggplot2` facets:
