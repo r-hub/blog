@@ -76,5 +76,5 @@ These different services won't exactly mimick what WinBuilder does, but will giv
 ## Conclusion
 
 In this post we offered a round-up of information around WinBuilder.
-Once you're happy with the results you got from WinB uilder, and [R-hub](/2019/03/26/why-care/) pre-checks, you'll submit your package to CRAN and receive incoming checks results.
+Once you're happy with the results you got from WinBuilder, and [R-hub](/2019/03/26/why-care/) pre-checks, you'll submit your package to CRAN and receive incoming checks results.
 Once your package gets accepted on CRAN, you'll deal with other CRAN machines via [CRAN checks](/2019/04/25/r-devel-linux-x86-64-debian-clang/). :wink:
