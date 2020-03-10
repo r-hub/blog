@@ -44,7 +44,7 @@ What to do?
 
 * Maybe [post on R-package-devel](https://www.mail-archive.com/r-package-devel@r-project.org/msg05024.html)?
 
-## How to make dependencies available on WinBuilder?
+## What about dependencies on WinBuilder?
 
 [WinBuilder's docs](https://win-builder.r-project.org/) state what system dependencies are available.
 _"The tools and software provided by Professor Ripley (https://www.stats.ox.ac.uk/pub/Rtools/R215x.html) as well as third party software products mentioned at https://cran.r-project.org/bin/windows/contrib/ThirdPartySoftware.html are available."_
