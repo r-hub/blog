@@ -14,6 +14,7 @@ In this post inspired by reading [R-package-devel archive](/2019/04/11/r-package
 ## What is WinBuilder and why use it?
 
 As mentioned in its [public-facing web page](https://win-builder.r-project.org/), WinBuilder _" provides services for building and checking R source packages for Windows."_. 
+It offers checking on Windows for several R versions.
 It is maintained by [Uwe Ligges](https://www.statistik.tu-dortmund.de/ligges.html).
 
 What if you already have a machine with Windows locally, or rely on R-hub package builder's results on Windows?
