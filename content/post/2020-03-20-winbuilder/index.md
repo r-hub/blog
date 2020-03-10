@@ -65,6 +65,10 @@ Then you might have to [ask for help](/2019/04/11/r-package-devel/).
 
 Regarding spell checks, note that there [might be false positives](https://www.mail-archive.com/r-package-devel@r-project.org/msg01061.html).
 
+## Can I use WinBuilder for my private package?
+
+WinBuilder is a tool for potential CRAN packages so don't use it for your private package, especially as the privacy and confidentiality of your uploaded files are not guaranteed.
+
 ## How to run WinBuilder checks continuously?
 
 WinBuilder is meant to be used as part of your CRAN submission preparation, not as a continuous integration system.
