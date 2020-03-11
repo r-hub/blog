@@ -206,7 +206,7 @@ The population plot provides a way to visually estimate the overall distribution
 plot(cranDownloads(packages = "HistData", when = "last-month"), population.plot = TRUE)
 ```
 
-{{<figure src="pop_plot-1.png" caption="this is what this image shows, write it here or in the paragraph after the image as you prefer" width="400" height="400">}}
+{{<figure src="pop_plot-1.png" alt="alternative text please make it informative" title="title of the image" caption="this is what this image shows, write it here or in the paragraph after the image as you prefer" width="400" height="400">}}
 
 ## caveat: positive bias in download counts
 
