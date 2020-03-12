@@ -78,7 +78,7 @@ The use of options in the .Rprofile startup file is great for workflow packages 
 
 ### Using environment variables
 
-Environment variables, found via `Sys.getenv()` rather than `getOption()`, are (also) appropriate for storing secrets (like [`GITHUB_PAT` for the `gh` package](https://github.com/r-lib/gh#tokens)) or the path to secrets on disk (like [`TWITTER_PAT` for `rtweet`](https://rtweet.info/articles/auth.html)), or not secrets (e.g. [the browser to use for `chromote`](https://github.com/rstudio/chromote#specifying-which-browser-to-use)).
+Environment variables, found via `Sys.getenv()` rather than `getOption()`, are often used for storing secrets (like [`GITHUB_PAT` for the `gh` package](https://github.com/r-lib/gh#tokens)) or the path to secrets on disk (like [`TWITTER_PAT` for `rtweet`](https://rtweet.info/articles/auth.html)), or not secrets (e.g. [the browser to use for `chromote`](https://github.com/rstudio/chromote#specifying-which-browser-to-use)).
 
 Similar to using `options()` in the console or at the top of a script the user could use `Sys.setenv()`.
 Obviously, secrets should not be written at the top of a script that's public.
@@ -89,7 +89,7 @@ As a package developer, you probably want to at least document how to set persis
 
 ### Using credential stores for secrets
 
-Although say API keys can be stored in `.Renviron`, they could also be stored in a standard location depending on the operating system.
+Although say API keys are often stored in `.Renviron`, they could also be stored in a standard and more secure location depending on the operating system.
 The [`keyring` package](https://github.com/r-lib/keyring#keyring) allows to interact with such credential stores.
 You could either take it on as a dependency like e.g. [`gh`](https://github.com/r-lib/gh/blob/bfff4473c2876e4fbdb48d952c86e804d75174ad/R/gh_token.R#L34), or recommend the user of your package to use `keyring` and to add a line like
 
