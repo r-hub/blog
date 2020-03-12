@@ -26,7 +26,7 @@ To find where those are, package developers can use the [`rappdirs` package](htt
 
 
 ```r
-# Using an reference class object
+# Using a reference class object
 rhub_app <- rappdirs::app_dir("rhub", "r-hub")
 rhub_app$cache()
 ```
@@ -279,7 +279,7 @@ time()
 ```
 
 ```
-## [1] "2020-03-12 10:59:10 CET"
+## [1] "2020-03-12 11:01:14 CET"
 ```
 
 ```r
@@ -288,7 +288,7 @@ time()
 ```
 
 ```
-## [1] "2020-03-12 10:59:10 CET"
+## [1] "2020-03-12 11:01:14 CET"
 ```
 
 Only the first call to `time()` actually calls `Sys.time()`, after that the results is saved for the entire session unless `memoise::forget()` is called.

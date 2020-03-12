@@ -25,7 +25,7 @@ R packages that are on CRAN cannot write to the home directory without getting c
 To find where those are, package developers can use the [`rappdirs` package](https://github.com/r-lib/rappdirs).
 
 ```{r rappdirs}
-# Using an reference class object
+# Using a reference class object
 rhub_app <- rappdirs::app_dir("rhub", "r-hub")
 rhub_app$cache()
 # or functions
