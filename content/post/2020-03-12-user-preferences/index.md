@@ -3,7 +3,7 @@ slug: user-preferences
 title: "Persistent config and data for R packages"
 authors:
   - Maëlle Salmon
-date: "2020-03-05"
+date: "2020-03-12"
 tags:
 - package development
 output: 
@@ -20,16 +20,28 @@ In this blog post we shall explain how an R package developer can go about using
 ## Preface: standard locations on the user's machine
 
 Throughout this post we'll often refer to standard locations on the user's machine.
-As [explained by Gábor Csárdi in an R-pkg-devel email](https://www.mail-archive.com/r-package-devel@r-project.org/msg02460.html), _"Applications can actually store user level configuration information, cached data, logs, etc. in the user's home directory, and there standard way to do this [depending on the operating system]."_
-R packages that are on CRAN cannot write to the home directory without warning, but they can and should use standard locations.
+As [explained by Gábor Csárdi in an R-pkg-devel email](https://www.mail-archive.com/r-package-devel@r-project.org/msg02460.html), _"Applications can actually store user level configuration information, cached data, logs, etc. in the user's home directory, and there is standard way to do this [depending on the operating system]."_
+R packages that are on CRAN cannot write to the home directory without getting confirmation from the user, but they can and should use standard locations.
 To find where those are, package developers can use the [`rappdirs` package](https://github.com/r-lib/rappdirs).
 
-```{r rappdirs}
-# Using an R6 object
+
+```r
+# Using an reference class object
 rhub_app <- rappdirs::app_dir("rhub", "r-hub")
 rhub_app$cache()
+```
+
+```
+## [1] "/home/maelle/.cache/rhub"
+```
+
+```r
 # or functions
 rappdirs::user_cache_dir("rhub")
+```
+
+```
+## [1] "/home/maelle/.cache/rhub"
 ```
 
 On top of these non-R specific standard locations, we'll also mention the standard homes of R _options_ and _environment variables_, .Rprofile and .Renviron.
@@ -64,21 +76,32 @@ For more startup tweaks, the user could adopt [the `startup` package](https://cr
 As a package developer in your code you can retrieve options by using `getOption()` whose second argument is a fallback for when the option hasn't been set by the user.
 Note that an option can be any R object.
 
-```{r options}
+
+```r
 options(blabla.foo = TRUE)
-if (getOption("blabla.foo", FALSE)) {
+if (isTRUE(getOption("blabla.foo", FALSE))) {
   message("foo!")
 }
+```
 
+```
+## foo!
+```
+
+```r
 options(blabla.bar = mean)
 getOption("blabla.bar")(c(1:7))
+```
+
+```
+## [1] 4
 ```
 
 The use of options in the .Rprofile startup file is great for workflow packages like `usethis`, `blogdown`, etc., but shouldn't be used for, say, arguments influencing the results of a statistical function.
 
 ### Using environment variables
 
-Environment variables, found via `Sys.getenv()` rather than `getOption()`, are appropriate for storing secrets (like [`GITHUB_PAT` for the `gh` package](https://github.com/r-lib/gh#tokens)) or the path to secrets on disk (like [`TWITTER_PAT` for `rtweet`](https://rtweet.info/articles/auth.html)), or not secrets (e.g. [the browser to use for `chromote`](https://github.com/rstudio/chromote#specifying-which-browser-to-use)).
+Environment variables, found via `Sys.getenv()` rather than `getOption()`, are (also) appropriate for storing secrets (like [`GITHUB_PAT` for the `gh` package](https://github.com/r-lib/gh#tokens)) or the path to secrets on disk (like [`TWITTER_PAT` for `rtweet`](https://rtweet.info/articles/auth.html)), or not secrets (e.g. [the browser to use for `chromote`](https://github.com/rstudio/chromote#specifying-which-browser-to-use)).
 
 Similar to using `options()` in the console or at the top of a script the user could use `Sys.setenv()`.
 Obviously, secrets should not be written at the top of a script that's public.
@@ -91,30 +114,13 @@ As a package developer, you probably want to at least document how to set persis
 
 Although say API keys can be stored in `.Renviron`, they could also be stored in a standard location depending on the operating system.
 The [`keyring` package](https://github.com/r-lib/keyring#keyring) allows to interact with such credential stores.
-You could either take it on as a dependency or recommend the user of your package to use `keyring` and to add a line like
+You could either take it on as a dependency like e.g. [`gh`](https://github.com/r-lib/gh/blob/bfff4473c2876e4fbdb48d952c86e804d75174ad/R/gh_token.R#L34), or recommend the user of your package to use `keyring` and to add a line like
 
 ```r
 Sys.setenv(SUPERSECRETKEY = keyring::key_get("myservice"))
 ```
 
 in their scripts.
-
-### Using an app dir for storing secrets
-
-The `rhub` package stores and retrieves validated email addresses and corresponding tokens from [a standard location on disk](https://github.com/r-hub/rhub/blob/caa9bf7dddd64c36941f043575d10a6e7af6a7aa/R/email.R#L163), [as documented](https://r-hub.github.io/rhub/reference/validate_email.html#details):
-
-```r
-email_file <- function() {
-  rhub_data_dir <- rappdirs::user_data_dir("rhub", "rhub")
-  file.path(rhub_data_dir, "validated_emails.csv")
-}
-```
-
-e.g. in my case
-
-```{r}
-rhub:::email_file()
-```
 
 ### Using a config file
 
@@ -124,20 +130,6 @@ Two of the possibilities are `rappdirs::user_config_dir("batchtools", expand = F
 
 The [`golem` package offers its users the possibility to use a config file based on the `config` package](https://thinkr-open.github.io/golem/articles/e_config.html).
 
-### What if the user is another package developer?
-
-The [`pkgconfig` R package](https://github.com/r-lib/pkgconfig) provides "Private configuration for R packages".
-Imagine package `foobar` has a behaviour that can depend on an option `cooloption`.
-In `foobar` code (and docs!) we'll find references to `pkgconfig::get_config("foobar::cooloption", default_value)`.
-
-```r
-.onLoad <- function(lib, pkg) {
-    pkgconfig::set_config("foobar::cooloption" = TRUE)
-}
-```
-
-An important point is that when using `pkgconfig`, _"Configuration values set in different packages are independent"_.
-
 ### A good default experience
 
 Obviously, on top of letting users set their own preferences, you probably want your package functions to have sensible defaults. :grin:
@@ -146,9 +138,24 @@ Obviously, on top of letting users set their own preferences, you probably want 
 
 For basic information such as username, email, GitHub username, the [`whoami` package](https://github.com/r-lib/whoami#readme) does pretty well.
 
-```{r whoami}
+
+```r
 whoami::whoami()
+```
+
+```
+##                 username                 fullname            email_address 
+##                 "maelle"          "Maëlle Salmon" "maelle.salmon@yahoo.se" 
+##              gh_username 
+##                 "maelle"
+```
+
+```r
 whoami::email_address()
+```
+
+```
+## [1] "maelle.salmon@yahoo.se"
 ```
 
 In particular, for the email address, if the R environment variable `EMAIL` isn't set, `whoami` uses a call to `git` to find Git's global configuration. 
@@ -166,18 +173,64 @@ The first time the user [downloads an image](https://docs.ropensci.org/getlandsa
 A very nice aspect of `getlandsat` is its providing [cache management functions](https://docs.ropensci.org/getlandsat/reference/lsat_cache.html)
 
 
-```{r}
+
+```r
 library("getlandsat")
 # list files in cache
 lsat_cache_list()
+```
 
+```
+## [1] "/home/maelle/.cache/landsat-pds/L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B3.TIF"
+## [2] "/home/maelle/.cache/landsat-pds/L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B4.TIF"
+## [3] "/home/maelle/.cache/landsat-pds/L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B7.TIF"
+```
+
+```r
 # List info for single files
 lsat_cache_details(files = lsat_cache_list()[1])
-lsat_cache_details(files = lsat_cache_list()[2])
+```
 
+```
+## <landsat cached files>
+##   directory: /home/maelle/.cache/landsat-pds
+## 
+##   file: /L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B3.TIF
+##   size: 64.624 mb
+```
+
+```r
+lsat_cache_details(files = lsat_cache_list()[2])
+```
+
+```
+## <landsat cached files>
+##   directory: /home/maelle/.cache/landsat-pds
+## 
+##   file: /L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B4.TIF
+##   size: 65.36 mb
+```
+
+```r
 # List info for all files
 lsat_cache_details()
+```
 
+```
+## <landsat cached files>
+##   directory: /home/maelle/.cache/landsat-pds
+## 
+##   file: /L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B3.TIF
+##   size: 64.624 mb
+## 
+##   file: /L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B4.TIF
+##   size: 65.36 mb
+## 
+##   file: /L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B7.TIF
+##   size: 62.974 mb
+```
+
+```r
 # delete files by name in cache
 # lsat_cache_delete(files = lsat_cache_list()[1])
 
@@ -202,32 +255,40 @@ To use an app directory from within your package you can use `rappdirs` as menti
 
 * Package developers might also like the [`hoardr` package](https://docs.ropensci.org/hoardr/) that basically creates an R6 object building on `rappdirs` with a few more methods (directory creation, deletion).
 
-```{r, echo = FALSE}
-blogdown::shortcode("tweet", "1233495999982628865")
-```
+<!--html_preserve-->{{% tweet "1233495999982628865" %}}<!--/html_preserve-->
 
 * Some package authors "roll their own" like Henrik Bengtsson in [`R.cache`](https://github.com/HenrikBengtsson/R.cache).
 
-```{r, echo = FALSE}
-blogdown::shortcode("tweet", "1233487759412809734")
-```
+<!--html_preserve-->{{% tweet "1233487759412809734" %}}<!--/html_preserve-->
 
 * R-devel "just gained support for OS-agile user-specific #rstats cache/config/data folders" [which is big](https://twitter.com/henrikbengtsson/status/1233496382608199683) (but if you use the base R implementation available after R 4.x.y, [unless your package depends on R above that version you'll need to backport the functionality](https://twitter.com/JennyBryan/status/1233506099292246016) [^4]).
 
 ## More or less temporary solutions
 
-A bit out-of-scope for this post but nonetheless interesting are solutions for caching results very temporarily, or less temporarily.
+This section presents solutions for caching results very temporarily, or less temporarily.
 
 ### Caching results within an R session
 
 To cache results within an R session, you could use a temporary directory for data.
 For any function call you could use `memoise` that supports, well [memoization](https://en.wikipedia.org/wiki/Memoization) which is best explained with an example.
 
-```{r}
+
+```r
 time <- memoise::memoise(Sys.time)
 time()
+```
+
+```
+## [1] "2020-03-12 10:54:53 CET"
+```
+
+```r
 Sys.sleep(1)
 time()
+```
+
+```
+## [1] "2020-03-12 10:54:53 CET"
 ```
 
 Only the first call to `time()` actually calls `Sys.time()`, after that the results is saved for the entire session unless `memoise::forget()` is called.
@@ -240,10 +301,10 @@ If your package depends on the use of a huge dataset, the same for all users, th
 ## Conclusion
 
 In this blog post we presented ways of saving configuration options and data in a not so temporary way in R packages.
-We mentioned R startup files (options in .Rprofile and secrets in .Renviron, the `startup` package); the `rappdirs` and `hoardr` packages as well as an exciting similar feature in R devel; the keyring package.
+We mentioned R startup files (options in .Rprofile and secrets in .Renviron, the `startup` package); the `rappdirs` and `hoardr` packages as well as an exciting similar feature in R devel; the `keyring` package.
 Writing in the user home directory can be viewed as invasive (and can trigger CRAN archival), hence there is a need for a good package design (asking for confirmation; providing cache management functions like `getlandsat` does) and documentation for transparency.
 Do _you_ use any form of caching on disk with a default location in one of your packages? 
-Did you know where your `rhub` email token lived? :wink:
+Do you know where your `rhub` email token lives?[^6] :wink:
 
 _Many thanks to [Christophe Dervieux](https://github.com/cderv) for useful feedback on this post!_
 
@@ -252,3 +313,4 @@ _Many thanks to [Christophe Dervieux](https://github.com/cderv) for useful feedb
 [^3]: We're using the [very good email subject by Roy Mendelssohn](https://www.mail-archive.com/r-package-devel@r-project.org/msg02450.html) on [R-pkg-devel](/2019/04/11/r-package-devel/).
 [^4]: There's actually an [R package called `backports`](https://github.com/r-lib/backports#backports) which provides backports of functions which have been introduced in one of the base packages in R version 3.0.1 or later, maybe it'll provide backports for `tools::R_user_dir()`?
 [^5]: If your package has a helper for downloading and saving the dataset locally, and you don't control the dataset source (contrary to the aforementioned approach), you might want to register several URLs for that content, as [explained in the README of the conceptual `contenturi` package](https://github.com/cboettig/contenturi#programmatic-long-term-data-access).
+[^6]: In `file.path(rappdirs::user_data_dir("rhub", "rhub"), "validated_emails.csv")`, /home/maelle/.local/share/rhub/validated_emails.csv in my case.
