@@ -20,7 +20,7 @@ In this blog post we shall explain how an R package developer can go about using
 ## Preface: standard locations on the user's machine
 
 Throughout this post we'll often refer to standard locations on the user's machine.
-As [explained by Gábor Csárdi in an R-pkg-devel email](https://www.mail-archive.com/r-package-devel@r-project.org/msg02460.html), _"Applications can actually store user level configuration information, cached data, logs, etc. in the user's home directory, and there is standard way to do this [depending on the operating system]."_
+As [explained by Gábor Csárdi in an R-pkg-devel email](https://www.mail-archive.com/r-package-devel@r-project.org/msg02460.html), _"Applications can actually store user level configuration information, cached data, logs, etc. in the user's home directory, and there is a standard way to do this [depending on the operating system]."_
 R packages that are on CRAN cannot write to the home directory without getting confirmation from the user, but they can and should use standard locations.
 To find where those are, package developers can use the [`rappdirs` package](https://github.com/r-lib/rappdirs).
 
