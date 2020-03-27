@@ -12,7 +12,7 @@ output:
     keep_md: true
 ---
 
-Web APIs will regularly fail for no particular reason; 
+Web APIs can sometimes fail for no particular reason; 
 therefore packages accessing them often add some robustness to their code by _retrying_ calling the API a few times if there was an error.
 The two high-level R HTTP clients, `httr` and `crul`, offer a ready-made sub-routine for such cases, but some developers like me have rolled their own out of ignorance.  :sweat_smile:
 In this post I shall present the retry sub-routines of `httr` and `crul`, and more generally reflect on (not) reinventing the wheel in your R package.  :ferris_wheel:
@@ -41,19 +41,22 @@ General strategies for learning more and more about the R ecosystem include
 
 * [trying to keep up-to-date using one or several communication channel(s)](https://masalmon.eu/2019/01/25/uptodate/);
 
-* spreading the word about cool features which is more or less what this post does;
+* spreading the word about cool features which is more or less what this post does, and what Sharla Gelfand does in her great ["Sharing two #rstats functions, most days." tweets whose content is gathered in a GitHub repository](https://github.com/sharlagelfand/twofunctionsmostdays/);
 
 Of course, "deeply educating yourself" takes time one doesn't necessarily have and which no one should feel guilty about.
 Sometimes you'll re-implement something that already exists elsewhere, and it's fine!
 
-Lastly, you might even want to create your own better version, which is obviously neat. :slight_smile:
+Lastly, you might even want to create your own better version, which is obviously neat. :sunglasses:
 
 ### How to help users of your package not reinvent the wheel
 
 As the developer of a package, you might help users find useful features by... working on its docs.
 A good time investment could be to create a [`pkgdown`](https://pkgdown.r-lib.org/) website with a [well-organized reference index](https://pkgdown.r-lib.org/articles/pkgdown.html#reference-1).
 
+Furthermore, some features could be added to your package if they're often implemented downstream.
+
 ## Conclusion
 
 In this post we've presented useful functions implementing retries for API packages in `httr` and `crul`.
-We've also discussed ways to
+We've also discussed ways to not miss such useful shortcuts for one's code, mostly by learning more about existing R packages, whilst acknowledging such exploration takes time.
+What's _your_ favorite lesser known package gem?
