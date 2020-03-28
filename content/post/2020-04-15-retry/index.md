@@ -156,7 +156,7 @@ General strategies for learning more and more about the R ecosystem include
 Of course, "deeply educating yourself" takes time one doesn't necessarily have and which no one should feel guilty about.
 Sometimes you'll re-implement something that already exists elsewhere, and it's fine!
 
-Lastly, you might even want to create your own better version, which is obviously neat. :sunglasses:
+Lastly, you might even _want_ to create your own (better) version, which is obviously neat. :sunglasses:
 
 ### How to help users of your package not reinvent the wheel
 
