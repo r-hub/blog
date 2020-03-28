@@ -17,7 +17,7 @@ output:
 
 Web APIs can sometimes fail for no particular reason; 
 therefore packages accessing them often add some robustness to their code by _retrying_ calling the API a few times if there was an error.
-The two high-level R HTTP clients, `httr` and `crul`, offer a ready-made sub-routines for such cases, but some developers like me have rolled their own out of ignorance.  :sweat_smile:
+The two high-level R HTTP clients, `httr` and `crul`, offer ready-made sub-routines for such cases, but some developers like me have rolled their own out of ignorance.  :sweat_smile:
 In this post I shall present the retry sub-routines of `httr` and `crul`, and more generally reflect on (not) reinventing the wheel in your R package.  :ferris_wheel:
 
 > The few figures of this post come from the excellent [HTTP Cats website](https://http.cat/) and are hyperlinked.
