@@ -23,7 +23,7 @@ therefore packages accessing them often add some robustness to their code by _re
 The two high-level R HTTP clients, `httr` and `crul`, offer ready-made sub-routines for such cases, but some developers like me have rolled their own out of ignorance.  :sweat_smile:
 In this post I shall present the retry sub-routines of `httr` and `crul`, and more generally reflect on (not) reinventing the wheel in your R package.  :ferris_wheel:
 
-> The few figures of this post come from the excellent [HTTP Cats website](https://http.cat/) and are hyperlinked.
+> The few figures of this post come from the funny [HTTP Cats website](https://http.cat/) and are hyperlinked.
 
 <!--html_preserve--> {{< figure src = "https://http.cat/408.jpg" width = "400" alt = "An illustration of the 408 HTTP error code (Request Timeout) showing a kitten napping in a food bowl" link = "https://http.cat/408" >}}<!--/html_preserve-->
 
