@@ -12,15 +12,70 @@ output:
     keep_md: true
 ---
 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache = TRUE)
+
+```
+
 Web APIs can sometimes fail for no particular reason; 
 therefore packages accessing them often add some robustness to their code by _retrying_ calling the API a few times if there was an error.
 The two high-level R HTTP clients, `httr` and `crul`, offer a ready-made sub-routine for such cases, but some developers like me have rolled their own out of ignorance.  :sweat_smile:
 In this post I shall present the retry sub-routines of `httr` and `crul`, and more generally reflect on (not) reinventing the wheel in your R package.  :ferris_wheel:
 
+> The few figures of this post come from the excellent [HTTP Cats website](https://http.cat/) and are hyperlinked.
 
 <!--html_preserve--> {{< figure src = "https://http.cat/408.jpg" width = "400" alt = "An illustration of the 408 HTTP error code (Request Timeout) showing a kitten napping in a food bowl" link = "https://http.cat/408" >}}<!--/html_preserve-->
 
 ## Retry in httr and crul
+
+Relying on internet resources might make a package fragile, since the connection or interfaced web API can fail.
+Therefore, in packages wrapping APIs, one can find some variation of the following pseudo-code that retries a few times:
+
+```r
+maxtry <- 5
+try <- 1
+resp <- do_an_internet_thing()
+while (try <= maxtry && resp$status >= 400) {
+  resp <- do_an_internet_thing()
+  try <- try + 1
+  Sys.sleep(some_waiting_time_increasing_with_try(try))
+}
+
+```
+
+A [search](https://github.com/search?q=httr%3A%3Aretry+l%3DR+user%3Acran&type=Code) on the [R-hub's CRAN source code mirror](https://docs.r-hub.io/#cranatgh) e.g. surfaces [such a function in a package](https://github.com/cran/geoknife/blob/36dc2b2a342bc5a6fe776ec1f2780ea4d731ee31/R/geoknifeUtils.R#L37L55).
+
+As underlined in [`httr`'s excellent "Best practices for API packages" vignette](https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html), _"it’s extremely important to make sure to do this with some form of exponential backoff: if something’s wrong on the server-side, hammering the server with retries may make things worse, and may lead to you exhausting quota (or hitting other sorts of rate limits)."_
+
+Now, if you need such a pattern in your API package, you could use a shortcut rather than patiently ingesting examples and best practice... by using ready-made features of either `httr` or `crul`.
+
+### Retry in httr
+
+The `httr` package contains a handy `RETRY()` function that, well, safely retries a request until it succeeds or until the maximal number of tries is reached.
+It uses [best practice written up by AWS](https://www.awsarchitectureblog.com/2015/03/backoff.html) to define the increasing waiting time.
+
+If there's no error, it simply behaves like the corresponding verb would.
+
+```{r noprob}
+httr::RETRY("GET", "http://httpbin.org/status/200")
+httr::GET("http://httpbin.org/status/200")
+```
+
+Now, what happens if the API keeps failing, which the example URL below ensures?
+
+```{r prob}
+httr::RETRY(
+  "GET", 
+  "http://httpbin.org/status/500",
+  times = 5, # the function has other params to tweak its behavior
+  pause_min = 5)
+```
+
+To learn more about `httr::RETRY()`, head over to [its docs](https://httr.r-lib.org/reference/RETRY.html) and [source code](https://github.com/r-lib/httr/blob/master/R/retry.R)
+
+A wild-caught example of a CRAN package using `httr::RETRY()` is the [`antanym` package](https://github.com/ropensci/antanym/blob/c52f26b65feb7a4f2983ea47ae84e8e2f98f936f/R/load.R#L191), whose `RETRY()` use can be traced back to [a peer-review of the package ](https://github.com/ropensci/software-review/issues/198#issuecomment-384070245) by [Lorenzo Busetto](https://github.com/lbusett) for [rOpenSci](http://ropensci.org/software-review).
+
 
 ### Retry in crul
 
@@ -34,10 +89,14 @@ The [retry method for `crul` `HttpClient` class](https://docs.ropensci.org/crul/
 
 * It offers the possibility to use a callback function, _"if the request will be retried and a wait time is being applied. The function will be passed two parameters, the response object from the failed request, and the wait time in seconds."_. For instance before retrying maybe you could query an API status endpoint if such a thing exists.
 
+To learn more about `crul`'s `retry` method, head over to [its docs](https://docs.ropensci.org/crul/reference/HttpClient.html#method-retry) and [source code](https://github.com/ropensci/crul/blob/master/R/client.R#L388-L430).
+
 ## On not reinventing the wheel
 
 Once I heard about `httr::RETRY()` and the `crul` `retry` method, I was a bit disappointed at having reinvented the wheel. 
 Could one avoid doing that too often?
+
+<!--html_preserve--> {{< figure src = "https://http.cat/302.jpg" width = "400" alt = "An illustration of the 302 HTTP status code (Found) showing a cat carried by a firefighter" link = "https://http.cat/302" >}}<!--/html_preserve-->
 
 ### How to not reinvent the wheel in your code
 
@@ -70,5 +129,8 @@ Furthermore, some features could be added to your package if they're often imple
 ## Conclusion
 
 In this post we've presented useful functions implementing retries for API packages in `httr` and `crul`.
+
+<!--html_preserve--> {{< figure src = "https://http.cat/426.jpg" width = "400" alt = "An illustration of the 426 HTTP status code (Upgrade Required) showing a cat in a too small box" link = "https://http.cat/302" >}}<!--/html_preserve-->
+
 We've also discussed ways to not miss such useful shortcuts for one's code, mostly by learning more about existing R packages, whilst acknowledging such exploration takes time.
 What's _your_ favorite lesser known package gem?
