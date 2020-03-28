@@ -22,6 +22,18 @@ In this post I shall present the retry sub-routines of `httr` and `crul`, and mo
 
 ## Retry in httr and crul
 
+### Retry in crul
+
+_What is `crul`? `crul` is an R client organized around R6 classes._
+
+The [retry method for `crul` `HttpClient` class](https://docs.ropensci.org/crul/reference/HttpClient.html#method-retry) was [modeled after `httr`'s `RETRY()`](https://github.com/ropensci/crul/pull/95). I replaced my homegrown retrying code with it [in a pull request](https://github.com/ropensci/ropenaq/pull/50). 
+
+`crul`'s retrying has two interesting differences with `httr`'s retrying:
+
+* It does not wrap the HTTP calls in `tryCatch` so the only errors it handles gracefully are _HTTP errors_.
+
+* It offers the possibility to use a callback function, _"if the request will be retried and a wait time is being applied. The function will be passed two parameters, the response object from the failed request, and the wait time in seconds."_. For instance before retrying maybe you could query an API status endpoint if such a thing exists.
+
 ## On not reinventing the wheel
 
 Once I heard about `httr::RETRY()` and the `crul` `retry` method, I was a bit disappointed at having reinvented the wheel. 
