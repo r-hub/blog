@@ -17,7 +17,7 @@ output:
 
 Web APIs can sometimes fail for no particular reason; 
 therefore packages accessing them often add some robustness to their code by _retrying_ calling the API a few times if there was an error.
-The two high-level R HTTP clients, `httr` and `crul`, offer a ready-made sub-routine for such cases, but some developers like me have rolled their own out of ignorance.  :sweat_smile:
+The two high-level R HTTP clients, `httr` and `crul`, offer a ready-made sub-routines for such cases, but some developers like me have rolled their own out of ignorance.  :sweat_smile:
 In this post I shall present the retry sub-routines of `httr` and `crul`, and more generally reflect on (not) reinventing the wheel in your R package.  :ferris_wheel:
 
 > The few figures of this post come from the excellent [HTTP Cats website](https://http.cat/) and are hyperlinked.
@@ -109,6 +109,8 @@ httr::RETRY(
 ## <EMPTY BODY>
 ```
 
+The function also makes use of the `Retry-After` HTTP header so, in short, if the API says "hey please wait 33 seconds" that's what the waiting time will be.[^1]
+
 To learn more about `httr::RETRY()`, head over to [its docs](https://httr.r-lib.org/reference/RETRY.html) and [source code](https://github.com/r-lib/httr/blob/master/R/retry.R)
 
 A wild-caught example of a CRAN package using `httr::RETRY()` is the [`antanym` package](https://github.com/ropensci/antanym/blob/c52f26b65feb7a4f2983ea47ae84e8e2f98f936f/R/load.R#L191), whose `RETRY()` use can be traced back to [a peer-review of the package ](https://github.com/ropensci/software-review/issues/198#issuecomment-384070245) by [Lorenzo Busetto](https://github.com/lbusett) for [rOpenSci](http://ropensci.org/software-review).
@@ -171,3 +173,5 @@ In this post we've presented useful functions implementing retries for API packa
 
 We've also discussed ways to not miss such useful shortcuts for one's code, mostly by learning more about existing R packages, whilst acknowledging such exploration takes time.
 What's _your_ favorite lesser known package gem?
+
+[^1]: If your only worry is rate limiting and there are no requests happening at the same time, you might find the [`ratelimitr` package](https://cran.r-project.org/web/packages/ratelimitr/index.html) handy to avoid getting 429 status codes.
