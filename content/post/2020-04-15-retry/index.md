@@ -87,25 +87,23 @@ httr::RETRY(
   "GET", 
   "http://httpbin.org/status/500",
   times = 5, # the function has other params to tweak its behavior
-  pause_min = 5)
+  pause_min = 5,
+  pause_base = 2)
 ```
 
 ```
 ## Request failed [500]. Retrying in 5 seconds...
 ## Request failed [500]. Retrying in 5 seconds...
-```
-
-```
-## Request failed [500]. Retrying in 6.6 seconds...
-```
-
-```
 ## Request failed [500]. Retrying in 5 seconds...
+```
+
+```
+## Request failed [500]. Retrying in 29.2 seconds...
 ```
 
 ```
 ## Response [http://httpbin.org/status/500]
-##   Date: 2020-03-28 12:34
+##   Date: 2020-03-28 12:37
 ##   Status: 500
 ##   Content-Type: text/html; charset=utf-8
 ## <EMPTY BODY>

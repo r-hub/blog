@@ -20,7 +20,7 @@ knitr::opts_chunk$set(cache = TRUE)
 
 Web APIs can sometimes fail for no particular reason; 
 therefore packages accessing them often add some robustness to their code by _retrying_ calling the API a few times if there was an error.
-The two high-level R HTTP clients, `httr` and `crul`, offer a ready-made sub-routine for such cases, but some developers like me have rolled their own out of ignorance.  :sweat_smile:
+The two high-level R HTTP clients, `httr` and `crul`, offer a ready-made sub-routines for such cases, but some developers like me have rolled their own out of ignorance.  :sweat_smile:
 In this post I shall present the retry sub-routines of `httr` and `crul`, and more generally reflect on (not) reinventing the wheel in your R package.  :ferris_wheel:
 
 > The few figures of this post come from the excellent [HTTP Cats website](https://http.cat/) and are hyperlinked.
@@ -69,7 +69,8 @@ httr::RETRY(
   "GET", 
   "http://httpbin.org/status/500",
   times = 5, # the function has other params to tweak its behavior
-  pause_min = 5)
+  pause_min = 5,
+  pause_base = 2)
 ```
 
 To learn more about `httr::RETRY()`, head over to [its docs](https://httr.r-lib.org/reference/RETRY.html) and [source code](https://github.com/r-lib/httr/blob/master/R/retry.R)
