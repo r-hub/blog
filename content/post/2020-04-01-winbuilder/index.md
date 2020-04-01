@@ -3,7 +3,7 @@ slug: win-builder
 title: "Everything you should know about WinBuilder"
 authors:
   - Maëlle Salmon
-date: "2020-03-20"
+date: "2020-04-01"
 tags:
 - package development
 ---
