@@ -3,7 +3,7 @@ slug: retry-wheel
 title: "Retries in API packages and reinventing the wheel"
 authors:
   - Maëlle Salmon
-date: "2020-04-15"
+date: "2020-04-06"
 tags:
 - package development
 - http
@@ -13,7 +13,10 @@ output:
 ---
 
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache = TRUE)
 
+```
 
 Web APIs can sometimes fail for no particular reason; 
 therefore packages accessing them often add some robustness to their code by _retrying_ calling the API a few times if there was an error.
@@ -54,59 +57,20 @@ It uses [best practice written up by AWS](https://www.awsarchitectureblog.com/20
 
 If there's no error, it simply behaves like the corresponding verb would.
 
-
-```r
+```{r noprob}
 httr::RETRY("GET", "http://httpbin.org/status/200")
-```
-
-```
-## Response [http://httpbin.org/status/200]
-##   Date: 2020-03-28 12:29
-##   Status: 200
-##   Content-Type: text/html; charset=utf-8
-## <EMPTY BODY>
-```
-
-```r
 httr::GET("http://httpbin.org/status/200")
-```
-
-```
-## Response [http://httpbin.org/status/200]
-##   Date: 2020-03-28 12:29
-##   Status: 200
-##   Content-Type: text/html; charset=utf-8
-## <EMPTY BODY>
 ```
 
 Now, what happens if the API keeps failing, which the example URL below ensures?
 
-
-```r
+```{r prob}
 httr::RETRY(
   "GET", 
   "http://httpbin.org/status/500",
   times = 5, # the function has other params to tweak its behavior
   pause_min = 5,
   pause_base = 2)
-```
-
-```
-## Request failed [500]. Retrying in 5 seconds...
-## Request failed [500]. Retrying in 5 seconds...
-## Request failed [500]. Retrying in 5 seconds...
-```
-
-```
-## Request failed [500]. Retrying in 29.2 seconds...
-```
-
-```
-## Response [http://httpbin.org/status/500]
-##   Date: 2020-03-28 12:37
-##   Status: 500
-##   Content-Type: text/html; charset=utf-8
-## <EMPTY BODY>
 ```
 
 The function also makes use of the `Retry-After` HTTP header so, in short, if the API says "hey please wait 33 seconds" that's what the waiting time will be.[^1]
