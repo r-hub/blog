@@ -249,22 +249,12 @@ In these plots, each vertical segment represents an observed download count and 
 ```r
 plot(packageDistribution(package = "cholera", date = "2020-03-04"))
 ```
-
-```r
-plot_package_distribution(distn.data[[1]], xlim, ylim)
-```
-
 {{<figure src="packageDistribution_wed_code-1.png" caption="Figure 6 'cholera' Frequency Distribution with Log(Downloads): Wednesday">}}
 
 
 ```r
 plot(packageDistribution(package = "cholera", date = "2020-03-07"))
 ```
-
-```r
-plot_package_distribution(distn.data[[2]], xlim, ylim)
-```
-
 {{<figure src="packageDistribution_sat_code-1.png" caption="Figure 7 'cholera' Frequency Distribution with Log(Downloads): Saturday">}}
 
 While these plots give us a better picture of where 'cholera' is located on those days, any comparison between Wednesday and Saturday is impressionistic at best: all we can confidently say is that the download counts for both days were above than the mode.
@@ -352,18 +342,16 @@ To visualize `packageRank()`, use `plot()`.
 plot(packageRank(packages = "cholera", date = "2020-03-04"))
 ```
 
-
-
-```r
-plot(packageRank(packages = "cholera", date = "2020-03-07"))
-```
-
-
 <!-- ```{r packageRank_plot_code, fig.width = 5, fig.height = 5, fig.align = "center", echo = FALSE, fig.cap = "Figure 6 'HistData' Position in the Distribution of Package Downloads, March 3 & 7, 2020"} -->
 
 
 
 {{<figure src="packageRank_plot_code_wed-1.png" caption="Figure 8 'cholera' and the Distribution of Package Downloads, March 4, 2020">}}
+
+
+```r
+plot(packageRank(packages = "cholera", date = "2020-03-07"))
+```
 
 {{<figure src="packageRank_plot_code_sat-1.png" caption="Figure 9 'cholera' and the Distribution of Package Downloads, March 7, 2020">}}
 
@@ -618,5 +606,4 @@ In the past I've noticed that website maintenance (renaming files and folders, e
 [^3]: Interestingly, IP addresses with a "US" top level domain code account for 46% of all downloads and 72% of ~500 B downloads. For details, see `head(packageRank::blog.data$ccode.ct, 5)`. "filtered" records download counts without ~500 B entries; "delta" is the arithmetic difference between "unfiltered" and "filtered".
 [^4]: The slight upward trend in the peaks probably reflects the addition of new packages during the month.
 [^5]: On 22 October 2019, there were two exceptions among inactive packages, 'UScensus2000blkgrp' and 'msDilution', which had zero downloads.
-[^6]: The [`'adjustedcranlogs'`](https://cran.r-project.org/package=adjustedcranlogs) package also appears to be concerned with the inflation of package download counts. But its source of inflation are package updates. Based upon my reading of the source code and documentation, I _think_ that its objective is to estimate the number of new users (new package installations) by subtracting the number existing users (installation of package updates) from the total downloads. While this is interesting information, from the perspective of [`'packageRank'`](https://cran.r-project.org/package=packageRank) this is not a bug but a feature. Interest in a package is defined by both new and existing users.
-So download spikes are revelatory not problematic. This is why plot.cranDownloads() include `package.version` and `r.version` arguments to annotate graphs with the the release of new package versions and new versions of R.
+[^6]: The [`'adjustedcranlogs'`](https://cran.r-project.org/package=adjustedcranlogs) package also appears to be concerned with the inflation of package download counts. But its source of inflation are package updates. Based upon my reading of the source code and documentation, I _think_ that its objective is to estimate the number of new users (new package installations) by subtracting the number existing users (installation of package updates) from the total downloads. While this is interesting information, from the perspective of [`'packageRank'`](https://cran.r-project.org/package=packageRank) this is not a bug but a feature. Interest in a package is defined by both new and existing users. So download spikes are revelatory not problematic. This is why `plot.cranDownloads()` include `package.version` and `r.version` arguments to annotate graphs with the the release of new package versions and new versions of R.
