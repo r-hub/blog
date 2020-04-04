@@ -45,7 +45,7 @@ cranDownloads(packages = "HistData")
 
 ```
         date count  package
-1 2020-04-02     0 HistData
+1 2020-04-03     0 HistData
 ```
 
 <br/>
@@ -71,7 +71,7 @@ cranDownloads(packages = "ggplot2")
 
 ```
         date count package
-1 2020-04-02     0 ggplot2
+1 2020-04-03     0 ggplot2
 ```
 
 <br/>
@@ -95,7 +95,7 @@ cranDownloads(packages = "VR")
 
 ```
         date count package
-1 2020-04-02     0      VR
+1 2020-04-03     0      VR
 ```
 
 <br/>
@@ -110,7 +110,8 @@ Let's say you want the June 2019 download counts for [`'HistData'`](https://cran
 
 
 ```r
-cranlogs::cran_downloads(packages = "HistData", from = "2019-06-01", to = "2019-06-30")
+cranlogs::cran_downloads(packages = "HistData", from = "2019-06-01",
+  to = "2019-06-30")
 ```
 
 <br/>
@@ -600,7 +601,6 @@ In the past I've noticed that website maintenance (renaming files and folders, e
 ******
 
 # Notes
-
 [^1]: Similar but limited functionality is available for Bioconductor packages using `bioconductorDownloads()` and `bioconductorRank()`.
 [^2]: _Arguably_, package dependencies are a source of inflated download counts.
 [^3]: Interestingly, IP addresses with a "US" top level domain code account for 46% of all downloads and 72% of ~500 B downloads. For details, see `head(packageRank::blog.data$ccode.ct, 5)`. "filtered" records download counts without ~500 B entries; "delta" is the arithmetic difference between "unfiltered" and "filtered".
