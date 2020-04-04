@@ -142,7 +142,8 @@ Let's say you want the year-to-date download counts for [`'rstan'`](https://cran
 
 
 ```r
-cranlogs::cran_downloads(packages = "HistData", from = "2020-01-01", to = Sys.Date() - 1)
+cranlogs::cran_downloads(packages = "HistData", from = "2020-01-01",
+  to = Sys.Date() - 1)
 ```
 
 <br/>
@@ -161,7 +162,8 @@ cranDownloads(packages = "HistData", from = "2020")
 
 
 ```r
-cranDownloads(packages = "HistData", from = "2019-01-15", to = "2019-01-35")
+cranDownloads(packages = "HistData", from = "2019-01-15",
+  to = "2019-01-35")
 ```
 ```
 ## Error in resolveDate(to, type = "to") : Not a valid date.
@@ -187,7 +189,8 @@ When you pass a vector of package names, the function defaults to the use of `gg
 <!-- ```{r cranDownloads_viz2, fig.width = 5, fig.height = 5, fig.align = "center", fig.cap = "Figure 2 Multiple Package Year-to-Date Downloads"} -->
 
 ```r
-plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"), from = "2020"))
+plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
+  from = "2020"))
 ```
 
 {{<figure src="cranDownloads_viz2-1.png" caption="Figure 2 Multiple Package Year-to-Date Downloads">}}
@@ -198,7 +201,8 @@ If you want to plot all the data in a single plot, set `multi.plot = TRUE`:
 <!-- ```{r cranDownloads_viz3, fig.width = 5, fig.height = 5, fig.align = "center", fig.cap = "Figure X Multiple Package Year-to-Date Downloads"} -->
 
 ```r
-plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"), from = "2020"), multi.plot = TRUE)
+plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
+  from = "2020"), multi.plot = TRUE)
 ```
 
 <br/>
@@ -207,7 +211,8 @@ If you want to plot the data in separate plots, each on its own scale, set `grap
 <!-- ```{r cranDownloads_viz4, fig.width = 5, fig.height = 5, fig.align = "center", fig.cap = "Figure X Multiple Package Year-to-Date Downloads"} -->
 
 ```r
-plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"), from = "2020"), graphics = "base")
+plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
+  from = "2020"), graphics = "base")
 ```
 
 ******
@@ -222,7 +227,8 @@ However, after looking at the data for 'cholera' and other packages, the "compar
 
 
 ```r
-plot(cranDownloads(packages = "cholera", from = "2020-03-01", to = "2020-03-07"))
+plot(cranDownloads(packages = "cholera", from = "2020-03-01",
+  to = "2020-03-07"))
 ```
 
 {{<figure src="motivation_code-1.png" caption="Figure 3 'cholera' March 1-7, 2020">}}
@@ -294,7 +300,8 @@ To compute the rank percentile, I do the following. For each package I tabulate 
 
 
 ```r
-pkg.rank <- packageRank(packages = "cholera", date = "2020-03-04", size.filter = FALSE)
+pkg.rank <- packageRank(packages = "cholera", date = "2020-03-04",
+  size.filter = FALSE)
 downloads <- pkg.rank$crosstab
 
 round(100 * mean(downloads < downloads["cholera"]), 1)
@@ -598,9 +605,7 @@ I'll conclude on one final bit of data. On February 29, 2020 (a leap day and a S
 
 In the past I've noticed that website maintenance (renaming files and folders, etc.) sometimes coincides with software updates. So my working hypothesis, which I haven't empirically explored, is that the scripts used to do automated downloading may have been "broken" by changes on CRAN. If so, might this be a better estimate of the actual level of interest in R and its packages?
 
-******
 
-# Notes
 [^1]: Similar but limited functionality is available for Bioconductor packages using `bioconductorDownloads()` and `bioconductorRank()`.
 [^2]: _Arguably_, package dependencies are a source of inflated download counts.
 [^3]: Interestingly, IP addresses with a "US" top level domain code account for 46% of all downloads and 72% of ~500 B downloads. For details, see `head(packageRank::blog.data$ccode.ct, 5)`. "filtered" records download counts without ~500 B entries; "delta" is the arithmetic difference between "unfiltered" and "filtered".
