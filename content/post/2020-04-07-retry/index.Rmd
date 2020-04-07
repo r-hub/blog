@@ -75,7 +75,7 @@ httr::RETRY(
 
 The function also makes use of the `Retry-After` HTTP header so, in short, if the API says "hey please wait 33 seconds" that's what the waiting time will be.[^1]
 
-To learn more about `httr::RETRY()`, head over to [its docs](https://httr.r-lib.org/reference/RETRY.html) and [source code](https://github.com/r-lib/httr/blob/master/R/retry.R)
+To learn more about `httr::RETRY()`, head over to [its docs](https://httr.r-lib.org/reference/RETRY.html) and [source code](https://github.com/r-lib/httr/blob/master/R/retry.R).
 
 A wild-caught example of a CRAN package using `httr::RETRY()` is the [`antanym` package](https://github.com/ropensci/antanym/blob/c52f26b65feb7a4f2983ea47ae84e8e2f98f936f/R/load.R#L191), whose `RETRY()` use can be traced back to [a peer-review of the package ](https://github.com/ropensci/software-review/issues/198#issuecomment-384070245) by [Lorenzo Busetto](https://github.com/lbusett) for [rOpenSci](http://ropensci.org/software-review).
 
@@ -139,4 +139,4 @@ We've also discussed ways to not miss such useful shortcuts for one's code, most
 What's _your_ favorite lesser known package gem or R "joygret" moment[^2]?
 
 [^1]: If your only worry is rate limiting and there are no requests happening at the same time, you might find the [`ratelimitr` package](https://cran.r-project.org/web/packages/ratelimitr/index.html) handy to avoid getting 429 status codes.
-[^2]: _joygret_ was defined by [Hilary Parker in a blog post about writing R packages](https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/) as _"that familiar feeling of the joy of optimization combined with the regret of past inefficiencies"_
+[^2]: _joygret_ was defined by [Hilary Parker in a blog post about writing R packages](https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/) as _"that familiar feeling of the joy of optimization combined with the regret of past inefficiencies"_.
