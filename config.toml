@@ -1,5 +1,6 @@
 baseurl = "https://blog.r-hub.io/"
 languageCode = "en-us"
+buildFuture = "true"
 title = "R-hub blog"
 theme = "hugo-lithium"
 enableEmoji = true
