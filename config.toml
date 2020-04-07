@@ -23,7 +23,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "index\\.html"]
 
 [markup]
   [markup.highlight]
-    style = "borland"
+    style = "friendly"
 
 [params]
     description = "Blog for the R-hub project of the R Consortium, easing the R package development process."
