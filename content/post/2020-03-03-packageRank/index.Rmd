@@ -378,6 +378,9 @@ plot(seq_along(crosstab), c(crosstab), type = "l", xlab = "Rank",
   ylab = "log10(Count)", log = "y", xlim = xlim, ylim = ylim)
 abline(v = iqr, col = "black", lty = "dotted")
 iqr.labels <- c("75th", "50th", "25th")
+invisible(lapply(seq_along(iqr), function(i) {
+  text(iqr[[i]], y.max / 2, labels = iqr.labels[i], cex = 0.75)
+}))
 abline(v = which(names(crosstab) == pkg), col = "red")
 abline(h = crosstab[pkg], col = "red")
 pct <- package.data[package.data$package == pkg, "percentile"]
@@ -422,6 +425,9 @@ plot(seq_along(crosstab), c(crosstab), type = "l", xlab = "Rank",
   ylab = "log10(Count)", log = "y", xlim = xlim, ylim = ylim)
 abline(v = iqr, col = "black", lty = "dotted")
 iqr.labels <- c("75th", "50th", "25th")
+invisible(lapply(seq_along(iqr), function(i) {
+  text(iqr[[i]], y.max / 2, labels = iqr.labels[i], cex = 0.75)
+}))
 abline(v = which(names(crosstab) == pkg), col = "red")
 abline(h = crosstab[pkg], col = "red")
 pct <- package.data[package.data$package == pkg, "percentile"]
@@ -811,6 +817,9 @@ ols2 <- lm(bias ~ popularity + versions + popularity * versions, data = p.data)
 
 # car::avPlots(ols1, layout = c(1, 1), grid = FALSE)
 # car::avPlots(ols2, layout = c(1, 1), grid = FALSE)
+# sel <- names(coef(ols2)[-1])
+# f.test <- car::linearHypothesis(ols2, sel, coef(ols2)[sel])
+
 ```
 
 ```{r ols_summary, echo = FALSE}

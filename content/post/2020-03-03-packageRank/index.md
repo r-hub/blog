@@ -35,7 +35,7 @@ cranlogs::cran_downloads(packages = "HistData")
 
 ```
         date count  package
-1 2020-04-04   249 HistData
+1 2020-04-05   224 HistData
 ```
 
 <br/>
@@ -47,7 +47,7 @@ cranDownloads(packages = "HistData")
 
 ```
         date count  package
-1 2020-04-05     0 HistData
+1 2020-04-06     0 HistData
 ```
 
 <br/>
@@ -73,7 +73,7 @@ cranDownloads(packages = "ggplot2")
 
 ```
         date count package
-1 2020-04-05     0 ggplot2
+1 2020-04-06     0 ggplot2
 ```
 
 <br/>
@@ -98,7 +98,7 @@ cranDownloads(packages = "VR")
 
 ```
         date count package
-1 2020-04-05     0      VR
+1 2020-04-06     0      VR
 ```
 
 <br/>
