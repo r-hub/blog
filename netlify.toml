@@ -1,3 +1,14 @@
 [build]
   command = "hugo -F"
+
+[context.production.environment]
+  HUGO_VERSION = "0.68.3"
+
+[context.deploy-preview.environment]
+  HUGO_VERSION = "0.68.3"
   
+[context.deploy-preview]
+  command = "hugo -b $DEPLOY_PRIME_URL --buildFuture"
+
+[context.branch-deploy]
+  command = "hugo -b $DEPLOY_PRIME_URL --buildFuture"
