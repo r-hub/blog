@@ -21,14 +21,13 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "index\\.html"]
     name = "Twitter"
     url = "https://twitter.com/rhub_"
 
+[markup]
+  [markup.highlight]
+    style = "friendly"
+
 [params]
     description = "Blog for the R-hub project of the R Consortium, easing the R package development process."
     customCSS = ["css/rhub.css"]
-    # options for highlight.js (version, additional languages, and theme)
-    highlightjsVersion = "9.12.0"
-    highlightjsCDN = "//cdnjs.cloudflare.com/ajax/libs"
-    highlightjsLang = ["r", "yaml"]
-    highlightjsTheme = "github"
     githubsource = "https://github.com/r-hub/blog/blob/master/content/"
 
     MathJaxCDN = "//cdnjs.cloudflare.com/ajax/libs"
