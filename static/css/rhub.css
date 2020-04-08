@@ -13,16 +13,48 @@
   position: relative;
 }
 
+code {
+  display: inline;
+}
+
 pre {
   font-size: 16px;
+  code {
+    display: block;
+}
 }
 
 .article-content a {
   text-decoration: none;
-  color: inherit;
+  color: #1f52a4;
+  border-bottom: none;
+  box-shadow: none;
   background: transparent;
   transition: background 150ms ease;
 }
+
+.article-content a:hover,
+.article-content a:focus {
+  color: #1f52a4;
+}
+
+.article-content a:visited {
+  color: #9f1f19;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #1f52a4;
+  border-bottom: none;
+  box-shadow: none;
+  background: transparent;
+  transition: background 150ms ease;
+}
+
+.nav a:hover, a:focus {
+  color: #1f52a4;
+}
+
 
 .content {
   max-width: 90vw;
