@@ -1,17 +1,8 @@
 # Hugo Lithium
 
-A simple responsive blog theme for [Hugo](https://gohugo.io/) forked from https://github.com/jrutheiser/hugo-lithium-theme with modifications to make it work better with [**blogdown**](https://github.com/rstudio/blogdown).
+A simple responsive blog theme for [Hugo](https://gohugo.io/).
 
-The easiest way to get started is to create a new (empty) RStudio project, then
-
-```r
-devtools::install_github('rstudio/blogdown')  # install blogdown
-blogdown::new_site(theme = 'yihui/hugo-lithium')
-```
-
-Then you should be able to see an example website launched in the RStudio Viewer.
-
-For the full documentation, please see this section in the **blogdown** book: https://bookdown.org/yihui/blogdown/themes.html
+![Hugo Lithium Theme Screenshot](https://raw.githubusercontent.com/jrutheiser/hugo-lithium-theme/master/images/screenshot.png)
 
 ## Features
 
@@ -19,26 +10,37 @@ For the full documentation, please see this section in the **blogdown** book: ht
 - Responsive
 - Disqus
 - Google Analytics
-- Google web fonts (Merriweather and Lato)
-- MathJax
-- highlight.js
 
-## Changes
+## Installation
 
-The main changes I made to the original hugo-lithium-theme are:
+Run the following inside your Hugo site folder:
 
-1. Added support for [MathJax](https://bookdown.org/yihui/blogdown/output-format.html) (for rendering LaTeX math expressions) and highlight.js (for syntax highlighting).
+```
+$ mkdir themes
+$ cd themes
+$ git clone https://github.com/jrutheiser/hugo-lithium-theme
+```
 
-    - For both libraries, you can specify the CDN host (e.g., CloudFlare, BootCDN, ...).
+## Configuration
 
-    - For highlight.js, you can specify additional languages (e.g., `r`, `yaml`, `tex`, ...).
+Take a look at the sample [config.toml](https://github.com/jrutheiser/hugo-lithium-theme/blob/master/exampleSite/config.toml)
+file located in the [exampleSite](https://github.com/jrutheiser/hugo-lithium-theme/blob/master/exampleSite) folder.
 
-1. Added Google web fonts (embedded in the theme so that visitors from countries where Google is banned can still see the typefaces).
+## Content Types
 
-1. Improved Hugo's built-in Disqus template, so that you can actually the comments even when you are previewing the website locally.
+### Post
 
-1. Replaced the variable `.Permalink` with `.RelPermalink`, and function `absURL` with `relURL` where necessary. It is a bad idea to use full absolute links (with the protocol and domain) in general. For example, `.Permalink` and `absURL` may generate URLs of the form `http://www.example.com/foo/bar.html`, but `/foo/bar.html` is more portable.
+Used for blog posts.
+
+Run `hugo new post/<post-name>.md` to create a post.
+
+### Page
+
+Used for site pages.
+
+Run `hugo new page/<page-name>.md` to create a page.
 
 ## License
 
-The original hugo-lithium-theme was released by Jonathan Rutheiser under [the MIT License](https://github.com/jrutheiser/hugo-lithium-theme/blob/master/LICENSE.md). The modified version in this repository is also released under MIT.
+The code is available under the [MIT license](https://github.com/jrutheiser/hugo-lithium-theme/blob/master/LICENSE.md).
+
