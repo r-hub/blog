@@ -30,9 +30,6 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "index\\.html"]
     customCSS = ["css/rhub.css"]
     githubsource = "https://github.com/r-hub/blog/blob/master/content/"
 
-    MathJaxCDN = "//cdnjs.cloudflare.com/ajax/libs"
-    MathJaxVersion = "2.7.5"
-
     [params.logo]
     url = "logo.png"
     width = 50
