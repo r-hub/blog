@@ -13,8 +13,15 @@
   position: relative;
 }
 
+code {
+  display: inline;
+}
+
 pre {
   font-size: 16px;
+  code {
+    display: block;
+}
 }
 
 .article-content a {
