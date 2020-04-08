@@ -22,7 +22,9 @@ In this post I shall present the retry sub-routines of `httr` and `crul`, and mo
 
 > The few figures of this post come from the funny [HTTP Cats website](https://http.cat/) and are hyperlinked.
 
-<!--html_preserve--> {{< figure src = "https://http.cat/408.jpg" width = "400" alt = "An illustration of the 408 HTTP error code (Request Timeout) showing a kitten napping in a food bowl" link = "https://http.cat/408" >}}<!--/html_preserve-->
+<!--html_preserve--> 
+{{< figure src = "https://http.cat/408.jpg" width = "400" alt = "An illustration of the 408 HTTP error code (Request Timeout) showing a kitten napping in a food bowl" link = "https://http.cat/408" >}}
+<!--/html_preserve-->
 
 ## Retry in httr and crul
 
@@ -135,7 +137,9 @@ To learn more about `crul`'s `retry` method, head over to [its docs](https://doc
 Once I heard about `httr::RETRY()` and the `crul` `retry` method, I was a bit disappointed at having reinvented the wheel. 
 Could one avoid doing that too often?
 
-<!--html_preserve--> {{< figure src = "https://http.cat/302.jpg" width = "400" alt = "An illustration of the 302 HTTP status code (Found) showing a cat carried by a firefighter" link = "https://http.cat/302" >}}<!--/html_preserve-->
+<!--html_preserve--> 
+{{< figure src = "https://http.cat/302.jpg" width = "400" alt = "An illustration of the 302 HTTP status code (Found) showing a cat carried by a firefighter" link = "https://http.cat/302" >}}
+<!--/html_preserve-->
 
 ### How to not reinvent the wheel in your code
 
@@ -169,7 +173,9 @@ Furthermore, some features could be added to your package if they're often imple
 
 In this post we've presented useful functions implementing retries for API packages in `httr` and `crul`.
 
-<!--html_preserve--> {{< figure src = "https://http.cat/426.jpg" width = "400" alt = "An illustration of the 426 HTTP status code (Upgrade Required) showing a cat in a too small box" link = "https://http.cat/302" >}}<!--/html_preserve-->
+<!--html_preserve--> 
+{{< figure src = "https://http.cat/426.jpg" width = "400" alt = "An illustration of the 426 HTTP status code (Upgrade Required) showing a cat in a too small box" link = "https://http.cat/302" >}}
+<!--/html_preserve-->
 
 We've also discussed ways to not miss such useful shortcuts for one's code, mostly by learning more about existing R packages, whilst acknowledging such exploration takes time.
 What's _your_ favorite lesser known package gem or R "joygret" moment[^2]?
