@@ -7,6 +7,7 @@ enableEmoji = true
 googleAnalytics = "UA-141769052-1"
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "index\\.html"]
+rssLimit = 5
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
