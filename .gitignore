@@ -3,4 +3,4 @@
 .Rproj.user
 blogdown
 public
-index.html
+content/post/*/index.html
