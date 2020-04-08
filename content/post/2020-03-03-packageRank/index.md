@@ -35,7 +35,7 @@ cranlogs::cran_downloads(packages = "HistData")
 
 ```
         date count  package
-1 2020-04-05   224 HistData
+1 2020-04-07   386 HistData
 ```
 
 <br/>
@@ -47,7 +47,7 @@ cranDownloads(packages = "HistData")
 
 ```
         date count  package
-1 2020-04-06     0 HistData
+1 2020-04-07   386 HistData
 ```
 
 <br/>
@@ -73,7 +73,7 @@ cranDownloads(packages = "ggplot2")
 
 ```
         date count package
-1 2020-04-06     0 ggplot2
+1 2020-04-07 65036 ggplot2
 ```
 
 <br/>
@@ -98,7 +98,7 @@ cranDownloads(packages = "VR")
 
 ```
         date count package
-1 2020-04-06     0      VR
+1 2020-04-07     1      VR
 ```
 
 <br/>
@@ -145,7 +145,7 @@ Let's say you want the year-to-date download counts for [`'rstan'`](https://cran
 
 
 ```r
-cranlogs::cran_downloads(packages = "HistData", from = "2020-01-01",
+cranlogs::cran_downloads(packages = "rstan", from = "2020-01-01",
   to = Sys.Date() - 1)
 ```
 
@@ -154,7 +154,7 @@ With `cranDownloads()`, you can just type:
 
 
 ```r
-cranDownloads(packages = "HistData", from = "2020")
+cranDownloads(packages = "rstan", from = "2020")
 ```
 
 <br/>
@@ -197,7 +197,7 @@ plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
 {{<figure src="cranDownloads_viz2-1.png" title="Figure 2 Year-to-Date Downloads for Multiple Packages Using 'ggplot2' facets">}}
 
 <br/>
-If you want to plot all the data in a single plot, use `multi.plot = TRUE`:
+If you want all the data in a single plot, use `multi.plot = TRUE`:
 
 
 ```r
