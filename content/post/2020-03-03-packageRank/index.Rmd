@@ -168,14 +168,14 @@ cranDownloads(packages = "HistData", from = "2019-01-15",
 
 To visualize `cranDownloads()`, use `plot()`:
 
-```{r cranDownloads_viz1, fig.align = "center", hugoopts = list(title = "Figure 1 Year-to-Date Downloads for 'HistData' package")}
+```{r cranDownloads_viz1, fig.align = "center", hugoopts = list(title = "Figure 1 Year-to-Date Downloads for a Single package")}
 plot(cranDownloads(packages = "HistData", from = "2020"))
 ```
 
 <br/>
 When you pass a vector of package names, `plot()` defaults to using `ggplot2` facets:
 
-```{r cranDownloads_viz2, fig.align = "center", hugoopts = list(title = "Figure 2 Year-to-Date Downloads for Multiple Packages Using 'ggplot2' facets")}
+```{r cranDownloads_viz2, fig.align = "center", hugoopts = list(title = "Figure 2 Year-to-Date Downloads for Multiple Packages (with 'ggplot2' facets)")}
 plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
   from = "2020"))
 ```
@@ -207,7 +207,7 @@ plot(cranDownloads(packages = "cholera", from = "2020-03-01",
   to = "2020-03-07"))
 ```
 
-```{r motivation_code, echo = FALSE, fig.align = "center", hugoopts = list(title = "Figure 3 Downloads for 'cholera' package for March 1-7, 2020")}
+```{r motivation_code, echo = FALSE, fig.align = "center", hugoopts = list(title = "Figure 3 Package Downloads for 'cholera' March 1-7, 2020")}
 
 par(mar = c(5, 4, 4, 4))
 plot(cranDownloads(packages = "cholera", from = "2020-03-01",
@@ -219,7 +219,7 @@ Do the peaks on Wednesday and Saturday represent surges of interest in the packa
 
 One way to answer these questions is to locate your package in the frequency distribution of download counts. Below are the distributions for Wednesday and Saturday with the location of [`'cholera'`](https://cran.r-project.org/package=cholera) highlighted:
 
-```{r skew_wed, fig.align = "center", hugoopts = list(title = "Figure 4 Frequency Distribution of Package Downloads for March 4, 2020 (Wednesday)"), echo = FALSE}
+```{r skew_wed, fig.align = "center", hugoopts = list(title = "Figure 4 Frequency Distribution of Package Downloads for Wednesday, March 4, 2020"), echo = FALSE}
 
 x <- packageDistribution("cholera", c("2020-03-04", "2020-03-07"))
 freq.dist1 <- x[[1]]$freq.dist
@@ -239,7 +239,7 @@ day <- weekdays(as.Date(x[[1]]$date), abbreviate = TRUE)
 title(paste0(x[[1]]$package, " @ ", x[[1]]$date, " (", day, ")"))
 ```
 
-```{r skew_sat, fig.align = "center", hugoopts = list(title = "Figure 5 Frequency Distribution of Package Downloads for March 7, 2020 (Saturday)"), echo = FALSE}
+```{r skew_sat, fig.align = "center", hugoopts = list(title = "Figure 5 Frequency Distribution of Package Downloads for Saturday, March 7, 2020"), echo = FALSE}
 
 crosstab <- x[[2]]$crosstab
 plot(freq.dist2$count, freq.dist2$frequency, xlab = "Downloads",
@@ -289,14 +289,14 @@ ylim <- range(lapply(distn.data, function(x) x$freq.dist$frequency))
 ```{r packageDistribution_wed, eval = FALSE}
 plot(packageDistribution(package = "cholera", date = "2020-03-04"))
 ```
-```{r packageDistribution_wed_code, echo = FALSE, fig.align = "center", hugoopts = list(title = "Figure 6 Frequency Distribution of Package Downloads for March 4, 2020 (Wednesday) with Base 10 Logarithm of Download Counts")}
+```{r packageDistribution_wed_code, echo = FALSE, fig.align = "center", hugoopts = list(title = "Figure 6 Frequency Distribution of Package Downloads for Wednesday, March 4, 2020 with Logarithm of Download Counts")}
 plot_package_distribution(distn.data[[1]], xlim, ylim)
 ```
 
 ```{r packageDistribution_sat, eval = FALSE}
 plot(packageDistribution(package = "cholera", date = "2020-03-07"))
 ```
-```{r packageDistribution_sat_code, echo = FALSE, fig.align = "center", hugoopts = list(title = "Figure 7 Frequency Distribution of Package Downloads for March 7, 2020 (Saturday) with Base 10 Logarithm of Download Counts")}
+```{r packageDistribution_sat_code, echo = FALSE, fig.align = "center", hugoopts = list(title = "Figure 7 Frequency Distribution of Package Downloads for Saturday, March 7, 2020 with Logarithm of Download Counts")}
 plot_package_distribution(distn.data[[2]], xlim, ylim)
 ```
 
@@ -360,7 +360,7 @@ xlim <- range(seq_along(crosstab1), seq_along(crosstab2))
 ylim <- range(c(crosstab1), c(crosstab2))
 ```
 
-```{r packageRank_plot_code_wed, echo = FALSE, fig.align = "center", hugoopts = list(title = "Figure 8 Rank Frequency Distribution of Package Downloads, March 4, 2020")}
+```{r packageRank_plot_code_wed, echo = FALSE, fig.align = "center", hugoopts = list(title = "Figure 8 Rank Frequency Distribution of Package Downloads for Wednesday, March 4, 2020")}
 
 crosstab <- dat[[1]]$crosstab
 package.data <- dat[[1]]$package.data
@@ -407,7 +407,7 @@ title(main = paste(pkg, "@", date))
 plot(packageRank(packages = "cholera", date = "2020-03-07"))
 ```
 
-```{r packageRank_plot_code_sat, echo = FALSE, fig.align = "center", hugoopts = list(title = "Figure 9 Rank Frequency Distribution of Package Downloads, March 7, 2020")}
+```{r packageRank_plot_code_sat, echo = FALSE, fig.align = "center", hugoopts = list(title = "Figure 9 Rank Frequency Distribution of Package Downloads for Saturday, March 7, 2020")}
 
 crosstab <- dat[[2]]$crosstab
 package.data <- dat[[2]]$package.data
@@ -531,10 +531,9 @@ Notice the differences in size: 4.1 MB, 35 kB and 539 B. On CRAN, the source and
 
 While I'm unsure about the kB-sized entry (insights are welcome!), my current understanding is that ~500 B downloads are [HTTP HEAD requests from lftp](https://github.com/r-hub/cranlogs/issues/45). The earliest example I've found goes back to "2012-10-17" (RStudio's download logs only go back to "2012-10-01".). I've also noticed that, unlike the above example, "small" downloads aren't always paired with "complete" downloads.
 
-
 To get a sense of their frequency, I look back to October 2019. In aggregate, ~500 B downloads account for approximately 2% of the total. While this seems modest (if 2.5 million downloads could be modest),[^3] I'd argue that there's actually something lurking underneath. A closer look reveals that the difference between the total and filtered (without ~500 B entries) counts is greatest on the five Wednesdays.
 
-```{r counts_plot, fig.align = "center", hugoopts = list(title = "Figure 11 Total Package Downloads from CRAN With and Without ~500 B Entries: October 2019"), echo = FALSE}
+```{r counts_plot, fig.align = "center", hugoopts = list(title = "Figure 11 Total Package Downloads from CRAN With and Without ~500 B Downloads: October 2019"), echo = FALSE}
 
 pt1 <- paste0("0", 1:9)
 oct.root <- "2019-10-"
@@ -564,7 +563,7 @@ legend(x = "bottomleft",
 <br/>
 To see what's going on, I switch the unit of observation from download counts to the number of unique packages:
 
-```{r packages_plot, fig.align = "center", hugoopts = list(title = "Figure 12 Total Number of Unique Packages Downloaded from CRAN With and Without ~500 B Entries: October 2019"), echo = FALSE}
+```{r packages_plot, fig.align = "center", hugoopts = list(title = "Figure 12 Total Number of Unique Packages Downloaded from CRAN With and Without ~500 B Downloads: October 2019"), echo = FALSE}
 
 pt1 <- paste0("0", 1:9)
 oct.root <- "2019-10-"
@@ -609,10 +608,7 @@ log <- packageLog("cholera", "2019-10-22")
 log[1:8, !names(log) %in% c("r_version","r_arch", "r_os")]
 ```
 
-<br/>
 These eight entries record the download of eight _different_ versions of [`'cholera'`](https://cran.r-project.org/package=cholera). A little digging with `packageRank::packageHistory()` reveals that eight different versions represent all the version available on that day:
-
-<br/>
 
 ```{r packageHistory}
 packageHistory("cholera")
@@ -621,8 +617,6 @@ packageHistory("cholera")
 Showing that "all" versions of all packages are being downloaded is not as easy as showing the effect of "small" downloads. For this post, I'm relying on a random sample of 100 active and 100 inactive packages.
 
 The graph below plots the percent of versions downloaded for each day in October 2019 (IDs 1-100 are _active_ packages; IDs 101-200 are _inactive_ packages). On the five Wednesdays (+ 3 additional days), there's a horizontal line at 100% that indicates that all versions of the packages in the sample were downloaded.[^5]
-
-<br/>
 
 ```{r versions_plot, fig.align = "center", hugoopts = list(title = "Figure 13 Percent of Package-Versions Downloaded for 100 Active & 100 Inactive Packages: October 2019"), echo = FALSE}
 
@@ -731,13 +725,13 @@ pkgPlot <- function(package = "cholera", filter = "size",
 ```
 To illustrate the effect of popularity, I compare [`'ggplot2'`](https://cran.r-project.org/package=ggplot2) and [`'cholera'`](https://cran.r-project.org/package=cholera) for October 2019. With one million plus downloads, ~500 B entries inflate the download count for [`'ggplot2'`](https://cran.r-project.org/package=ggplot2) by 2%:
 
-```{r ggplot2, fig.align = "center", hugoopts = list(title = "Figure 14 Effect of ~500 B Downloads on Download Counts for a More Popular Package: October 2019"), echo = FALSE}
+```{r ggplot2, fig.align = "center", hugoopts = list(title = "Figure 14 Effect of ~500 B Downloads on Download Counts on a More Popular Package: October 2019"), echo = FALSE}
 pkgPlot("ggplot2")
 ```
 
 With under 400 downloads, ~500 B entries inflate the download count for [`'cholera'`](https://cran.r-project.org/package=cholera) by 25%:
 
-```{r cholera, fig.align = "center", hugoopts = list(title = "Figure 15 Effect of ~500 B Downloads on Download Counts for a Less Popular Package: October 2019"), echo = FALSE}
+```{r cholera, fig.align = "center", hugoopts = list(title = "Figure 15 Effect of ~500 B Downloads on Download Counts on a Less Popular Package: October 2019"), echo = FALSE}
 pkgPlot()
 ```
 
@@ -844,7 +838,7 @@ plot(cranDownloads(from = "2020-02-25", to = "2020-03-04"), r.version = TRUE)
 plot(cranDownloads("R", from = "2020-02-25", to = "2020-03-04"), r.version = TRUE)
 ```
 
-In the past I've noticed that website maintenance (renaming files and folders, etc.) sometimes coincides with software updates. So my working hypothesis, which I haven't explored empirically, is that the scripts used to do automated downloading may have been "broken" by changes on CRAN. If so, this might actually be a better estimate of the "real" level of interest in R and its packages.
+I've noticed that website maintenance (renaming files and folders, etc.) sometimes coincides with software updates. So my working hypothesis, which I haven't explored empirically, is that the scripts used to do automated downloading may have been "broken" by changes on CRAN. If so, this might actually be a better estimate of the "real" level of interest in R and its packages.
 
 [^1]: Similar but limited functionality is available for Bioconductor packages using `bioconductorDownloads()` and `bioconductorRank()`.
 [^2]: Based upon my reading of the documentation and source code, I'd say that the [`'adjustedcranlogs'`](https://cran.r-project.org/package=adjustedcranlogs) package is also concerned with the inflation of package download counts. However, I'd argue that its source of inflation are package updates and its objective is to estimate the number of new users (new package installations) by subtracting the number existing users (installation of package updates) from the total downloads. From the perspective of [`'packageRank'`](https://cran.r-project.org/package=packageRank), however, package updates are revelatory not problematic. Interest in a package is defined by both new and existing users. This is why `plot.cranDownloads()` include `package.version` and `r.version` arguments to annotate graphs with the the release of new package versions and new versions of R.
