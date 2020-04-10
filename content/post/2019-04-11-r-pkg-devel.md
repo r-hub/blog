@@ -40,6 +40,8 @@ discussion about code development in R.”.
 To participate, you need to subscribe, and your first post will be
 manually moderated. After that, you’re free to post to ask or help!
 
+To search the mailing list, you can use [The Mail Archive](https://www.mail-archive.com/r-package-devel@r-project.org/index.html).
+
 Now, this is all good, but how about getting a more data-driven overview
 of the mailing list by downloading [its
 archives](https://stat.ethz.ch/pipermail/r-package-devel/)?
