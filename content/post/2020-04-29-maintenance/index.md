@@ -11,14 +11,35 @@ output:
     keep_md: true
 ---
 
-As a package developer, there are a few things you need to stay on top on.
+As a package developer, there are quite a few things you need to stay on top on.
 Following bug reports and feature requests of course, but also regularly testing your package, ensuring the docs are up-to-date and typo-free...
 Some of these things you might do without even pausing to think, whereas for others you might need more reminders.
-In this blog post, we shall explore a few tools making your workflow potentially smoother.
+In this blog post, we shall explore a few tools making your workflow smoother.
 
-## What tools
+## What automatic tools?
 
-Already covered elsewhere by yours truly.
+I've actually covered this topic [a while back on my personal blog](https://masalmon.eu/2017/06/17/automatictools/) but here is an updated list.
+
+### Tools for assessing
+
+* [R CMD check, or `devtools::check()`](http://r-pkgs.had.co.nz/check.html) will check your package for adhesion to some standards (e.g. what folders can there be) and run the tests and [examples](/2020/01/27/examples/).
+It's an useful command to run even if your package isn't intended to go on CRAN.
+
+* For Bioconductor developers, there is [`BiocCheck`](https://bioconductor.org/packages/release/bioc/html/BiocCheck.html) that _"encapsulates Bioconductor package guidelines and best practices, analyzing packages "_.
+
+* [`goodpractice`](http://mangothecat.github.io/goodpractice/), and [`lintr`](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/) both provides you with useful static analyses of your package.
+
+* [`covr::package_coverage()`](http://covr.r-lib.org/reference/package_coverage.html) calculates test coverage for your package. Having a good coverage also means `R CMD check` is more informative, since it means it's testing your code. :wink: `covr::package_coverage()` can also provide you with the code coverage of the vignettes and examples!
+
+* [`devtools::spell_check()`](http://devtools.r-lib.org/reference/spell_check.html)
+
+styler
+
+roxygen2 use (otherwise man less in sync)
+
+pkgdown, although best with minimal config (reference grouping!)
+
+### Tools for improving
 
 ## Where to use the tools
 
@@ -50,11 +71,11 @@ Notification settings?
 React or work by period?
 
 Following development upstream (R, packages). 
-What channels?
+What channels? 
 
 Following developer convos to update and improve your practices.
 Nice people refactoring your code? https://github.com/ropensci/codemetar/pulls?q=is%3Apr+author%3Ahsonne https://github.com/ropensci/codemetar/issues/222#issuecomment-448672148 https://www.goodreads.com/book/show/3735293-clean-code
-R-pkg-devel &friends, other news channel, this blog. :wink:
+R-pkg-devel &friends, other news channel https://masalmon.eu/2019/01/25/uptodate/, this blog. :wink:
 
 ## Conclusion
 
