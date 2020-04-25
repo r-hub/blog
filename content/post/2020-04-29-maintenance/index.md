@@ -49,9 +49,11 @@ Partly yes, partly no.
 
 ## When and where to use the tools?
 
-Now, knowing about useful tools for assessing and improving your package is good, and having tried them locally is great, but how about learning to tame some online services to run commands at your own will.
+Now, knowing about useful tools for assessing and improving your package is good, but _when_ and _where_ do you use them?
 
 ### Continuous integration
+
+How about learning to tame some online services to run commands on your R package at your own will and without too much effort?
 
 #### Run something every time you make a change
 
@@ -85,8 +87,11 @@ Many CI services provide that option, see e.g. the docs of [Travis CI](https://d
 You can also make the most of services "on the cloud" for not having to run small things locally.
 An interesting trick is e.g. the definition of "PR commands" via GitHub Action.
 Say someone sends a PR to your repo fixing a typo in the roxygen2 part of an R script, but doesn't run `devtools::document()`, or someone quickly edits `README.Rmd` without knitting it.
-You could fetch the PR locally and run respectively `devtools::document()` and `rmarkdown::render()` yourself, or you could make GitHub Action bot do that for you!
+You could fetch the PR locally and run respectively `devtools::document()` and `rmarkdown::render()` yourself, or you could make GitHub Action bot do that for you! :dancer:
+
 Refer to the workflows in e.g. [ggplot2 repo](https://github.com/tidyverse/ggplot2/blob/master/.github/workflows/pr-commands.yaml), triggered by writing a comment such as "/document", and their [variant in pksearch repo](https://github.com/r-hub/pkgsearch/blob/master/.github/workflows/pr-label-commands.yml), where _labelling_ the PR.
+Both approaches have their pros and cons.
+I like labelling because you can't really make a typo, and it doesn't clutter the PR conversation, but you can hide comments later on whereas you cannot hide the labelling event from the PR history so really, to each their own.
 
 {{< figure src="prcommanddocument.png" alt="Screenshot of a GitHub Action workflow" link="https://github.com/r-hub/pkgsearch/issues/98" >}}
 
@@ -94,9 +99,9 @@ This example is specific to GitHub and GitHub Action but you could think of simi
 
 ### Run something _before_ you make a change
 
-Let's build on [a meme](https://knowyourmeme.com/memes/tired-wired) to explain the idea in this subsection
+Let's build on [a meme](https://knowyourmeme.com/memes/tired-wired) to explain the idea in this subsection:
 
-*  :zzz: Tired: Remember to do things well
+*  :zzz: Tired: Always remember to do things well
 *  :electric_plug: Wired: Use continuous integration to notice wrong stuff
 *  :sparkles: Inspired: Use precommit to not even commit wrong stuff
 
@@ -121,11 +126,12 @@ The [`devtools::release()` function](https://github.com/r-lib/devtools/blob/b166
 
 ## Conclusion
 
-In this blog post we went over tooling making your package maintainer life easier: tools that are useful locally, and tools that help you run those tools regularly without too much effort.
+In this blog post we went over tooling making your package maintainer life easier: `R CMD check`, `lintr`, `goodpractice`, `covr`, `spelling`, `styler`, `roxygen2`, `usethis`, `pkgdown`... and ways to integrate them into your workflow without having to remembering about them: continuous integration services, pre-commit hooks, using a checklist before a release.  
+Tools for improving your R package will often be quite specific to R, whereas tools for integrating them into your practice are more general: continuous integration services are used for all sorts of software projects, pre-commit is initially a Python project.
+Therefore, there will be tons of resources about that out there, some of them under the umbrella of [DevOps](https://en.wikipedia.org/wiki/DevOps).
+While introducing some automagic into your workflow might save you time and energy, there is some balance to be found in order not to spend to much time on ["meta work"](https://youtu.be/dIjKJjzRX_E?t=633). :clock:
 
-While introducing some of these into your workflow might save you time and energy, there is some balance to be found in order not to spend to much time on ["meta work"](https://youtu.be/dIjKJjzRX_E?t=633). :clock:
-Furthermore, we've mentioned many things belonging to a package developer workflow.
-There are other aspects we have not mentioned and for which there might be interesting apps and similar: e.g. how do you follow your own bug tracker? How do you subscribe to the changelog of your upstream dependencies?
+Furthermore, there are other aspects of package development we have not mentioned for which there might be interesting technical hacks: e.g. how do you follow the bug tracker of your package? How do you subscribe to the changelog of its upstream dependencies?
 
 Do _you_ have any special trick?
 Please share in the comments below!
