@@ -23,10 +23,6 @@ rssLimit = 5
     name = "Twitter"
     url = "https://twitter.com/rhub_"
 
-[markup]
-  [markup.highlight]
-    style = "friendly"
-
 [params]
     description = "Blog for the R-hub project of the R Consortium, easing the R package development process."
     customCSS = ["css/rhub.css", "css/friendly.css"]
