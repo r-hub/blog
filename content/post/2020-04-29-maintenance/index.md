@@ -108,7 +108,7 @@ Let's build on [a meme](https://knowyourmeme.com/memes/tired-wired) to explain t
 The git version control system allows you to define "pre-commit hooks" for not letting you e.g. commit `README.Rmd` without knitting it.
 You might know this if you use `usethis::use_readme_rmd()` that adds such a hook to your project.
 
-To take things further, the [`precommit` R package](https://lorenzwalthert.github.io/precommit/) provides two sets of utilities around the [precommit framework](https://pre-commit.com/): hooks that are useful for R packages, and usethis-like functionalities to set up hooks in projects.
+To take things further, the [`precommit` R package](https://lorenzwalthert.github.io/precommit/) provides two sets of utilities around the [precommit framework](https://pre-commit.com/): hooks that are useful for R packages or projects, and usethis-like functionalities to set them up.
 
 Examples of [available hooks](https://lorenzwalthert.github.io/precommit/articles/available-hooks.html), some of them possibly editing files, others only assessing them: [checking your R code is still parsable](https://lorenzwalthert.github.io/precommit/articles/available-hooks.html#parsable-r), [spell check](https://lorenzwalthert.github.io/precommit/articles/available-hooks.html#spell-check-1), [checking dependencies are listed in `DESCRIPTION`](https://lorenzwalthert.github.io/precommit/articles/available-hooks.html#deps-in-desc)...
 Quite useful, if you're up for adding such checks!
