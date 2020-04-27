@@ -4,6 +4,7 @@ buildFuture = "true"
 title = "R-hub blog"
 theme = "hugo-lithium"
 enableEmoji = true
+pygmentsUseClasses=true
 googleAnalytics = "UA-141769052-1"
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "index\\.html"]
@@ -28,7 +29,7 @@ rssLimit = 5
 
 [params]
     description = "Blog for the R-hub project of the R Consortium, easing the R package development process."
-    customCSS = ["css/rhub.css"]
+    customCSS = ["css/rhub.css", "css/friendly.css"]
     githubsource = "https://github.com/r-hub/blog/blob/master/content/"
 
     [params.logo]
