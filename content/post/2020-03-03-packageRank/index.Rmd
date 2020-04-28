@@ -1,6 +1,6 @@
 ---
 slug: packageRank-intro
-title: "Counting and Visualizing CRAN Downloads with 'packageRank' (w/ Caveats!)"
+title: "Counting and Visualizing CRAN Downloads with packageRank (with Caveats!)"
 authors:
   - lindbrook
 date: 2020-03-01
