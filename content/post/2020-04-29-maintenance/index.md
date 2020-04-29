@@ -28,7 +28,7 @@ It's an useful command to run even if your package isn't intended to go on CRAN.
 
 * For Bioconductor developers, there is [`BiocCheck`](https://bioconductor.org/packages/release/bioc/html/BiocCheck.html) that _"encapsulates Bioconductor package guidelines and best practices, analyzing packages "_.
 
-* [`goodpractice`](http://mangothecat.github.io/goodpractice/), and [`lintr`](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/) both provides you with useful static analyses of your package.
+* [`goodpractice`](http://mangothecat.github.io/goodpractice/), and [`lintr`](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/) both provide you with useful static analyses of your package.
 
 * [`covr::package_coverage()`](http://covr.r-lib.org/reference/package_coverage.html) calculates test coverage for your package. Having a good coverage also means `R CMD check` is more informative, since it means it's testing your code. :wink: `covr::package_coverage()` can also provide you with the code coverage of the vignettes and examples!
 
@@ -82,6 +82,8 @@ Even in the absence of your changing anything to your codebase, things might bre
 Therefore it might make sense to _schedule_ a regular run of your CI checking workflow.
 Many CI services provide that option, see e.g. the docs of [Travis CI](https://docs.travis-ci.com/user/cron-jobs/) and [GitHub Actions](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#onschedule).
 
+As a side note, remember than [CRAN packages are checked regularly on several platforms](/2019/04/25/r-devel-linux-x86-64-debian-clang/).
+
 #### Be lazy with continuous integration: PR commands
 
 You can also make the most of services "on the cloud" for not having to run small things locally.
@@ -89,9 +91,9 @@ An interesting trick is e.g. the definition of "PR commands" via GitHub Action.
 Say someone sends a PR to your repo fixing a typo in the roxygen2 part of an R script, but doesn't run `devtools::document()`, or someone quickly edits `README.Rmd` without knitting it.
 You could fetch the PR locally and run respectively `devtools::document()` and `rmarkdown::render()` yourself, or you could make GitHub Action bot do that for you! :dancer:
 
-Refer to the workflows in e.g. [ggplot2 repo](https://github.com/tidyverse/ggplot2/blob/master/.github/workflows/pr-commands.yaml), triggered by writing a comment such as "/document", and their [variant in pksearch repo](https://github.com/r-hub/pkgsearch/blob/master/.github/workflows/pr-label-commands.yml), where _labelling_ the PR.
+Refer to the workflows in e.g. [ggplot2 repo](https://github.com/tidyverse/ggplot2/blob/master/.github/workflows/pr-commands.yaml), triggered by writing a comment such as "/document", and their [variant in pksearch repo](https://github.com/r-hub/pkgsearch/blob/master/.github/workflows/pr-label-commands.yml), where _labeling_ the PR.
 Both approaches have their pros and cons.
-I like labelling because you can't really make a typo, and it doesn't clutter the PR conversation, but you can hide comments later on whereas you cannot hide the labelling event from the PR history so really, to each their own.
+I like labeling because you can't really make a typo, and it doesn't clutter the PR conversation, but you can hide comments later on whereas you cannot hide the labeling event from the PR history so really, to each their own.
 
 {{< figure src="prcommanddocument.png" alt="Screenshot of a GitHub Action workflow" link="https://github.com/r-hub/pkgsearch/issues/98" >}}
 
