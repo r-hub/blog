@@ -93,7 +93,7 @@ You could fetch the PR locally and run respectively `devtools::document()` and `
 
 Refer to the workflows in e.g. [ggplot2 repo](https://github.com/tidyverse/ggplot2/blob/master/.github/workflows/pr-commands.yaml), triggered by writing a comment such as "/document", and their [variant in pksearch repo](https://github.com/r-hub/pkgsearch/blob/master/.github/workflows/pr-label-commands.yml), where _labeling_ the PR.
 Both approaches have their pros and cons.
-I like labeling because you can't really make a typo, and it doesn't clutter the PR conversation, but you can hide comments later on whereas you cannot hide the labeling event from the PR history so really, to each their own.
+I like labeling because not having to _type_ the command means you can't make a typo. Furthermore, it doesn't clutter the PR conversation, but you can hide comments later on whereas you cannot hide the labeling event from the PR history so really, to each their own.
 
 {{< figure src="prcommanddocument.png" alt="Screenshot of a GitHub Action workflow" link="https://github.com/r-hub/pkgsearch/issues/98" >}}
 
