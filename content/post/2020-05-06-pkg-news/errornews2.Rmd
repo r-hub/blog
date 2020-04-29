@@ -1,18 +1,11 @@
 
-```{r test, error = TRUE}
+```{r test2, error = TRUE}
 withr::with_temp_libpaths(
   action = "suffix",
   {
   # yay commonmark
   print(find.package("commonmark", quiet = TRUE))
-  # make xml2 available
-  dir.create(file.path(.libPaths()[1], "xml2"))
-  file.copy(
-    "/home/maelle/R/x86_64-pc-linux-gnu-library/3.6/xml2",
-    file.path(.libPaths()[1]),
-    recursive = TRUE
-    )
-  
+
   news(grepl("fix", Category, ignore.case=TRUE), package = "xml2")
   })
 
