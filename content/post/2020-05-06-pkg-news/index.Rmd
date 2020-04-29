@@ -92,12 +92,31 @@ There are several possible formats for maintaining an R package changelog, accor
 
 The actually serious [CRAN package `ouch`](https://kingaa.github.io/ouch/) uses inst/NEWS.Rd, like [134 other packages at the time of writing](https://github.com/search?l=&o=desc&q=org%3Acran+path%3A%2Finst%2F+filename%3ANEWS.Rd&s=indexed&type=Code).
 In the case of `ouch`, inst/NEWS.Rd is actually [created from a plain-text inst/NEWS using `R CMD Rdconv`](https://github.com/kingaa/ouch/blob/8a2f39b895f97b7c8e8677f4052c42bbf16055c4/Makefile#L53-L54).
-
 As regards plain-text NEWS files, when preparing this post I found [413 inst/NEWS](https://github.com/search?q=org%3Acran+path%3A%2Finst%2F+filename%3ANEWS&type=Code) and [1,055 NEWS](https://github.com/search?l=Text&q=org%3Acran+path%3A%2F+filename%3ANEWS&type=Code) in CRAN packages.
+Last but not least, at the time of writing there were [1,174 packages with a NEWS.md file](https://github.com/search?l=Markdown&q=org%3Acran+path%3A%2F+filename%3ANEWS&type=Code)
 
-To save the best for
+Now, why do I think NEWS.md is the best format?
 
-# When update the changelog
+
+
+* A caveat is the `util::news()` function. If the user uses that and doesn't have `commonmark` and `xml2` installed, it will fail
+
+```{r, echo=FALSE, results='asis'}
+res <- knitr::knit_child('errornews.Rmd', quiet = TRUE, envir = new.env())
+cat(res, sep = '\n')
+```
+
+
+```{r, echo=FALSE, results='asis'}
+res <- knitr::knit_child('errornews2.Rmd', quiet = TRUE, envir = new.env())
+cat(res, sep = '\n')
+```
+
+Thankfully in an interactive session when not finding any result to the query `news()` will open the entire changelog that the user could e.g. browse and search in RStudio.
+
+Note that whilst R uses `commonmark` and `xml2` to build the news database from NEWS.md, it uses a workaround without these packages to extract URLs from NEWS.md.
+
+# How and when to update the changelog
 
 ```{r, echo=FALSE}
 blogdown::shortcode("tweet", "1236738064850051074")
