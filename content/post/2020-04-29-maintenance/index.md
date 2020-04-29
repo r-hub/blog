@@ -54,6 +54,7 @@ Now, knowing about useful tools for assessing and improving your package is good
 ### Continuous integration
 
 How about learning to tame some online services to run commands on your R package at your own will and without too much effort?
+Apart from the last subsection, this section assumes you are using [Git](/2019/04/25/r-devel-linux-x86-64-debian-clang/).
 
 #### Run something every time you make a change
 
@@ -107,7 +108,7 @@ Let's build on [a meme](https://knowyourmeme.com/memes/tired-wired) to explain t
 *  :electric_plug: Wired: Use continuous integration to notice wrong stuff
 *  :sparkles: Inspired: Use precommit to not even commit wrong stuff
 
-The git version control system allows you to define "pre-commit hooks" for not letting you e.g. commit `README.Rmd` without knitting it.
+Git allows you to define "pre-commit hooks" for not letting you e.g. commit `README.Rmd` without knitting it.
 You might know this if you use `usethis::use_readme_rmd()` that adds such a hook to your project.
 
 To take things further, the [`precommit` R package](https://lorenzwalthert.github.io/precommit/) provides two sets of utilities around the [precommit framework](https://pre-commit.com/): hooks that are useful for R packages or projects, and usethis-like functionalities to set them up.
