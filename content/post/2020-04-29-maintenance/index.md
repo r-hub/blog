@@ -134,7 +134,7 @@ Tools for improving your R package will often be quite specific to R in their im
 Therefore, there will be tons of resources about that out there, some of them under the umbrella of [DevOps](https://en.wikipedia.org/wiki/DevOps).
 While introducing some automagic into your workflow might save you time and energy, there is some balance to be found in order not to spend to much time on ["meta work"](https://youtu.be/dIjKJjzRX_E?t=633). :clock:
 
-Furthermore, there are other aspects of package development we have not mentioned for which there might be interesting technical hacks: e.g. how do you follow the bug tracker of your package? How do you subscribe to the changelog of its upstream dependencies?
+Furthermore, there are other aspects of package development we have not mentioned for which there might be interesting technical hacks: e.g. how do you follow the bug tracker of your package? How do you subscribe to the changelogs of its upstream dependencies?
 
 Do _you_ have any special trick?
 Please share in the comments below!
