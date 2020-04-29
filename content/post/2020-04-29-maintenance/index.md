@@ -130,7 +130,7 @@ The [`devtools::release()` function](https://github.com/r-lib/devtools/blob/b166
 ## Conclusion
 
 In this blog post we went over tooling making your package maintainer life easier: `R CMD check`, `lintr`, `goodpractice`, `covr`, `spelling`, `styler`, `roxygen2`, `usethis`, `pkgdown`... and ways to integrate them into your workflow without having to remembering about them: continuous integration services, pre-commit hooks, using a checklist before a release.  
-Tools for improving your R package will often be quite specific to R, whereas tools for integrating them into your practice are more general: continuous integration services are used for all sorts of software projects, pre-commit is initially a Python project.
+Tools for improving your R package will often be quite specific to R in their implementation (but not principles), whereas tools for integrating them into your practice are more general: continuous integration services are used for all sorts of software projects, pre-commit is initially a Python project.
 Therefore, there will be tons of resources about that out there, some of them under the umbrella of [DevOps](https://en.wikipedia.org/wiki/DevOps).
 While introducing some automagic into your workflow might save you time and energy, there is some balance to be found in order not to spend to much time on ["meta work"](https://youtu.be/dIjKJjzRX_E?t=633). :clock:
 
