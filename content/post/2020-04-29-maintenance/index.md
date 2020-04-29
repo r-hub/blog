@@ -23,12 +23,12 @@ I've actually covered this topic [a while back on my personal blog](https://masa
 
 ### Tools for assessing
 
-* [R CMD check, or `devtools::check()`](http://r-pkgs.org/check.html) will check your package for adhesion to some standards (e.g. what folders can there be) and run the tests and [examples](/2020/01/27/examples/).
-It's an useful command to run even if your package isn't intended to go on CRAN.
+* [R CMD check or `devtools::check()`](http://r-pkgs.org/check.html) will check your package for adherence to some standards (e.g., what folders can there be) and run the tests and [examples](/2020/01/27/examples/).
+It's a useful command to run even if your package isn't intended to go on CRAN.
 
-* For Bioconductor developers, there is [`BiocCheck`](https://bioconductor.org/packages/release/bioc/html/BiocCheck.html) that _"encapsulates Bioconductor package guidelines and best practices, analyzing packages "_.
+* For Bioconductor developers, there is [`BiocCheck`](https://bioconductor.org/packages/release/bioc/html/BiocCheck.html) that _"encapsulates Bioconductor package guidelines and best practices, analyzing packages"_.
 
-* [`goodpractice`](http://mangothecat.github.io/goodpractice/), and [`lintr`](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/) both provide you with useful static analyses of your package.
+* [`goodpractice`](http://mangothecat.github.io/goodpractice/) and [`lintr`](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/) both provide you with useful static analyses of your package.
 
 * [`covr::package_coverage()`](http://covr.r-lib.org/reference/package_coverage.html) calculates test coverage for your package. Having a good coverage also means `R CMD check` is more informative, since it means it's testing your code. :wink: `covr::package_coverage()` can also provide you with the code coverage of the vignettes and examples!
 
@@ -45,7 +45,7 @@ Partly yes, partly no.
 
 * One could argue that using [`pkgdown`](https://pkgdown.r-lib.org/) is a way to improve your R package documentation for very little effort. If you only tweak one thing, please [introduce grouping in the reference page](https://pkgdown.r-lib.org/articles/pkgdown.html#reference-1).
 
-* Even when having to write some things by hand like inventing new tests, `usethis` provides useful functions to help e.g. create test files ([`usethis::use_test()`](https://usethis.r-lib.org/reference/index.html#section-package-development)).
+* Even when having to write some things by hand like inventing new tests, `usethis` provides useful functions to help (e.g., create test files with [`usethis::use_test()`](https://usethis.r-lib.org/reference/index.html#section-package-development)).
 
 ## When and where to use the tools?
 
@@ -58,8 +58,8 @@ Apart from the last subsection, this section assumes you are using [Git](/2019/0
 
 #### Run something every time you make a change
 
-Knowing your package still pass R CMD check, and what the latest value of test coverage is, is important enough for running commands _after every change you commit to your codebase_.
-That is the idea behind continuous integration (CI), that [has been very well explained by Julia Silge with the particular example of Travis CI](https://juliasilge.com/blog/beginners-guide-to-travis/).
+Knowing your package still passes R CMD check, and what the latest value of test coverage is, is important enough for running commands _after every change you commit to your codebase_.
+That is the idea behind continuous integration (CI), which [has been very well explained by Julia Silge with the particular example of Travis CI](https://juliasilge.com/blog/beginners-guide-to-travis/).
 
 > "The idea behind continuous integration is that CI will automatically run R CMD check (along with your tests, etc.) every time you push a commit to GitHub. You don't have to remember to do this; CI automatically checks the code after every commit."
 Julia Silge
@@ -94,7 +94,7 @@ You could fetch the PR locally and run respectively `devtools::document()` and `
 
 Refer to the workflows in e.g. [ggplot2 repo](https://github.com/tidyverse/ggplot2/blob/master/.github/workflows/pr-commands.yaml), triggered by writing a comment such as "/document", and their [variant in pksearch repo](https://github.com/r-hub/pkgsearch/blob/master/.github/workflows/pr-label-commands.yml), where _labeling_ the PR.
 Both approaches have their pros and cons.
-I like labeling because not having to _type_ the command means you can't make a typo. :grin: Furthermore, it doesn't clutter the PR conversation, but you can hide comments later on whereas you cannot hide the labeling event from the PR history so really, to each their own.
+I like labeling because not having to _type_ the command means you can't make a typo. :grin: Furthermore, it doesn't clutter the PR conversation, but you can hide comments later on whereas you cannot hide the labeling event from the PR history, so really, to each their own.
 
 {{< figure src="prcommanddocument.png" alt="Screenshot of a GitHub Action workflow" link="https://github.com/r-hub/pkgsearch/issues/98" >}}
 
@@ -129,7 +129,7 @@ The [`devtools::release()` function](https://github.com/r-lib/devtools/blob/b166
 
 ## Conclusion
 
-In this blog post we went over tooling making your package maintainer life easier: `R CMD check`, `lintr`, `goodpractice`, `covr`, `spelling`, `styler`, `roxygen2`, `usethis`, `pkgdown`... and ways to integrate them into your workflow without having to remembering about them: continuous integration services, pre-commit hooks, using a checklist before a release.  
+In this blog post we went over tooling making your package maintainer life easier: `R CMD check`, `lintr`, `goodpractice`, `covr`, `spelling`, `styler`, `roxygen2`, `usethis`, `pkgdown`... and ways to integrate them into your workflow without having to remembering about them: continuous integration services, pre-commit hooks, using a checklist before a release. 
 Tools for improving your R package will often be quite specific to R in their implementation (but not principles), whereas tools for integrating them into your practice are more general: continuous integration services are used for all sorts of software projects, pre-commit is initially a Python project.
 Therefore, there will be tons of resources about that out there, some of them under the umbrella of [DevOps](https://en.wikipedia.org/wiki/DevOps).
 While introducing some automagic into your workflow might save you time and energy, there is some balance to be found in order not to spend to much time on ["meta work"](https://youtu.be/dIjKJjzRX_E?t=633). :clock:
