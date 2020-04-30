@@ -118,25 +118,9 @@ Now, why do I think NEWS.md is the best format? _Of course you are free to disag
 
 There are two limitations to NEWS.md.
 
-* One caveat is the `util::news()` function. If the user uses that and doesn't have `commonmark` and `xml2` installed, it will fail[^commonmark].
+* One caveat is the `util::news()` function. If the user uses that and doesn't have `commonmark` and `xml2` installed, [it will fail](https://github.com/wch/r-source/blob/90976a511bc3739e6773ea8e3d88b944b85b9aee/src/library/tools/R/news.R#L68)[^commonmark] -- which is [documented](https://github.com/wch/r-source/blob/acd751d2a1902cf17434216cf2e9c941726678d3/src/library/utils/man/news.Rd#L49) but not especially pleasant.
 
-For instance running `news(grepl("fix", Category, ignore.case=TRUE), package = "xml2")` in the absence of `commonmark` yields
-
-```{r, echo=FALSE, results='asis'}
-res <- knitr::knit_child('errornews.Rmd', quiet = TRUE, envir = new.env())
-cat(res, sep = '\n')
-```
-
-That's stated by `utils::news()` docs but still not an optimal experience for users.
-
-With `commonmark`, `news(grepl("fix", Category, ignore.case=TRUE), package = "xml2")` gives
-
-```{r, echo=FALSE, results='asis'}
-res <- knitr::knit_child('errornews2.Rmd', quiet = TRUE, envir = new.env())
-cat(res, sep = '\n')
-```
-
-* Another caveat, more specific to GitHub, is that NEWS.md locally don't render links to issues magically, unlike GitHub releases (and unlike `pkgdown`). That is why [Yihui Xie uses a placeholder inst/NEWS.Rd in e.g. `knitr`](https://github.com/yihui/knitr/issues/1841#issuecomment-621247442). Maybe a good idea for a function would be one to convert from NEWS.md to an informative inst/NEWS.Rd as feature-rich as `pkgdown` changelog?
+* Another caveat, more specific to GitHub, is that NEWS.md locally doesn't render links to issues magically, unlike GitHub releases (and unlike `pkgdown`). That is why [Yihui Xie uses a placeholder inst/NEWS.Rd in e.g. `knitr`](https://github.com/yihui/knitr/issues/1841#issuecomment-621247442). Maybe a good idea for a function would be one to convert from NEWS.md to an informative inst/NEWS.Rd as feature-rich as `pkgdown` changelog?
 
 ```{r try}
 news(package = "knitr")
@@ -147,7 +131,7 @@ news(package = "knitr")
 Now, no matter as good your NEWS.md file is, you need to keep in mind that some (most?) users will never read it. :wink: 
 How to be sure they are informed, in that case?
 
-On the one hand, communicating widely about executed or planned releases in blog posts for users and [for developers](https://www.tidyverse.org/blog/2020/04/dplyr-1-0-0-package-dev/) can be useful.
+On the one hand, communicating widely about executed or planned releases in [blog posts for users](/2019/04/08/rhub-1.1.1/) and [for developers](https://www.tidyverse.org/blog/2020/04/dplyr-1-0-0-package-dev/) can be useful.
 If your blog post RSS feed is not a part of R Weekly, you can submit such links via [a PR to the R Weekly repo](https://github.com/rweekly/rweekly.org#how-to-contribute-by-using-this-repo) ("Updated packages" category) or via [R Weekly webform](https://rweekly.org/submit).
 Maybe you even have a mailing list for users?
 And to come back to `pkgdown` websites, you can [tweak the changelog](https://pkgdown.r-lib.org/articles/pkgdown.html#news-1) to have it display one page per major version and related minor versions, and to have the navbar feature release blog posts.
@@ -167,7 +151,7 @@ Now, in terms of workflow, you could
 
 * only update the changelog before releases, by looking at version control history and the issue tracker, potentially using something like [GitHub milestones](https://help.github.com/en/github/managing-your-work-on-github/about-milestones);
 
-* use [`fledge`](https://github.com/krlmlr/fledge).
+* use [`fledge`](https://github.com/krlmlr/fledge) that _"has been designed to streamline the process of versioning R packages on Git, with the functionality to automatically update NEWS.md and DESCRIPTION with relevant information from recent commit messages"_.
 
 In all cases you'll probably want to polish the changelog before releases, as [e.g. `usethis` would remind you](https://github.com/r-lib/usethis/blob/582a3fa886c042fe6c91376a6e4332df09a3db2a/R/release.R#L68).
 

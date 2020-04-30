@@ -167,201 +167,9 @@ Now, why do I think NEWS.md is the best format? _Of course you are free to disag
 
 There are two limitations to NEWS.md.
 
-* One caveat is the `util::news()` function. If the user uses that and doesn't have `commonmark` and `xml2` installed, it will fail[^commonmark].
+* One caveat is the `util::news()` function. If the user uses that and doesn't have `commonmark` and `xml2` installed, [it will fail](https://github.com/wch/r-source/blob/90976a511bc3739e6773ea8e3d88b944b85b9aee/src/library/tools/R/news.R#L68)[^commonmark] -- which is [documented](https://github.com/wch/r-source/blob/acd751d2a1902cf17434216cf2e9c941726678d3/src/library/utils/man/news.Rd#L49) but not especially pleasant.
 
-For instance running `news(grepl("fix", Category, ignore.case=TRUE), package = "xml2")` in the absence of `commonmark` yields
-
-
-```
-                        Changes in version 1.2.1                        
-
-Bugfixes and Miscellaneous features
-
-  - Generic xml2 error are now forwarded as R errors. Previously these
-    errors were output to stderr, so could not be suppressed (#209).
-
-  - Fix for ICU 59+ defaulting to use char16_t, which is only available
-    in C++11 (#231)
-
-  - No longer uses the C connections API
-
-  - Better error message when trying to run download_xml() without the
-    curl package installed (#262)
-
-  - xml2 classes are now registered for use with S4 by calling
-    setOldClass() (#248)
-
-  - Nodes with nested data type definition entities now work without
-    crashing (#241)
-
-  - Test failure fixed due to behavior change with relative paths in
-    libxml2 2.9.9 (#245).
-
-  - read_xml() now has a better error message when given zero length
-    character inputs (#212).
-
-  - read_xml() and read_html() now automatically check if the response
-    succeeded before trying to read from a HTTP response (#255).
-
-  - xml_root() can now create root nodes with namespaces (#239)
-
-  - xml_set_attr() no longer crashes if you try to set the same
-    namespace on the same node multiple times (#253).
-
-  - xml_set_attr() now recycles the values if needed (#221)
-
-  - xml_structure() gains a file argument, to support writing to a file
-    rather than the console (#244).
-
-                        Changes in version 1.2.0                        
-
-Bugfixes
-
-  - xml_find_first() no longer de-duplicates results, so the results are
-    always the same length as the inputs (as documented) (#194).
-
-  - xml2 can now build using libxml2 2.7.0
-
-  - Use Rcpp symbol registration and visibility to prevent symbol
-    conflicts on Linux
-
-  - xml_add_child() now requires less resources to insert a node when
-    called with .where = 0L (@heckendorfc, #175).
-
-  - Fixed failing examples due to a change in an external resource.
-
-                        Changes in version 1.1.0                        
-
-Bugfixes
-
-  - xml_new_document() now explicitly sets the encoding (default UTF-8)
-    (#142)
-
-  - Document formatting options for write_xml() (#132)
-
-  - Add missing methods for xml_missing objects. (#134)
-
-  - Bugfix for xml_length.xml_nodeset that caused it to fail
-    unconditionally. (#140)
-
-  - is.na() now returns TRUE for xml_missing objects. (#139)
-
-  - Trim non-breaking spaces in xml_text(trim = TRUE) (#151).
-
-  - Allow setting non-character attributes (values are coerced to
-    characters). (@sjp, #117, #122).
-
-  - Fixed return value in call to vapply in xml_integer.xml_nodeset.
-    (@ddiez, #146, #147).
-
-  - Allow docs missing a root element to be created and printed. (@sjp,
-    #126, #121).
-
-  - xml_add_* methods now return invisibly. (@sjp, #124)
-
-  - as_list() now preserves element names when attributes exist, and
-    escapes XML attributes that conflict with special R attributes
-    (@peterfoley, #115).
-```
-
-That's stated by `utils::news()` docs but still not an optimal experience for users.
-
-With `commonmark`, `news(grepl("fix", Category, ignore.case=TRUE), package = "xml2")` gives
-
-
-```
-                        Changes in version 1.2.1                        
-
-Bugfixes and Miscellaneous features
-
-  - Generic xml2 error are now forwarded as R errors. Previously these
-    errors were output to stderr, so could not be suppressed (#209).
-
-  - Fix for ICU 59+ defaulting to use char16_t, which is only available
-    in C++11 (#231)
-
-  - No longer uses the C connections API
-
-  - Better error message when trying to run download_xml() without the
-    curl package installed (#262)
-
-  - xml2 classes are now registered for use with S4 by calling
-    setOldClass() (#248)
-
-  - Nodes with nested data type definition entities now work without
-    crashing (#241)
-
-  - Test failure fixed due to behavior change with relative paths in
-    libxml2 2.9.9 (#245).
-
-  - read_xml() now has a better error message when given zero length
-    character inputs (#212).
-
-  - read_xml() and read_html() now automatically check if the response
-    succeeded before trying to read from a HTTP response (#255).
-
-  - xml_root() can now create root nodes with namespaces (#239)
-
-  - xml_set_attr() no longer crashes if you try to set the same
-    namespace on the same node multiple times (#253).
-
-  - xml_set_attr() now recycles the values if needed (#221)
-
-  - xml_structure() gains a file argument, to support writing to a file
-    rather than the console (#244).
-
-                        Changes in version 1.2.0                        
-
-Bugfixes
-
-  - xml_find_first() no longer de-duplicates results, so the results are
-    always the same length as the inputs (as documented) (#194).
-
-  - xml2 can now build using libxml2 2.7.0
-
-  - Use Rcpp symbol registration and visibility to prevent symbol
-    conflicts on Linux
-
-  - xml_add_child() now requires less resources to insert a node when
-    called with .where = 0L (@heckendorfc, #175).
-
-  - Fixed failing examples due to a change in an external resource.
-
-                        Changes in version 1.1.0                        
-
-Bugfixes
-
-  - xml_new_document() now explicitly sets the encoding (default UTF-8)
-    (#142)
-
-  - Document formatting options for write_xml() (#132)
-
-  - Add missing methods for xml_missing objects. (#134)
-
-  - Bugfix for xml_length.xml_nodeset that caused it to fail
-    unconditionally. (#140)
-
-  - is.na() now returns TRUE for xml_missing objects. (#139)
-
-  - Trim non-breaking spaces in xml_text(trim = TRUE) (#151).
-
-  - Allow setting non-character attributes (values are coerced to
-    characters). (@sjp, #117, #122).
-
-  - Fixed return value in call to vapply in xml_integer.xml_nodeset.
-    (@ddiez, #146, #147).
-
-  - Allow docs missing a root element to be created and printed. (@sjp,
-    #126, #121).
-
-  - xml_add_* methods now return invisibly. (@sjp, #124)
-
-  - as_list() now preserves element names when attributes exist, and
-    escapes XML attributes that conflict with special R attributes
-    (@peterfoley, #115).
-```
-
-* Another caveat, more specific to GitHub, is that NEWS.md locally don't render links to issues magically, unlike GitHub releases (and unlike `pkgdown`). That is why [Yihui Xie uses a placeholder inst/NEWS.Rd in e.g. `knitr`](https://github.com/yihui/knitr/issues/1841#issuecomment-621247442). Maybe a good idea for a function would be one to convert from NEWS.md to an informative inst/NEWS.Rd as feature-rich as `pkgdown` changelog?
+* Another caveat, more specific to GitHub, is that NEWS.md locally doesn't render links to issues magically, unlike GitHub releases (and unlike `pkgdown`). That is why [Yihui Xie uses a placeholder inst/NEWS.Rd in e.g. `knitr`](https://github.com/yihui/knitr/issues/1841#issuecomment-621247442). Maybe a good idea for a function would be one to convert from NEWS.md to an informative inst/NEWS.Rd as feature-rich as `pkgdown` changelog?
 
 ```r 
 news(package = "knitr")
@@ -380,7 +188,7 @@ news(package = "knitr")
 Now, no matter as good your NEWS.md file is, you need to keep in mind that some (most?) users will never read it. :wink: 
 How to be sure they are informed, in that case?
 
-On the one hand, communicating widely about executed or planned releases in blog posts for users and [for developers](https://www.tidyverse.org/blog/2020/04/dplyr-1-0-0-package-dev/) can be useful.
+On the one hand, communicating widely about executed or planned releases in [blog posts for users](/2019/04/08/rhub-1.1.1/) and [for developers](https://www.tidyverse.org/blog/2020/04/dplyr-1-0-0-package-dev/) can be useful.
 If your blog post RSS feed is not a part of R Weekly, you can submit such links via [a PR to the R Weekly repo](https://github.com/rweekly/rweekly.org#how-to-contribute-by-using-this-repo) ("Updated packages" category) or via [R Weekly webform](https://rweekly.org/submit).
 Maybe you even have a mailing list for users?
 And to come back to `pkgdown` websites, you can [tweak the changelog](https://pkgdown.r-lib.org/articles/pkgdown.html#news-1) to have it display one page per major version and related minor versions, and to have the navbar feature release blog posts.
@@ -398,7 +206,7 @@ Now, in terms of workflow, you could
 
 * only update the changelog before releases, by looking at version control history and the issue tracker, potentially using something like [GitHub milestones](https://help.github.com/en/github/managing-your-work-on-github/about-milestones);
 
-* use [`fledge`](https://github.com/krlmlr/fledge).
+* use [`fledge`](https://github.com/krlmlr/fledge) that _"has been designed to streamline the process of versioning R packages on Git, with the functionality to automatically update NEWS.md and DESCRIPTION with relevant information from recent commit messages"_.
 
 In all cases you'll probably want to polish the changelog before releases, as [e.g. `usethis` would remind you](https://github.com/r-lib/usethis/blob/582a3fa886c042fe6c91376a6e4332df09a3db2a/R/release.R#L68).
 
