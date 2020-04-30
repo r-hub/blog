@@ -56,16 +56,14 @@ knitr::knit_hooks$set(
 )
 ```
 
-
-Your R package is doomed to evolve as you had new features and bug fixes.
-How to inform users of changes?
-NEWS files are a key instrument in documenting changes.
+Your R package is doomed to evolve as you add new features and bug fixes.
+There is some value in cultivating a NEWS file as a response to package transformation.
 In this post, we shall go through why keeping track of changes, how to create and maintain a changelog, advocating for the NEWS.md format.
 
 # Why cultivate a changelog?
 
-You will probably change stuff in your package.
-Discussing package evolutions is beyond the scope of this post, refer to e.g. [this chapter of the rOpenSci dev guide](https://devguide.ropensci.org/evolution.html).
+You will most probably change stuff in your package.
+Discussing package evolution is beyond the scope of this post, refer to e.g. [this chapter of the rOpenSci dev guide](https://devguide.ropensci.org/evolution.html).
 This post is about _documenting_ changes.
 Even with a very clear version control history[^gitflow], having a text version of changes can be useful:
 
@@ -85,7 +83,6 @@ How to write such a changelog, in practice?
 We shall discuss format in the next section.
 As regards contents, beside referring to the changelogs you like, [the NEWs chapter of the tidyverse style guide](https://style.tidyverse.org/news.html) is a very useful read.
 
-
 # Why write the changelog as NEWS.md?
 
 There are several possible formats for maintaining an R package changelog, according to the documentation of `util::news()`: inst/NEWS.Rd formatted like other Rd files, a Markdown NEWS.md, plain-text NEWS or inst/NEWS.
@@ -98,25 +95,33 @@ Last but not least, at the time of writing there were [1,174 packages with a NEW
 Now, why do I think NEWS.md is the best format?
 
 
+## Limits of NEWS.md as a format
 
-* A caveat is the `util::news()` function. If the user uses that and doesn't have `commonmark` and `xml2` installed, it will fail
+There are two limitations to NEWS.md.
+
+* One caveat is the `util::news()` function. If the user uses that and doesn't have `commonmark` and `xml2` installed, it will fail[^commonmark]
 
 ```{r, echo=FALSE, results='asis'}
 res <- knitr::knit_child('errornews.Rmd', quiet = TRUE, envir = new.env())
 cat(res, sep = '\n')
 ```
 
+That's stated by `utils::news()` docs but still not an optimal experience for users.
 
 ```{r, echo=FALSE, results='asis'}
 res <- knitr::knit_child('errornews2.Rmd', quiet = TRUE, envir = new.env())
 cat(res, sep = '\n')
 ```
 
-Thankfully in an interactive session when not finding any result to the query `news()` will open the entire changelog that the user could e.g. browse and search in RStudio.
+* Another caveat, more specific to GitHub, is that NEWS.md locally don't render links to issues magically, unlike GitHub releases (and unlike `pkgdown`). That is why [Yihui Xie uses a placeholder inst/NEWS.Rd in e.g. `knitr`](https://github.com/yihui/knitr/issues/1841#issuecomment-621247442).
 
-Note that whilst R uses `commonmark` and `xml2` to build the news database from NEWS.md, it uses a workaround without these packages to extract URLs from NEWS.md.
+## Limits to NEWS as a communication channel
 
-# How and when to update the changelog
+Lifecycle badges
+
+Blog posts, submit to rweekly.
+
+# How and when to update the changelog?
 
 ```{r, echo=FALSE}
 blogdown::shortcode("tweet", "1236738064850051074")
@@ -124,9 +129,9 @@ blogdown::shortcode("tweet", "1236738064850051074")
 
 Now, in terms of workflow, you could
 
-* update the changelog for each contribution;
+* update the changelog for each contribution[^gitflowbis];
 
-* only update the changelog before releases;
+* only update the changelog before releases, by looking at version control history and the issue tracker, potentially using something like [GitHub milestones](https://help.github.com/en/github/managing-your-work-on-github/about-milestones);
 
 * use [`fledge`](https://github.com/krlmlr/fledge).
 
@@ -137,3 +142,5 @@ In all cases you'll probably want to polish the changelog before releases, as [e
 In this post we made the case for maintaining a changelog for your package, and for doing it in a NEWS.md file.
 
 [^gitflow]: A good way to achieve one is adopting [git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). You can make many stupid commits in a branch, and then squash and merge to master! It can also be wise to learn about [rewriting history](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History).
+[^gitflowbis]: That'd pair well with git flow and some sort of [PR automatic checks](/2020/04/29/maintenance/#continuous-integration)!
+[^commonmark]: Interestingly, for _extracting URLs_ out of NEWS.md for URL checks, R uses [another approach involving Pandoc](https://github.com/wch/r-source/blob/ca9e1ab9d15c73669d2dbdf989f59fd288aa3b3a/src/library/tools/R/urltools.R#L271).
