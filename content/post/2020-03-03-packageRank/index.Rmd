@@ -32,10 +32,6 @@ knitr::knit_hooks$set(
 )
 ```
 
-```{r pkgs}
-library(packageRank)
-library(ggplot2)
-```
 > This post was contributed by [Peter Li](https://www.github.com/lindbrook/). Thank you, Peter!
 
 [`packageRank`](https://cran.r-project.org/package=packageRank) is an R package that helps put package download counts into context. It does so via two functions. The first, `cranDownloads()`, extends [`cranlogs::cran_downloads()`](http://r-hub.github.io/cranlogs/) by adding a `plot()` method and a more user-friendly interface. The second, `packageRank()`, uses rank percentiles, a nonparametric statistic that tells you the percentage of packages with fewer downloads, to help you see how your package is doing compared to all other [CRAN](https://cran.r-project.org/) packages.
@@ -45,6 +41,11 @@ In this post, I'll do two things. First, I'll give an overview of the package's 
 Note that in this post, I'll refer to _active_ and _inactive_ packages: the former are packages that are still being developed and appear in the [CRAN repository](https://cran.r-project.org/web/packages/index.html); the latter are "retired" packages that are stored in the [CRAN Archive](https://cran.r-project.org/src/contrib/Archive) along with past versions of active packages.
 
 ******
+
+```{r pkgs}
+library(packageRank)
+library(ggplot2)
+```
 
 # cranDownloads()
 
@@ -110,8 +111,6 @@ cranlogs::cran_downloads(packages = "HistData", from = "2020-02-01",
   to = "2020-02-29")
 ```
 
-<br/>
-
 With `cranDownloads()`, you can just specify the year and month:
 
 ```{r yyyy-mm_2, eval = FALSE}
@@ -165,7 +164,7 @@ If you pass a vector of package names, `plot()` defaults to using `ggplot2` face
 
 ```{r cranDownloads_viz2, fig.align = "center", hugoopts = list(title = "Figure 2 Visualize cranDownloads() for Multiple Packages")}
 plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
-  from = "2020"))
+  from = "2020", to = "2020-03-20"))
 ```
 
 <br/>
@@ -173,7 +172,7 @@ If you want the data in a single plot, use `multi.plot = TRUE`:
 
 ```{r cranDownloads_viz3, eval = FALSE}
 plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
-  from = "2020"), multi.plot = TRUE)
+  from = "2020", to = "2020-03-20"), multi.plot = TRUE)
 ```
 
 See the documentation for `plot.cranDownloads()` for more plotting options ([also on GitHub](https://www.github.com/lindbrook/packageRank/)).
@@ -244,6 +243,8 @@ title(paste0(x[[2]]$package, " @ ", x[[2]]$date, " (", day, ")"))
 As you can see, the frequency distribution of package downloads typically has a heavily skewed, exponential shape. On the Wednesday, the most "popular" package had 177,745 downloads while the least "popular" package(s) had just one. This is why the left side of the distribution, where packages with fewer downloads are located, _looks_ like a vertical line.
 
 To see what's going on, I take the log of download counts (x-axis) and redraw the graph. In these plots, the location of a vertical segment along the x-axis represents a download count and the height of a vertical segment represents the frequency of a download count:
+
+<br/>
 
 ```{r packageDistribution, echo = FALSE}
 plot_package_distribution <- function(dat, xlim, ylim) {
@@ -343,7 +344,7 @@ round(100 * pkgs.with.fewer.downloads / tot.pkgs, 1)
 
 ## Visualizing rank percentiles
 
-To visualize `packageRank()`, use `plot()`.
+To visualize `packageRank()`, use `plot()`:
 
 ```{r packageRank_plot_wed, eval = FALSE}
 plot(packageRank(packages = "cholera", date = "2020-03-04"))
@@ -494,7 +495,7 @@ The first is that **package updates inflate download counts**. Based on my readi
 
 The second is that **package dependencies inflate download counts**. The problem, in a nutshell, is that when a user chooses to download a package, they do not choose to download all the supporting, upstream packages (i.e., package dependencies) that are downloaded along with the chosen package. To me, this is the elephant-in-the-room of download count inflation (and one reason why `cranlogs::cran_top_downloads()` returns the usual suspects). This was one of the problems I was hoping to tackle with [`packageRank`](https://cran.r-project.org/package=packageRank). What stopped me was the discovery of the next objection, which will be the focus of the rest of this post.
 
-The third is that **two types of "invalid" log entries inflate download counts**: 1) downloads that are "too small" and 2) an overrepresentation of past versions. Downloads that are "too small" are, apparently, a software artifact. The overrepresentation of prior versions is a consequence what appears to be efforts to mirror or download CRAN in its entirety. These efforts makes both "invalid" types of downloads particularly problematic. Numerically, they undermine our strategy of computing package downloads by counting logs entries. Conceptually, they lead us to overestimate the amount of interest in a package.
+The third is that **"invalid" log entries inflate download counts**. I've found two types: 1) downloads that are "too small" and 2) an overrepresentation of past versions. Downloads that are "too small" are, apparently, a software artifact. The overrepresentation of prior versions is a consequence of what appears to be efforts to mirror or download CRAN in its entirety. These efforts makes both "invalid" log entries particularly problematic. Numerically, they undermine our strategy of computing package downloads by counting logs entries. Conceptually, they lead us to overestimate the amount of interest in a package.
 
 The inflationary effect of "invalid" log entries is variable. The greater a package's "true" popularity (i.e., the number of "real" downloads), the lower the bias. Essentially, the bias gets diluted. The greater the number of prior versions, the greater the bias. When all of CRAN is being downloaded, more versions means more package downloads. Fortunately, we can minimize the bias by filtering out "small" downloads, and by filtering out or discounting prior versions.
 
@@ -754,7 +755,7 @@ pkgPlot("VR", filter = "version")
 
 <br/>
 
-## Popularity & versions
+## Popularity & number of versions
 
 To illustrate the joint effect of both ~500 B downloads and previous versions, I again use [`cholera`](https://cran.r-project.org/package=cholera). Here, we see that the joint effect of both biases inflate the download count by 31%:
 
@@ -768,7 +769,7 @@ pkgPlot(filter = "size.version")
 
 Even though the bias is pretty mechanical and deterministic, to show that examples above are not idiosyncratic, I conclude with a back-of-the-envelope estimate of the joint, simultaneous effect of popularity (unfiltered downloads) and version count (total number of versions) on total bias (the percent change in download counts after filtering out ~500 B download and prior versions).
 
-I use the above sample of 200 active and inactive packages as the data. I fit an ordinary least squares (OLS) linear model of the effect of popularity and the number of versions on bias (using the base 10 logarithm of all three variables). To control for an interaction between popularity and the number of versions (i.e., popular packages tend to have many version; packages with many version tend to attract more downloads), I include a multiplicative term between popularity and the number of versions as a third independent variable. The results are below:
+I use the above sample of 200 active and inactive packages as the data. I fit an ordinary least squares (OLS) linear model using the base 10 logarithm for the three variables. To control for interaction between popularity and number of versions (i.e., popular packages tend to have many version; packages with many version tend to attract more downloads), I include a multiplicative term between the two variables. The results are below:
 
 ```{r ols, echo = FALSE}
 oct.data <- blog.data$oct.data
@@ -819,7 +820,7 @@ ols2 <- lm(bias ~ popularity + versions + popularity * versions, data = p.data)
 summary(ols2)
 ```
 
-The hope is that we get the signs right. By that I mean that the signs of the coefficients ("Estimate") of the fitted model are consistent with the effects described above: "popularity" has a negative sign (greater popularity is associated with lower bias) and "versions" has a positive sign (a greater number of versions is associated with higher bias). For what it's worth, the coefficients and the model itself are statistically significant at conventional level (large t-scores and small p-values; large F-statistic with small p-value).
+The hope is that I at least get the signs right. That is, the signs of the coefficients in the fitted model ("Estimate" column in the table above) should match the effects described in the sections above: a negative sign for "popularity", implying that greater popularity is associated with lower bias; a positive sign for "versions", implying that a greater number of versions is associated with higher bias). For what it's worth, the coefficients and the model itself are statistically significant at conventional levels (large t-values and small p-scores for the former; large F-statistic with a small p-score for the latter).
 
 ******
 
