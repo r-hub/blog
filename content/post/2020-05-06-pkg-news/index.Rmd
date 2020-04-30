@@ -101,7 +101,7 @@ Some users [might get creative and actually write their own function for browsin
 
 What NEWS format is the most popular? The actually serious [CRAN package `ouch`](https://kingaa.github.io/ouch/) uses inst/NEWS.Rd, like [134 other packages at the time of writing](https://github.com/search?l=&o=desc&q=org%3Acran+path%3A%2Finst%2F+filename%3ANEWS.Rd&s=indexed&type=Code).
 In the case of `ouch`, inst/NEWS.Rd is actually [created from a plain-text inst/NEWS using `R CMD Rdconv`](https://github.com/kingaa/ouch/blob/8a2f39b895f97b7c8e8677f4052c42bbf16055c4/Makefile#L53-L54).
-As regards plain-text NEWS files like [the one in commonmark source](https://github.com/jeroen/commonmark/blob/ea3b8fc0204832f889c4b84dee8670bf87d7e6b5/NEWS), when preparing this post I found [413 inst/NEWS](https://github.com/search?q=org%3Acran+path%3A%2Finst%2F+filename%3ANEWS&type=Code) and [1,055 NEWS](https://github.com/search?l=Text&q=org%3Acran+path%3A%2F+filename%3ANEWS&type=Code) in CRAN packages.
+As regards plain-text NEWS files like [the one in commonmark source](https://github.com/jeroen/commonmark/blob/ea3b8fc0204832f889c4b84dee8670bf87d7e6b5/NEWS)[^irony], when preparing this post I found [413 inst/NEWS](https://github.com/search?q=org%3Acran+path%3A%2Finst%2F+filename%3ANEWS&type=Code) and [1,055 NEWS](https://github.com/search?l=Text&q=org%3Acran+path%3A%2F+filename%3ANEWS&type=Code) in CRAN packages.
 Last but not least, at the time of writing there were [1,174 packages with a NEWS.md file](https://github.com/search?l=Markdown&q=org%3Acran+path%3A%2F+filename%3ANEWS&type=Code)
 
 ### NEWS.md is a great format
@@ -112,7 +112,7 @@ Now, why do I think NEWS.md is the best format? _Of course you are free to disag
 
 * If your website has a `pkgdown` website, [NEWS.md will be rendered as a nice changelog page](https://pkgdown.r-lib.org/articles/pkgdown.html#news-1). See e.g. [`rhub` changelog](https://r-hub.github.io/rhub/news/index.html), notice how [links to GitHub users and issues resolve](https://r-hub.github.io/rhub/news/index.html#bug-fixes-1) with [no effort made in the NEWS.md itself](https://github.com/r-hub/rhub/blob/master/NEWS.md#bug-fixes-1)
 
-* There is an `usethis` shortcut for creating a NEWS.md: [`usethis::use_news_md()`](https://usethis.r-lib.org/reference/use_news_md.html); and using `usethis` to increase version will [add the corresponding heading to NEWS.md](https://usethis.r-lib.org/reference/use_version.html). Also note the interesting [`newsmd` package](https://github.com/Dschaykib/newsmd), like a `desc` for NEWS, that might help you write your own helpers?
+* There is an `usethis` shortcut for creating a NEWS.md: [`usethis::use_news_md()`](https://usethis.r-lib.org/reference/use_news_md.html); using `usethis` to increase version will [add the corresponding heading to NEWS.md](https://usethis.r-lib.org/reference/use_version.html); and `usethis` will help you create an [informative GitHub release](https://usethis.r-lib.org/reference/use_github_release.html). Also note the interesting [`newsmd` package](https://github.com/Dschaykib/newsmd), like a `desc` for NEWS, that might help you write your own helpers?
 
 ### Limits of NEWS.md as a format
 
@@ -136,7 +136,7 @@ res <- knitr::knit_child('errornews2.Rmd', quiet = TRUE, envir = new.env())
 cat(res, sep = '\n')
 ```
 
-* Another caveat, more specific to GitHub, is that NEWS.md locally don't render links to issues magically, unlike GitHub releases (and unlike `pkgdown`). That is why [Yihui Xie uses a placeholder inst/NEWS.Rd in e.g. `knitr`](https://github.com/yihui/knitr/issues/1841#issuecomment-621247442).
+* Another caveat, more specific to GitHub, is that NEWS.md locally don't render links to issues magically, unlike GitHub releases (and unlike `pkgdown`). That is why [Yihui Xie uses a placeholder inst/NEWS.Rd in e.g. `knitr`](https://github.com/yihui/knitr/issues/1841#issuecomment-621247442). Maybe a good idea for a function would be one to convert from NEWS.md to an informative inst/NEWS.Rd as feature-rich as `pkgdown` changelog?
 
 ```{r try}
 news(package = "knitr")
@@ -175,8 +175,12 @@ In all cases you'll probably want to polish the changelog before releases, as [e
 
 In this post we made the case for maintaining a changelog for your package, and for doing it in a NEWS.md file.
 We also explained the limitations of NEWS.md as a way to efficiently inform users of changes, since users might lose track or never read changelogs: communicating around releases and adding lifecycle badges in the package manual itself can help mitigate those limitations.
-What is your own workflow for informing users?
+As a package _user_, how do you follow NEWS of packages?[^github]
+Do you ever read changelogs?[^changelog]
 
 [^gitflow]: A good way to achieve one is adopting [git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). You can make many stupid commits in a branch, and then squash and merge to master! It can also be wise to learn about [rewriting history](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History).
 [^gitflowbis]: That'd pair well with git flow and some sort of [PR automatic checks](/2020/04/29/maintenance/#continuous-integration)!
 [^commonmark]: Interestingly, for _extracting URLs_ out of NEWS.md for URL checks, R uses [another approach involving Pandoc](https://github.com/wch/r-source/blob/ca9e1ab9d15c73669d2dbdf989f59fd288aa3b3a/src/library/tools/R/urltools.R#L271).
+[^changelog]: Reading changelogs can be useful but also pleasant, e.g. when discovering the [package uses version nicknames](http://naniar.njtierney.com/news/index.html). :sparkles:
+[^irony]: Yes, `util::news()` uses `commonmark` to parse Markdown NEWS files but `commonmark`'s own NEWS file is plain-text. :shrug: :grin:
+[^github]: For packages developed on GitHub, and if you don't oppose using GitHub, [there are different levels of repository watching including being notified of releases only](https://help.github.com/en/github/managing-subscriptions-and-notifications-on-github/viewing-your-subscriptions#configuring-your-watch-settings-for-an-individual-repository).

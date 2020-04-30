@@ -1,5 +1,5 @@
 
-```{r test, error = TRUE}
+```{r test, error = TRUE, echo = FALSE}
 withr::with_temp_libpaths(
   action = "replace",
   {

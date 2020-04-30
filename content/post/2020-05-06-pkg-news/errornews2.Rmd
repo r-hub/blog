@@ -1,11 +1,9 @@
 
-```{r test2, error = TRUE}
+```{r test2, error = TRUE, echo = FALSE}
 withr::with_temp_libpaths(
   action = "suffix",
   {
   # yay commonmark
-  print(find.package("commonmark", quiet = TRUE))
-
   news(grepl("fix", Category, ignore.case=TRUE), package = "xml2")
   })
 
