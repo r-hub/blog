@@ -97,6 +97,8 @@ news(
   )
 ```
 
+Some users [might get creative and actually write their own function for browsing changelogs](https://twitter.com/pjs_228/status/1251793013879320576).
+
 What NEWS format is the most popular? The actually serious [CRAN package `ouch`](https://kingaa.github.io/ouch/) uses inst/NEWS.Rd, like [134 other packages at the time of writing](https://github.com/search?l=&o=desc&q=org%3Acran+path%3A%2Finst%2F+filename%3ANEWS.Rd&s=indexed&type=Code).
 In the case of `ouch`, inst/NEWS.Rd is actually [created from a plain-text inst/NEWS using `R CMD Rdconv`](https://github.com/kingaa/ouch/blob/8a2f39b895f97b7c8e8677f4052c42bbf16055c4/Makefile#L53-L54).
 As regards plain-text NEWS files like [the one in commonmark source](https://github.com/jeroen/commonmark/blob/ea3b8fc0204832f889c4b84dee8670bf87d7e6b5/NEWS), when preparing this post I found [413 inst/NEWS](https://github.com/search?q=org%3Acran+path%3A%2Finst%2F+filename%3ANEWS&type=Code) and [1,055 NEWS](https://github.com/search?l=Text&q=org%3Acran+path%3A%2F+filename%3ANEWS&type=Code) in CRAN packages.
@@ -110,7 +112,7 @@ Now, why do I think NEWS.md is the best format? _Of course you are free to disag
 
 * If your website has a `pkgdown` website, [NEWS.md will be rendered as a nice changelog page](https://pkgdown.r-lib.org/articles/pkgdown.html#news-1). See e.g. [`rhub` changelog](https://r-hub.github.io/rhub/news/index.html), notice how [links to GitHub users and issues resolve](https://r-hub.github.io/rhub/news/index.html#bug-fixes-1) with [no effort made in the NEWS.md itself](https://github.com/r-hub/rhub/blob/master/NEWS.md#bug-fixes-1)
 
-* There is an `usethis` shortcut for creating a NEWS.md: [`usethis::use_news_md()`](https://usethis.r-lib.org/reference/use_news_md.html).
+* There is an `usethis` shortcut for creating a NEWS.md: [`usethis::use_news_md()`](https://usethis.r-lib.org/reference/use_news_md.html); and using `usethis` to increase version will [add the corresponding heading to NEWS.md](https://usethis.r-lib.org/reference/use_version.html). Also note the interesting [`newsmd` package](https://github.com/Dschaykib/newsmd), like a `desc` for NEWS, that might help you write your own helpers?
 
 ### Limits of NEWS.md as a format
 
@@ -148,6 +150,7 @@ How to be sure they are informed, in that case?
 On the one hand, communicating widely about executed or planned releases in blog posts for users and [for developers](https://www.tidyverse.org/blog/2020/04/dplyr-1-0-0-package-dev/) can be useful.
 If your blog post RSS feed is not a part of R Weekly, you can submit such links via [a PR to the R Weekly repo](https://github.com/rweekly/rweekly.org#how-to-contribute-by-using-this-repo) ("Updated packages" category) or via [R Weekly webform](https://rweekly.org/submit).
 Maybe you even have a mailing list for users?
+And to come back to `pkgdown` websites, you can [tweak the changelog](https://pkgdown.r-lib.org/articles/pkgdown.html#news-1) to have it display one page per major version and related minor versions, and to have the navbar feature release blog posts.
 
 On the other hand, you can add information about changes _inside_ the package manual!
 For instance, in `tidyr` docs there are lifecycle badges and explanatory text: compare the page of [`tidyr::gather()` (retired)](https://tidyr.tidyverse.org/reference/gather.html) and [`tidyr::pivot_longer()` (maturing)](https://tidyr.tidyverse.org/reference/pivot_longer.html).
