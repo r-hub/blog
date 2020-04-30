@@ -39,7 +39,7 @@ cranlogs::cran_downloads(packages = "HistData")
 
 ```
         date count  package
-1 2020-04-28   381 HistData
+1 2020-04-29   408 HistData
 ```
 
 <br/>
@@ -51,7 +51,7 @@ cranDownloads(packages = "HistData")
 
 ```
         date count  package
-1 2020-04-29     0 HistData
+1 2020-04-29   408 HistData
 ```
 
 <br/>
@@ -77,7 +77,7 @@ cranDownloads(packages = "ggplot2")
 
 ```
         date count package
-1 2020-04-29     0 ggplot2
+1 2020-04-29 67384 ggplot2
 ```
 
 <br/>
@@ -100,7 +100,7 @@ cranDownloads(packages = "VR")
 
 ```
         date count package
-1 2020-04-29     0      VR
+1 2020-04-29   239      VR
 ```
 
 <br/>
@@ -173,7 +173,7 @@ cranDownloads(packages = "HistData", from = "2019-01-15",
 plot(cranDownloads(packages = "HistData", from = "2019", to = "2019"))
 ```
 
-{{<figure src="cranDownloads_viz1-1.png" alt="Figure 1 Visualize cranDownloads() for A Single Package">}}
+{{<figure src="cranDownloads_viz1-1.png" title="Figure 1 Visualize cranDownloads() for A Single Package">}}
 
 <br/>
 
@@ -185,7 +185,7 @@ plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
   from = "2020"))
 ```
 
-{{<figure src="cranDownloads_viz2-1.png" alt="Figure 2 Visualize cranDownloads() for Multiple Packages">}}
+{{<figure src="cranDownloads_viz2-1.png" title="Figure 2 Visualize cranDownloads() for Multiple Packages">}}
 
 <br/>
 If you want the data in a single plot, use `multi.plot = TRUE`:
@@ -211,7 +211,7 @@ Consider the data for the first week of March 2020:
 plot(cranDownloads(packages = "cholera", from = "2020-03-01",
   to = "2020-03-07"))
 ```
-{{<figure src="motivation_code-1.png" alt="Figure 3 Package Downloads for 'cholera' March 1-7, 2020">}}
+{{<figure src="motivation_code-1.png" title="Figure 3 Package Downloads for 'cholera' March 1-7, 2020">}}
 
 <br/>
 
@@ -219,11 +219,11 @@ Do Wednesday and Saturday reflect surges of interest in the package or surges of
 
 One way to answer these questions is to locate your package in the frequency distribution of download counts. Below are the distributions for Wednesday and Saturday with the location of [`cholera`](https://cran.r-project.org/package=cholera) highlighted:
 
-{{<figure src="skew_wed-1.png" alt="Figure 4 Frequency Distribution of Package Downloads for Wednesday, March 4, 2020">}}
+{{<figure src="skew_wed-1.png" title="Figure 4 Frequency Distribution of Package Downloads for Wednesday, March 4, 2020">}}
 
 <br/>
 
-{{<figure src="skew_sat-1.png" alt="Figure 5 Frequency Distribution of Package Downloads for Saturday, March 7, 2020">}}
+{{<figure src="skew_sat-1.png" title="Figure 5 Frequency Distribution of Package Downloads for Saturday, March 7, 2020">}}
 <br/>
 
 As you can see, the frequency distribution of package downloads typically has a heavily skewed, exponential shape. On the Wednesday, the most "popular" package had 177,745 downloads while the least "popular" package(s) had just one. This is why the left side of the distribution, where packages with fewer downloads are located, _looks_ like a vertical line.
@@ -236,7 +236,7 @@ To see what's going on, I take the log of download counts (x-axis) and redraw th
 ```r
 plot(packageDistribution(package = "cholera", date = "2020-03-04"))
 ```
-{{<figure src="packageDistribution_wed_code-1.png" alt="Figure 6 Frequency Distribution of Package Downloads for Wednesday, March 4, 2020 with Logarithm of Download Counts">}}
+{{<figure src="packageDistribution_wed_code-1.png" title="Figure 6 Frequency Distribution of Package Downloads for Wednesday, March 4, 2020 with Logarithm of Download Counts">}}
 
 <br/>
 
@@ -244,7 +244,7 @@ plot(packageDistribution(package = "cholera", date = "2020-03-04"))
 ```r
 plot(packageDistribution(package = "cholera", date = "2020-03-07"))
 ```
-{{<figure src="packageDistribution_sat_code-1.png" alt="Figure 7 Frequency Distribution of Package Downloads for Saturday, March 7, 2020 with Logarithm of Download Counts">}}
+{{<figure src="packageDistribution_sat_code-1.png" title="Figure 7 Frequency Distribution of Package Downloads for Saturday, March 7, 2020 with Logarithm of Download Counts">}}
 
 <br/>
 
@@ -342,7 +342,7 @@ plot(packageRank(packages = "cholera", date = "2020-03-04"))
 
 
 
-{{<figure src="packageRank_plot_code_wed-1.png" alt="Figure 8 Rank Frequency Distribution of Package Downloads for Wednesday, March 4, 2020">}}
+{{<figure src="packageRank_plot_code_wed-1.png" title="Figure 8 Rank Frequency Distribution of Package Downloads for Wednesday, March 4, 2020">}}
 
 <br/>
 
@@ -351,7 +351,7 @@ plot(packageRank(packages = "cholera", date = "2020-03-04"))
 plot(packageRank(packages = "cholera", date = "2020-03-07"))
 ```
 
-{{<figure src="packageRank_plot_code_sat-1.png" alt="Figure 9 Rank Frequency Distribution of Package Downloads for Saturday, March 7, 2020">}}
+{{<figure src="packageRank_plot_code_sat-1.png" title="Figure 9 Rank Frequency Distribution of Package Downloads for Saturday, March 7, 2020">}}
 
 <br/>
 
@@ -371,7 +371,7 @@ The computational limitation stems from the fact that, unlike `cranlogs::cran_do
 
 The analytical limitation stems from the computational one. Anything beyond a one-day, cross-sectional comparison (e.g., rank percentiles over time) is "expensive". You need to download _all_ the desired log files (each ~50 MB). If you want to compare ranks for a week, you have to download 7 log files. If you want to compare ranks for a month, you have to download 30 odd log files. As a proof-of-concept of the potential of following this path, the plot below compares nominal download counts with their rank percentiles for [`cholera`](https://cran.r-project.org/package=cholera) for the first week in March. Note that, to the chagrin of some, two independently scaled y-variables are plotted on the same graph (black for counts on the left axis, red for rank percentiles on the right).
 
-{{<figure src="counts_ranks-1.png" alt="Figure 10 Comparison of Package Download Counts and Rank Percentiles">}}
+{{<figure src="counts_ranks-1.png" title="Figure 10 Comparison of Package Download Counts and Rank Percentiles">}}
 <br/>
 
 Note that while the correlation between counts and rank percentiles is high in this example (r = 0.7), it's not necessarily representative of the general relationship between counts and rank percentiles.
@@ -450,12 +450,12 @@ While I'm unsure about the kB-sized entry (they seem to increasing in frequency 
 
 To get a sense of their frequency, I look back to October 2019 and focus on ~500 B downloads. In aggregate, these downloads account for approximately 2% of the total. While this seems modest (if 2.5 million downloads could be modest),[^3] I'd argue that there's actually something lurking underneath. A closer look reveals that the difference between the total and filtered (without ~500 B entries) counts is greatest on the five Wednesdays.
 
-{{<figure src="counts_plot-1.png" alt="Figure 11 Total Package Downloads from CRAN With and Without ~500 B Downloads: October 2019">}}
+{{<figure src="counts_plot-1.png" title="Figure 11 Total Package Downloads from CRAN With and Without ~500 B Downloads: October 2019">}}
 
 <br/>
 To see what's going on, I switch the unit of observation from download counts to the number of unique packages:
 
-{{<figure src="packages_plot-1.png" alt="Figure 12 Total Number of Unique Packages Downloaded from CRAN With and Without ~500 B Downloads: October 2019">}}
+{{<figure src="packages_plot-1.png" title="Figure 12 Total Number of Unique Packages Downloaded from CRAN With and Without ~500 B Downloads: October 2019">}}
 
 Doing so, we see that on Wednesdays (+3 additional days) the total number of unique packages downloaded tops 17,000. This is significant because it exceeds the 15,000+ active packages on CRAN (go [here](https://cran.r-project.org/web/packages/index.html) for the latest count). The only way to hit 17,000+ would be to include some, if not all, of the 2,000+ inactive packages. Based on this, I'd say that on those peak days virtually, if not literally, all CRAN packages (both active _and_ inactive) were downloaded.[^4]
 
@@ -507,7 +507,7 @@ Showing that "all" versions of all packages are being downloaded is not as easy 
 
 The graph below plots the percent of versions downloaded for each day in October 2019 (IDs 1-100 are _active_ packages; IDs 101-200 are _inactive_ packages). On the five Wednesdays (+ 3 additional days), there's a horizontal line at 100% that indicates that all versions of the packages in the sample were downloaded.[^5]
 
-{{<figure src="versions_plot-1.png" alt="Figure 13 Percent of Package-Versions Downloaded for 100 Active & 100 Inactive Packages: October 2019">}}
+{{<figure src="versions_plot-1.png" title="Figure 13 Percent of Package-Versions Downloaded for 100 Active & 100 Inactive Packages: October 2019">}}
 
 <br/>
 
@@ -528,13 +528,13 @@ That said, how much you should worry depends on the package you're interested in
 
 To illustrate the effect of popularity, I compare [`ggplot2`](https://cran.r-project.org/package=ggplot2) and [`cholera`](https://cran.r-project.org/package=cholera) for October 2019. With one million plus downloads, ~500 B entries inflate the download count for [`ggplot2`](https://cran.r-project.org/package=ggplot2) by 2%:
 
-{{<figure src="ggplot2-1.png" alt="Figure 14 Effect of ~500 B Downloads on Download Counts on a Popular Package: October 2019">}}
+{{<figure src="ggplot2-1.png" title="Figure 14 Effect of ~500 B Downloads on Download Counts on a Popular Package: October 2019">}}
 
 <br/>
 
 With under 400 downloads, ~500 B entries inflate the download count for [`cholera`](https://cran.r-project.org/package=cholera) by 25%:
 
-{{<figure src="cholera-1.png" alt="Figure 15 Effect of ~500 B Downloads on Download Counts on a Less Popular Package: October 2019">}}
+{{<figure src="cholera-1.png" title="Figure 15 Effect of ~500 B Downloads on Download Counts on a Less Popular Package: October 2019">}}
 
 <br/>
 
@@ -544,13 +544,13 @@ To illustrate the effect of the number of versions, I compare [`cholera`](https:
 
 With [`cholera`](https://cran.r-project.org/package=cholera), past versions inflate the download count by 27%:
 
-{{<figure src="cholera_version-1.png" alt="Figure 16 Effect of the Number of Prior Versions on Download Counts for a Package with Few Versions: October 2019">}}
+{{<figure src="cholera_version-1.png" title="Figure 16 Effect of the Number of Prior Versions on Download Counts for a Package with Few Versions: October 2019">}}
 
 <br/>
 
 With 'VR', past version inflate the download count by 7,500%:
 
-{{<figure src="vr_version-1.png" alt="Figure 17 Effect of the Number of Past Versions on Download Counts for a Package with Many Versions: October 2019">}}
+{{<figure src="vr_version-1.png" title="Figure 17 Effect of the Number of Past Versions on Download Counts for a Package with Many Versions: October 2019">}}
 
 <br/>
 
@@ -558,7 +558,7 @@ With 'VR', past version inflate the download count by 7,500%:
 
 To illustrate the joint effect of both ~500 B downloads and previous versions, I again use [`cholera`](https://cran.r-project.org/package=cholera). Here, we see that the joint effect of both biases inflate the download count by 31%:
 
-{{<figure src="cholera_size.version-1.png" alt="Figure 18 Effect of ~500 B Downloads and Number of Past Versions on Download Counts: October 2019">}}
+{{<figure src="cholera_size.version-1.png" title="Figure 18 Effect of ~500 B Downloads and Number of Past Versions on Download Counts: October 2019">}}
 
 <br/>
 
@@ -613,7 +613,7 @@ plot(cranDownloads(from = "2020-02-25", to = "2020-03-04"),
   r.version = TRUE)
 ```
 
-{{<figure src="cran_pkgs-1.png" alt="Figure 19 Effect of the 2020 Leap Day on Package Downloads">}}
+{{<figure src="cran_pkgs-1.png" title="Figure 19 Effect of the 2020 Leap Day on Package Downloads">}}
 
 <br/>
 
@@ -623,7 +623,7 @@ plot(cranDownloads("R", from = "2020-02-25", to = "2020-03-04"),
   r.version = TRUE)
 ```
 
-{{<figure src="cran_r-1.png" alt="Figure 20 Effect of 2020 Leap Day on R Downloads">}}
+{{<figure src="cran_r-1.png" title="Figure 20 Effect of 2020 Leap Day on R Downloads">}}
 
 <br/>
 
