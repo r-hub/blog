@@ -21,13 +21,13 @@ In this post, I'll do two things. First, I'll give an overview of the package's 
 
 Note that in this post, I'll refer to _active_ and _inactive_ packages: the former are packages that are still being developed and appear in the [CRAN repository](https://cran.r-project.org/web/packages/index.html); the latter are "retired" packages that are stored in the [CRAN Archive](https://cran.r-project.org/src/contrib/Archive) along with past versions of active packages.
 
-******
-
 
 ```r
 library(packageRank)
 library(ggplot2)
 ```
+
+******
 
 # cranDownloads()
 
@@ -40,7 +40,7 @@ cranlogs::cran_downloads(packages = "HistData")
 
 ```
         date count  package
-1 2020-04-29   408 HistData
+1 2020-04-30   368 HistData
 ```
 
 <br/>
@@ -52,7 +52,7 @@ cranDownloads(packages = "HistData")
 
 ```
         date count  package
-1 2020-04-29   408 HistData
+1 2020-04-30   368 HistData
 ```
 
 <br/>
@@ -78,7 +78,7 @@ cranDownloads(packages = "ggplot2")
 
 ```
         date count package
-1 2020-04-29 67384 ggplot2
+1 2020-04-30 63632 ggplot2
 ```
 
 <br/>
@@ -101,7 +101,7 @@ cranDownloads(packages = "VR")
 
 ```
         date count package
-1 2020-04-29   239      VR
+1 2020-04-30    12      VR
 ```
 
 <br/>
@@ -126,8 +126,6 @@ With `cranDownloads()`, you can just specify the year and month:
 ```r
 cranDownloads(packages = "HistData", from = "2020-02", to = "2020-02")
 ```
-
-<br/>
 
 ### "yyyy"
 
@@ -195,7 +193,7 @@ plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
   from = "2020", to = "2020-03-20"), multi.plot = TRUE)
 ```
 
-See the documentation for `plot.cranDownloads()` for more plotting options ([also on GitHub](https://www.github.com/lindbrook/packageRank/)).
+For more plotting options, see the [README](https://www.github.com/lindbrook/packageRank/blob/master/README.md) on GitHub and the `plot.cranDownloads()` documentation.
 
 ******
 
@@ -360,15 +358,11 @@ These graphs, customized to be on the same scale, plot the _rank order_ of packa
 
 <br/>
 
-## Limitations
-
-There are (at least) three limitations to `packageRank()`.
-
-### Computational
+## Computational limitations
 
 The computational limitation stems from the fact that, unlike `cranlogs::cran_download()`, which benefits from server-side support (i.e., download counts are "pre-computed"), `packageRank()` must first download the [log](http://cran-logs.rstudio.com/) (a ~50 MB file) from the internet and then compute the rank percentiles of download counts for _all_ observed packages (typically 15,000+ unique packages and 6 million log entries). Downloading the log file is the real bottleneck (computing the rank percentiles takes less than a second). This, however, is somewhat mitigated by caching the file using the [`memoise`](https://CRAN.R-project.org/package=memoise) package.
 
-### Analytical
+## Analytical limitations
 
 The analytical limitation stems from the computational one. Anything beyond a one-day, cross-sectional comparison (e.g., rank percentiles over time) is "expensive". You need to download _all_ the desired log files (each ~50 MB). If you want to compare ranks for a week, you have to download 7 log files. If you want to compare ranks for a month, you have to download 30 odd log files. As a proof-of-concept of the potential of following this path, the plot below compares nominal download counts with their rank percentiles for [`cholera`](https://cran.r-project.org/package=cholera) for the first week in March. Note that, to the chagrin of some, two independently scaled y-variables are plotted on the same graph (black for counts on the left axis, red for rank percentiles on the right).
 
@@ -377,7 +371,7 @@ The analytical limitation stems from the computational one. Anything beyond a on
 
 Note that while the correlation between counts and rank percentiles is high in this example (r = 0.7), it's not necessarily representative of the general relationship between counts and rank percentiles.
 
-### Conceptual
+## Conceptual limitations
 
 The conceptual limitation revolves around the apple and oranges question. I argued that one of the virtues of `packageRank()` is that rank percentiles allow you to locate your package's position relative to that of all other packages. However, one might wonder just how fair or meaningful it is to compare a package like [`curl`](https://cran.r-project.org/package=curl), which is an important infrastructure tool, to a package like [`cholera`](https://cran.r-project.org/package=cholera), which is an applied, niche application. While I believe that comparing fruit against fruit (packages against packages) can be interesting and insightful (e.g., the numerical and visual comparisons of Wednesday and Saturday), I do acknowledge the differences.
 
@@ -604,9 +598,9 @@ The hope is that I at least get the signs right. That is, the signs of the coeff
 
 This post introduces some of the functions and features of [`packageRank`](https://cran.r-project.org/package=packageRank). The aim of the package is to put package download counts into context using visualization and rank percentiles. The post also describes a systematic, positive bias that affects download counts and offers some ideas about how to minimize its effect.
 
-The package is a work-in-progress. Suggestions, feature requests and problems can be submitted to the package's GitHub [issues](https://www.github.com/lindbrook/packageRank/issues/). Insights about "small" downloads would be particularly welcome.
+The package is a work-in-progress. Questions, suggestions, feature requests and problems can be submitted to the package's GitHub [Issues](https://www.github.com/lindbrook/packageRank/issues/). Insights about "small" downloads would be particularly welcome.
 
-I conclude with two final bits of data. On February 29, 2020 (a leap day and a Sunday), there was a noticeable drop in traffic to CRAN. Barring some technical issue with [RStudio's logs](http://cran-logs.rstudio.com/), there wasn't anything in the real world that might explain the drop. In the R world however, the day was notable for the release of the source code for R version 3.6.3.
+I'll conclude with two final bits of data. On February 29, 2020 (a leap day and a Sunday), there was a noticeable drop in traffic to CRAN. Barring some technical issue with [RStudio's logs](http://cran-logs.rstudio.com/), there wasn't anything in the real world that might explain the drop. In the R world however, the day was notable for the release of the source code for R version 3.6.3.
 
 
 ```r
