@@ -82,7 +82,11 @@ As regards contents, beside referring to the changelogs you like, [the NEWs chap
 ## Why write the changelog as NEWS.md?
 
 There are several possible formats for maintaining an R package changelog, according to the documentation of `util::news()`: inst/NEWS.Rd formatted like other Rd files, a Markdown NEWS.md, plain-text NEWS or inst/NEWS.
-In all cases, it means users can access the changelog with `utils::news()`, either reading it all at once
+In all cases, it means users can access the changelog 
+
+* From the package CRAN page (in the case of CRAN packages, of course). See [`commonmark` NEWS](https://cran.rstudio.com/web/packages/commonmark/NEWS), [`ouch` NEWS](https://cran.r-project.org/web/packages/ouch/news.html), [`rhub` NEWS](https://cran.r-project.org/web/packages/rhub/news/news.html). The differences in URL path, display, page title are due to differences in the way the different changelog formats are parsed and rendered.
+
+* with `utils::news()`, either reading it all at once
 
 ```{r rhubnews}
 news(package = "rhub")
@@ -118,7 +122,7 @@ Now, why do I think NEWS.md is the best format? _Of course you are free to disag
 
 There are two limitations to NEWS.md.
 
-* One caveat is the `util::news()` function. If the user uses that and doesn't have `commonmark` and `xml2` installed, [it will fail](https://github.com/wch/r-source/blob/90976a511bc3739e6773ea8e3d88b944b85b9aee/src/library/tools/R/news.R#L68)[^commonmark] -- which is [documented](https://github.com/wch/r-source/blob/acd751d2a1902cf17434216cf2e9c941726678d3/src/library/utils/man/news.Rd#L49) but not especially pleasant.
+* One caveat is the `util::news()` function. If the user uses that and doesn't have `commonmark`[^cm] and `xml2` installed, [it will fail](https://github.com/wch/r-source/blob/90976a511bc3739e6773ea8e3d88b944b85b9aee/src/library/tools/R/news.R#L68)[^commonmark] -- which is [documented](https://github.com/wch/r-source/blob/acd751d2a1902cf17434216cf2e9c941726678d3/src/library/utils/man/news.Rd#L49) but not especially pleasant.
 
 * Another caveat, more specific to GitHub, is that NEWS.md locally doesn't render links to issues magically, unlike GitHub releases (and unlike `pkgdown`). That is why [Yihui Xie uses a placeholder inst/NEWS.Rd in e.g. `knitr`](https://github.com/yihui/knitr/issues/1841#issuecomment-621247442). Maybe a good idea for a function would be one to convert from NEWS.md to an informative inst/NEWS.Rd as feature-rich as `pkgdown` changelog?
 
@@ -168,3 +172,4 @@ Do you ever read changelogs?[^changelog]
 [^changelog]: Reading changelogs can be useful but also pleasant, e.g. when discovering the [package uses version nicknames](http://naniar.njtierney.com/news/index.html). :sparkles:
 [^irony]: Yes, `util::news()` uses `commonmark` to parse Markdown NEWS files but `commonmark`'s own NEWS file is plain-text. :shrug: :grin:
 [^github]: For packages developed on GitHub, and if you don't oppose using GitHub, [there are different levels of repository watching including being notified of releases only](https://help.github.com/en/github/managing-subscriptions-and-notifications-on-github/viewing-your-subscriptions#configuring-your-watch-settings-for-an-individual-repository).
+[^cm]: `commonmark` is [awesome for parsing Markdown](https://ropensci.org/technotes/2018/09/05/commonmark/)! `roxygen2` uses it [to parse tags with Markdown markup ](https://roxygen2.r-lib.org/articles/rd-formatting.html).
