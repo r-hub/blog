@@ -17,7 +17,7 @@ output:
 
 [`packageRank`](https://cran.r-project.org/package=packageRank) is an R package that helps put package download counts into context. It does so via two functions. The first, `cranDownloads()`, extends [`cranlogs::cran_downloads()`](http://r-hub.github.io/cranlogs/) by adding a `plot()` method and a more user-friendly interface. The second, `packageRank()`, uses rank percentiles, a nonparametric statistic that tells you the percentage of packages with fewer downloads, to help you see how your package is doing compared to all other [CRAN](https://cran.r-project.org/) packages.
 
-In this post, I'll do two things. First, I'll give an overview of the package's core features and functions - a more detailed description of the package can be found in the README on [GitHub](https://www.github.com/lindbrook/packageRank). Second, I'll discuss a systematic positive bias that inflates download counts.
+In this post, I'll do two things. First, I'll give an overview of the package's core features and functions - a more detailed description of the package can be found in the [README](https://www.github.com/lindbrook/packageRank) in the project's GitHub repository. Second, I'll discuss a systematic positive bias that inflates download counts.
 
 Note that in this post, I'll refer to _active_ and _inactive_ packages: the former are packages that are still being developed and appear in the [CRAN repository](https://cran.r-project.org/web/packages/index.html); the latter are "retired" packages that are stored in the [CRAN Archive](https://cran.r-project.org/src/contrib/Archive) along with past versions of active packages.
 
@@ -40,7 +40,7 @@ cranlogs::cran_downloads(packages = "HistData")
 
 ```
         date count  package
-1 2020-04-30   368 HistData
+1 2020-05-01   338 HistData
 ```
 
 <br/>
@@ -52,7 +52,7 @@ cranDownloads(packages = "HistData")
 
 ```
         date count  package
-1 2020-04-30   368 HistData
+1 2020-05-01   338 HistData
 ```
 
 <br/>
@@ -78,7 +78,7 @@ cranDownloads(packages = "ggplot2")
 
 ```
         date count package
-1 2020-04-30 63632 ggplot2
+1 2020-05-01 56357 ggplot2
 ```
 
 <br/>
@@ -101,18 +101,18 @@ cranDownloads(packages = "VR")
 
 ```
         date count package
-1 2020-04-30    12      VR
+1 2020-05-01    11      VR
 ```
 
 <br/>
 
 ## Two additional date formats
 
-With `cranlogs::cran_downloads()`, you specify a time frame using the `from` and `to` arguments. The downside of this is that dates must use the "yyyy-mm-dd" format. For convenience's sake and to reduce typing, `cranDownloads()` also allows you to use "yyyy-mm" or "yyyy" (yyyy also works).
+With `cranlogs::cran_downloads()`, you can specify a time frame using the `from` and `to` arguments. The downside of this is that you must use the "yyyy-mm-dd" format. For convenience's sake, `cranDownloads()` also allows you to use "yyyy-mm" or "yyyy" (yyyy also works).
 
 ### "yyyy-mm"
 
-Let's say you want the download counts for [`HistData`](https://cran.r-project.org/package=HistData) from February 2020. With `cranlogs::cran_downloads()`, you have to type out the whole date and remember that 2020 was a leap year:
+Let's say you want the download counts for [`HistData`](https://cran.r-project.org/package=HistData) for February 2020. With `cranlogs::cran_downloads()`, you'd have to type out the whole date and remember that 2020 was a leap year:
 
 
 ```r
@@ -170,11 +170,11 @@ cranDownloads(packages = "HistData", from = "2019-01-15",
 plot(cranDownloads(packages = "HistData", from = "2019", to = "2019"))
 ```
 
-{{<figure src="cranDownloads_viz1-1.png" title="Figure 1 Visualize cranDownloads() for A Single Package">}}
+{{<figure src="cranDownloads_viz1-1.png" alt="A time series lineplot illustrating package downloads for a single package for 2019." title="Figure 1 Visualize cranDownloads() for A Single Package">}}
 
 <br/>
 
-If you pass a vector of package names, `plot()` defaults to using `ggplot2` facets:
+If you pass a vector of package names, `plot()` defaults to graphing the data in separate `ggplot2` facets:
 
 
 ```r
@@ -182,10 +182,10 @@ plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
   from = "2020", to = "2020-03-20"))
 ```
 
-{{<figure src="cranDownloads_viz2-1.png" title="Figure 2 Visualize cranDownloads() for Multiple Packages">}}
+{{<figure src="cranDownloads_viz2-1.png" alt="A time series lineplot with multiple window frames illustrating package downloads for multiple packages for 2019" title="Figure 2 Visualize cranDownloads() for Multiple Packages">}}
 
 <br/>
-If you want the data in a single plot, use `multi.plot = TRUE`:
+If you want all the data in a single frame, use `multi.plot = TRUE`:
 
 
 ```r
@@ -208,7 +208,7 @@ Consider the data for the first week of March 2020:
 plot(cranDownloads(packages = "cholera", from = "2020-03-01",
   to = "2020-03-07"))
 ```
-{{<figure src="motivation_code-1.png" title="Figure 3 Package Downloads for 'cholera' March 1-7, 2020">}}
+{{<figure src="motivation_code-1.png" alt="A time series lineplot illustrating the package downloads counts for the cholera R package for the first week of March. There are download peaks on Wednesday and Saturday." title="Figure 3 Package Downloads for 'cholera' March 1-7, 2020">}}
 
 <br/>
 
@@ -216,11 +216,11 @@ Do Wednesday and Saturday reflect surges of interest in the package or surges of
 
 One way to answer these questions is to locate your package in the frequency distribution of download counts. Below are the distributions for Wednesday and Saturday with the location of [`cholera`](https://cran.r-project.org/package=cholera) highlighted:
 
-{{<figure src="skew_wed-1.png" title="Figure 4 Frequency Distribution of Package Downloads for Wednesday, March 4, 2020">}}
+{{<figure src="skew_wed-1.png" alt="A scatterplot that plots package downloads v. frequency count of package downloads (i.e., frequency distribution plot) for Wednesday, March 4, 2020. The plot has highly right-skewed and long-tailed shape." title="Figure 4 Frequency Distribution of Package Downloads for Wednesday, March 4, 2020">}}
 
 <br/>
 
-{{<figure src="skew_sat-1.png" title="Figure 5 Frequency Distribution of Package Downloads for Saturday, March 7, 2020">}}
+{{<figure src="skew_sat-1.png" alt="A scatterplot that plots package downloads v. frequency count of package downloads (i.e., frequency distribution plot) for Saturday, March 7, 2020. The plot has highly right-skewed and long-tailed shape." title="Figure 5 Frequency Distribution of Package Downloads for Saturday, March 7, 2020">}}
 <br/>
 
 As you can see, the frequency distribution of package downloads typically has a heavily skewed, exponential shape. On the Wednesday, the most "popular" package had 177,745 downloads while the least "popular" package(s) had just one. This is why the left side of the distribution, where packages with fewer downloads are located, _looks_ like a vertical line.
@@ -235,7 +235,7 @@ To see what's going on, I take the log of download counts (x-axis) and redraw th
 ```r
 plot(packageDistribution(package = "cholera", date = "2020-03-04"))
 ```
-{{<figure src="packageDistribution_wed_code-1.png" title="Figure 6 Frequency Distribution of Package Downloads for Wednesday, March 4, 2020 with Logarithm of Download Counts">}}
+{{<figure src="packageDistribution_wed_code-1.png" alt="A histogram plot that plots the base 10 logarithm of package downloads v. frequency count of package downloads (i.e., frequency distribution plot) for Wednesday, March 4, 2020." title="Figure 6 Frequency Distribution of Package Downloads for Wednesday, March 4, 2020 with Logarithm of Download Counts">}}
 
 <br/>
 
@@ -243,13 +243,13 @@ plot(packageDistribution(package = "cholera", date = "2020-03-04"))
 ```r
 plot(packageDistribution(package = "cholera", date = "2020-03-07"))
 ```
-{{<figure src="packageDistribution_sat_code-1.png" title="Figure 7 Frequency Distribution of Package Downloads for Saturday, March 7, 2020 with Logarithm of Download Counts">}}
+{{<figure src="packageDistribution_sat_code-1.png" alt="A histogram plot that plots the base 10 logarithm of package downloads v. frequency count of package downloads (i.e., frequency distribution plot) for Saturday, March 7, 2020." title="Figure 7 Frequency Distribution of Package Downloads for Saturday, March 7, 2020 with Logarithm of Download Counts">}}
 
 <br/>
 
-While these plots give us a better picture of where [`cholera`](https://cran.r-project.org/package=cholera) is located, comparisons between Wednesday and Saturday are impressionistic at best: all we can confidently say is that the download counts for both days were greater than the mode.
+While these plots give us a better picture of where [`cholera`](https://cran.r-project.org/package=cholera) is located, comparisons between Wednesday and Saturday are impressionistic at best: all we can confidently say is that the download counts for both days were greater than its respective mode.
 
-To facilitate interpretation and comparison, I use the _rank percentile_ of download counts in place of nominal download counts. This nonparametric statistic tells you the percentage of packages with fewer downloads. In other words, it gives you the location of your package relative to the locations of all other packages. More importantly, by rescaling download counts to lie on the bounded interval between 0 and 100, rank percentiles make it easier to compare packages within and across distributions.
+To make interpretation and comparison easier, I use the _rank percentile_ of a download count in place of the nominal download count. This rank percentile is a nonparametric statistic tells you the percentage of packages with fewer downloads. In other words, it gives you the location of your package relative to the location of all other packages in the distribution. Moreover, by rescaling download counts to lie on the bounded interval between 0 and 100, rank percentiles make it easier to compare packages both within and across distributions.
 
 For example, we can compare Wednesday ("2020-03-04") to Saturday ("2020-03-07"):
 
@@ -262,9 +262,7 @@ packageRank(package = "cholera", date = "2020-03-04", size.filter = FALSE)
         date packages downloads            rank percentile
 1 2020-03-04  cholera        38 5,556 of 18,038       67.9
 ```
-On Wednesday, we can see that [`cholera`](https://cran.r-project.org/package=cholera) had 38 downloads, came in 5,556th place out of 18,038 unique packages downloaded, and earned a spot in the 68th percentile.
-
-<br/>
+On Wednesday, we can see that [`cholera`](https://cran.r-project.org/package=cholera) had 38 downloads, came in 5,556th place out of the 18,038 unique packages downloaded, and earned a spot in the 68th percentile.
 
 
 ```r
@@ -275,7 +273,7 @@ packageRank(package = "cholera", date = "2020-03-07", size.filter = FALSE)
         date packages downloads            rank percentile
 1 2020-03-07  cholera        29 3,061 of 15,950         80
 ```
-On Saturday, we can see that [`cholera`](https://cran.r-project.org/package=cholera) had 29 downloads, came in 3,061st place out of 15,950 unique packages downloaded, earned a spot in the 80th percentile.
+On Saturday, we can see that [`cholera`](https://cran.r-project.org/package=cholera) had 29 downloads, came in 3,061st place out of the 15,950 unique packages downloaded, and earned a spot in the 80th percentile.
 
 So contrary to what the nominal counts tell us, one could say that the interest in [`cholera`](https://cran.r-project.org/package=cholera) was actually greater on Saturday than on Wednesday.
 
@@ -341,7 +339,7 @@ plot(packageRank(packages = "cholera", date = "2020-03-04"))
 
 
 
-{{<figure src="packageRank_plot_code_wed-1.png" title="Figure 8 Rank Frequency Distribution of Package Downloads for Wednesday, March 4, 2020">}}
+{{<figure src="packageRank_plot_code_wed-1.png" alt="A plot of packageRank() for the cholera package for Wednesday, March 4, 2020. It plots rank order of downloads against the base 10 logarithm of downloads, highlights a package's rank percentile and nominal download counts, and the location of the 75th, 50th, and 25th quartile." title="Figure 8 Rank Frequency Distribution of Package Downloads for Wednesday, March 4, 2020">}}
 
 <br/>
 
@@ -350,7 +348,7 @@ plot(packageRank(packages = "cholera", date = "2020-03-04"))
 plot(packageRank(packages = "cholera", date = "2020-03-07"))
 ```
 
-{{<figure src="packageRank_plot_code_sat-1.png" title="Figure 9 Rank Frequency Distribution of Package Downloads for Saturday, March 7, 2020">}}
+{{<figure src="packageRank_plot_code_sat-1.png" alt="A plot of packageRank() for cholera package for Saturday, March 7, 2020. It plots rank order of downloads against the base 10 logarithm of downloads, highlights a package's rank percentile and nominal download counts, and the location of the 75th, 50th, and 25th quartile." title="Figure 9 Rank Frequency Distribution of Package Downloads for Saturday, March 7, 2020">}}
 
 <br/>
 
@@ -360,28 +358,30 @@ These graphs, customized to be on the same scale, plot the _rank order_ of packa
 
 ## Computational limitations
 
-The computational limitation stems from the fact that, unlike `cranlogs::cran_download()`, which benefits from server-side support (i.e., download counts are "pre-computed"), `packageRank()` must first download the [log](http://cran-logs.rstudio.com/) (a ~50 MB file) from the internet and then compute the rank percentiles of download counts for _all_ observed packages (typically 15,000+ unique packages and 6 million log entries). Downloading the log file is the real bottleneck (computing the rank percentiles takes less than a second). This, however, is somewhat mitigated by caching the file using the [`memoise`](https://CRAN.R-project.org/package=memoise) package.
+Unlike `cranlogs::cran_download()`, which benefits from server-side support (i.e., download counts are "pre-computed"), `packageRank()` must first download the [log file](http://cran-logs.rstudio.com/) (a ~50 MB file) from the internet and then compute the rank percentiles of download counts for _all_ observed packages (typically 15,000+ unique packages and 6 million log entries). The downloading is the real bottleneck (the computation of rank percentiles takes less than a second). This, however, is somewhat mitigated by caching the file using the [`memoise`](https://CRAN.R-project.org/package=memoise) package.
 
 ## Analytical limitations
 
-The analytical limitation stems from the computational one. Anything beyond a one-day, cross-sectional comparison (e.g., rank percentiles over time) is "expensive". You need to download _all_ the desired log files (each ~50 MB). If you want to compare ranks for a week, you have to download 7 log files. If you want to compare ranks for a month, you have to download 30 odd log files. As a proof-of-concept of the potential of following this path, the plot below compares nominal download counts with their rank percentiles for [`cholera`](https://cran.r-project.org/package=cholera) for the first week in March. Note that, to the chagrin of some, two independently scaled y-variables are plotted on the same graph (black for counts on the left axis, red for rank percentiles on the right).
+Because of the computational limitations, anything beyond a one-day, cross-sectional comparison is "expensive". You need to download _all_ the desired log files (each ~50 MB). If you want to compare ranks for a week, you have to download 7 log files. If you want to compare ranks for a month, you have to download 30 odd log files.
 
-{{<figure src="counts_ranks-1.png" title="Figure 10 Comparison of Package Download Counts and Rank Percentiles">}}
+Nevertheless, as a proof-of-concept of the potential value of computing rank percentiles over multiple time frames, the plot below compares nominal download counts with rank percentiles of [`cholera`](https://cran.r-project.org/package=cholera) for the first week in March. Note that, to the chagrin of some, two independently scaled y-variables are plotted on the same graph (black for counts on the left axis, red for rank percentiles on the right).
+
+{{<figure src="counts_ranks-1.png" alt="A time series lineplot with dual axes that compares download counts to rank percentiles of download counts for first week of March, 2020. It show that, contrary to what nominal download counts tell us, that the peak of interest on Saturday was greater than that on Wednesday." title="Figure 10 Comparison of Package Download Counts and Rank Percentiles">}}
 <br/>
 
 Note that while the correlation between counts and rank percentiles is high in this example (r = 0.7), it's not necessarily representative of the general relationship between counts and rank percentiles.
 
 ## Conceptual limitations
 
-The conceptual limitation revolves around the apple and oranges question. I argued that one of the virtues of `packageRank()` is that rank percentiles allow you to locate your package's position relative to that of all other packages. However, one might wonder just how fair or meaningful it is to compare a package like [`curl`](https://cran.r-project.org/package=curl), which is an important infrastructure tool, to a package like [`cholera`](https://cran.r-project.org/package=cholera), which is an applied, niche application. While I believe that comparing fruit against fruit (packages against packages) can be interesting and insightful (e.g., the numerical and visual comparisons of Wednesday and Saturday), I do acknowledge the differences.
+Above, I argued that one of the virtues of the rank percentile is that it allows you to locate your package's position relative to that of all other packages. However, one might wonder whether we may be comparing apple to oranges: just how fair or meaningful it is to compare a package like [`curl`](https://cran.r-project.org/package=curl), an important infrastructure tool, to a package like [`cholera`](https://cran.r-project.org/package=cholera), an applied, niche application. While I believe that comparing fruit against fruit (packages against packages) can be interesting and insightful (e.g., the numerical and visual comparisons of Wednesday and Saturday), I do acknowledge that not all fruit are created equal.
 
-In fact, this is one of tasks I had in mind for [`packageRank`](https://cran.r-project.org/package=packageRank). I wanted to create indices (e.g., Dow Jones, NASDAQ) that use download activity as a way to assess the state and health of R and its ecosystem(s). By that I mean I'd not only look at packages as a single collective entity but also as individual communities or components (i.e., the various CRAN Task Views, tidyverse, developers, end-users, etc.). To do the latter, my hope was that I'd segment or classify packages into separate groups, each with their own individual index. Anyway, it's still early days for all of this. This is by no means the final definitive statement on how to estimate interest in a package.
+This is, in fact, one of tasks I had in mind for [`packageRank`](https://cran.r-project.org/package=packageRank). I wanted to create indices (e.g., Dow Jones, NASDAQ) that use download activity as a way to assess the state and health of R and its ecosystem(s). By that I mean I'd not only look at packages as a single collective entity but also as individual communities or components (i.e., the various CRAN Task Views, tidyverse, developers, end-users, etc.). To do the latter, my hope was to segment or classify packages into separate groups based on size and domain, each with its own individual index (just like various stock market indices). This effort, along with another to control for the effect of package dependencies (see below), are now on the back burner. The reason why is that I'd argue that we first need to address an inflationary bias that affects these data.
 
 ******
 
 # Inflationary Bias of Download Counts
 
-Download counts are a popular way for developers to signal a package's importance or quality, witness the frequent use of [badges](https://docs.r-hub.io/#badges) on repositories to advertise those numbers. To get those numbers, [`cranlogs`](https://cran.r-project.org/package=cranlogs), which both [`adjustedcranlogs`](https://cran.r-project.org/package=adjustedcranlogs) and [`packageRank`](https://cran.r-project.org/package=packageRank) rely on, computes the number of entries in [RStudio's download logs](http://cran-logs.rstudio.com/) for a given package.
+Download counts are a popular way for developers to signal a package's importance or quality, witness the frequent use of [badges](https://docs.r-hub.io/#badges) that advertise those numbers on repositories. To get those counts, [`cranlogs`](https://cran.r-project.org/package=cranlogs), which both [`adjustedcranlogs`](https://cran.r-project.org/package=adjustedcranlogs) and [`packageRank`](https://cran.r-project.org/package=packageRank) among others rely on, computes the number of entries in [RStudio's download logs](http://cran-logs.rstudio.com/) for a given package.
 
 Putting aside the possibility that the logs themselves may not be representative of of R users in general[^1], this strategy of would be perfectly sensible. Unfortunately, three objections can be made against the assumed equivalence of download counts and the number of log entries.
 
@@ -389,9 +389,9 @@ The first is that **package updates inflate download counts**. Based on my readi
 
 The second is that **package dependencies inflate download counts**. The problem, in a nutshell, is that when a user chooses to download a package, they do not choose to download all the supporting, upstream packages (i.e., package dependencies) that are downloaded along with the chosen package. To me, this is the elephant-in-the-room of download count inflation (and one reason why `cranlogs::cran_top_downloads()` returns the usual suspects). This was one of the problems I was hoping to tackle with [`packageRank`](https://cran.r-project.org/package=packageRank). What stopped me was the discovery of the next objection, which will be the focus of the rest of this post.
 
-The third is that **"invalid" log entries inflate download counts**. I've found two types: 1) downloads that are "too small" and 2) an overrepresentation of past versions. Downloads that are "too small" are, apparently, a software artifact. The overrepresentation of prior versions is a consequence of what appears to be efforts to mirror or download CRAN in its entirety. These efforts makes both "invalid" log entries particularly problematic. Numerically, they undermine our strategy of computing package downloads by counting logs entries. Conceptually, they lead us to overestimate the amount of interest in a package.
+The third is that **"invalid" log entries inflate download counts**. I've found two "invalid" types: 1) downloads that are "too small" and 2) an overrepresentation of past versions. Downloads that are "too small" are, apparently, a software artifact. The overrepresentation of prior versions is a consequence of what appears to be efforts to mirror or download CRAN in its entirety. These efforts makes both "invalid" log entries particularly problematic. Numerically, they undermine our strategy of computing package downloads by counting logs entries. Conceptually, they lead us to overestimate the amount of interest in a package.
 
-The inflationary effect of "invalid" log entries is variable. The greater a package's "true" popularity (i.e., the number of "real" downloads), the lower the bias. Essentially, the bias gets diluted. The greater the number of prior versions, the greater the bias. When all of CRAN is being downloaded, more versions means more package downloads. Fortunately, we can minimize the bias by filtering out "small" downloads, and by filtering out or discounting prior versions.
+The inflationary effect of "invalid" log entries is variable. First, the greater a package's "true" popularity (i.e., the number of "real" downloads), the lower the bias: essentially, the bias gets diluted as "real" downloads increase. Second, the greater the number of prior versions, the greater the bias: when all of CRAN is being downloaded, more versions mean more package downloads. Fortunately, we can minimize the bias by filtering out "small" downloads, and by filtering out or discounting prior versions.
 
 ## Download logs
 
@@ -445,12 +445,12 @@ While I'm unsure about the kB-sized entry (they seem to increasing in frequency 
 
 To get a sense of their frequency, I look back to October 2019 and focus on ~500 B downloads. In aggregate, these downloads account for approximately 2% of the total. While this seems modest (if 2.5 million downloads could be modest),[^3] I'd argue that there's actually something lurking underneath. A closer look reveals that the difference between the total and filtered (without ~500 B entries) counts is greatest on the five Wednesdays.
 
-{{<figure src="counts_plot-1.png" title="Figure 11 Total Package Downloads from CRAN With and Without ~500 B Downloads: October 2019">}}
+{{<figure src="counts_plot-1.png" alt="A time series lineplot comparing total package downloads with and without ~500 byte log entries. The plot shows that the difference is greatest on Wednesdays." title="Figure 11 Total Package Downloads from CRAN With and Without ~500 B Downloads: October 2019">}}
 
 <br/>
 To see what's going on, I switch the unit of observation from download counts to the number of unique packages:
 
-{{<figure src="packages_plot-1.png" title="Figure 12 Total Number of Unique Packages Downloaded from CRAN With and Without ~500 B Downloads: October 2019">}}
+{{<figure src="packages_plot-1.png" alt="A time series lineplot showing how the exclusion of ~500 byte log entries affects the number of observed unique packages that are downloaded. From 15,000+ packages on most days to 17,000+ packages on Wednesdays plus 3 addtional days." title="Figure 12 Total Number of Unique Packages Downloaded from CRAN With and Without ~500 B Downloads: October 2019">}}
 
 Doing so, we see that on Wednesdays (+3 additional days) the total number of unique packages downloaded tops 17,000. This is significant because it exceeds the 15,000+ active packages on CRAN (go [here](https://cran.r-project.org/web/packages/index.html) for the latest count). The only way to hit 17,000+ would be to include some, if not all, of the 2,000+ inactive packages. Based on this, I'd say that on those peak days virtually, if not literally, all CRAN packages (both active _and_ inactive) were downloaded.[^4]
 
@@ -458,9 +458,9 @@ Doing so, we see that on Wednesdays (+3 additional days) the total number of uni
 
 ## Past versions
 
-This actually understates what's going on. It's not just that "all" packages are being downloaded but that all versions of all packages are being regularly and repeatedly download. It's these efforts, rather than downloads done for reasons of compatibility, research, or reproducibility (including use of [Docker](https://www.docker.com)) that lead me to argue that there's an overrepresentation of prior versions.
+This actually understates what's going on. It's not just that all packages are being downloaded but that all versions of all packages are being regularly and repeatedly download. It's these efforts, rather than downloads done for reasons of compatibility, research, or reproducibility (including the use of [Docker](https://www.docker.com)) that lead me to argue that there's an overrepresentation of prior versions.
 
-As an example, see the first eight entries for [`cholera`](https://cran.r-project.org/package=cholera) in the October 22, 2019 log:
+As an example, see the first eight entries for [`cholera`](https://cran.r-project.org/package=cholera) from the October 22, 2019 log:
 
 
 ```r
@@ -479,7 +479,7 @@ packageLog(packages = "cholera", date = "2019-10-22")[1:8, ]
 8 2019-10-22 08:01:46 3766511 cholera   0.5.0      RU  15119
 ```
 
-These eight entries record the download of eight _different_ versions of [`cholera`](https://cran.r-project.org/package=cholera). A little digging with `packageRank::packageHistory()` reveals that eight observed versions represent all the versions available on that day:
+These eight entries record the download of eight _different_ versions of [`cholera`](https://cran.r-project.org/package=cholera). A little digging with `packageRank::packageHistory()` reveals that the eight observed versions represent _all_ the versions available on that day:
 
 
 ```r
@@ -498,11 +498,11 @@ packageHistory("cholera")
 8 cholera   0.7.0 2019-08-28       CRAN
 ```
 
-Showing that "all" versions of all packages are being downloaded is not as easy as showing the effect of "small" downloads. For this post, I'll rely on a random sample of 100 active and 100 inactive packages.
+Showing that all versions of all packages are being downloaded is not as easy as showing the effect of "small" downloads. For this post, I'll rely on a random sample of 100 active and 100 inactive packages.
 
 The graph below plots the percent of versions downloaded for each day in October 2019 (IDs 1-100 are _active_ packages; IDs 101-200 are _inactive_ packages). On the five Wednesdays (+ 3 additional days), there's a horizontal line at 100% that indicates that all versions of the packages in the sample were downloaded.[^5]
 
-{{<figure src="versions_plot-1.png" title="Figure 13 Percent of Package-Versions Downloaded for 100 Active & 100 Inactive Packages: October 2019">}}
+{{<figure src="versions_plot-1.png" alt="A  multiple window frames time series lineplot with, one for each of the 31 days in October 2019, that shows that on Wednesdays plus 3 additional days, all versions of all packages are downloaded." title="Figure 13 Percent of Package-Versions Downloaded for 100 Active & 100 Inactive Packages: October 2019">}}
 
 <br/>
 
@@ -512,24 +512,23 @@ To minimize this bias, we could filter out "small" downloads and past versions. 
 
 # Significance
 
-Should you be worried about this inflationary bias? In general, I think the answer is yes. For most users of these data, the goal is to estimate interest in R packages, not to estimate traffic to CRAN. To that end, "cleaner" data, which adjusts download counts to exclude "invalid" log entries should be welcome.
+Should you be worried about this inflationary bias? In general, I think the answer is yes. For most users, the goal is to estimate interest in R packages, not to estimate traffic to CRAN. To that end, "cleaner" data, which adjusts download counts to exclude "invalid" log entries should be welcome.
 
-That said, how much you should worry depends on the package you're interested in. The bias works in variable, unequal fashion. It's a function of a package's "popularity" (i.e, the number of "valid" downloads) and the number of prior versions. A package with more "real" downloads will be less affected than one with fewer "real" downloads because the bias gets diluted (typically, "real" interest is greater than "artificial" interest). A package with more versions will be more greatly affected because, if CRAN in its entirety is being downloaded, a package with more versions will record more downloads than one with fewer versions.
+That said, how much you should worry depends on what you're trying to do and which package you're interested in. The bias works in variable, unequal fashion. It's a function of a package's "popularity" (i.e, the number of "valid" downloads) and the number of prior versions. A package with more "real" downloads will be less affected than one with fewer "real" downloads because the bias gets diluted (typically, "real" interest is greater than "artificial" interest). A package with more versions will be more affected because, if CRAN in its entirety is being downloaded, a package with more versions will record more downloads than one with fewer versions.
 
 <br/>
 
 ## Popularity
 
-
 To illustrate the effect of popularity, I compare [`ggplot2`](https://cran.r-project.org/package=ggplot2) and [`cholera`](https://cran.r-project.org/package=cholera) for October 2019. With one million plus downloads, ~500 B entries inflate the download count for [`ggplot2`](https://cran.r-project.org/package=ggplot2) by 2%:
 
-{{<figure src="ggplot2-1.png" title="Figure 14 Effect of ~500 B Downloads on Download Counts on a Popular Package: October 2019">}}
+{{<figure src="ggplot2-1.png" alt="A time series lineplot comparing downloads with and without ~500 byte log entries for a popular package, ggplot2. The plot shows that the inflation is 2%." title="Figure 14 Effect of ~500 B Downloads on Download Counts on a Popular Package: October 2019">}}
 
 <br/>
 
 With under 400 downloads, ~500 B entries inflate the download count for [`cholera`](https://cran.r-project.org/package=cholera) by 25%:
 
-{{<figure src="cholera-1.png" title="Figure 15 Effect of ~500 B Downloads on Download Counts on a Less Popular Package: October 2019">}}
+{{<figure src="cholera-1.png" alt="A time series lineplot comparing downloads with and without ~500 byte log entries for a less popular package, cholera. The plot shows that the inflation is 25%." title="Figure 15 Effect of ~500 B Downloads on Download Counts on a Less Popular Package: October 2019">}}
 
 <br/>
 
@@ -539,13 +538,13 @@ To illustrate the effect of the number of versions, I compare [`cholera`](https:
 
 With [`cholera`](https://cran.r-project.org/package=cholera), past versions inflate the download count by 27%:
 
-{{<figure src="cholera_version-1.png" title="Figure 16 Effect of the Number of Prior Versions on Download Counts for a Package with Few Versions: October 2019">}}
+{{<figure src="cholera_version-1.png" alt="A time series lineplot comparing downloads with all version versus downloads with just the recent versions for a package, cholera, with few versions. The plot shows that the inflation is 27%." title="Figure 16 Effect of the Number of Prior Versions on Download Counts for a Package with Few Versions: October 2019">}}
 
 <br/>
 
 With 'VR', past version inflate the download count by 7,500%:
 
-{{<figure src="vr_version-1.png" title="Figure 17 Effect of the Number of Past Versions on Download Counts for a Package with Many Versions: October 2019">}}
+{{<figure src="vr_version-1.png" alt="A time series lineplot comparing downloads with all version versus downloads with just the recent versions for a package, VR, with many version. The plot shows that the inflation is 7,500%." title="Figure 17 Effect of the Number of Past Versions on Download Counts for a Package with Many Versions: October 2019">}}
 
 <br/>
 
@@ -553,7 +552,7 @@ With 'VR', past version inflate the download count by 7,500%:
 
 To illustrate the joint effect of both ~500 B downloads and previous versions, I again use [`cholera`](https://cran.r-project.org/package=cholera). Here, we see that the joint effect of both biases inflate the download count by 31%:
 
-{{<figure src="cholera_size.version-1.png" title="Figure 18 Effect of ~500 B Downloads and Number of Past Versions on Download Counts: October 2019">}}
+{{<figure src="cholera_size.version-1.png" alt="A time series lineplot comparing all downloads versus downloads without ~500 byte log entries and previous versions for the cholera package. The plot shows that the inflation is 31%." title="Figure 18 Effect of ~500 B Downloads and Number of Past Versions on Download Counts: October 2019">}}
 
 <br/>
 
@@ -561,7 +560,7 @@ To illustrate the joint effect of both ~500 B downloads and previous versions, I
 
 Even though the bias is pretty mechanical and deterministic, to show that examples above are not idiosyncratic, I conclude with a back-of-the-envelope estimate of the joint, simultaneous effect of popularity (unfiltered downloads) and version count (total number of versions) on total bias (the percent change in download counts after filtering out ~500 B download and prior versions).
 
-I use the above sample of 200 active and inactive packages as the data. I fit an ordinary least squares (OLS) linear model using the base 10 logarithm for the three variables. To control for interaction between popularity and number of versions (i.e., popular packages tend to have many version; packages with many version tend to attract more downloads), I include a multiplicative term between the two variables. The results are below:
+I use the above sample of 100 active and 100 inactive packages as the data. I fit an ordinary least squares (OLS) linear model using the base 10 logarithm for the three variables. To control for interaction between popularity and number of versions (i.e., popular packages tend to have many version; packages with many version tend to attract more downloads), I include a multiplicative term between the two variables. The results are below:
 
 
 
@@ -590,7 +589,7 @@ Multiple R-squared:  0.9567,	Adjusted R-squared:  0.956
 F-statistic:  1435 on 3 and 195 DF,  p-value: < 2.2e-16
 ```
 
-The hope is that I at least get the signs right. That is, the signs of the coefficients in the fitted model ("Estimate" column in the table above) should match the effects described in the sections above: a negative sign for "popularity", implying that greater popularity is associated with lower bias; a positive sign for "versions", implying that a greater number of versions is associated with higher bias). For what it's worth, the coefficients and the model itself are statistically significant at conventional levels (large t-values and small p-scores for the former; large F-statistic with a small p-score for the latter).
+The hope is that I at least get the signs right. That is, the signs of the coefficients in the fitted model (the "Estimate" column in the table above) should match the effects described above: 1) a negative sign for "popularity", implying that greater popularity is associated with lower bias, and 2) a positive sign for "versions", implying that a greater number of versions is associated with higher bias. For what it's worth, the coefficients and the model itself are statistically significant at conventional levels (large t-values and small p-scores for the former; large F-statistic with a small p-score for the latter).
 
 ******
 
@@ -598,33 +597,10 @@ The hope is that I at least get the signs right. That is, the signs of the coeff
 
 This post introduces some of the functions and features of [`packageRank`](https://cran.r-project.org/package=packageRank). The aim of the package is to put package download counts into context using visualization and rank percentiles. The post also describes a systematic, positive bias that affects download counts and offers some ideas about how to minimize its effect.
 
-The package is a work-in-progress. Questions, suggestions, feature requests and problems can be submitted to the package's GitHub [Issues](https://www.github.com/lindbrook/packageRank/issues/). Insights about "small" downloads would be particularly welcome.
-
-I'll conclude with two final bits of data. On February 29, 2020 (a leap day and a Sunday), there was a noticeable drop in traffic to CRAN. Barring some technical issue with [RStudio's logs](http://cran-logs.rstudio.com/), there wasn't anything in the real world that might explain the drop. In the R world however, the day was notable for the release of the source code for R version 3.6.3.
+The package is a work-in-progress. Please submit questions, suggestions, feature requests and problems to the comments section below or to the package's GitHub [Issues](https://www.github.com/lindbrook/packageRank/issues/). Insights about "small" downloads are particularly welcom.
 
 
-```r
-plot(cranDownloads(from = "2020-02-25", to = "2020-03-04"),
-  r.version = TRUE)
-```
-
-{{<figure src="cran_pkgs-1.png" title="Figure 19 Effect of the 2020 Leap Day on Package Downloads">}}
-
-<br/>
-
-
-```r
-plot(cranDownloads("R", from = "2020-02-25", to = "2020-03-04"),
-  r.version = TRUE)
-```
-
-{{<figure src="cran_r-1.png" title="Figure 20 Effect of 2020 Leap Day on R Downloads">}}
-
-<br/>
-
-I've noticed that website maintenance (renaming files and folders, etc.) on CRAN sometimes coincides with software updates. So my working hypothesis, which I've yet to explore, is that the scripts used to do automated downloading may have been "broken" by changes on CRAN. If so, the traffic on the 20th might actually be a better estimate of what the "real" baseline level of interest in R and its packages might be.
-
-[^1]: The logs reflect traffic to the [0-Cloud Mirror](https://cloud.r-project.org), a virtual server that was formerly [RStudios' mirror](https:/cran.rstudio.com) and that is currently the default mirror for the RStudio application.
+[^1]: The logs reflect traffic to the [0-Cloud Mirror](https://cloud.r-project.org), a virtual server that was formerly [RStudios' mirror](https:/cran.rstudio.com) and is currently listed as "sponsored by RStudio". It is the default mirror for the RStudio application.
 [^2]: This is an interesting and challenging data problem. To my knowledge, distinguishing updates from new downloads by looking at log entries is not easy. To do so, [`adjustedcranlogs`](https://cran.r-project.org/package=adjustedcranlogs) removes the "estimated CRAN-wide automated downloads for that day". Specifically, it estimates the number of package updates for an _individual_ package based on an estimate derived from the _population_ of packages (i.e., it makes an ecological inference). The population level estimate, while in the ballpark, is a bit arbitrary: it uses the "typical" minimal number of downloads, computed from the 0.05 quantile of a sample of packages.
 [^3]: The frequency of ~500 B downloads is such that I wonder whether `lftp` or something similar is/was part of R, RStudio, or services like [AWS](https://aws.amazon.com). Interestingly, while IP addresses with a nominal "US" top level domain country code account for 46% of all downloads in October 2019, which is surprising in its own right (N/A was second with 8%, "NL" - The Netherlands - was third with 6%), the "US" domain accounted for 72% of ~500 B downloads. For details, see `head(packageRank::blog.data$ccode.ct, 10)`: "filtered" records download counts without ~500 B entries; "delta" is the arithmetic difference between "unfiltered" and "filtered".
 [^4]: The slight upward trend in the peaks probably reflects the addition of new packages during the month.
