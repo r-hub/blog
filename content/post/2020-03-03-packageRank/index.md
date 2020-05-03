@@ -78,7 +78,7 @@ cranDownloads(packages = "ggplot2")
 
 ```
         date count package
-1 2020-05-01 56357 ggplot2
+1 2020-05-02     0 ggplot2
 ```
 
 <br/>
@@ -101,7 +101,7 @@ cranDownloads(packages = "VR")
 
 ```
         date count package
-1 2020-05-01    11      VR
+1 2020-05-02     0      VR
 ```
 
 <br/>
@@ -174,7 +174,7 @@ plot(cranDownloads(packages = "HistData", from = "2019", to = "2019"))
 
 <br/>
 
-If you pass a vector of package names, `plot()` defaults to graphing the data in separate `ggplot2` facets:
+If you pass a vector of package names, `plot()` will use `ggplot2` facets:
 
 
 ```r
@@ -185,7 +185,7 @@ plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
 {{<figure src="cranDownloads_viz2-1.png" alt="A time series lineplot with multiple window frames illustrating package downloads for multiple packages for 2019" title="Figure 2 Visualize cranDownloads() for Multiple Packages">}}
 
 <br/>
-If you want all the data in a single frame, use `multi.plot = TRUE`:
+If you want to plot those data in a single frame, use `multi.plot = TRUE`:
 
 
 ```r
@@ -568,24 +568,24 @@ I use the above sample of 100 active and 100 inactive packages as the data. I fi
 ```
 
 Call:
-lm(formula = bias ~ popularity + versions + popularity * versions, 
+lm(formula = bias ~ popularity + versions + popularity * versions,
     data = p.data)
 
 Residuals:
-     Min       1Q   Median       3Q      Max 
--0.50028 -0.12810 -0.03428  0.08074  1.09940 
+     Min       1Q   Median       3Q      Max
+-0.50028 -0.12810 -0.03428  0.08074  1.09940
 
 Coefficients:
-                    Estimate Std. Error t value Pr(>|t|)    
+                    Estimate Std. Error t value Pr(>|t|)
 (Intercept)          2.99344    0.04769  62.768   <2e-16 ***
 popularity          -0.92101    0.02471 -37.280   <2e-16 ***
 versions             0.98727    0.07625  12.948   <2e-16 ***
-popularity:versions  0.05918    0.03356   1.763   0.0794 .  
+popularity:versions  0.05918    0.03356   1.763   0.0794 .
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 0.2188 on 195 degrees of freedom
-Multiple R-squared:  0.9567,	Adjusted R-squared:  0.956 
+Multiple R-squared:  0.9567,	Adjusted R-squared:  0.956
 F-statistic:  1435 on 3 and 195 DF,  p-value: < 2.2e-16
 ```
 

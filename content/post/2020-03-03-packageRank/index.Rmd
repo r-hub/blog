@@ -158,7 +158,7 @@ plot(cranDownloads(packages = "HistData", from = "2019", to = "2019"))
 
 <br/>
 
-If you pass a vector of package names, `plot()` defaults to graphing the data in separate `ggplot2` facets:
+If you pass a vector of package names, `plot()` will use `ggplot2` facets:
 
 ```{r cranDownloads_viz2, fig.align = "center", hugoopts = list(alt = "A time series lineplot with multiple window frames illustrating package downloads for multiple packages for 2019", title = "Figure 2 Visualize cranDownloads() for Multiple Packages")}
 plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
@@ -166,7 +166,7 @@ plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
 ```
 
 <br/>
-If you want all the data in a single frame, use `multi.plot = TRUE`:
+If you want to plot those data in a single frame, use `multi.plot = TRUE`:
 
 ```{r cranDownloads_viz3, eval = FALSE}
 plot(cranDownloads(packages = c("ggplot2", "data.table", "Rcpp"),
