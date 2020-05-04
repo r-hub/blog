@@ -3,7 +3,7 @@ slug: packageRank-intro
 title: "Counting and Visualizing CRAN Downloads with packageRank (with Caveats!)"
 authors:
   - Peter Li
-date: 2020-03-01
+date: 2020-03-05
 tags:
 - package development
 output:
@@ -769,7 +769,7 @@ The hope is that I at least get the signs right. That is, the signs of the coeff
 
 This post introduces some of the functions and features of [`packageRank`](https://cran.r-project.org/package=packageRank). The aim of the package is to put package download counts into context using visualization and rank percentiles. The post also describes a systematic, positive bias that affects download counts and offers some ideas about how to minimize its effect.
 
-The package is a work-in-progress. Please submit questions, suggestions, feature requests and problems to the comments section below or to the package's GitHub [Issues](https://www.github.com/lindbrook/packageRank/issues/). Insights about "small" downloads are particularly welcom.
+The package is a work-in-progress. Please submit questions, suggestions, feature requests and problems to the comments section below or to the package's GitHub [Issues](https://www.github.com/lindbrook/packageRank/issues/). Insights about "small" downloads are particularly welcome.
 
 
 [^1]: The logs reflect traffic to the [0-Cloud Mirror](https://cloud.r-project.org), a virtual server that was formerly [RStudios' mirror](https:/cran.rstudio.com) and is currently listed as "sponsored by RStudio". It is the default mirror for the RStudio application.
