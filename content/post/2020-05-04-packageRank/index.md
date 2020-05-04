@@ -3,7 +3,7 @@ slug: packageRank-intro
 title: "Counting and Visualizing CRAN Downloads with packageRank (with Caveats!)"
 authors:
   - Peter Li
-date: 2020-03-05
+date: 2020-05-04
 tags:
 - package development
 output:
