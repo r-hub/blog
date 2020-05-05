@@ -19,7 +19,15 @@ output:
 
 In this post, I'll do two things. First, I'll give an overview of the package's core features and functions - a more detailed description of the package can be found in the [README](https://www.github.com/lindbrook/packageRank) in the project's GitHub repository. Second, I'll discuss a systematic positive bias that inflates download counts.
 
-Note that in this post, I'll refer to _active_ and _inactive_ packages: the former are packages that are still being developed and appear in the [CRAN repository](https://cran.r-project.org/web/packages/index.html); the latter are "retired" packages that are stored in the [CRAN Archive](https://cran.r-project.org/src/contrib/Archive) along with past versions of active packages.
+Two notes. First, I'll refer to _active_ and _inactive_ packages: the former are packages that are still being developed and appear in the [CRAN repository](https://cran.r-project.org/web/packages/index.html); the latter are "retired" packages that are stored in the [CRAN Archive](https://cran.r-project.org/src/contrib/Archive) along with past versions of active packages. Second, if you want to follow along (e.g., copy and paste code), you'll need to install the development verison of [`packageRank`](https://github.com/lindbrook/packageRank):
+
+
+```r
+# You may need to first install 'remotes' via install.packages("remotes").
+remotes::install_github("lindbrook/packageRank", build_vignettes = TRUE)
+```
+
+<br/>
 
 
 ```r
@@ -43,12 +51,14 @@ cranlogs::cran_downloads(packages = "HistData")
 1 2020-05-01   338 HistData
 ```
 
+
 <br/>
 
 
 ```r
 cranDownloads(packages = "HistData")
 ```
+
 
 ```
         date count  package
@@ -78,7 +88,7 @@ cranDownloads(packages = "ggplot2")
 
 ```
         date count package
-1 2020-05-02     0 ggplot2
+1 2020-05-01 56357 ggplot2
 ```
 
 <br/>
@@ -101,8 +111,9 @@ cranDownloads(packages = "VR")
 
 ```
         date count package
-1 2020-05-02     0      VR
+1 2020-05-01    11      VR
 ```
+
 
 <br/>
 
@@ -277,8 +288,6 @@ On Saturday, we can see that [`cholera`](https://cran.r-project.org/package=chol
 
 So contrary to what the nominal counts tell us, one could say that the interest in [`cholera`](https://cran.r-project.org/package=cholera) was actually greater on Saturday than on Wednesday.
 
-<br/>
-
 ## Computing rank percentiles
 
 To compute rank percentiles, I do the following. For each package, I tabulate the number of downloads and then compute the percentage of packages with fewer downloads. Here are the details using [`cholera`](https://cran.r-project.org/package=cholera) from Wednesday as an example:
@@ -354,11 +363,9 @@ plot(packageRank(packages = "cholera", date = "2020-03-07"))
 
 These graphs, customized to be on the same scale, plot the _rank order_ of packages' download counts (x-axis) against the logarithm of those counts (y-axis). It then highlights a package's position in the distribution along with its rank percentile and download count (in red). In the background, the 75th, 50th and 25th percentiles are plotted as dotted vertical lines; the package with the most downloads, which in both cases is [`magrittr`](https://cran.r-project.org/package=magrittr) (in blue, top left); and the total number of downloads, 5,561,681 and 3,403,969 respectively (in blue, top right).
 
-<br/>
-
 ## Computational limitations
 
-Unlike `cranlogs::cran_download()`, which benefits from server-side support (i.e., download counts are "pre-computed"), `packageRank()` must first download the [log file](http://cran-logs.rstudio.com/) (a ~50 MB file) from the internet and then compute the rank percentiles of download counts for _all_ observed packages (typically 15,000+ unique packages and 6 million log entries). The downloading is the real bottleneck (the computation of rank percentiles takes less than a second). This, however, is somewhat mitigated by caching the file using the [`memoise`](https://CRAN.R-project.org/package=memoise) package.
+Unlike `cranlogs::cran_download()`, which benefits from server-side support (i.e., download counts are "pre-computed"), `packageRank()` must first download the [log file](http://cran-logs.rstudio.com/) (upwards of 50 MB file) from the internet and then compute the rank percentiles of download counts for _all_ observed packages (typically 15,000+ unique packages and 6 million log entries). The downloading is the real bottleneck (the computation of rank percentiles takes less than a second). This, however, is somewhat mitigated by caching the file using the [`memoise`](https://CRAN.R-project.org/package=memoise) package.
 
 ## Analytical limitations
 
@@ -568,24 +575,24 @@ I use the above sample of 100 active and 100 inactive packages as the data. I fi
 ```
 
 Call:
-lm(formula = bias ~ popularity + versions + popularity * versions,
+lm(formula = bias ~ popularity + versions + popularity * versions, 
     data = p.data)
 
 Residuals:
-     Min       1Q   Median       3Q      Max
--0.50028 -0.12810 -0.03428  0.08074  1.09940
+     Min       1Q   Median       3Q      Max 
+-0.50028 -0.12810 -0.03428  0.08074  1.09940 
 
 Coefficients:
-                    Estimate Std. Error t value Pr(>|t|)
+                    Estimate Std. Error t value Pr(>|t|)    
 (Intercept)          2.99344    0.04769  62.768   <2e-16 ***
 popularity          -0.92101    0.02471 -37.280   <2e-16 ***
 versions             0.98727    0.07625  12.948   <2e-16 ***
-popularity:versions  0.05918    0.03356   1.763   0.0794 .
+popularity:versions  0.05918    0.03356   1.763   0.0794 .  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 0.2188 on 195 degrees of freedom
-Multiple R-squared:  0.9567,	Adjusted R-squared:  0.956
+Multiple R-squared:  0.9567,	Adjusted R-squared:  0.956 
 F-statistic:  1435 on 3 and 195 DF,  p-value: < 2.2e-16
 ```
 
