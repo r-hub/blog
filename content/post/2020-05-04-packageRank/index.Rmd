@@ -225,7 +225,7 @@ One way to answer these questions is to locate your package in the frequency dis
 
 ```{r skew_wed, fig.align = "center", hugoopts = list(alt = "A scatterplot that plots package downloads v. frequency count of package downloads (i.e., frequency distribution plot) for Wednesday, March 4, 2020. The plot has highly right-skewed and long-tailed shape.", title = "Figure 4 Frequency Distribution of Package Downloads for Wednesday, March 4, 2020"), echo = FALSE}
 
-x <- packageDistribution("cholera", c("2020-03-04", "2020-03-07"))
+x <- packageDistribution("cholera", c("2020-03-04", "2020-03-07"), memoization = FALSE)
 freq.dist1 <- x[[1]]$freq.dist
 freq.dist2 <- x[[2]]$freq.dist
 xlim <- range(freq.dist1$count, freq.dist2$count)
@@ -305,7 +305,7 @@ plot_package_distribution(distn.data[[1]], xlim, ylim)
 <br/>
 
 ```{r packageDistribution_sat, eval = FALSE}
-plot(packageDistribution(package = "cholera", date = "2020-03-07"))
+plot(packageDistribution(package = "cholera", date = "2020-03-07"), memoization = FALSE)
 ```
 ```{r packageDistribution_sat_code, echo = FALSE, fig.align = "center", hugoopts = list(alt = "A histogram plot that plots the base 10 logarithm of package downloads v. frequency count of package downloads (i.e., frequency distribution plot) for Saturday, March 7, 2020.", title = "Figure 7 Frequency Distribution of Package Downloads for Saturday, March 7, 2020 with Logarithm of Download Counts")}
 plot_package_distribution(distn.data[[2]], xlim, ylim)
@@ -319,12 +319,18 @@ To make interpretation and comparison easier, I use the _rank percentile_ of a d
 
 For example, we can compare Wednesday ("2020-03-04") to Saturday ("2020-03-07"):
 
-```{r packageRank1}
+```{r packageRank1_code, echo = FALSE}
+packageRank(package = "cholera", date = "2020-03-04", size.filter = FALSE, memoization = FALSE)
+```
+```{r packageRank1, eval = FALSE}
 packageRank(package = "cholera", date = "2020-03-04", size.filter = FALSE)
 ```
 On Wednesday, we can see that [`cholera`](https://cran.r-project.org/package=cholera) had 38 downloads, came in 5,556th place out of the 18,038 unique packages downloaded, and earned a spot in the 68th percentile.
 
-```{r packageRank2}
+```{r packageRank2_code, echo = FALSE}
+packageRank(package = "cholera", date = "2020-03-07", size.filter = FALSE, memoization = FALSE)
+```
+```{r packageRank2, eval = FALSE}
 packageRank(package = "cholera", date = "2020-03-07", size.filter = FALSE)
 ```
 On Saturday, we can see that [`cholera`](https://cran.r-project.org/package=cholera) had 29 downloads, came in 3,061st place out of the 15,950 unique packages downloaded, and earned a spot in the 80th percentile.
@@ -368,7 +374,7 @@ plot(packageRank(packages = "cholera", date = "2020-03-04"))
 
 ```{r packageRank_data, echo = FALSE}
 dat <- lapply(c("2020-03-04", "2020-03-07"), function(x) {
-  packageRank("cholera", date = x, size.filter = FALSE)
+  packageRank("cholera", date = x, size.filter = FALSE, memoization = FALSE)
 })
 
 crosstab1 <- dat[[1]]$crosstab
@@ -519,7 +525,7 @@ To understand this bias, you should look at actual download logs. You can access
 packageLog(package = "cholera", date = "2020-02-02")
 ```
 ```{r log_code, echo = FALSE, eval = TRUE}
-log <- packageLog("cholera", "2020-02-02")
+log <- packageLog("cholera", "2020-02-02", memoization = FALSE)
 log[, !names(log) %in% c("r_version","r_arch", "r_os")]
 ```
 
@@ -533,7 +539,7 @@ Entries 5 through 7 form the log above illustrate "small" downloads:
 packageLog("cholera", "2020-02-02")[5:7, ]
 ```
 ```{r log_small_code, echo = FALSE}
-log <- packageLog("cholera", "2020-02-02")
+log <- packageLog("cholera", "2020-02-02", memoization = FALSE)
 log[5:7, !names(log) %in% c("r_version","r_arch", "r_os")]
 ```
 
@@ -614,7 +620,7 @@ As an example, see the first eight entries for [`cholera`](https://cran.r-projec
 packageLog(packages = "cholera", date = "2019-10-22")[1:8, ]
 ```
 ```{r log_full_downloads_code, echo = FALSE}
-log <- packageLog("cholera", "2019-10-22")
+log <- packageLog("cholera", "2019-10-22", memoization = FALSE)
 log[1:8, !names(log) %in% c("r_version","r_arch", "r_os")]
 ```
 

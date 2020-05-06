@@ -252,7 +252,7 @@ plot(packageDistribution(package = "cholera", date = "2020-03-04"))
 
 
 ```r
-plot(packageDistribution(package = "cholera", date = "2020-03-07"))
+plot(packageDistribution(package = "cholera", date = "2020-03-07"), memoization = FALSE)
 ```
 {{<figure src="packageDistribution_sat_code-1.png" alt="A histogram plot that plots the base 10 logarithm of package downloads v. frequency count of package downloads (i.e., frequency distribution plot) for Saturday, March 7, 2020." title="Figure 7 Frequency Distribution of Package Downloads for Saturday, March 7, 2020 with Logarithm of Download Counts">}}
 
@@ -265,24 +265,24 @@ To make interpretation and comparison easier, I use the _rank percentile_ of a d
 For example, we can compare Wednesday ("2020-03-04") to Saturday ("2020-03-07"):
 
 
-```r
-packageRank(package = "cholera", date = "2020-03-04", size.filter = FALSE)
-```
-
 ```
         date packages downloads            rank percentile
 1 2020-03-04  cholera        38 5,556 of 18,038       67.9
 ```
-On Wednesday, we can see that [`cholera`](https://cran.r-project.org/package=cholera) had 38 downloads, came in 5,556th place out of the 18,038 unique packages downloaded, and earned a spot in the 68th percentile.
-
 
 ```r
-packageRank(package = "cholera", date = "2020-03-07", size.filter = FALSE)
+packageRank(package = "cholera", date = "2020-03-04", size.filter = FALSE)
 ```
+On Wednesday, we can see that [`cholera`](https://cran.r-project.org/package=cholera) had 38 downloads, came in 5,556th place out of the 18,038 unique packages downloaded, and earned a spot in the 68th percentile.
+
 
 ```
         date packages downloads            rank percentile
 1 2020-03-07  cholera        29 3,061 of 15,950         80
+```
+
+```r
+packageRank(package = "cholera", date = "2020-03-07", size.filter = FALSE)
 ```
 On Saturday, we can see that [`cholera`](https://cran.r-project.org/package=cholera) had 29 downloads, came in 3,061st place out of the 15,950 unique packages downloaded, and earned a spot in the 80th percentile.
 
