@@ -1,7 +1,4 @@
 on:
-  push:
-    branches: 
-      - master
   schedule:
     # * is a special character in YAML so you have to quote this string
     - cron:  '0 12 1 * *'
@@ -15,6 +12,9 @@ jobs:
     - uses: actions/checkout@v2
       
     - name: Assess update need
+      # Get currently used Hugo version from netlify.toml -- needs to be HUGO_VERSION = "blabla" with spaces
+      # Get latest Hugo version from GitHub API
+      # Compare both
       run: |
           ov=$(grep 'HUGO_VERSION' netlify.toml -m 1 | grep -o -P '(?<=HUGO\_VERSION[[:space:]]\=[[:space:]]\").*(?=\")')
           nv=$(curl --request GET \
@@ -33,6 +33,8 @@ jobs:
           echo "::set-env name=needupdate::$needupdate"
           echo "::set-env name=ov::$ov"
           echo "::set-env name=nv::$nv"
+      # Now if needed, update by editing netlify.toml,
+      # Creating a branch and the corresponding PR
     - name: Updating
       if: env.needupdate == 'true'
       run: |
