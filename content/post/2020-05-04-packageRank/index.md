@@ -19,12 +19,15 @@ output:
 
 In this post, I'll do two things. First, I'll give an overview of the package's core features and functions - a more detailed description of the package can be found in the [README](https://www.github.com/lindbrook/packageRank) in the project's GitHub repository. Second, I'll discuss a systematic positive bias that inflates download counts.
 
-Two notes. First, I'll refer to _active_ and _inactive_ packages: the former are packages that are still being developed and appear in the [CRAN repository](https://cran.r-project.org/web/packages/index.html); the latter are "retired" packages that are stored in the [CRAN Archive](https://cran.r-project.org/src/contrib/Archive) along with past versions of active packages. Second, if you want to follow along (e.g., copy and paste code), you'll need to install the development verison of [`packageRank`](https://github.com/lindbrook/packageRank):
+Two notes. First, I'll refer to _active_ and _inactive_ packages: the former are packages that are still being developed and appear in the [CRAN repository](https://cran.r-project.org/web/packages/index.html); the latter are "retired" packages that are stored in the [CRAN Archive](https://cran.r-project.org/src/contrib/Archive) along with past versions of active packages. Second, if you want to follow along (e.g., copy and paste code), you'll need to install `packageRank` (v0.3.5) from [CRAN](https://cran.r-project.org/package=packageRank) or [GitHub](https://github.com/lindbrook/packageRank):
 
 
 ```r
-# You may need to first install 'remotes' via install.packages("remotes").
-remotes::install_github("lindbrook/packageRank", build_vignettes = TRUE)
+# CRAN
+install.packages("packageRank")
+
+# GitHub
+remotes::install_github("lindbrook/packageRank")
 ```
 
 <br/>
