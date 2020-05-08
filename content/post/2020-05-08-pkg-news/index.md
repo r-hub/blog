@@ -3,7 +3,7 @@ slug: pkg-news
 title: "Why and how maintain a NEWS file for your R package?"
 authors:
   - Maëlle Salmon
-date: "2020-05-06"
+date: "2020-05-08"
 tags:
 - package development
 - news
@@ -159,7 +159,7 @@ Last but not least, at the time of writing there were [1,174 packages with a NEW
 
 ### NEWS.md is a great format
 
-Now, why do I think NEWS.md is the best format? _Of course you are free to disagree and to present your worflow in the comments! :angel:_
+Now, why do I think NEWS.md is the best format? _Of course you are free to disagree and to present your worflow in the comments! :innocent:_
 
 * If you're used to R Markdown, then it makes sense to use Markdown in NEWS.md i.e. it will come naturally to you.
 
