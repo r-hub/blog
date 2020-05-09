@@ -3,7 +3,7 @@ slug: packageRank-intro
 title: "Counting and Visualizing CRAN Downloads with packageRank (with Caveats!)"
 authors:
   - Peter Li
-date: 2020-05-04
+date: 2020-05-11
 tags:
 - package development
 output:
@@ -19,8 +19,7 @@ output:
 
 In this post, I'll do two things. First, I'll give an overview of the package's core features and functions - a more detailed description of the package can be found in the [README](https://www.github.com/lindbrook/packageRank) in the project's GitHub repository. Second, I'll discuss a systematic positive bias that inflates download counts.
 
-Two notes. First, I'll refer to _active_ and _inactive_ packages: the former are packages that are still being developed and appear in the [CRAN repository](https://cran.r-project.org/web/packages/index.html); the latter are "retired" packages that are stored in the [CRAN Archive](https://cran.r-project.org/src/contrib/Archive) along with past versions of active packages. Second, if you want to follow along (e.g., copy and paste code), you'll need to install `packageRank` (v0.3.5) from [CRAN](https://cran.r-project.org/package=packageRank) or [GitHub](https://github.com/lindbrook/packageRank):
-
+Two notes. First, in this post I'll be referring to _active_ and _inactive_ packages. The former are packages that are still being developed and appear in the [CRAN repository](https://cran.r-project.org/web/packages/index.html). The latter are "retired" packages that are stored in the [CRAN Archive](https://cran.r-project.org/src/contrib/Archive) along with past versions of active packages. Second, if you want to follow along (i.e., copy and paste code), you'll need to install `packageRank` (ver. 0.3.5) from [CRAN](https://cran.r-project.org/package=packageRank) or [GitHub](https://github.com/lindbrook/packageRank):
 
 ```r
 # CRAN
@@ -578,24 +577,24 @@ I use the above sample of 100 active and 100 inactive packages as the data. I fi
 ```
 
 Call:
-lm(formula = bias ~ popularity + versions + popularity * versions, 
+lm(formula = bias ~ popularity + versions + popularity * versions,
     data = p.data)
 
 Residuals:
-     Min       1Q   Median       3Q      Max 
--0.50028 -0.12810 -0.03428  0.08074  1.09940 
+     Min       1Q   Median       3Q      Max
+-0.50028 -0.12810 -0.03428  0.08074  1.09940
 
 Coefficients:
-                    Estimate Std. Error t value Pr(>|t|)    
+                    Estimate Std. Error t value Pr(>|t|)
 (Intercept)          2.99344    0.04769  62.768   <2e-16 ***
 popularity          -0.92101    0.02471 -37.280   <2e-16 ***
 versions             0.98727    0.07625  12.948   <2e-16 ***
-popularity:versions  0.05918    0.03356   1.763   0.0794 .  
+popularity:versions  0.05918    0.03356   1.763   0.0794 .
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 0.2188 on 195 degrees of freedom
-Multiple R-squared:  0.9567,	Adjusted R-squared:  0.956 
+Multiple R-squared:  0.9567,	Adjusted R-squared:  0.956
 F-statistic:  1435 on 3 and 195 DF,  p-value: < 2.2e-16
 ```
 
