@@ -65,7 +65,7 @@ CRAN uses two sets of compilers for their R package checks.
 [Oracle Developer Studio](https://www.oracle.com/tools/developerstudio/)
 (ODS) is a commercial product that supports Oracle Solaris 10. In addition,
 OpenCSW packages GCC, [version 5.5.0 currently](
-(https://www.opencsw.org/packages/CSWgcc5core/).
+https://www.opencsw.org/packages/CSWgcc5core/).
 
 CRAN compiles R packages with ODS by default. If ODS is not able to
 compile a package, they use GCC instead. GCC should be able to compile
