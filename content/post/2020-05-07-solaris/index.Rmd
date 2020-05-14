@@ -3,7 +3,7 @@ slug: checking-your-r-package-on-solaris
 title: Checking your R package on Solaris
 authors:
 - Gábor Csárdi
-date: "2020-05-08"
+date: "2020-05-14"
 tags:
 - package development
 - solaris
