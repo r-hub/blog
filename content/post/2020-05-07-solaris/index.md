@@ -27,8 +27,12 @@ output:
 
 [Oracle Solaris](https://en.wikipedia.org/wiki/Solaris_\(operating_system\))
 is a non-free Unix operating system. CRAN regularly tests R packages on
-Solaris 10. This is a post about checking that your R package on
-Solaris, using R-hub, and how you can create your own Solaris virtual
+Solaris 10. See [this talk by Uwe Ligges](
+https://channel9.msdn.com/Events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/KEYNOTE-20-years-of-CRAN)
+if you want to know more about the motivation for this, at 32:45.
+
+This is a post about checking that your R package on Solaris, using R-hub,
+and how you can create your own Solaris virtual
 machine to debug your R code.
 
 ## OpenCSW
