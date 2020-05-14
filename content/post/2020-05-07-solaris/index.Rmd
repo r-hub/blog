@@ -18,7 +18,7 @@ options(width = 60)
 
 ## TL;DR
 
-1. To check your package on Solaris, call `rhub::check()` as usual
+1. To check your package on Solaris, call [`rhub::check()`](https://r-hub.github.io/rhub/reference/check.html) as usual
    and choose one of our Solaris builders.
 
 2. Bookmark this page, in case you get an email from CRAN about your
@@ -48,8 +48,7 @@ builder.
 
 R-hub also has a repository (catalog) of OpenCSW packages,
 which we use for system requirements that are not (yet) updated in the
-official OpenCSW catalog. This catalog is at
-https://files.r-hub.io/opencsw/
+[official OpenCSW catalog](https://files.r-hub.io/opencsw/). 
 
 ## CRAN's Solaris builder
 
@@ -64,22 +63,19 @@ compile a package, they use GCC instead. GCC should be able to compile
 most (all?) CRAN R packages. Notably, Rcpp and all packages linking to it
 are compiled with GCC.
 
-CRAN's configuration of the two compilers is here:
-<https://www.stats.ox.ac.uk/pub/bdr/Rconfig/r-patched-solaris-x86>
+You can refer to [CRAN's configuration of the two compilers](https://www.stats.ox.ac.uk/pub/bdr/Rconfig/r-patched-solaris-x86).
 
 ## R-hub's Solaris builder
 
 R-hub's setup is similar. Our Solaris virtual machine has three R
 versions:
 * 32-bit GCC build at `/opt/csw/bin/R`, from the OpenCSW `r_base` package.
-  The configuration of this build is in OpenCSW, see here:
-  <https://buildfarm.opencsw.org/source/xref/opencsw/csw/mgar/pkg/r/trunk/Makefile>
+  The configuration of this build is [in OpenCSW](https://buildfarm.opencsw.org/source/xref/opencsw/csw/mgar/pkg/r/trunk/Makefile).
 * 64-bit GCC build at `/opt/csw/bin/amd64/R`, from the same OpenCSW
   `r_base` package.
-* 32-bit ODS build, using the `config.site` file at
-  <https://github.com/r-hub/solarischeck/blob/master/config.site.cc>.
+* 32-bit ODS build, using [a `config.site` file](https://github.com/r-hub/solarischeck/blob/master/config.site.cc).
 
-If you call `rhub::platforms()` you'll currently see two Solaris builders:
+If you call [`rhub::platforms()`](https://r-hub.github.io/rhub/reference/platforms.html) you'll currently see two Solaris builders:
 * `solaris-x86-patched` uses the 32-bit GCC build of R.
 * `solaris-x86-patched-ods` uses the 32-bit GCC build to install all
   dependencies of the package, but then runs `R CMD check` with the ODS
@@ -89,12 +85,10 @@ If you call `rhub::platforms()` you'll currently see two Solaris builders:
 
 It is unclear how system requirements are installed on CRAN's Solaris.
 R-hub's Solaris machine installs all system requirements from OpenCSW.
-The list of currently installed OpenCSW packages is at
-<https://github.com/r-hub/solarischeck/blob/master/sysreqs.txt>
+Refer to [the list of currently installed OpenCSW packages](ttps://github.com/r-hub/solarischeck/blob/master/sysreqs.txt).
 
 If you need another library for your package, please let use know and
-we can install it. The current list of OpenCSW packages is at
-<https://www.opencsw.org/get-it/packages/>.
+we can install it. Find [the current list of OpenCSW packages](https://www.opencsw.org/get-it/packages/).
 
 If the library you need is missing from OpenCSW, or it is outdated,
 let us know, there is a good chance that we can add it or update it.
@@ -121,20 +115,16 @@ the same as _little_ work, mind you!) You'll need:
 * You need to wait about 15-30 minutes for packer to build the virtual
   machine.
 
-Please see our docs at
-<https://github.com/r-hub/solarischeck/tree/master/packer#readme>
-for the detailed steps.
+Please see [the detailed steps in our docs](https://github.com/r-hub/solarischeck/tree/master/packer#readme).
 
 If you want to install Solaris yourself without the packer automation,
-our internal docs have a detailed walkthrough at
-<https://docs.r-hub.io/technical/solaris/>
+our internal docs have a [detailed walkthrough](https://docs.r-hub.io/technical/solaris/).
 
 ## Need help? Contact us!
 
 If creating a virtual machine is not the right solution for you, do not
 despair! We have other ways to help you with your Solaris issues, please
-contact us by opening an issue at
-<https://github.com/r-hub/rhub/issues>.
+contact us by [opening an issue](https://github.com/r-hub/rhub/issues).
 
 ## Resources, links
 
