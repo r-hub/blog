@@ -256,7 +256,8 @@ Let's end with a quote from [Marie Kondo's The Life-Changing Magic of Tidying Up
 
 ... that we need to amend...
 
-> "Keep only those things that speak to your R CMC check"
+> "Keep only those things that speak to your R CMD check"
+
 [^rabbit]: I might have entered a rabbit hole looking through [THANKS files](https://github.com/search?l=&q=user%3Acran+filename%3ATHANKS&type=Code) on [R-hub mirror of CRAN source code](https://docs.r-hub.io/#cran-source-code-mirror).
 I sure like reading acknowledgements. :bouquet:
 [^git]: I am fascinated by common exclusions, that reflect what is accepted as common practice.
