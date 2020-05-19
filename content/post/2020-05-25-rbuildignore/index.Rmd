@@ -288,7 +288,13 @@ doc/.*[.](bib|bst|sty)$
 ## Conclusion
 
 In this post we explained what files and directories can be present in a bundled package, and how to keep non-standard things to make it into the bundled package: using `.Rbuildignore`; and how to let non-standard things make it into the bundled package: `inst/` -- but don't make it your junk drawer, of course.
+Let's end with a quote from [Marie Kondo's The Life-Changing Magic of Tidying Up](https://www.goodreads.com/work/quotes/41711738-jinsei-ga-tokimeku-katazuke-no-maho)
 
+> "Keep only those things that speak to your heart."
+
+... that we need to amend...
+
+> "Keep only those things that speak to your R CMC check"
 [^rabbit]: I might have entered a rabbit hole looking through [THANKS files](https://github.com/search?l=&q=user%3Acran+filename%3ATHANKS&type=Code) on [R-hub mirror of CRAN source code](https://docs.r-hub.io/#cran-source-code-mirror).
 I sure like reading acknowledgements. :bouquet:
 [^git]: I am fascinated by common exclusions, that reflect what is accepted as common practice.
