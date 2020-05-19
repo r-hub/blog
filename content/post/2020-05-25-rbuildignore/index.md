@@ -64,6 +64,8 @@ In that case, [take a step back and try to fix your code, e.g. cleaning after yo
 
 Now, how do you keep the items that sparkle joy in your package source, without endangering R CMD check passing?
 
+### R CMD build filtering
+
 To do that we need to understand how files and directories end up, or not, in the tarball/bundled package, from the source package?
 That's one job of [R CMD build](https://cran.r-project.org/doc/manuals/R-exts.html#Building-package-tarballs) possibly via a wrapper like `devtools::build()`.
 It will copy your whole package source and then remove files in three "steps"[^copy]
@@ -172,6 +174,11 @@ And [`.hidden_file_exclusions`](https://github.com/wch/r-source/blob/68c9ec863d5
       ".project", ".seed", ".settings", ".tm_properties")
 ```
 
+Note that `R CMD build` will _silently_ remove files from the bundled package, which [is a source of weird errors](https://www.mail-archive.com/r-package-devel@r-project.org/msg01325.html).
+For instance, if you wrote a wrong pattern in `.Rbuildignore` that ends up removing one of your R files, R CMD check will complain about a function not existing and you might be a bit puzzled.
+
+### .Rbuildignore
+
 So, if your package source features any file or directory that is not known, not standard, and also not listed in the common exclusions, then you need to add it to [`.Rbuildignore`](https://cran.r-project.org/doc/manuals/R-exts.html#index-_002eRbuildignore-file).
 
 As written in "Writing R extensions", _"To exclude files from being put into the package, one can specify a list of exclude patterns in file .Rbuildignore in the top-level source directory. These patterns should be Perl-like regular expressions (see the help for regexp in R for the precise details), one per line, to be matched case-insensitively against the file and directory names relative to the top-level package source directory."_.
@@ -206,9 +213,40 @@ Makefile
 ^NEWS\.md$
 ```
 
-### How to edit `.Rbuildignore`?
+#### How to edit `.Rbuildignore`?
 
-You could edit `.Rbuildignore` by hand, from the command line, or using `usethis::use_build_ignore()` that will escape paths by default.
+You could edit `.Rbuildignore` by hand, from the command line, or using [`usethis::use_build_ignore()`](https://usethis.r-lib.org/reference/use_build_ignore.html) that will escape paths by default.
+There is also the [`usethis::edit_r_buildignore()`](https://usethis.r-lib.org/reference/edit.html) function for creating/opening the user-level or project-level `.Rbuildignore`.
+
+#### When to edit `.Rbuildignore`?
+
+You could edit `.Rbuildignore` when R CMD check complains, or when creating non-standard files.
+This is where workflow tools can help.
+If you e.g. use `usethis::use_cran_comments()` to create `cran-commends.md`, it will also add it to `.Rbuildignore`
+
+## Keeping non-standard things
+
+Now you might wonder, how do I package up a Shiny app, a raw data file, etc.?
+In all cases, a good idea is to look at existing practice in recent CRAN packages.
+Often, you'll see stuff is simply stored in `inst/`: classic elements such as `inst/CITATION`, [`inst/extdata/`](https://r-pkgs.org/data.html#data-extdata) but also more modern or exotic elements such as [RStudio addins](https://github.com/ThinkR-open/remedy/tree/master/inst/rstudio).
+
+## What about .Rinstignore?
+
+`.Rbuildignore` has [a sibling called `.Rinstignore` for another use case](https://cran.r-project.org/doc/manuals/R-exts.html#index-_002eRinstignore-file): _"The contents of the inst subdirectory will be copied recursively to the installation directory. Subdirectories of inst should not interfere with those used by R (currently, R, data, demo, exec, libs, man, help, html and Meta, and earlier versions used latex, R-ex). The copying of the inst happens after src is built so its Makefile can create files to be installed. To exclude files from being installed, one can specify a list of exclude patterns in file .Rinstignore in the top-level source directory. These patterns should be Perl-like regular expressions (see the help for regexp in R for the precise details), one per line, to be matched case-insensitively against the file and directory paths, e.g. doc/.*[.]png$ will exclude all PNG files in inst/doc based on the extension."_
+
+See for instance [`future.apply` `.Rinstignore`](https://github.com/HenrikBengtsson/future.apply/blob/58f5a21f7f25415ce487b1a3bbbe4d44109c056c/.Rinstignore)
+
+```r
+# Certain LaTeX files (e.g. bib, bst, sty) must be part of the build 
+# such that they are available for R CMD check.  These are excluded
+# from the install using .Rinstignore in the top-level directory
+# such as this one.
+doc/.*[.](bib|bst|sty)$
+```
+
+## Conclusion
+
+In this post we explained what files and directories can be present in a bundled package, and how to keep non-standard things to make it into the bundled package: using `.Rbuildignore`; and how to let non-standard things make it into the bundled package: `inst/` -- but don't make it your junk drawer, of course.
 
 [^rabbit]: I might have entered a rabbit hole looking through [THANKS files](https://github.com/search?l=&q=user%3Acran+filename%3ATHANKS&type=Code) on [R-hub mirror of CRAN source code](https://docs.r-hub.io/#cran-source-code-mirror).
 I sure like reading acknowledgements. :bouquet:
