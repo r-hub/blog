@@ -1,6 +1,6 @@
 ---
 slug: rbuildignore
-title: "Non-standard files/directories and Rbuildignore"
+title: "Non-standard files/directories, Rbuildignore and inst"
 authors:
   - Maëlle Salmon
 date: "2020-05-25"
