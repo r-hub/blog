@@ -3,7 +3,7 @@ slug: rbuildignore
 title: "Non-standard files/directories, Rbuildignore and inst"
 authors:
   - Maëlle Salmon
-date: "2020-05-25"
+date: "2020-05-20"
 tags:
 - package development
 - standards
