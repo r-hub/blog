@@ -17,7 +17,7 @@ output:
 
 Paragraphasing [Writing R Extensions](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Creating-R-packages), an R package is _"directory of files which extend R"_.
 These files have to follow [a standard structure](https://r-pkgs.org/package-structure-state.html): you can't store everything that suits your fancy in a tarball you submit to CRAN.
-In this post we shall go through what can go on CRAN, what else you might want to keep, and how not to let the latter upset R CMD check.
+In this post we shall go through what directories and files _can_ go on CRAN and how to navigate this while shipping everything you want to CRAN and keeping some things in the package source only.
 
 ## Standard, known directory and files
 
@@ -51,26 +51,27 @@ We'll focus on their mere existence.
 Now, in a package folder, you might have all sorts of different things
 
 * some configuration files for continuous integration, for a `pkgdown` website, etc;
-* a Shiny app;
+* the source of a Shiny app;
 * cran-comments.md for your CRAN submissions.
 
 If they ended up at the root of the bundled package, R CMD check would complain and tell you
 
 > :rage: Non-standard files/directories found at top level:
 
-Note that sometimes R CMD check could complain about files you don't see, that are created by the checking process. 
-In that case, [take a step back and try to fix your code, e.g. cleaning after yourself if examples create example files.](https://www.mail-archive.com/r-package-devel@r-project.org/msg03254.html)
+Note that sometimes R CMD check could complain about files you don't see in the source because they are created by the checking process. 
+In that case, [take a step back and try to fix your code, e.g. cleaning after yourself if examples create files.](https://www.mail-archive.com/r-package-devel@r-project.org/msg03254.html)
 
-Now, how do you keep the items that sparkle joy in your package source, without endangering R CMD check passing?
+Now, how do you keep the items that sparkle joy in the bundled package and in your package source, without endangering R CMD check passing?
 
-## Excluding files
+## Excluding files from the bundled package
 
-There are files that don't need to make it into a built package (e.g., your CRAN comments).
+There are files that don't need to make it into a built package (e.g., your CRAN comments, your `pkgdown` config.).
 
 ### R CMD build filtering
 
-To do that we need to understand how files and directories end up, or not, in the tarball/bundled package, from the source package?
-That's one job of [R CMD build](https://cran.r-project.org/doc/manuals/R-exts.html#Building-package-tarballs) possibly via a wrapper like `devtools::build()`.
+To prevent files and folders from making it from the package source to the bundled package, we need to understand how things work:
+How do files and directories end up, or not, in the tarball/bundled package, from the source package?
+That's one job of [R CMD build](https://cran.r-project.org/doc/manuals/R-exts.html#Building-package-tarballs) possibly via a wrapper like [`devtools::build()`](http://devtools.r-lib.org/reference/build.html).
 It will copy your whole package source and then remove files in three "steps"[^copy]
 
 * Files that are [listed in `.Rbuildignore`](https://github.com/wch/r-source/blob/1d4f7aa1dac427ea2213d1f7cd7b5c16e896af22/src/library/tools/R/build.R#L75);
@@ -224,18 +225,19 @@ There is also the [`usethis::edit_r_buildignore()`](https://usethis.r-lib.org/re
 #### When to edit `.Rbuildignore`?
 
 You could edit `.Rbuildignore` when R CMD check complains, or when creating non-standard files.
-This is where workflow tools can help.
+This is where [workflow tools](/2020/04/29/maintenance/) can help.
 If you e.g. use `usethis::use_cran_comments()` to create `cran-commends.md`, it will also add it to `.Rbuildignore`
 
-## Keeping non-standard things
+## Keeping non-standard things in the bundled package
 
 Now you might wonder, how do I package up a Shiny app, a raw data file, etc. if they're not allowed at the root of a bundled package?
-In all cases, a good idea is to look at existing practice in recent CRAN packages.
-Often, you'll see stuff is simply stored in `inst/`: classic elements such as `inst/CITATION`, [`inst/extdata/`](https://r-pkgs.org/data.html#data-extdata) but also more modern or exotic elements such as [RStudio addins](https://github.com/ThinkR-open/remedy/tree/master/inst/rstudio).
+Well, easy, keep them but not at the root, ah!
+More seriously, a good idea is to look at existing practice in recent CRAN packages.
+Often, you'll see stuff is stored in `inst/`: classic elements such as citation information in `inst/CITATION`[^citation], [raw data in `inst/extdata/`](https://r-pkgs.org/data.html#data-extdata) but also more modern or exotic elements such as [RStudio addins](https://github.com/ThinkR-open/remedy/tree/master/inst/rstudio).
 
 ## What about .Rinstignore?
 
-`.Rbuildignore` has [a sibling called `.Rinstignore` for another use case](https://cran.r-project.org/doc/manuals/R-exts.html#index-_002eRinstignore-file): _"The contents of the inst subdirectory will be copied recursively to the installation directory. Subdirectories of inst should not interfere with those used by R (currently, R, data, demo, exec, libs, man, help, html and Meta, and earlier versions used latex, R-ex). The copying of the inst happens after src is built so its Makefile can create files to be installed. To exclude files from being installed, one can specify a list of exclude patterns in file .Rinstignore in the top-level source directory. These patterns should be Perl-like regular expressions (see the help for regexp in R for the precise details), one per line, to be matched case-insensitively against the file and directory paths, e.g. doc/.*[.]png$ will exclude all PNG files in inst/doc based on the extension."_
+`.Rbuildignore` has [a sibling called `.Rinstignore` for another use case](https://cran.r-project.org/doc/manuals/R-exts.html#index-_002eRinstignore-file): _"The contents of the inst subdirectory will be copied recursively to the installation directory. Subdirectories of inst should not interfere with those used by R (currently, R, data, demo, exec, libs, man, help, html and Meta, and earlier versions used latex, R-ex). The copying of the inst happens after src is built so its Makefile can create files to be installed. To exclude files from being installed, one can specify a list of exclude patterns in file .Rinstignore in the top-level source directory. These patterns should be Perl-like regular expressions[^extras] (see the help for regexp in R for the precise details), one per line, to be matched case-insensitively against the file and directory paths, e.g. doc/.*[.]png$ will exclude all PNG files in inst/doc based on the extension."_
 
 See for instance [`future.apply` `.Rinstignore`](https://github.com/HenrikBengtsson/future.apply/blob/58f5a21f7f25415ce487b1a3bbbe4d44109c056c/.Rinstignore)
 
@@ -247,18 +249,23 @@ See for instance [`future.apply` `.Rinstignore`](https://github.com/HenrikBengts
 doc/.*[.](bib|bst|sty)$
 ```
 
+
+
 ## Conclusion
 
-In this post we explained what files and directories can be present in a bundled package, and how to keep non-standard things to make it into the bundled package: using `.Rbuildignore`; and how to let non-standard things make it into the bundled package: `inst/` -- but don't make it your junk drawer, of course.
+In this post we explained what files and directories can be present in a bundled package. 
+We also explained how to prevent non-standard things from making it from the package source into the bundled package: using `.Rbuildignore`; and how to let non-standard things make it into the bundled package: `inst/` -- but don't make it your junk drawer, of course.
 Let's end with a quote from [Marie Kondo's The Life-Changing Magic of Tidying Up](https://www.goodreads.com/work/quotes/41711738-jinsei-ga-tokimeku-katazuke-no-maho)
 
 > "Keep only those things that speak to your heart."
 
 ... that we need to amend...
 
-> "Keep only those things that speak to your R CMD check"
+> "Keep only those things that speak to your R CMD check."
 
 [^rabbit]: I might have entered a rabbit hole looking through [THANKS files](https://github.com/search?l=&q=user%3Acran+filename%3ATHANKS&type=Code) on [R-hub mirror of CRAN source code](https://docs.r-hub.io/#cran-source-code-mirror).
 I sure like reading acknowledgements. :bouquet:
 [^git]: I am fascinated by common exclusions, that reflect what is accepted as common practice.
 [^copy]: That procedure can make R CMD build very slow when you have huge hidden directories, refer to [this excellent R-package-devel thread](https://stat.ethz.ch/pipermail/r-package-devel/2020q1/005031.html).
+[^citation]: That citation will be found by the `citation()` function when an user calls it e.g. `citation("stplanr")`, and by `pkgdown` when building the website, see [`stplanr` CITATION page](https://docs.ropensci.org/stplanr/authors.html) that is linked from its [homepage](https://docs.ropensci.org/stplanr/).
+[^extras]: Another file full of Perl regex that is out of scope for this post is [`.install_extras`](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#index-_002einstall_005fextras-file) that influences what makes it (rather than what doesn't make it) from the `vignettes` to `inst/doc` when building the package.
