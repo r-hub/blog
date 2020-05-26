@@ -10,12 +10,52 @@ output:
 tags:
   - readme
   - documentation
+output: 
+  html_document:
+    keep_md: true
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,
-                      cache = TRUE,
-                      warning = FALSE)
+# Options to have images saved in the post folder
+# And to disable symbols before output
+knitr::opts_chunk$set(fig.path = "", comment = "")
+
+# knitr hook to make images output use Hugo options
+knitr::knit_hooks$set(
+  plot = function(x, options) {
+    hugoopts <- options$hugoopts
+    paste0(
+      "{{<figure src=",
+      '"', x, '" ',
+      if (!is.null(hugoopts)) {
+        glue::glue_collapse(
+          glue::glue('{names(hugoopts)}="{hugoopts}"'),
+          sep = " "
+        )
+      },
+      ">}}\n"
+    )
+  }
+)
+
+# knitr hook to use Hugo highlighting options
+knitr::knit_hooks$set(
+  source = function(x, options) {
+  hlopts <- options$hlopts
+    paste0(
+      "```r ",
+      if (!is.null(hlopts)) {
+      paste0("{",
+        glue::glue_collapse(
+          glue::glue('{names(hlopts)}={hlopts}'),
+          sep = ","
+        ), "}"
+        )
+      },
+      "\n", glue::glue_collapse(x, sep = "\n"), "\n```\n"
+    )
+  }
+)
 ```
 
 A recent topic of the Write The Docs' great newsletter was [READMEs](https://www.writethedocs.org/blog/newsletter-july-2019/#readmes-on-readmes-and-other-readme-related-resources). It read _"As they’re often the first thing people see about a code project, READMEs are pretty important to get right."_. In this post, we'll share some insights around the READMEs of R packages: why they're crucial; what they usually contain; how you can best write yours. Let's dive in!  :swimmer:

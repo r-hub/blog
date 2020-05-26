@@ -165,10 +165,7 @@ ggplot(readmes) +
   ggtitle(glue::glue("Number of lines in a sample of {nrow(readmes)} READMEs"))
 ```
 
-<div class="figure">
-<img src="/post/2019-12-03-readmes_files/figure-html/nolinesplot-1.png" alt="Dot plot of the number of lines in READMEs" width="672" />
-<p class="caption">Figure 1: Dot plot of the number of lines in READMEs</p>
-</div>
+{{< figure src="nolinesplot-1.png" alt="Dot plot of the number of lines in READMEs" width="672" caption="Dot plot of the number of lines in READMEs" >}}
 
 READMEs in our sample most often don't have more than 200 lines. Now, this metric might indicate how much a potential user needs to take in and how long they need to scroll down but we shall now look into other indicators of size: the number of lines of R code, the number of words outside of code and output.
 
