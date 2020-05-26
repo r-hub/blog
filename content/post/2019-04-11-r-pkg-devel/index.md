@@ -259,7 +259,7 @@ emails %>%
   ylab("Number of emails")
 ```
 
-{{< figure src="/2019-04-11-r-pkg-devel/over-time-1.png" alt="R-package-devel weekly number of emails over time" >}}
+{{< figure src="over-time-1.png" alt="R-package-devel weekly number of emails over time" >}}
 
 In this context of R package development help at least, email is not
 dead!
@@ -389,7 +389,7 @@ ggplot(word_counts[1:15,]) +
   coord_flip()
 ```
 
-{{< figure src="/2019-04-11-r-pkg-devel/words-1.png" alt="Most common words in R package devel archives" >}}
+{{< figure src="words-1.png" alt="Most common words in R package devel archives" >}}
 
 Nothing too surprising here, especially the clear dominance of
 “package”, followed by "cran", "check" and "error"! Now, we could apply the same script again and again to show
@@ -506,7 +506,7 @@ k_result %>%
                           axis_title_size = 16)
 ```
 
-{{< figure src="/2019-04-11-r-pkg-devel/diagnostics-1.png" alt="Model diagnostics by number of topics. Held-out likelihood and lower bound keep increasing while residuals keep decreasing with the number of topics, but semantic coherence also decreases with the number of topics." >}}
+{{< figure src="diagnostics-1.png" alt="Model diagnostics by number of topics. Held-out likelihood and lower bound keep increasing while residuals keep decreasing with the number of topics, but semantic coherence also decreases with the number of topics." >}}
 
 
 The model diagnostics plot didn’t help a ton because there was no clear
@@ -566,7 +566,7 @@ gamma_terms %>%
        subtitle = "With the top words that contribute to each topic")
 ```
 
-{{< figure src="/2019-04-11-r-pkg-devel/topics20-1.png" alt="20 topics by prevalence in the r-pkg-devel archives with the top words that contribute to each topic" >}}
+{{< figure src="topics20-1.png" alt="20 topics by prevalence in the r-pkg-devel archives with the top words that contribute to each topic" >}}
 
 A first thing we notice about the topics is that some of them contain
 the signatures of superposters: Topic 7 (“cran, package, uwe, best,
