@@ -8,7 +8,13 @@ tags:
   - rversions
   - R package
   - release
+output: 
+  html_document:
+    keep_md: true
 ---
+
+
+
 
 Version 1.1.0 of the `rversions` package has been [released on CRAN](https://cran.r-project.org/package=rversions)! `rversions` queries the main R SVN repository to find the versions r-release and r-oldrel refer to, and also all previous R versions and their release dates.
 
@@ -38,34 +44,77 @@ As you might have guessed, R is developed under version control. The R Core team
 
 - [r-versions are coming from SVN tags](https://github.com/metacran/rversions/blob/36deaf5c4ffd648c7524d8e3225871e6d97d9ccf/R/rversions.R#L79)
 
-```{r r-versions}
+```r 
 head(rversions::r_versions())
+```
+
+```
+  version                date nickname
+1    0.60 1997-12-04 08:47:58     <NA>
+2    0.61 1997-12-21 13:09:22     <NA>
+3  0.61.1 1998-01-10 00:31:55     <NA>
+4  0.61.2 1998-03-14 19:25:55     <NA>
+5  0.61.3 1998-05-02 07:58:17     <NA>
+6    0.62 1998-06-14 12:56:20     <NA>
 ```
 
 - r-release is the latest SVN tag
 
-```{r r-release}
+```r 
 rversions::r_release()
+```
+
+```
+    version                date  nickname
+117   4.0.0 2020-04-24 07:05:34 Arbor Day
 ```
 
 - r-oldrel is the latest of the previous minor version
 
-```{r r-oldrel}
+```r 
 rversions::r_oldrel()
+```
+
+```
+    version                date             nickname
+116   3.6.3 2020-02-29 08:05:16 Holding the Windsock
 ```
 
 - r-release-tarball is the latest SVN tag that has a corresponding tar.gz to download
 
-```{r r-release-tarball}
+```r 
 rversions::r_release_tarball()
+```
+
+```
+    version                date
+116   3.6.3 2020-02-29 08:05:16
+                                                       URL             nickname
+116 https://cran.r-project.org/src/base/R-3/R-3.6.3.tar.gz Holding the Windsock
 ```
 
 - Windows, macOS are the same: latest SVN tag that has a file to download
 
-```{r win-r}
+```r 
 rversions::r_release_win()
-rversions::r_release_macos()
+```
 
+```
+    version                date
+117   4.0.0 2020-04-24 07:05:34
+                                                            URL  nickname
+117 https://cran.r-project.org/bin/windows/base/R-4.0.0-win.exe Arbor Day
+```
+
+```r 
+rversions::r_release_macos()
+```
+
+```
+    version                date
+117   4.0.0 2020-04-24 07:05:34
+                                                  URL  nickname
+117 https://cran.r-project.org/bin/macosx/R-4.0.0.pkg Arbor Day
 ```
 
 Version nicknames are extracted from specific files from R 2.15.1, e.g. https://svn.r-project.org/R/tags/R-2-15-1/VERSION-NICK. Before that there were only 3 version nicknames, which we [got from Lucy D'Agostino McGowan's excellent blog post about R release names](https://livefreeordichotomize.com/2017/09/28/r-release-names/), where you can also read about their meaning.
@@ -96,12 +145,20 @@ In the tools mentioned below, `rversions` is used via its [very own web service]
 At this point, you have no doubt `rversions` is useful, but what about we use it to get a glimpse at R's release schedule over time?
 
 
-```{r, fig.cap="Major, minor and patch releases of R over time"}
+```r 
 library("ggplot2")
 versions <- rversions::r_versions()
 versions <- dplyr::mutate(versions, date = anytime::anytime(date))
 versions <- tidyr::separate(versions, version,
                             into = c("major", "minor", "patch"))
+```
+
+```
+Warning: Expected 3 pieces. Missing pieces filled with `NA` in 13 rows [1, 2, 6,
+11, 15, 18, 20, 22, 23, 25, 27, 31, 33].
+```
+
+```r 
 versions <- dplyr::mutate(versions, patch = ifelse(is.na(patch), 0, patch))
 versions <- dplyr::mutate(versions, release = dplyr::case_when(
   major != dplyr::lag(major) ~ "major",
@@ -126,6 +183,7 @@ ggplot(versions) +
   ggtitle("R releases over time",
           subtitle = "Data obtained via the R-hub rversions R package")
 ```
+{{<figure src="unnamed-chunk-1-1.png" >}}
 
 With the R version being x.y.z, we define a major release as a change in x, a minor release as a change in y and a patch release as a change in z. The figure above shows that the frequency of minor releases decreased in 2013, from twice to once a year. The frequency of patch releases seems irregular, as is the frequency of _major_ releases: not sure when we should expect R 4.0.0!
 
