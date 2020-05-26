@@ -6,6 +6,10 @@ date: '2019-12-12'
 slug: internal functions
 tags:
   - package development
+  - documentation
+output: 
+  html_document:
+    keep_md: true
 ---
 
 An R package can be viewed as a [set of functions](https://github.com/ropensci/software-review/issues/350#issue-518124603), of which only a part are exposed to the user. In this blog post we shall concentrate of the functions that are not exposed to the user, so called internal functions: what are they, how does one handle them in one's own package, and how can one explore them?
@@ -18,13 +22,37 @@ It's a function that lives in your package, but that isn't surfaced to the user.
 
 For instance, in the usethis package there's a `base_and_recommended()` function that is not exported.
 
-```{r examples, error = TRUE}
+
+```r
 # doesn't work
 library("usethis")
 base_and_recommended()
+```
+
+```
+## Error in base_and_recommended(): could not find function "base_and_recommended"
+```
+
+```r
 usethis::base_and_recommended()
+```
+
+```
+## Error: 'base_and_recommended' is not an exported object from 'namespace:usethis'
+```
+
+```r
 # works
 usethis:::base_and_recommended()
+```
+
+```
+##  [1] "base"       "boot"       "class"      "cluster"    "codetools" 
+##  [6] "compiler"   "datasets"   "foreign"    "graphics"   "grDevices" 
+## [11] "grid"       "KernSmooth" "lattice"    "MASS"       "Matrix"    
+## [16] "methods"    "mgcv"       "nlme"       "nnet"       "parallel"  
+## [21] "rpart"      "spatial"    "splines"    "stats"      "stats4"    
+## [26] "survival"   "tcltk"      "tools"      "utils"
 ```
 
 As an user, you shouldn't use unexported functions of another package in your own code.
@@ -94,30 +122,75 @@ One first way to understand what a given helper does is looking at its code, [fr
 
 Another useful tool is the [in development `pkgapi` package](https://github.com/r-lib/pkgapi). Let's look at the [cranlogs source code](/2019/05/02/cranlogs-2-1-1/).
 
-```{r pkgapi}
+
+```r
 map <- pkgapi::map_package("/home/maelle/Documents/R-hub/cranlogs")
 ```
 
 We can see all defined functions, exported or not.
 
-```{r}
+
+```r
 str(map$defs)
+```
+
+```
+## 'data.frame':	8 obs. of  7 variables:
+##  $ name    : chr  "check_date" "cran_downloads" "cran_top_downloads" "cranlogs_badge" ...
+##  $ file    : chr  "R/utils.R" "R/cranlogs.R" "R/cranlogs.R" "R/badge.R" ...
+##  $ line1   : int  1 61 184 16 137 105 117 126
+##  $ col1    : int  1 1 1 1 1 1 1 1
+##  $ line2   : int  6 103 208 33 153 115 124 135
+##  $ col2    : int  1 1 1 1 1 1 1 1
+##  $ exported: logi  FALSE TRUE TRUE TRUE FALSE FALSE ...
 ```
 
 We can see all calls inside the package code, to functions from the package and other packages.
 
-```{r}
+
+```r
 str(map$calls)
+```
+
+```
+## 'data.frame':	84 obs. of  9 variables:
+##  $ file : chr  "R/badge.R" "R/badge.R" "R/badge.R" "R/badge.R" ...
+##  $ from : chr  "cranlogs_badge" "cranlogs_badge" "cranlogs_badge" "cranlogs_badge" ...
+##  $ to   : chr  "base::c" "base::match.arg" "base::paste0" "base::paste0" ...
+##  $ type : chr  "call" "call" "call" "call" ...
+##  $ line1: int  17 21 23 25 30 7 8 62 65 66 ...
+##  $ line2: int  17 21 23 25 30 7 8 62 65 66 ...
+##  $ col1 : int  38 14 14 16 3 14 14 35 8 17 ...
+##  $ col2 : int  38 22 19 21 8 19 19 35 14 25 ...
+##  $ str  : chr  "c" "match.arg" "paste0" "paste0" ...
 ```
 
 We can filter that data.frame to only keep calls between functions defined in the package.
 
-```{r}
+
+```r
 library("magrittr")
 internal_calls <- map$calls[map$calls$to %in% glue::glue("{map$name}::{map$defs$name}"),]
 
 internal_calls %>%
   dplyr::arrange(to)
+```
+
+```
+##           file           from                      to type line1 line2 col1
+## 1 R/cranlogs.R cran_downloads    cranlogs::check_date call    69    69    7
+## 2 R/cranlogs.R cran_downloads    cranlogs::check_date call    73    73    7
+## 3 R/cranlogs.R        to_df_1 cranlogs::fill_in_dates call   123   123    3
+## 4 R/cranlogs.R cran_downloads         cranlogs::to_df call   101   101    3
+## 5 R/cranlogs.R          to_df       cranlogs::to_df_1 call   109   109    5
+## 6 R/cranlogs.R          to_df       cranlogs::to_df_r call   107   107    5
+##   col2           str
+## 1   16    check_date
+## 2   16    check_date
+## 3   15 fill_in_dates
+## 4    7         to_df
+## 5   11       to_df_1
+## 6   11       to_df_r
 ```
 
 That table can help understand how a package works. One could combine that with a network visualization.
@@ -142,36 +215,7 @@ visNetwork(nodes, edges, height = "500px") %>%
   visNodes(size = 10)
 ```
 
-```{r, echo = FALSE}
-library("visNetwork")
-internal_calls <- internal_calls %>%
-  dplyr::mutate(to = gsub("cranlogs\\:\\:", "", to))
-
-nodes <- tibble::tibble(id = map$defs$name,
-                        title = map$defs$file,
-                        label = map$defs$name,
-                        shape = dplyr::if_else(map$defs$exported,
-                                               "triangle",
-                                               "square"))
-
-edges <- internal_calls[, c("from", "to")]
-
-
-visNetwork(nodes, edges, height = "500px") %>%
-  visLayout(randomSeed = 42) %>%
-  visNodes(size = 10) -> w
-
-# from https://github.com/reconhub/learn/blob/551f5ed823c72078ffe8eae316dd728338dfe35b/R/save_and_use_widget.R#L13
-filename <- "cranlogs-2019-11-01.html"
-root     <- rprojroot::has_file("config.toml")
-htmlwidgets::saveWidget(w, 
-                        root$find_file("static", filename), selfcontained = TRUE)
-htmltools::tags$iframe(src = paste0("/", filename),
-                         width = "100%",
-                         height = "500px")
-
-
-```
+<!--html_preserve--><iframe src="/cranlogs-2019-11-01.html" width="100%" height="500px"></iframe><!--/html_preserve-->
 
 In this interactive visualization one sees three exported functions (triangles), with only one that calls internal functions. Such a network visualization might not be that useful for bigger packages, and in our workflow is limited to `pkgapi`'s capabilities (e.g. not memoised functions)... but it's at least quite pretty.
 
