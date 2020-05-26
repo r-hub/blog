@@ -4,6 +4,9 @@ authors:
   - Maëlle Salmon
 date: '2019-12-19'
 slug: r-hub-usage
+output: 
+  html_document:
+    keep_md: true
 ---
 
 
@@ -64,10 +67,7 @@ ggplot(aes(week, n)) +
 ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 ```
 
-<div class="figure">
-<img src="/post/2019-12-19-r-hub-usage_files/figure-html/usage-week-1.png" alt="Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a little less than 1,000 builds a week" width="672" />
-<p class="caption">Figure 1: Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a little less than 1,000 builds a week</p>
-</div>
+![Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a little less than 1,000 builds a week](usage-week-1.png)
 
 When plotting the weekly count of builds as below, it is quite clear that usage stepped up at the end of last year. A delayed effect of the [RStudio webinar about R-hub](https://resources.rstudio.com/the-essentials-of-data-science/r-hub-overview-ga-bor-csa-rdi)?
 
@@ -92,10 +92,7 @@ ggplot(aes(week, n)) +
 ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 ```
 
-<div class="figure">
-<img src="/post/2019-12-19-r-hub-usage_files/figure-html/usage-week-pkg-1.png" alt="Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week. Some weeks have a surprising high number of packages built." width="672" />
-<p class="caption">Figure 2: Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week. Some weeks have a surprising high number of packages built.</p>
-</div>
+![Weekly count of builds on R-hub package builder, showing an increase, then a stagnation in 2018, then a steeper increase since the end of 2018, to about 125 packages a week. Some weeks have a surprising high number of packages built.](usage-week-pkg-1.png)
 
 The number of unique packages built mostly follow the number of builds apart from a stagnation last year.
 
@@ -122,10 +119,7 @@ ggplot(aes(week, n)) +
 ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 ```
 
-<div class="figure">
-<img src="/post/2019-12-19-r-hub-usage_files/figure-html/usage-week-user-1.png" alt="Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a bit more than 100 users a week" width="672" />
-<p class="caption">Figure 3: Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a bit more than 100 users a week</p>
-</div>
+![Weekly count of builds on R-hub package builder, showing an slow increase until mid 2018 then a steeper increase to a bit more than 100 users a week](usage-week-user-1.png)
 
 So all in all, the R-hub package builder is serving more and more users and packages.
 
@@ -145,15 +139,15 @@ builds %>%
 
 
 
-|platform                    |     n|
-|:---------------------------|-----:|
-|ubuntu-gcc-release          | 18554|
-|windows-x86_64-devel        | 15890|
-|fedora-clang-devel          | 15220|
-|linux-x86_64-rocker-gcc-san |  5778|
-|debian-gcc-devel            |  4083|
-|windows-x86_64-release      |  4008|
-|macos-elcapitan-release     |  2942|
+platform                           n
+----------------------------  ------
+ubuntu-gcc-release             19490
+windows-x86_64-devel           16831
+fedora-clang-devel             16136
+linux-x86_64-rocker-gcc-san     6057
+debian-gcc-devel                4294
+windows-x86_64-release          4161
+macos-elcapitan-release         3077
 
 The most frequently used platforms reflect the default platforms (ubuntu-gcc-release for the web interface), including the default platforms mix for [`rhub::check_for_cran()`](https://r-hub.github.io/rhub/reference/check_for_cran.html) (windows-x86_64-devel, ubuntu-gcc-release, fedora-clang-devel and if the package needs compilation linux-x86_64-rocker-gcc-san).
 
@@ -167,7 +161,7 @@ builds %>%
   dplyr::group_by(platform) %>%
   dplyr::filter(lubridate::year(as.Date(min(submitted))) == 2019) %>%
   dplyr::summarise(first = as.Date(min(submitted))) %>%
-  knitr::kable()
+  knitr::kable(format = "markdown")
 ```
 
 
@@ -192,13 +186,13 @@ Although R-hub package builder has a working web interface, we [recommend using 
 ```
 ## 
 ##   api   web 
-## 29374  2026
+## 33456  2259
 ```
 
-So, 93.5% of builds were submitted via the [`rhub` package](https://r-hub.github.io/rhub/). Great!
+So, 93.7% of builds were submitted via the [`rhub` package](https://r-hub.github.io/rhub/). Great!
 
 ## Conclusion
 
-In this post we presented a few figures underlining the growth in R-hub usage, and the variety of platforms used for checking packages -- one of [R-hub's selling points](https://deploy-preview-53--admiring-allen-9a00b2.netlify.com/2019/03/26/why-care/#so-many-platforms). In total, over time, the R-hub package builder has been used by 2507 users for 4418 packages. For comparison at the time of writing there are 15357 packages on CRAN. 
+In this post we presented a few figures underlining the growth in R-hub usage, and the variety of platforms used for checking packages -- one of [R-hub's selling points](https://deploy-preview-53--admiring-allen-9a00b2.netlify.com/2019/03/26/why-care/#so-many-platforms). In total, over time, the R-hub package builder has been used by 2507 users for 4418 packages. For comparison at the time of writing there are 15670 packages on CRAN. 
 
 We hope to keep helping package developers check their packages and debug issues, in particular thanks to the package builder, [its docs](https://docs.r-hub.io/), and this blog. Thanks to all users who notified problems and suggested enhancements via [GitHub](https://docs.r-hub.io/#pkg-dev-help) or [gitter](https://gitter.im/r-hub/community), keep your feedback and questions coming!

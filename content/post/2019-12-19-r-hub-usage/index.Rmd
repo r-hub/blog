@@ -4,12 +4,15 @@ authors:
   - Maëlle Salmon
 date: '2019-12-19'
 slug: r-hub-usage
+output: 
+  html_document:
+    keep_md: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
-                      cache = TRUE,
-                      warning = FALSE)
+                      warning = FALSE,
+                      fig.path = "")
 ```
 
 
@@ -111,7 +114,7 @@ builds %>%
   dplyr::group_by(platform) %>%
   dplyr::filter(lubridate::year(as.Date(min(submitted))) == 2019) %>%
   dplyr::summarise(first = as.Date(min(submitted))) %>%
-  knitr::kable()
+  knitr::kable(format = "markdown")
 ```
 
 The youngest platforms are [r-devel-linux-x86_64-debian-clang and its special encoding](/2019/04/25/r-devel-linux-x86-64-debian-clang/), [a noLD platform](/2019/05/21/nold/), [the experimental Windows Rtools4.0 platform](https://twitter.com/rhub_/status/1102510360337268737). 
