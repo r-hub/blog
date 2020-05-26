@@ -22,7 +22,7 @@ Now, how can you add a platform to your arsenal once in a while, or make sure yo
 
 There is an R client, `rhub`, allowing to manage your package builds on R-hub platforms from your R console! By default, you can follow along how your package build is going:
 
-{{< figure src="/2019-03-18-why-care/check-output.gif" alt="check log in the R console" >}}
+{{< figure src="check-output.gif" alt="check log in the R console" >}}
 
 
 Here's how you'd prepare a CRAN submission by submitting your package to all 3 recommended platforms, before getting a summary of results ready to be copy-pasted into your `cran-comments.md` file.
