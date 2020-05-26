@@ -226,7 +226,7 @@ ggplot(events_df) +
           subtitle = "Data obtained via the R-hub pkgsearch R package")
 ```
 
-<img src="/post/2019-11-26-pkgsearch_files/figure-html/cranvacay-1.png" width="672" />
+<img src="cranvacay-1.png" width="672" />
 
 So yes, we do see the CRAN (well-deserved!) break in the data! 
 
