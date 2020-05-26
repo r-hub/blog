@@ -7,6 +7,7 @@ date: "2020-05-08"
 tags:
 - package development
 - news
+- documentation
 output: 
   html_document:
     keep_md: true
