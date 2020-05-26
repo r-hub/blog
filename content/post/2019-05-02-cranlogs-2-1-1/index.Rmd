@@ -1,14 +1,60 @@
 ---
 title: cranlogs 2.1.1 is on CRAN!
 date: '2019-05-02'
-slug: cranlogs-2-1-1
 authors:
   - Maëlle Salmon
+slug: cranlogs-2-1-1
 tags:
   - cranlogs
   - R package
   - release
+output: 
+  html_document:
+    keep_md: true
 ---
+
+```{r setup, include=FALSE}
+# Options to have images saved in the post folder
+# And to disable symbols before output
+knitr::opts_chunk$set(fig.path = "", comment = "")
+
+# knitr hook to make images output use Hugo options
+knitr::knit_hooks$set(
+  plot = function(x, options) {
+    hugoopts <- options$hugoopts
+    paste0(
+      "{{<figure src=",
+      '"', x, '" ',
+      if (!is.null(hugoopts)) {
+        glue::glue_collapse(
+          glue::glue('{names(hugoopts)}="{hugoopts}"'),
+          sep = " "
+        )
+      },
+      ">}}\n"
+    )
+  }
+)
+
+# knitr hook to use Hugo highlighting options
+knitr::knit_hooks$set(
+  source = function(x, options) {
+  hlopts <- options$hlopts
+    paste0(
+      "```r ",
+      if (!is.null(hlopts)) {
+      paste0("{",
+        glue::glue_collapse(
+          glue::glue('{names(hlopts)}={hlopts}'),
+          sep = ","
+        ), "}"
+        )
+      },
+      "\n", glue::glue_collapse(x, sep = "\n"), "\n```\n"
+    )
+  }
+)
+```
 
 Version 2.1.1 of the `cranlogs` package has been [released on CRAN](https://cran.r-project.org/package=cranlogs)! `cranlogs` queries a [web API maintained by R-hub](https://github.com/r-hub/cranlogs.app#the-api-of-the-cran-downloads-database) that contains the daily download
 numbers for each package and for R itself from the RStudio CRAN mirror. :chart_with_upwards_trend:
@@ -36,7 +82,9 @@ The data `cranlogs` queries has other limitations such as re-download/CRAN mirro
 
 Now, _why_ would you even be interested in the download counts of packages and R? As a package maintainer, is it only egosurfing? 
 
-<!--html_preserve-->{{% tweet "1115959975359209472" %}}<!--/html_preserve-->
+```{r, echo = FALSE}
+blogdown::shortcode("tweet", "1115959975359209472")
+```
 
 Probably not, such data can be useful:
 
@@ -46,7 +94,9 @@ Probably not, such data can be useful:
 
 * You could also use download counts as a way to summarize the "most important" packages around a topic, like what Zev Ross did below with spatial packages (the code attached to the tweet, [available as a GitHub gist](https://gist.github.com/zross/b64657b05156d43cf81dbdd093df5c13), uses the list of packages of the [spatial CRAN task view](https://cran.r-project.org/web/views/Spatial.html), get their downloads with `cranlogs`, and sort them by popularity). Note that the [R-hub `pkgsearch` package returns the downloads of last month for search results](https://r-hub.github.io/pkgsearch/)!
 
-<!--html_preserve-->{{% tweet "1123204696141963264" %}}<!--/html_preserve-->
+```{r zevross, echo = FALSE}
+blogdown::shortcode("tweet", "1123204696141963264")
+```
 
 # How to use `cranlogs`?
 
@@ -56,23 +106,8 @@ We shall first show how to use `cranlogs` from within R.
 
 The package has two functions to get downloads, one to query downloads by package name (with "R" giving downloads for R itself), one to query downloads for the top `count` downloaded packages from the RStudio CRAN mirror. So, what were the most popular packages over the last month?
 
-
-```r
+```{r cranmonth}
 cranlogs::cran_top_downloads(when = "last-month")
-```
-
-```
-##    rank    package   count       from         to
-## 1     1      rlang 1031362 2019-03-31 2019-04-29
-## 2     2       Rcpp  888903 2019-03-31 2019-04-29
-## 3     3      dplyr  822528 2019-03-31 2019-04-29
-## 4     4   devtools  818129 2019-03-31 2019-04-29
-## 5     5    ggplot2  811036 2019-03-31 2019-04-29
-## 6     6     tibble  775563 2019-03-31 2019-04-29
-## 7     7 data.table  721868 2019-03-31 2019-04-29
-## 8     8       glue  664281 2019-03-31 2019-04-29
-## 9     9        cli  655877 2019-03-31 2019-04-29
-## 10   10     pillar  637211 2019-03-31 2019-04-29
 ```
 
 Were these packages the ones you expected? 
@@ -83,8 +118,7 @@ The `when` argument can take 3 values: "last-day" is the last day for which data
 
 Let's have a look at the downloads of a much less popular package, `cranlogs`! :sunglasses: The `cranlogs::cran_downloads()` function also has the `when` argument, but you can also specify a more flexible interval by using `from` and `to`, both either dates or a string in the yyyy-mm-dd format. Below we're setting `from` to "2015-05-07" because that's when `cranlogs` was first released on CRAN.
 
-
-```r
+```{r cranlogs-dl, cache=TRUE, warning=FALSE, message=FALSE, fig.cap="Time series of cranlogs downloads showing a few dozens of downloads a day, with an upward trend since 2018."}
 library("ggplot2")
 dl <- cranlogs::cran_downloads("cranlogs",
                                from = "2015-05-07",
@@ -103,11 +137,6 @@ ggplot(dl, aes(date, count)) +
           subtitle = "Downloads from the RStudio CRAN mirror. Data queried with {cranlogs} itself ;-)")
 ```
 
-<div class="figure">
-<img src="/post/2019-05-02-cranlogs-2-1-1_files/figure-html/cranlogs-dl-1.png" alt="Time series of cranlogs downloads showing a few dozens of downloads a day, with an upward trend since 2018." width="672" />
-<p class="caption">Figure 1 Time series of cranlogs downloads showing a few dozens of downloads a day, with an upward trend since 2018.</p>
-</div>
-
 These aren't huge download counts, but there's an upward trend! More awareness of the package existence, or more package developers egosurfing?  :surfer: :wink:
 
 ### `cranlogs` on the web
@@ -120,51 +149,31 @@ Are you into README badges? You can add a `cranlogs` badge for each of your pack
 
 Below are some examples:
 
-
-```r
+```{r}
 cranlogs::cranlogs_badge("cranlogs")
-```
-
-```
-## [1] "[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/last-month/cranlogs?color=blue)](https://r-pkg.org/pkg/cranlogs)"
 ```
 
 Resulting badge: [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/last-month/cranlogs?color=blue)](https://r-pkg.org/pkg/cranlogs)
 
-
-```r
+```{r}
 cranlogs::cranlogs_badge("cranlogs", summary = "grand-total")
-```
-
-```
-## [1] "[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/cranlogs?color=blue)](https://r-pkg.org/pkg/cranlogs)"
 ```
 
 Resulting badge: [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/cranlogs?color=blue)](https://r-pkg.org/pkg/cranlogs)
 
 Available colours _by name_ are "brightgreen", "green", "yellowgreen", "yellow", "orange", "red", "lightgrey", "blue".
 
-
-```r
+```{r}
 cranlogs::cranlogs_badge("cranlogs", summary = "last-week", 
                          color = "orange")
-```
-
-```
-## [1] "[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/last-week/cranlogs?color=orange)](https://r-pkg.org/pkg/cranlogs)"
 ```
 
 Resulting badge: [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/last-week/cranlogs?color=orange)](https://r-pkg.org/pkg/cranlogs)
 
 The colour can also be any hex code so there's no limit to your creativity (you might want to check [contrast](https://medium.com/@uistephen/text-contrast-for-web-pages-d685636c0749), though). :rainbow:
 
-
-```r
+```{r}
 cranlogs::cranlogs_badge("cranlogs", color = "ff8c69")
-```
-
-```
-## [1] "[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/last-month/cranlogs?color=ff8c69)](https://r-pkg.org/pkg/cranlogs)"
 ```
 
 Resulting badge: [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/last-month/cranlogs?color=ff8c69)](https://r-pkg.org/pkg/cranlogs)
