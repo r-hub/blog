@@ -4,11 +4,19 @@ authors:
   - Maëlle Salmon
 date: '2019-12-03'
 slug: readmes
+output: 
+  html_document:
+    keep_md: true
 tags:
   - readme
+  - documentation
 ---
 
-
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      cache = TRUE,
+                      warning = FALSE)
+```
 
 A recent topic of the Write The Docs' great newsletter was [READMEs](https://www.writethedocs.org/blog/newsletter-july-2019/#readmes-on-readmes-and-other-readme-related-resources). It read _"As they’re often the first thing people see about a code project, READMEs are pretty important to get right."_. In this post, we'll share some insights around the READMEs of R packages: why they're crucial; what they usually contain; how you can best write yours. Let's dive in!  :swimmer:
 
@@ -16,7 +24,9 @@ A recent topic of the Write The Docs' great newsletter was [READMEs](https://www
 
 As mentioned above, the WTD newsletter stated that READMEs are often the first entry point to a project. For a package you could think of other entry points such as the CRAN homepage, but the README remains quite important as seen in the poll below
 
-<!--html_preserve-->{{% tweet "969442252610191361" %}}<!--/html_preserve-->
+```{r jonathan-carroll, echo = FALSE}
+blogdown::shortcode("tweet", "969442252610191361")
+```
 
 A good README is crucial to recruit users that'll actually gain something from using your package. As written by [noffle](https://github.com/noffle/) in [the Art of README](https://github.com/noffle/art-of-readme), 
 
@@ -50,18 +60,16 @@ In the Art of README, noffle [includes a checklist](https://github.com/noffle/ar
 
 We shall start by merging the lists of top downloaded and trending CRAN packages one can obtain using [`pkgsearch`](https://r-hub.github.io/pkgsearch/).
 
-
-```r
+```{r sample-readmes}
 library("magrittr")
 trending <- pkgsearch::cran_trending()
 top <- pkgsearch::cran_top_downloaded()
 pkglist <- unique(c(trending[["package"]], top[["package"]]))
 ```
 
-This is a list of 184 package names, including effectsize, Copula.Markov, leaflet.providers, farver, renv and httptest. Then, again with `pkgsearch`, we'll extract their metadata, before keeping only those that have a GitHub README. More arbitrary choices. :grimacing:
+This is a list of `r length(pkglist)` package names, including `r glue::glue_collapse(head(pkglist), sep = ", ", last = " and ")`. Then, again with `pkgsearch`, we'll extract their metadata, before keeping only those that have a GitHub README. More arbitrary choices. :grimacing:
 
-
-```r
+```{r metapkgs}
 meta <- pkgsearch::cran_packages(pkglist)
 meta <- meta %>%
   dplyr::mutate(URL = strsplit(URL, "\\,")) %>%
@@ -78,23 +86,12 @@ meta <- meta %>%
 str(meta)
 ```
 
-```
-## Classes 'tbl_df', 'tbl' and 'data.frame':	122 obs. of  7 variables:
-##  $ Package: chr  "effectsize" "leaflet.providers" "farver" "httptest" ...
-##  $ Title  : chr  "Indices of Effect Size and Standardized Parameters" "Leaflet Providers" "High Performance Colour Space Manipulation" "A Test Environment for HTTP Requests" ...
-##  $ Date   : chr  NA NA NA NA ...
-##  $ Version: chr  "0.0.1" "1.9.0" "2.0.1" "3.2.2" ...
-##  $ URL    : chr  "https://github.com/easystats/effectsize" "https://github.com/rstudio/leaflet.providers" "https://github.com/thomasp85/farver" "https://github.com/nealrichardson/httptest" ...
-##  $ owner  : chr  "easystats" "rstudio" "thomasp85" "nealrichardson" ...
-##  $ repo   : chr  "effectsize" "leaflet.providers" "farver" "httptest" ...
-```
-
-At this point we have 122 packages with 122 unique GitHub repo URLs, pfiew.
+At this point we have `r nrow(meta)` packages with `r length(unique(meta$URL))` unique GitHub repo URLs, pfiew.
 
 We'll then extract their [preferred README from the GitHub V3 API](https://developer.github.com/v3/repos/contents/#get-the-readme). Some of them won't even have one so we'll lose them from the sample. 
 
+```{r, get-readmes}
 
-```r
 gh <- memoise::memoise(ratelimitr::limit_rate(gh::gh,
                                               ratelimitr::rate(1, 1)))
 get_readme <- function(owner, repo){
@@ -127,7 +124,7 @@ readmes <- purrr::map2_df(.x = meta$owner, .y = meta$repo,
                           .f = get_readme)
 ```
 
-The `readmes` data.frame has 117 lines so we lost a few more packages. 
+The `readmes` data.frame has `r nrow(readmes)` lines so we lost a few more packages. 
 
 ### Assessing README size
 
@@ -135,8 +132,7 @@ The `readmes` data.frame has 117 lines so we lost a few more packages.
 
 A first metric we'll extract is the number of lines of the README. 
 
-
-```r
+```{r}
 count_lines <- function(readme_lines){
   readme_lines %>%
     purrr::discard(. == "") %>% # emtpy lines
@@ -147,12 +143,12 @@ count_lines <- function(readme_lines){
 readmes <- dplyr::group_by(readmes, owner, repo) %>%
   dplyr::mutate(lines_no = count_lines(readme[[1]])) %>%
   dplyr::ungroup()
+
 ```
 
-How long are usual READMEs? Their number of lines range from 2 to 1426 with a median of 85.
+How long are usual READMEs? Their number of lines range from `r min(readmes$lines_no)` to `r max(readmes$lines_no)` with a median of `r median(readmes$lines_no)`.
 
-
-```r
+```{r nolinesplot, fig.cap="Dot plot of the number of lines in READMEs"}
 library("ggplot2")
 
 ggplot(readmes) +
@@ -164,19 +160,13 @@ ggplot(readmes) +
   ggtitle(glue::glue("Number of lines in a sample of {nrow(readmes)} READMEs"))
 ```
 
-<div class="figure">
-<img src="/post/2019-12-03-readmes_files/figure-html/nolinesplot-1.png" alt="Dot plot of the number of lines in READMEs" width="672" />
-<p class="caption">Figure 1: Dot plot of the number of lines in READMEs</p>
-</div>
-
 READMEs in our sample most often don't have more than 200 lines. Now, this metric might indicate how much a potential user needs to take in and how long they need to scroll down but we shall now look into other indicators of size: the number of lines of R code, the number of words outside of code and output.
 
 #### Other size indicators
 
 To access the numbers we're after without using too many regular expressions, [we shall convert the Markdown content to XML via `commonmark` and use XPath to parse it](https://ropensci.org/technotes/2018/09/05/commonmark/).
 
-
-```r
+```{r xml}
 get_xml <- function(readme_lines){
   readme_lines %>%
       glue::glue_collapse(sep = "\n") %>%
@@ -198,42 +188,14 @@ readmes <- dplyr::group_by(readmes, owner, repo) %>%
 
 This is how a single README XML looks like:
 
-
-```r
+```{r xmlex}
 readmes$xml_readme[[1]]
-```
-
-```
-## {xml_document}
-## <document>
-##  [1] <heading level="1">\n  <text xml:space="preserve">effectsize </text>\n   ...
-##  [2] <paragraph>\n  <link destination="https://cran.r-project.org/package=eff ...
-##  [3] <paragraph>\n  <emph>\n    <strong>\n      <text xml:space="preserve">Si ...
-##  [4] <paragraph>\n  <text xml:space="preserve">The goal of this package is to ...
-##  [5] <heading level="2">\n  <text xml:space="preserve">Installation</text>\n< ...
-##  [6] <paragraph>\n  <text xml:space="preserve">Run the following:</text>\n</p ...
-##  [7] <code_block info="r" xml:space="preserve">install.packages("devtools")\n ...
-##  [8] <code_block info="r" xml:space="preserve">library("effectsize")\n</code_ ...
-##  [9] <heading level="2">\n  <text xml:space="preserve">Documentation</text>\n ...
-## [10] <paragraph>\n  <link destination="https://easystats.github.io/effectsize ...
-## [11] <paragraph>\n  <text xml:space="preserve">Click on the buttons above to  ...
-## [12] <list type="bullet" tight="true">\n  <item>\n    <paragraph>\n      <lin ...
-## [13] <heading level="1">\n  <text xml:space="preserve">Features</text>\n</hea ...
-## [14] <paragraph>\n  <text xml:space="preserve">This package is focused on ind ...
-## [15] <heading level="2">\n  <text xml:space="preserve">Effect Size Computatio ...
-## [16] <heading level="3">\n  <text xml:space="preserve">Basic Indices (Cohen’s ...
-## [17] <paragraph>\n  <text xml:space="preserve">The package provides functions ...
-## [18] <code_block info="r" xml:space="preserve">cohens_d(iris$Sepal.Length, ir ...
-## [19] <heading level="3">\n  <text xml:space="preserve">ANOVAs (Eta</text>\n   ...
-## [20] <code_block info="r" xml:space="preserve">model &lt;- aov(Sepal.Length ~ ...
-## ...
 ```
 
 Let's count lines of code.
 
 
-
-```r
+```{r loc}
 get_code_lines <- function(xml) {
   
   if(is.null(xml)) {
@@ -249,14 +211,14 @@ get_code_lines <- function(xml) {
 loc <- readmes %>%
   dplyr::group_by(repo, owner) %>%
   dplyr::summarise(loc = get_code_lines(xml_readme[[1]]))
+
 ```
 
-The number of lines of code of READMEs range from 0 (for 31 READMEs) to 41 with a median of 2. The README with the most lines of code is https://github.com/r-lib/ps#readme.
+The number of lines of code of READMEs range from `r min(loc$loc)` (for `r sum(loc$loc == min(loc$loc))` READMEs) to `r max(loc$loc)` with a median of `r median(loc$loc)`. The README with the most lines of code is `r glue::glue("https://github.com/{loc$owner[loc$loc == max(loc$loc)]}/{loc$repo[loc$loc == max(loc$loc)]}#readme")`.
 
 What about words in text?
 
-
-```r
+```{r words}
 get_wordcount <- function(xml, package) {
   
   if(is.null(xml)) {
@@ -274,9 +236,10 @@ get_wordcount <- function(xml, package) {
  words <- readmes %>%
   dplyr::group_by(repo, owner) %>%
   dplyr::summarise(wordcount = get_wordcount(xml_readme[[1]]))
-```
 
-The number of words in READMEs range from 13 to 2105 with a median of 278. The READMEs with respectively the most words and least words are https://github.com/jonclayden/RNifti#readme and https://github.com/jvbraun/AlgDesign#readme.
+``` 
+
+The number of words in READMEs range from `r min(words$wordcount)` to `r max(words$wordcount)` with a median of `r median(words$wordcount)`. The READMEs with respectively the most words and least words are `r glue::glue("https://github.com/{words$owner[words$wordcount == max(words$wordcount)]}/{words$repo[words$wordcount == max(words$wordcount)]}#readme")` and `r glue::glue("https://github.com/{words$owner[words$wordcount == min(words$wordcount)]}/{words$repo[words$wordcount == min(words$wordcount)]}#readme")`.
 
 The README size might depend on the package interface size itself, i.e. a package with a single function/dataset probably doesn't warrant many lines. Beyond a certain interface size or complexity, one might want to make it easier on potential users by breaking up documentation into smaller articles, instead of showing all there is in one page. 
 
@@ -287,8 +250,7 @@ Now, a helpful way to still convey information efficiently when there are more t
 To assess README structures a bit, we first need to extract headers.
 
 
-
-```r
+```{r structure}
 get_headings <- function(xml) {
   
   if(is.null(xml)) {
@@ -311,35 +273,16 @@ structure <- readmes %>%
 
 Here's the structure of the 42th README.
 
-
-```r
+```{r structureex}
 structure$structure[42][[1]]
-```
-
-```
-## # A tibble: 12 x 3
-##    text                                      position level
-##    <chr>                                        <int> <chr>
-##  1 Creating Pretty Documents From R Markdown        1 2    
-##  2 Themes for R Markdown                            2 3    
-##  3 The prettydoc Engine                             3 3    
-##  4 Options and Themes                               4 3    
-##  5 Offline Math Expressions                         5 3    
-##  6 Related Projects                                 6 3    
-##  7 Gallery                                          7 3    
-##  8 Cayman (demo page)                               8 4    
-##  9 Tactile (demo page)                              9 4    
-## 10 Architect (demo page)                           10 4    
-## 11 Leonids (demo page)                             11 4    
-## 12 HPSTR (demo page)                               12 4
 ```
 
 We wrote an ugly long and imperfect function to visualize the structure of any of the sampled READMEs, inspired by not ugly and better code in [`fs`](https://github.com/r-lib/fs/blob/master/R/tree.R).
 
 <details>
 <summary>Click to see the function.</summary>
+```{r ugly}
 
-```r
 pc <- function(...) {
   paste0(..., collapse = "")
 }
@@ -392,96 +335,28 @@ print_readme_structure <- function(structure){
   }
   
 }
+
+
 ```
 </details>
 
 In practice,
 
-
-```r
+```{r r42}
 print_readme_structure(structure$structure[42][[1]])
-```
-
-```
-##    └─ Creating Pretty Documents From R Markdown
-##       ├── Themes for R Markdown
-##       ├── The prettydoc Engine
-##       ├── Options and Themes
-##       ├── Offline Math Expressions
-##       ├── Related Projects
-##       └── Gallery
-##          ├─── Cayman (demo page)
-##          ├─── Tactile (demo page)
-##          ├─── Architect (demo page)
-##          ├─── Leonids (demo page)
-##          └─── HPSTR (demo page)
-```
-
-```r
 print_readme_structure(structure$structure[7][[1]])
-```
-
-```
-## A Teradata Backend for dplyr
-##          ├─── Koji Makiyama (@hoxo-m)
-##    ├─ 1 Overview
-##    ├─ 2 Installation
-##    ├─ 3 Details
-##       ├── 3.1 Usage
-##       ├── 3.2 Translatable functions
-##          ├─── 3.2.1 lubridate friendly functions
-##          ├─── 3.2.2 Treat Boolean
-##          ├─── 3.2.3 to_timestamp()
-##          └─── 3.2.4 cut()
-##       └── 3.3 Other useful functions
-##          └─── 3.3.1 blob_to_string()
-##    └─ 4 Related work
-```
-
-```r
 print_readme_structure(structure$structure[1][[1]])
-```
-
-```
-## effectsize <img src='man/figures/logo.png' align="right" height="139" />
-##    ├─ Installation
-##    └─ Documentation
-## Features
-##    ├─ Effect Size Computation
-##       ├── Basic Indices (Cohen’s d, Hedges’ g, Glass’ delta)
-##       ├── ANOVAs (Eta<sup>2</sup>, Omega<sup>2</sup>, …)
-##       └── Regression Models
-##    ├─ Effect Size Interpretation
-##    ├─ Effect Size Conversion
-##    └─ Standardization
-##       └── Data standardization, normalization and rank-transformation
 ```
 
 What are the most common headers?
 
-
-```r
+```{r}
 structure %>%
   tidyr::unnest(structure) %>%
   dplyr::count(text, sort = TRUE) %>%
   dplyr::filter(n > 4) %>%
   knitr::kable()
 ```
-
-
-
-|text            |  n|
-|:---------------|--:|
-|Installation    | 85|
-|Usage           | 45|
-|Overview        | 23|
-|Code of Conduct | 17|
-|License         | 15|
-|Example         | 10|
-|Cheatsheet      |  9|
-|Features        |  9|
-|Getting help    |  5|
-|Related work    |  5|
 
 This seems to be quite in line with noffle's checklist (e.g. having installation instructions). Headers related to the background and to examples might have a title specific to the package, in which case they don't appear in the table above.
 
@@ -507,7 +382,7 @@ Then, instead of writing everything in one .Rmd and then copying entire sections
 
 ````markdown
 
-```{r child='../man/rmdhunks/child.Rmd'} 
+```{r child='../man/rmdhunks/child.Rmd'} `r ''`
 ```
 
 ````
@@ -516,7 +391,7 @@ In the README, use
 
 ````markdown
 
-```{r child='man/rmdhunks/child.Rmd'} 
+```{r child='man/rmdhunks/child.Rmd'} `r ''`
 ```
 
 ````
