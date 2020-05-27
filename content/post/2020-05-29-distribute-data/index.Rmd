@@ -11,7 +11,6 @@ tags:
 output: hugodown::hugo_document
 ---
 
-
 ```{r setup, include=FALSE}
 # Options to have images saved in the post folder
 # And to disable symbols before output
@@ -61,6 +60,28 @@ In this post, we shall present various ways to distribute data with/for an R pac
 
 _Thanks to the R connoisseurs [Thomas Vroylandt](https://tvroylandt.netlify.app/), [Sébastien Rochette](https://statnmap.com/) and [Hugo Gruson](https://www.normalesup.org/~hgruson/) for providing some inspiration and resources for this post! :pray: [^grrr]_
 
+## Data in your package
+
+Sometimes the data can be _vendored_[^vendor] i.e. live in your package source, and even in your package built and installed versions.
+An excellent overview of the different cases is provided in the [R packages book by Hadley Wickham and Jenny Bryan](https://r-pkgs.org/data.html); without forgetting the reference "Writing R Extensions" especially useful in cases such as [_"where a dataset or one of its components is of an S4 class"_](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Data-in-packages).
+
+### Data just
+
+### Data as small as possible
+
+As "Writing R Extensions" underlines, for data under `data/` and, _"If your package is to be distributed, do consider the resource implications of large datasets for your users: they can make packages very slow to download and use up unwelcome amounts of storage space, as well as taking many seconds to load."_.
+So what do you do?
+
+* You can _compress_ the data, internal or external.
+
+* You can refer the next section of this post and have data live outside of your package!
+
+## Data outside of your package
+
+Now, sometimes the data is too big to be in your package, or follows a different development cycle i.e. is updated more or less often.
+What can you do about that?
+Well, have data live somewhere else and download it as needed, potentially saving it locally (which still uses potentially "unwelcome amounts of storage space", so warn the user)
+
 
 ## Conclusion
 
@@ -69,3 +90,4 @@ Do _you_ have a "data and R package" setup you'd like to share?
 Please comment below!
 
 [^grrr]: In a conversation in the friendly French-speaking R Slack workspace -- where we'd write _connaisseurs_, not _connoisseurs_. If you want to join us, follow [the invitation link](https://github.com/frrrenchies/frrrenchies#cat-chat-et-discussions-instantan%C3%A9es-cat). _À bientôt !_
+[^vendor]: Now that you know the word _vendor_, [_" to bundle one's own, possibly modified version of dependencies with a standard program."_](https://www.wordhippo.com/what-is/the-verb-for/vendor.html), you can use your search engine to find and enjoy debates around vendoring or not. You're welcome.

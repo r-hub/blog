@@ -7,7 +7,7 @@ enableEmoji = true
 pygmentsUseClasses=true
 googleAnalytics = "UA-141769052-1"
 disqusShortname = ""
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "index\\.html"]
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "index\\.html", '\.knit\.md$', '\.utf8\.md$']
 rssLimit = 5
 
 [permalinks]
