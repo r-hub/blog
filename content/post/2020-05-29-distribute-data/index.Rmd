@@ -133,10 +133,15 @@ You could also check out the [`datastorr` package](https://docs.ropensci.org/dat
 
 Not using a data package also helps you make the data available e.g. as CSV to anyone including, gasp, Python users. :snake:
 
-* You
+* You could use `piggyback` to store versioned datasets in GitHub releases. The documentation of `piggyback` includes a thorough compariosn with other approaches such as git-LFS.
 
-https://docs.ropensci.org/piggyback/articles/alternatives.html#datastorr-1
+* You could use... write your own web API? Like the web APIs powering R-hub's own `pkgsearch`, `rversions`. The web APIs have value of their own, and you can write wrapper functions in your package.
 
+That's all good but with non data packages a question is, where does the local data live once the user saved it, since it's no longer simply in a package?
+
+* You could cache them in an app dir
+
+* Or use another approach, e.g. the [`bowerbird` package](https://docs.ropensci.org/bowerbird/)
 
 ## Conclusion
 
