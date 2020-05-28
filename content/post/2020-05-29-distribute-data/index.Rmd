@@ -120,6 +120,7 @@ Well, have data live somewhere else.
 
 ### Data packages
 
+Yes, this subsection makes the point of having data live inside _another_ package.  :expressionless:
 You could develop _companion_ packages to go with your package, that hold data.
 A data package is user-friendly in the sense that installing it saves the data on the machine and makes it available.
 This is the setup of [`rnaturalearth`](https://github.com/ropensci/rnaturalearth), for which one of the companion packages, [`rnaturalearthhires`](https://github.com/ropensci/rnaturalearthhires), is not hosted on CRAN.
@@ -135,22 +136,25 @@ You could also check out the [`datastorr` package](https://docs.ropensci.org/dat
 
 Not using a data package also helps you make the data available e.g. as CSV to anyone including, gasp, Python users. :snake:
 
-* You could use an existing infrastructure: GitHub releases (with the [`piggyback` package](https://docs.ropensci.org/piggyback/) whose documentation includes a [thorough comparison with other approaches such as git-LFS](https://docs.ropensci.org/piggyback/articles/alternatives.html)), Amazon S3 (using the [`pins` package](http://pins.rstudio.com/)?), .
+* You could use an existing infrastructure: GitHub releases (with the [`piggyback` package](https://docs.ropensci.org/piggyback/) whose documentation includes a [thorough comparison with other approaches such as git-LFS](https://docs.ropensci.org/piggyback/articles/alternatives.html)), Amazon S3 (using the [`pins` package](http://pins.rstudio.com/)?), etc.
 
 * You could... write your own web API? Like the web APIs powering R-hub's own `pkgsearch`, `rversions`. The web APIs have value of their own, and you can write wrapper functions in your package that thus becomes a data access package.
 
 That's all good but with non data packages your package should still help download and save the data for a seamless workflow, e.g. via a function.
 What can this function do with the data?
+It could of course returns the data as an object, but also save it locally for easier re-use in future analyses.
 
-* It could cache them in an app dir which we explained [in a previous blog post](/2020/03/12/user-preferences/), using the `rappdirs` or `hoardr` package;
+* The data could be cached in an app dir which we explained [in a previous blog post](/2020/03/12/user-preferences/), using the `rappdirs` or `hoardr` package;
 
-* Or take a dependency on a package more aimed at data storage and retrieval such as the aforementioned `piggyback` and `pins` packages, the [`bowerbird` package](https://docs.ropensci.org/bowerbird/), the [`rdataretriever` package](https://docs.ropensci.org/rdataretriever/).
+* For other approaches, your package could take a dependency on a package aimed at data storage and retrieval such as the aforementioned `piggyback` and `pins` packages, the [`bowerbird` package](https://docs.ropensci.org/bowerbird/), the [`rdataretriever` package](https://docs.ropensci.org/rdataretriever/).
 
 ## Conclusion
 
 In this post we went over different setups allowing you to distribute data with or for your R package: some standard locations in your package source (`inst/extdata/`, `data/`, `R/sysdata.rda`); locations outside of your package (using `drat`, `git-LFS`, GitHub releases via `piggyback`, a web API you'd build yourself), that your package would know how to access, and potentially save locally (in an app dir, or using a tool like `bowerbird`).
 Do _you_ have a "data and R package" setup you'd like to share?
+How do you document the data you share, when it's bigger than a small table?[^dataspice]
 Please comment below!
 
 [^grrr]: In a conversation in the friendly French-speaking R Slack workspace -- where we'd write _connaisseurs_, not _connoisseurs_. If you want to join us, follow [the invitation link](https://github.com/frrrenchies/frrrenchies#cat-chat-et-discussions-instantan%C3%A9es-cat). _À bientôt !_
 [^vendor]: Now that you know the word *vendor*, [_" to bundle one's own, possibly modified version of dependencies with a standard program."_](https://www.wordhippo.com/what-is/the-verb-for/vendor.html), you can use your search engine to find and enjoy debates around vendoring or not. You're welcome.
+[^dataspice]: E.g. the [`dataspice` package](https://github.com/ropenscilabs/dataspice) aims at creating lightweight schema.org descriptions of datasets.
