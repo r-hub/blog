@@ -55,7 +55,7 @@ knitr::knit_hooks$set(
 )
 ```
 
-Sometimes you'll want a package of yours to have readily access to some data: to show what a function of yours can accomplish with a dataset, to show how your package can help tidy a messy data format, to test the package, or even to just distribute the data for teaching purposes.
+Sometimes you'll want a package of yours to have readily access to some data: to show what a function of yours can accomplish with a dataset, to show how your package can help tidy a messy data format, to test the package, or even to just distribute the data as an actual product or for teaching purposes.
 Now, _how_ to provide data with/for your package is a recurring theme in [R package development channels](/2019/04/11/r-package-devel/).
 In this post, we shall present various ways to distribute data with/for an R package, depending on the data use case and on its size.
 
@@ -120,6 +120,7 @@ Well, have data live somewhere else.
 ### Data packages
 
 You could develop _companion_ packages to go with your package, that hold data.
+A data package is user-friendly in the sense that installing it saves the data on the machine and makes it available.
 This is the setup of [`rnaturalearth`](https://github.com/ropensci/rnaturalearth), for which one of the companion packages, [`rnaturalearthhires`](https://github.com/ropensci/rnaturalearthhires), is not hosted on CRAN.
 
 
@@ -133,15 +134,16 @@ You could also check out the [`datastorr` package](https://docs.ropensci.org/dat
 
 Not using a data package also helps you make the data available e.g. as CSV to anyone including, gasp, Python users. :snake:
 
-* You could use `piggyback` to store versioned datasets in GitHub releases. The documentation of `piggyback` includes a thorough compariosn with other approaches such as git-LFS.
+* You could use an existing infrastructure: GitHub releases (with the [`piggyback` package](https://docs.ropensci.org/piggyback/) whose documentation includes a [thorough comparison with other approaches such as git-LFS](https://docs.ropensci.org/piggyback/articles/alternatives.html)), Amazon S3 (using the [`pins` package](http://pins.rstudio.com/)?), .
 
-* You could use... write your own web API? Like the web APIs powering R-hub's own `pkgsearch`, `rversions`. The web APIs have value of their own, and you can write wrapper functions in your package.
+* You could... write your own web API? Like the web APIs powering R-hub's own `pkgsearch`, `rversions`. The web APIs have value of their own, and you can write wrapper functions in your package that thus becomes a data access package.
 
-That's all good but with non data packages a question is, where does the local data live once the user saved it, since it's no longer simply in a package?
+That's all good but with non data packages your package should still help download and save the data for a seamless workflow, e.g. via a function.
+What can this function do with the data?
 
-* You could cache them in an app dir
+* It could cache them in an app dir which we explained [in a previous blog post](/2020/03/12/user-preferences/), using the `rappdirs` or `hoardr` package;
 
-* Or use another approach, e.g. the [`bowerbird` package](https://docs.ropensci.org/bowerbird/)
+* Or take a dependency on a package more aimed at data storage and retrieval such as the aforementioned `piggyback` and `pins` packages, the [`bowerbird` package](https://docs.ropensci.org/bowerbird/), the [`rdataretriever` package](https://docs.ropensci.org/rdataretriever/).
 
 ## Conclusion
 
