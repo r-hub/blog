@@ -55,7 +55,8 @@ knitr::knit_hooks$set(
 )
 ```
 
-Sometimes you'll want a package of yours to have readily access to some data: to show what a function of yours can accomplish with a dataset, to show how your package can help tidy a messy data format, to test the package, or even to just distribute the data as an actual product or for teaching purposes.
+Distributing data with an R package can be crucial for the package or even the only goal of a package:
+to show what a function can accomplish with a dataset; to show how a package can help tidy a messy data format; to test the package; for teach purposes; to allow users to directly use instead of fetching and cleaning the data.
 Now, _how_ to provide data with/for your package is a recurring theme in [R package development channels](/2019/04/11/r-package-devel/).
 In this post, we shall present various ways to distribute data with/for an R package, depending on the data use case and on its size.
 
