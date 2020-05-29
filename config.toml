@@ -14,14 +14,21 @@ rssLimit = 5
     post = "/:year/:month/:day/:slug/"
 
 [[menu.main]]
+    name = "Blog"
+    url = "/"
+    weight = 1
+[[menu.main]]
     name = "About"
     url = "/about/"
+    weight = 2
 [[menu.main]]
     name = "GitHub"
     url = "https://github.com/r-hub"
+    weight = 3
 [[menu.main]]
     name = "Twitter"
     url = "https://twitter.com/rhub_"
+    weight = 4
 
 [params]
     description = "Blog for the R-hub project of the R Consortium, easing the R package development process."

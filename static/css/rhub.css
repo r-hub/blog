@@ -1,15 +1,28 @@
+/*Disable transitions inhereted from main theme*/
+* {
+  -o-transition-property: none !important;
+  -moz-transition-property: none !important;
+  -ms-transition-property: none !important;
+  -webkit-transition-property: none !important;
+  transition-property: none !important;
+  -o-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -webkit-transform: none !important;
+  transform: none !important;
+  -webkit-animation: none !important;
+  -moz-animation: none !important;
+  -o-animation: none !important;
+  -ms-animation: none !important;
+  animation: none !important;
+}
+
+
 body {
   font-family: 'Muli', sans-serif;
   padding: 0;
   margin: 0;
   font-size: 20px;
-}
-
-.nav-logo img {
-  display: block;
-  max-height: 50px;
-  width: auto;
-  border-radius: 0px;
 }
 
 .inline-svg {
@@ -37,7 +50,6 @@ pre {
   border-bottom: none;
   box-shadow: none;
   background: transparent;
-  transition: background 150ms ease;
 }
 
 .article-content a:hover,
@@ -49,20 +61,6 @@ pre {
   color: #9f1f19;
 }
 
-.nav a {
-  text-decoration: none;
-  color: #1f52a4;
-  border-bottom: none;
-  box-shadow: none;
-  background: transparent;
-  transition: background 150ms ease;
-}
-
-.nav a:hover, a:focus {
-  color: #1f52a4;
-}
-
-
 .content {
   max-width: 90vw;
   margin: 40px auto 10px;
@@ -70,11 +68,6 @@ pre {
   font-size: 16px;
   line-height: 1.7;
   color: #333;
-}
-
-.nav {
-  max-width: 90vw;
-  text-align: inherit;
 }
 
 .toc ul {
@@ -109,6 +102,54 @@ table, th, td {
 }
 
 tr:nth-child(even) {background-color: #f2f2f2;}
+
+/*------------*/
+/* --HEADER-- */
+/*------------*/
+header {  
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  z-index: 1;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #eeeeee;
+  box-shadow: 0px 0px 7.5px 0.5px rgba(150,150,150,0.4);
+}
+
+.nav a {
+  text-decoration: none;
+  color: #1f52a4;
+  border-bottom: none;
+  box-shadow: none;
+  background: transparent;
+  font-size: 1.25em;
+}
+
+ul.nav-links {
+  float: right;
+}
+
+.nav li {
+  margin-top: .2em;
+}
+
+.nav a:hover, a:focus {
+  color: #B0383C;
+}
+
+.nav {
+  max-width: 90vw;
+  text-align: inherit;
+}
+
+.nav-logo img {
+  display: block;
+  max-height: 50px;
+  width: auto;
+  border-radius: 0px;
+}
 
 /*------------*/
 /* --FOOTER-- */
