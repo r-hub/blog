@@ -1,15 +1,14 @@
 ---
 slug: distribute-data
 title: How to distribute data with your R packages
-authors:
-- Maëlle Salmon
+authors: Maëlle Salmon
 date: '2020-05-29'
 tags:
 - package development
 - standards
 - data
 output: hugodown::hugo_document
-rmd_hash: b95b50c2d4c8cc2f
+rmd_hash: 5758210fa9295153
 
 ---
 
@@ -17,7 +16,7 @@ rmd_hash: b95b50c2d4c8cc2f
 
 
 Distributing data with an R package can be crucial for the package or even the only goal of a package:
-to show what a function can accomplish with a dataset; to show how a package can help tidy a messy data format; to test the package; for teach purposes; to allow users to directly use instead of fetching and cleaning the data.
+to show what a function can accomplish with a dataset; to show how a package can help tidy a messy data format; to test the package; for teaching purposes; to allow users to directly use the bundled data instead of having to fetch and clean the data.
 Now, _how_ to provide data with/for your package is a recurring theme in [R package development channels](/2019/04/11/r-package-devel/).
 In this post, we shall present various ways to distribute data with/for an R package, depending on the data use case and on its size.
 
@@ -25,8 +24,8 @@ _Thanks to the R connoisseurs [Thomas Vroylandt](https://tvroylandt.netlify.app/
 
 ## Data in your package
 
-Sometimes the data can be *vendored*[^vendor] i.e. live in your package source, and even in your package built and installed versions.
-An excellent overview of the different cases is provided in the [R packages book by Hadley Wickham and Jenny Bryan](https://r-pkgs.org/data.html); without forgetting the reference "Writing R Extensions" especially useful in cases such as [_"where a dataset or one of its components is of an S4 class"_](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Data-in-packages).
+Sometimes the data can be *vendored*[^vendor] i.e. live in your package source, and even built into and installed with the package.
+An excellent overview of the different cases is provided in the [R packages book by Hadley Wickham and Jenny Bryan](https://r-pkgs.org/data.html); without forgetting the reference ["Writing R Extensions"](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Data-in-packages).
 In `usethis`, as explained in the R packages book, there are [helpers for creating package data](https://usethis.r-lib.org/reference/use_data.html).
 
 ### Data for whom?
@@ -102,7 +101,7 @@ Not using a data package also helps you make the data available e.g. as CSV to a
 
 * You could... write your own web API? Like the web APIs powering R-hub's own `pkgsearch`, `rversions`. The web APIs have value of their own, and you can write wrapper functions in your package that thus becomes a data access package.
 
-That's all good but with non data packages your package should still help download and save the data for a seamless workflow, e.g. via a function.
+This is all good so far but with non data packages your package should still help download and save the data for a seamless workflow, e.g. via a function.
 What can this function do with the data?
 It could of course returns the data as an object, but also save it locally for easier re-use in future analyses.
 
