@@ -36,7 +36,7 @@ rssLimit = 5
     githubsource = "https://github.com/r-hub/blog/blob/master/content/"
 
     [params.logo]
-    url = "logo.png"
+    url = "images/logo.png"
     width = 50
     height = 50
     alt = "Logo"
