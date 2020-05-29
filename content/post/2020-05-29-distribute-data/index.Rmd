@@ -1,6 +1,6 @@
 ---
 slug: distribute-data
-title: "How to distribute data with your R packages"
+title: "How to distribute data with your R package"
 authors:
   - Maëlle Salmon
 date: "2020-05-29"

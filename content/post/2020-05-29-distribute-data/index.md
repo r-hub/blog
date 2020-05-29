@@ -1,14 +1,15 @@
 ---
 slug: distribute-data
-title: How to distribute data with your R packages
-authors: Maëlle Salmon
+title: How to distribute data with your R package
+authors: 
+- Maëlle Salmon
 date: '2020-05-29'
 tags:
 - package development
 - standards
 - data
 output: hugodown::hugo_document
-rmd_hash: 5758210fa9295153
+rmd_hash: 349ab31ff64914d7
 
 ---
 
