@@ -136,9 +136,9 @@ You could also check out the [`datastorr` package](https://docs.ropensci.org/dat
 
 Not using a data package also helps you make the data available e.g. as CSV to anyone including, gasp, Python users. :snake:
 
-* You could use an existing infrastructure: GitHub releases (with the [`piggyback` package](https://docs.ropensci.org/piggyback/) whose documentation includes a [thorough comparison with other approaches such as git-LFS](https://docs.ropensci.org/piggyback/articles/alternatives.html)), Amazon S3 (using the [`pins` package](http://pins.rstudio.com/)?), etc.[^cb]
+* You could use an existing infrastructure: GitHub releases (with the [`piggyback` package](https://docs.ropensci.org/piggyback/) whose documentation includes a [thorough comparison with other approaches such as git-LFS](https://docs.ropensci.org/piggyback/articles/alternatives.html)), Amazon S3 (using the [`pins` package](http://pins.rstudio.com/)?), etc.[^cb]. You could make use of scientific data repositories (DataONE, Zenodo, OSF, Figshare...).
 
-* You could... write your [own web API](/2019/06/10/cran-checks-api/)? Like the web APIs powering R-hub's own `pkgsearch`, `rversions`. The web APIs have value of their own, and you can write wrapper functions in your package that thus becomes a data access package.
+* You could... write your own web API[^dont]? Like the web APIs powering R-hub's own `pkgsearch`, `rversions`; or the [CRAN checks API](/2019/06/10/cran-checks-api/). The web APIs have value of their own, and you can write wrapper functions in your package that thus becomes a data access package.
 
 This is all good so far but with non data packages your package should still help download and save the data for a seamless workflow, e.g. via a function.
 What can this function do with the data?
@@ -159,3 +159,4 @@ Please comment below!
 [^vendor]: Now that you know the word *vendor*, [_" to bundle one's own, possibly modified version of dependencies with a standard program."_](https://www.wordhippo.com/what-is/the-verb-for/vendor.html), you can use your search engine to find and enjoy debates around vendoring or not. You're welcome.
 [^dataspice]: E.g. the [`dataspice` package](https://github.com/ropenscilabs/dataspice) aims at creating lightweight schema.org descriptions of datasets.
 [^cb]: Thanks to [Carl Boettiger](https://www.carlboettiger.info/) for useful insight, including reminding me of the `pins` package.
+[^dont]: Some caveats were noted in a [comment by Carl Boettiger on Twitter](https://twitter.com/cboettig/status/1266404721914306561).
