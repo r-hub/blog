@@ -138,7 +138,7 @@ Not using a data package also helps you make the data available e.g. as CSV to a
 
 * You could use an existing infrastructure: GitHub releases (with the [`piggyback` package](https://docs.ropensci.org/piggyback/) whose documentation includes a [thorough comparison with other approaches such as git-LFS](https://docs.ropensci.org/piggyback/articles/alternatives.html)), Amazon S3 (using the [`pins` package](http://pins.rstudio.com/)?), etc.[^cb]
 
-* You could... write your own web API? Like the web APIs powering R-hub's own `pkgsearch`, `rversions`. The web APIs have value of their own, and you can write wrapper functions in your package that thus becomes a data access package.
+* You could... write your [own web API](/2019/06/10/cran-checks-api/)? Like the web APIs powering R-hub's own `pkgsearch`, `rversions`. The web APIs have value of their own, and you can write wrapper functions in your package that thus becomes a data access package.
 
 This is all good so far but with non data packages your package should still help download and save the data for a seamless workflow, e.g. via a function.
 What can this function do with the data?
