@@ -1,0 +1,32 @@
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/post/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="{{ "images/hugo-logo.png" | relURL }}" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+          <li>
+            <a href="https://www.r-consortium.org/" class="footer-links-kudos">Funded by the <img src="{{ "images/rc.png" | relURL }}" alt="Img link to R Consortium website" height="22"></a>
+          </li>
+          <li>
+            <a href="/privacy/" class="footer-links-kudos">Privacy policy</a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    {{ template "_internal/google_analytics.html" . }}
+    <script
+  src="https://unpkg.com/littlefoot/dist/littlefoot.js"
+  type="application/javascript"
+></script>
+<script type="application/javascript">
+  littlefoot.default({
+  activateOnHover: false,
+  dismissDelay: 50,
+  buttonTemplate: "<button aria-controls='fncontent:<% id %>' aria-expanded='false' aria-label='Footnote <% number %>' class='littlefoot-footnote__button' id='<% reference %>' rel='footnote' title='See Footnote <% number %>' /><% number %></button>"
+})
+</script>
+  </body>
+</html>
