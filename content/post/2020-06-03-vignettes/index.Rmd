@@ -1,0 +1,82 @@
+--- slug: vignettes title: "Optimal workflows for package vignettes" authors: -
+Maëlle Salmon date: "2020-06-03" tags: - package development - documentation
+output: hugodown::hugo_document ---
+```{r setup, include=FALSE} library("printr") # Options to have images saved in
+the post folder # And to disable symbols before output
+knitr::opts_chunk$set(fig.path = "", comment = "")
+# knitr hook to make images output use Hugo options knitr::knit_hooks$set( plot
+= function(x, options) { hugoopts <- options$hugoopts paste0( "{{<figure src=",
+'"', x, '" ', if (!is.null(hugoopts)) { glue::glue_collapse(
+glue::glue('{names(hugoopts)}="{hugoopts}"'), sep = " " ) }, ">}}\n" ) } )
+# knitr hook to use Hugo highlighting options knitr::knit_hooks$set( source =
+function(x, options) { hlopts <- options$hlopts paste0( "```r ", if
+(!is.null(hlopts)) { paste0("{", glue::glue_collapse(
+glue::glue('{names(hlopts)}={hlopts}'), sep = "," ), "}" ) }, "\n",
+glue::glue_collapse(x, sep = "\n"), "\n```\n" ) } ) ```
+Yet another post with a focus on [package documentation](/tags/documentation/)!
+This time, we'll cover vignettes a.k.a "long-form package documentation",
+showing how your package functionalities work together and within the larger ( R
+) ecosystem.
+## What is a vignette? Where does it live?
+
+Etymology. other languages e.g. Python?
+
+### Vignette 101
+
+What's a vignette (goal see R package book, in practice WRE) 
+Where does the user see them
+Now you could be fine only knowing about `usethis::use_vignette()` but Say it's useful to know about it for debugging problems or finding
+workarounds (e.g. prebuilt vignettes, installextras).
+
+### Infrastructure for vignettes
+
+vignette builder. dependencies.
+
+### Overview of vignettes states
+
+Where is the
+vignette for the user, where is it the package source/tarball, how is it copied.
+installation from gitHub
+
+### Your vignette for R CMD check
+
+ R CMD check
+options around vignettes, reminders of how to pass them to R-hub package
+builder. 
+
+## Workflows around vignettes
+
+### How to include my pre-print / cheatsheet as a vignette?
+
+why, indexing.
+
+### How to include a compute-intensive / authentication-dependent vignette?
+
+my post on RStudio community
+
+### Re-use content from the README and manual pages
+
+Rmd fragments
+
+## User-friendly vignettes
+
+How to make vignettes pretty, and information easy to find?
+
+### Pretty vignettes
+
+pkgdown
+
+LaTeX styles, CSS -- careful about browser vs RStudio.
+
+### Cross-references
+
+Link from vignettes to docs, from docs to vignettes.
+Link pkgdown websites from vignettes?
+
+
+ vignettes and pkgdown When
+mentioning pkgdown, special role of the vignette pkgname.Rmd + mention tweaking
+the navbar. Articles index. Recommended workflows for standard stuff. Rmd
+fragments Workflows for working around issues (prebuilding Jeroen's note, PDF
+stuff; purl&eval; articles not vignettes) Further stuff: PDF with paged.js?
+Vignettes or book? See drake
