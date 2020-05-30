@@ -1,18 +1,62 @@
---- slug: vignettes title: "Optimal workflows for package vignettes" authors: -
-Maëlle Salmon date: "2020-06-03" tags: - package development - documentation
-output: hugodown::hugo_document ---
-```{r setup, include=FALSE} library("printr") # Options to have images saved in
-the post folder # And to disable symbols before output
+--- 
+slug: vignettes 
+title: "Optimal workflows for package vignettes" 
+authors: 
+- Maëlle Salmon 
+date: "2020-06-03" 
+tags: 
+- package development 
+- documentation
+output: hugodown::hugo_document
+---
+
+```{r setup, include=FALSE}
+library("printr")
+
+options(knitr.table.format = "markdown")
+
+# Options to have images saved in the post folder
+# And to disable symbols before output
 knitr::opts_chunk$set(fig.path = "", comment = "")
-# knitr hook to make images output use Hugo options knitr::knit_hooks$set( plot
-= function(x, options) { hugoopts <- options$hugoopts paste0( "{{<figure src=",
-'"', x, '" ', if (!is.null(hugoopts)) { glue::glue_collapse(
-glue::glue('{names(hugoopts)}="{hugoopts}"'), sep = " " ) }, ">}}\n" ) } )
-# knitr hook to use Hugo highlighting options knitr::knit_hooks$set( source =
-function(x, options) { hlopts <- options$hlopts paste0( "```r ", if
-(!is.null(hlopts)) { paste0("{", glue::glue_collapse(
-glue::glue('{names(hlopts)}={hlopts}'), sep = "," ), "}" ) }, "\n",
-glue::glue_collapse(x, sep = "\n"), "\n```\n" ) } ) ```
+
+# knitr hook to make images output use Hugo options
+knitr::knit_hooks$set(
+  plot = function(x, options) {
+    hugoopts <- options$hugoopts
+    paste0(
+      "{{<figure src=",
+      '"', x, '" ',
+      if (!is.null(hugoopts)) {
+        glue::glue_collapse(
+          glue::glue('{names(hugoopts)}="{hugoopts}"'),
+          sep = " "
+        )
+      },
+      ">}}\n"
+    )
+  }
+)
+
+# knitr hook to use Hugo highlighting options
+knitr::knit_hooks$set(
+  source = function(x, options) {
+  hlopts <- options$hlopts
+    paste0(
+      "```r ",
+      if (!is.null(hlopts)) {
+      paste0("{",
+        glue::glue_collapse(
+          glue::glue('{names(hlopts)}={hlopts}'),
+          sep = ","
+        ), "}"
+        )
+      },
+      "\n", glue::glue_collapse(x, sep = "\n"), "\n```\n"
+    )
+  }
+)
+```
+
 Yet another post with a focus on [package documentation](/tags/documentation/)!
 This time, we'll cover vignettes a.k.a "long-form package documentation",
 showing how your package functionalities work together and within the larger ( R
@@ -27,6 +71,18 @@ What's a vignette (goal see R package book, in practice WRE)
 Where does the user see them
 Now you could be fine only knowing about `usethis::use_vignette()` but Say it's useful to know about it for debugging problems or finding
 workarounds (e.g. prebuilt vignettes, installextras).
+
+An user could type `vignette(package = "rhub")` or `browseVignettes(package = "rhub")` to access the list of installed vignettes for the `rhub` package[^printr]
+
+```{r rhub-vignette-list}
+vignette(package = "rhub")
+```
+
+```{r rhub-vignette-list2}
+browseVignettes("rhub")
+```
+
+
 
 ### Infrastructure for vignettes
 
@@ -80,3 +136,5 @@ the navbar. Articles index. Recommended workflows for standard stuff. Rmd
 fragments Workflows for working around issues (prebuilding Jeroen's note, PDF
 stuff; purl&eval; articles not vignettes) Further stuff: PDF with paged.js?
 Vignettes or book? See drake
+
+[^printr]: For rendering the vignettes list in this post we used the [`printr`](https://yihui.org/printr/#vignette-dataset-lists) package.
