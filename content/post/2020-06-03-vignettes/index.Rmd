@@ -92,7 +92,7 @@ workarounds for issues you might encounter.
 
 ### Infrastructure for vignettes
 
-Package vignettes can either use the default Sweave vignette engine, or [a vignette engine provided by a CRAN package like `knitr`](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Non_002dSweave-vignettes).
+Package vignettes can either use the default Sweave vignette engine, or [a vignette engine provided by a CRAN package](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Non_002dSweave-vignettes) like [`knitr`](https://bookdown.org/yihui/rmarkdown-cookbook/package-vignette.html).
 [`knitr::rmarkdown` vignette engine](https://community.rstudio.com/t/question-about-usethis-vignette-template/32048) is the one recommended in the R packages book, and `usethis`.
 It allows writing vignettes in R Markdown.
 
@@ -194,8 +194,9 @@ Vignettes or book? See drake
 ## Conclusion
 
 In this post we offered a quite detailed, but probably not exhaustive, guide around R package vignettes.
-We didn't really discuss _content_ of vignettes or how to best assess their usefulness.
-
+We didn't really discuss [_content_ of vignettes](https://r-pkgs.org/vignettes.html#vignette-advice), how to best assess their usefulness (surveys? traffic data?), or their use as a way to [encapsulate analyses in a package structure](https://annakrystalli.me/rrtools-repro-research/create-compendium.html#create_analysis).
+Do you have any special vignette setup or favorite trick?
+Don't hesitate to share!
 
 [^printr]: For rendering the vignettes list in this post we used the [`printr`](https://yihui.org/printr/#vignette-dataset-lists) package.
 [^bc]: Bioconductor has its [own vignette style](https://www.bioconductor.org/packages/release/bioc/html/BiocStyle.html).
