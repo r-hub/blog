@@ -8,7 +8,7 @@ tags:
 - package development 
 - documentation
 output: hugodown::hugo_document
-rmd_hash: 93dd18aceeadd346
+rmd_hash: 9f28b956425278a9
 
 ---
 
@@ -248,8 +248,6 @@ In this section we'll give some tips for making vignettes easier to navigate.
 ### Pretty vignettes
 
 You might want to tweak layout and aspect of your vignette a bit to make people even more likely to read them, maybe with [custom CSS](https://bookdown.org/yihui/rmarkdown/r-package-vignette.html)[^6]. Using a [disappointingly unspecific GitHub code search on R-hub mirror of CRAN](https://github.com/search?l=&o=desc&q=css+user%3Acran++extension%3ARmd+path%3Ainst%2Fdoc&s=indexed&type=Code) we found the example of [`idiogramFISH`](https://gitlab.com/ferroao/idiogramFISH/-/tree/master) that [defines](https://gitlab.com/ferroao/idiogramFISH/-/tree/master/vignettes/css) and [uses](https://gitlab.com/ferroao/idiogramFISH/-/blob/master/vignettes/AplotIdiogramsVig.Rmd#L33) custom stylesheets for its vignette, that makes the vignette look very modern [on its CRAN page](https://cran.r-project.org/web/packages/idiogramFISH/vignettes/AplotIdiogramsVig.html)! Note that it also uses some JavaScript for the table of content and "return to top" links, definitely not light-weight styling.
-
-We haven't tried this ourselves with the latest RStudio IDE version but [apparently there can be conflicts between your vignette background and RStudio IDE theme](https://community.rstudio.com/t/html-vignettes-with-dark-themed-ide/3532). Any experience report?
 
 Now, an even better way to tweak your vignettes is to invest some time in creating a `pkgdown` website that will feature both manual pages, vignettes, changelogs, etc. It's actually little work. It's worth it reading how vignettes are built in [`pkgdown` docs](https://pkgdown.r-lib.org/reference/build_articles.html), in particular
 
