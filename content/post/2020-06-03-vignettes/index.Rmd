@@ -16,7 +16,6 @@ library("printr")
 # Options to have images saved in the post folder
 # And to disable symbols before output
 knitr::opts_chunk$set(fig.path = "", comment = "")
-
 # knitr hook to make images output use Hugo options
 knitr::knit_hooks$set(
   plot = function(x, options) {
