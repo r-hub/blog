@@ -8,11 +8,11 @@ tags:
 - package development 
 - documentation
 output: hugodown::hugo_document
-rmd_hash: 44867d4d0792a73e
+rmd_hash: 93dd18aceeadd346
 
 ---
 
-Yet another post with a focus on [package documentation](/tags/documentation/)! This time, we'll cover vignettes a.k.a "long-form package documentation". What are they? Where do they live? How do you create one without upsetting R CMD check? How do you ensure user-friendliness?
+Yet another post with a focus on [package documentation](/tags/documentation/)! This time, we'll cover vignettes a.k.a "long-form package documentation", both basics around vignette building and infrastructure, and some tips for more maintainer- and user- friendliness.
 
 What is a vignette? Where does it live?
 ---------------------------------------
