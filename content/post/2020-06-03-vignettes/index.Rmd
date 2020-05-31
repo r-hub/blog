@@ -271,14 +271,14 @@ And regarding the offline experience, would it make sense to also generate a PDF
 Vignettes and manual pages serve [different roles](https://twitter.com/JennyBryan/status/1048634586274529281) and complement each other.
 
 In places other than the vignettes you could tell the user to type `vignette("vignette-name")`.
-In `pkgdown` websites, using that function [will create a link the vignette page](https://www.mail-archive.com/r-package-devel@r-project.org/msg03203.html)
+In `pkgdown` websites, using that function [will create a link the vignette page](https://www.mail-archive.com/r-package-devel@r-project.org/msg03203.html).
 
 To link a vignette from another vignette, the [R packages book mentions](https://r-pkgs.org/vignettes.html#organisation) _"Although it’s a slight hack, you can link various vignettes by taking advantage of how files are stored on disk: to link to vignette abc.Rmd, just make a link to abc.html."_
 Again, this is supported in `pkgdown` websites, where functions are furthermore automatically linked to their manual page.
 
 If you have many vignettes, you might want to use the ultimate R Markdown machinery for having cross-references, [`bookdown`](https://github.com/rstudio/bookdown), i.e. writing a book instead of a `pkgdown` website!
 See [how `drake` website links to a "Full manual" in its navbar](https://docs.ropensci.org/drake/).
-This process is currently not a vignettes/`pkgdown` thing, but might [not always be](https://github.com/r-lib/pkgdown/issues/853).
+This process is currently separate from your usual a vignettes/`pkgdown` workflow, but might [not always be](https://github.com/r-lib/pkgdown/issues/853).
 
 ### Repeat yourself
 
@@ -288,8 +288,8 @@ As a quick reminder from [our post about READMEs](/2019/12/03/readmes/#tools-for
 ## Conclusion
 
 In this post we offered a quite detailed, but probably not exhaustive, guide around R package vignettes.
-We didn't really discuss [_content_ of vignettes](https://r-pkgs.org/vignettes.html#vignette-advice), how to best assess their usefulness (surveys? traffic data?), or their use as a way to [encapsulate analyses in a package structure or "research compendium"](https://annakrystalli.me/rrresearchACCE20/creating-a-research-compendium-with-rrtools.html).
-Do you have any special vignette setup or favorite trick?
+We haven't discussed [_content_ of vignettes](https://r-pkgs.org/vignettes.html#vignette-advice), how to best assess their usefulness (surveys? traffic data in `pkgdown` websites?), or their use as a way to [encapsulate analyses in a package structure or "research compendium"](https://annakrystalli.me/rrresearchACCE20/creating-a-research-compendium-with-rrtools.html).
+Do _you_ have any special vignette setup or favorite trick?
 Don't hesitate to share!
 
 [^printr]: For rendering the vignettes list in this post we used the [`printr`](https://yihui.org/printr/#vignette-dataset-lists) package.

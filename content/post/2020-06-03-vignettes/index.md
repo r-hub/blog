@@ -8,7 +8,7 @@ tags:
 - package development 
 - documentation
 output: hugodown::hugo_document
-rmd_hash: 9f28b956425278a9
+rmd_hash: 72e17bbc0a513996
 
 ---
 
@@ -263,11 +263,11 @@ Some further thoughts around vignettes and `pkgdown`. Since vignettes look bette
 
 Vignettes and manual pages serve [different roles](https://twitter.com/JennyBryan/status/1048634586274529281) and complement each other.
 
-In places other than the vignettes you could tell the user to type `vignette("vignette-name")`. In `pkgdown` websites, using that function [will create a link the vignette page](https://www.mail-archive.com/r-package-devel@r-project.org/msg03203.html)
+In places other than the vignettes you could tell the user to type `vignette("vignette-name")`. In `pkgdown` websites, using that function [will create a link the vignette page](https://www.mail-archive.com/r-package-devel@r-project.org/msg03203.html).
 
 To link a vignette from another vignette, the [R packages book mentions](https://r-pkgs.org/vignettes.html#organisation) *"Although it's a slight hack, you can link various vignettes by taking advantage of how files are stored on disk: to link to vignette abc.Rmd, just make a link to abc.html."* Again, this is supported in `pkgdown` websites, where functions are furthermore automatically linked to their manual page.
 
-If you have many vignettes, you might want to use the ultimate R Markdown machinery for having cross-references, [`bookdown`](https://github.com/rstudio/bookdown), i.e. writing a book instead of a `pkgdown` website! See [how `drake` website links to a "Full manual" in its navbar](https://docs.ropensci.org/drake/). This process is currently not a vignettes/`pkgdown` thing, but might [not always be](https://github.com/r-lib/pkgdown/issues/853).
+If you have many vignettes, you might want to use the ultimate R Markdown machinery for having cross-references, [`bookdown`](https://github.com/rstudio/bookdown), i.e. writing a book instead of a `pkgdown` website! See [how `drake` website links to a "Full manual" in its navbar](https://docs.ropensci.org/drake/). This process is currently separate from your usual a vignettes/`pkgdown` workflow, but might [not always be](https://github.com/r-lib/pkgdown/issues/853).
 
 ### Repeat yourself
 
@@ -276,7 +276,7 @@ Even better than cross-references, or complementary to them is the idea to repea
 Conclusion
 ----------
 
-In this post we offered a quite detailed, but probably not exhaustive, guide around R package vignettes. We didn't really discuss [*content* of vignettes](https://r-pkgs.org/vignettes.html#vignette-advice), how to best assess their usefulness (surveys? traffic data?), or their use as a way to [encapsulate analyses in a package structure or "research compendium"](https://annakrystalli.me/rrresearchACCE20/creating-a-research-compendium-with-rrtools.html). Do you have any special vignette setup or favorite trick? Don't hesitate to share!
+In this post we offered a quite detailed, but probably not exhaustive, guide around R package vignettes. We haven't discussed [*content* of vignettes](https://r-pkgs.org/vignettes.html#vignette-advice), how to best assess their usefulness (surveys? traffic data in `pkgdown` websites?), or their use as a way to [encapsulate analyses in a package structure or "research compendium"](https://annakrystalli.me/rrresearchACCE20/creating-a-research-compendium-with-rrtools.html). Do *you* have any special vignette setup or favorite trick? Don't hesitate to share!
 
 [^1]: Note that on a `pkgdown` website, a [well-organized reference](https://pkgdown.r-lib.org/articles/pkgdown.html#reference-1) page can help make function documentation more useful.
 
