@@ -194,7 +194,7 @@ Vignettes or book? See drake
 ## Conclusion
 
 In this post we offered a quite detailed, but probably not exhaustive, guide around R package vignettes.
-We didn't really discuss [_content_ of vignettes](https://r-pkgs.org/vignettes.html#vignette-advice), how to best assess their usefulness (surveys? traffic data?), or their use as a way to [encapsulate analyses in a package structure](https://annakrystalli.me/rrtools-repro-research/create-compendium.html#create_analysis).
+We didn't really discuss [_content_ of vignettes](https://r-pkgs.org/vignettes.html#vignette-advice), how to best assess their usefulness (surveys? traffic data?), or their use as a way to [encapsulate analyses in a package structure or "research compendium"](https://annakrystalli.me/rrresearchACCE20/creating-a-research-compendium-with-rrtools.html).
 Do you have any special vignette setup or favorite trick?
 Don't hesitate to share!
 
