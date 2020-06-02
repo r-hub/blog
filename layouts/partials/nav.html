@@ -9,8 +9,7 @@
   <ul class="nav-links">
     {{ range .Site.Menus.main }}
     <li>
-      {{ .Pre }}
-      <a href="{{ .URL }}">{{ .Name }}</a>
+      <a href="{{ .URL }}">{{ .Pre }}{{ .Name }}</a>
     </li>
     {{ end }}
   </ul>

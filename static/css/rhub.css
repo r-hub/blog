@@ -123,6 +123,10 @@ header .fab {
   color: #B0383C;
 }
 
+header a:hover .fab {
+  color: #1f52a4;
+}
+
 .nav a {
   text-decoration: none;
   color: #1f52a4;
