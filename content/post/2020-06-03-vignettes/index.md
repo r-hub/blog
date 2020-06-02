@@ -8,7 +8,7 @@ tags:
 - package development 
 - documentation
 output: hugodown::hugo_document
-rmd_hash: f38d249565a9278e
+rmd_hash: df0b7bccbe4acd8f
 
 ---
 
@@ -286,9 +286,9 @@ In this post we offered a quite detailed, but probably not exhaustive, guide aro
 
 [^3]: "Writing R Extensions" states, in [the section about DESCRIPTION](https://cran.r-project.org/doc/manuals/R-exts.html#The-DESCRIPTION-file), *Note that if, for example, a vignette has engine 'knitr::rmarkdown', then knitr provides the engine but both knitr and rmarkdown are needed for using it, so both these packages need to be in the 'VignetteBuilder' field and at least suggested (as rmarkdown is only suggested by knitr, and hence not available automatically along with it). Many packages using knitr also need the package formatR which it suggests and so the user package needs to do so too and include this in 'VignetteBuilder'.* which isn't acted upon since most CRAN packages using the `knitr::rmarkdown` engine don't list `rmarkdown` in `VignetteBuilder`; and since `VignetteBuilder` packages [need to be declared as dependencies in other fields](https://github.com/wch/r-source/blob/51cf199ca5ae142d44069235ffc8aaf0c64875e6/src/library/tools/R/QC.R#L3042).
 
-[^4]: A query like `pkgsearch::advanced_search(VignetteBuilder = "knitr AND R.rsp")` would show how many packages use both `knitr` and `R.rsp` as vignette engines, meaning they have at least one vignette using `knitr` and one vignette using `R.rsp`.
+[^4]: A query like `pkgsearch::advanced_search("VignetteBuilder: knitr AND VignetteBuilder: R.rsp")` would show how many packages use both `knitr` and `R.rsp` as vignette engines, meaning they have at least one vignette using `knitr` and one vignette using `R.rsp`.
 
-[^5]: A query like `pkgsearch::advanced_search(VignetteBuilder = "knitr AND R.rsp")` would show how many packages use both `knitr` and `R.rsp` as vignette engines, meaning they have at least one vignette using `knitr` and one vignette using `R.rsp`.
+[^5]: A query like `pkgsearch::advanced_search("VignetteBuilder: knitr AND VignetteBuilder: R.rsp")` would show how many packages use both `knitr` and `R.rsp` as vignette engines, meaning they have at least one vignette using `knitr` and one vignette using `R.rsp`.
 
 [^6]: R CMD check will both [try re-building vignettes and running R code](https://github.com/wch/r-source/blob/95864f9a791189d3332b501f7544253a946e776f/src/library/tools/R/check.R#L5703) as noted [by Jenny Bryan on R-pkg-devel](https://www.mail-archive.com/r-package-devel@r-project.org/msg02488.html). It seems intricate, with the R code for check [including interesting comments](https://github.com/wch/r-source/blob/95864f9a791189d3332b501f7544253a946e776f/src/library/tools/R/check.R#L4296-L4307).
 
