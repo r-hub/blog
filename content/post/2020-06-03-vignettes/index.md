@@ -8,7 +8,7 @@ tags:
 - package development 
 - documentation
 output: hugodown::hugo_document
-rmd_hash: 30cb542e2a3f35ac
+rmd_hash: 45cf895662696ab1
 
 ---
 
@@ -204,7 +204,7 @@ In the `vignettes/` folder of its source one sees [a file called `Heck_2018_BRM.
 %\VignetteKeyword{TreeBUGS}
 ```
 
-Slightly related is this [workaround for building a vignette with a different output format based on the pandoc version available.](https://www.mail-archive.com/r-package-devel@r-project.org/msg02921.html)
+Slightly related is this [workaround by Iñaki Úcar for building a vignette with a different output format based on the pandoc version available.](https://www.mail-archive.com/r-package-devel@r-project.org/msg02921.html)
 
 ### How to include a compute-intensive / authentication-dependent vignette?
 
