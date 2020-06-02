@@ -1,0 +1,16 @@
+
+    </div>
+    {{ template "_internal/google_analytics.html" . }}
+<script
+  src="https://unpkg.com/littlefoot/dist/littlefoot.js"
+  type="application/javascript"
+></script>
+<script type="application/javascript">
+  littlefoot.default({
+  activateOnHover: false,
+  dismissDelay: 50,
+  buttonTemplate: "<button aria-controls='fncontent:<% id %>' aria-expanded='false' aria-label='Footnote <% number %>' class='littlefoot-footnote__button' id='<% reference %>' rel='footnote' title='See Footnote <% number %>' /><% number %></button>"
+})
+</script>
+  </body>
+</html>

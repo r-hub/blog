@@ -115,7 +115,7 @@ header {
   border-bottom-style: solid;
   border-bottom-width: 1px;
   border-bottom-color: #eeeeee;
-  box-shadow: 0px 0px 7.5px 0.5px rgba(150,150,150,0.4);
+  box-shadow: 0px 0px 7.5px 5px rgba(150,150,150,0.4);
 }
 
 .nav a {
