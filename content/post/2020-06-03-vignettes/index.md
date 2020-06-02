@@ -8,7 +8,7 @@ tags:
 - package development 
 - documentation
 output: hugodown::hugo_document
-rmd_hash: a22e5fcea9199807
+rmd_hash: 30cb542e2a3f35ac
 
 ---
 
