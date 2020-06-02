@@ -8,7 +8,7 @@ tags:
 - package development 
 - documentation
 output: hugodown::hugo_document
-rmd_hash: 72e17bbc0a513996
+rmd_hash: aa97d2b615ef0c20
 
 ---
 
@@ -53,33 +53,33 @@ Note that if the user installs your package from GitHub using `devtools`, [they 
 
 As a package author you could be fine only knowing about [`usethis::use_vignette()`](https://usethis.r-lib.org/reference/use_vignette.html) for creating a vignette, and that packages used in the vignette need to be listed in `DESCRIPTION` (under `Suggests` if they're only used in the vignette). Still, it's useful to know about vignettes for debugging problems or finding workarounds for issues you might encounter.
 
-### Infrastructure for vignettes
+### Infrastructure & dependencies for vignettes
 
 The building of package vignettes can either use the default Sweave vignette engine, or [a vignette engine provided by a CRAN package](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Non_002dSweave-vignettes) like [`knitr` by Yihui Xie](https://bookdown.org/yihui/rmarkdown-cookbook/package-vignette.html). [`knitr::rmarkdown` vignette engine](https://community.rstudio.com/t/question-about-usethis-vignette-template/32048) is the one recommended in the R packages book, and `usethis`. It allows writing vignettes in R Markdown.
 
-[See the source of `rhub` main vignette](https://github.com/r-hub/rhub/blob/master/vignettes/rhub.Rmd). It has YAML metadata at the top, some non-executed code chunks, some executed code chunks. To allow for that vignette to be built, a [field in `DESCRIPTION`](https://github.com/r-hub/rhub/blob/6ae6f35e958f3beab1e2c8e6f704affa23c8ce29/DESCRIPTION#L47) mentions the vignette engine:
+[See the source of `rhub` main vignette](https://github.com/r-hub/rhub/blob/master/vignettes/rhub.Rmd). It has YAML metadata at the top, some non-executed code chunks, some executed code chunks. To allow for that vignette to be built, a [field in `DESCRIPTION`](https://github.com/r-hub/rhub/blob/6ae6f35e958f3beab1e2c8e6f704affa23c8ce29/DESCRIPTION#L47) mentions the vignette engine[^3]:
 
 ``` yaml
-VignetteBuilder: knitr
+VignetteBuilder: knitr, rmarkdown
 ```
 
 The boilerplate Rmd under a new `vignettes` folder, and that `DESCRIPTION` field, are what `usethis::use_vignette()` would create for you. Then you can write as you would a standard R Markdown document, knitting for previewing it.
 
 Other vignette builders include [`R.rsp`](https://cran.r-project.org/web/packages/R.rsp/index.html) that we'll mention again later, [`noweb`](https://cran.r-project.org/web/packages/noweb/index.html) to use the [noweb literate programming tool](https://en.wikipedia.org/wiki/Noweb) (which actually looks a lot like sweave?), [`rasciidocs`](https://cran.r-project.org/web/packages/rasciidoc/index.html) that was recently archived at the time of writing. It is unlikely you'll want to write your own vignette engine.
 
-How many packages use a non-Sweave vignette? One way to assess that is to look for packages that have a `VignetteBuilder` field in `DESCRIPTION` with R-hub's own [`pkgsearch`](http://r-hub.github.io/pkgsearch/).[^3]
+How many packages use a non-Sweave vignette? One way to assess that is to look for packages that have a `VignetteBuilder` field in `DESCRIPTION` with R-hub's own [`pkgsearch`](http://r-hub.github.io/pkgsearch/).[^4]
 
 ``` r
 results <- pkgsearch::advanced_search("_exists_" = "VignetteBuilder")
 attr(results, "metadata")$total
-[1] 4953
+[1] 4965
 ```
 
 ``` r
 
 knitr <- pkgsearch::advanced_search(VignetteBuilder = "knitr")
 attr(knitr, "metadata")$total
-[1] 4723
+[1] 4735
 ```
 
 ``` r
@@ -88,7 +88,7 @@ nrow(available.packages())
 [1] 15685
 ```
 
-Quite a lot, about 32% of CRAN pages use a non Sweave vignette engine and about 30% use knitr for at least one vignette![^4] Other packages might have *Sweave* vignettes, and some CRAN packages don't have vignettes, whereas having a vignette is compulsory for Bioconductor packages.
+Quite a lot, about 32% of CRAN pages use a non Sweave vignette engine and about 30% use knitr for at least one vignette![^5] Other packages might have *Sweave* vignettes, and some CRAN packages don't have vignettes, whereas having a vignette is compulsory for Bioconductor packages.
 
 ### Overview of vignettes states
 
@@ -150,7 +150,7 @@ fs::dir_tree(find.package("rhub"))
 
 ### Your vignette for R CMD check
 
-So, sometimes R CMD check[^5] will throw errors related to vignette building. How to deal with them?
+So, sometimes R CMD check[^6] will throw errors related to vignette building. How to deal with them?
 
 :bulb: There is [good troubleshooting advice in the R packages book](https://r-pkgs.org/vignettes.html#vignette-cran).
 
@@ -234,7 +234,7 @@ knitr::opts_chunk$set(
 
 In the two previous subsections we recommended pre-building stuff, which might make some people cringe, but we like this [quote by Henrik Bengtsson in R-package-devel](https://www.mail-archive.com/r-package-devel@r-project.org/msg00812.html).
 
-> Some may argue that you're package is not fully tested this way, but that depends on how well your package tests/ are written. I tend to look at examples() and vignettes as demos, and tests/ as actually tests. All should of course pass R CMD check and run, but the tests/ are what really test the package.
+> Some may argue that your package is not fully tested this way, but that depends on how well your package tests/ are written. I tend to look at examples() and vignettes as demos, and tests/ as actually tests. All should of course pass R CMD check and run, but the tests/ are what really test the package.
 
 He also makes the point,
 
@@ -247,7 +247,7 @@ In this section we'll give some tips for making vignettes easier to navigate.
 
 ### Pretty vignettes
 
-You might want to tweak layout and aspect of your vignette a bit to make people even more likely to read them, maybe with [custom CSS](https://bookdown.org/yihui/rmarkdown/r-package-vignette.html)[^6]. Using a [disappointingly unspecific GitHub code search on R-hub mirror of CRAN](https://github.com/search?l=&o=desc&q=css+user%3Acran++extension%3ARmd+path%3Ainst%2Fdoc&s=indexed&type=Code) we found the example of [`idiogramFISH`](https://gitlab.com/ferroao/idiogramFISH/-/tree/master) that [defines](https://gitlab.com/ferroao/idiogramFISH/-/tree/master/vignettes/css) and [uses](https://gitlab.com/ferroao/idiogramFISH/-/blob/master/vignettes/AplotIdiogramsVig.Rmd#L33) custom stylesheets for its vignette, that makes the vignette look very modern [on its CRAN page](https://cran.r-project.org/web/packages/idiogramFISH/vignettes/AplotIdiogramsVig.html)! Note that it also uses some JavaScript for the table of content and "return to top" links, definitely not light-weight styling.
+You might want to tweak layout and aspect of your vignette a bit to make people even more likely to read them, maybe with [custom CSS](https://bookdown.org/yihui/rmarkdown/r-package-vignette.html)[^7]. Using a [disappointingly unspecific GitHub code search on R-hub mirror of CRAN](https://github.com/search?l=&o=desc&q=css+user%3Acran++extension%3ARmd+path%3Ainst%2Fdoc&s=indexed&type=Code) we found the example of [`idiogramFISH`](https://gitlab.com/ferroao/idiogramFISH/-/tree/master) that [defines](https://gitlab.com/ferroao/idiogramFISH/-/tree/master/vignettes/css) and [uses](https://gitlab.com/ferroao/idiogramFISH/-/blob/master/vignettes/AplotIdiogramsVig.Rmd#L33) custom stylesheets for its vignette, that makes the vignette look very modern [on its CRAN page](https://cran.r-project.org/web/packages/idiogramFISH/vignettes/AplotIdiogramsVig.html)! Note that it also uses some JavaScript for the table of content and "return to top" links, definitely not light-weight styling.
 
 Now, an even better way to tweak your vignettes is to invest some time in creating a `pkgdown` website that will feature both manual pages, vignettes, changelogs, etc. It's actually little work. It's worth it reading how vignettes are built in [`pkgdown` docs](https://pkgdown.r-lib.org/reference/build_articles.html), in particular
 
@@ -257,7 +257,7 @@ Now, an even better way to tweak your vignettes is to invest some time in creati
 
 Once you've created the website, do not forget to indicate its [URL in `DESCRIPTION`](/2019/12/10/urls/). :wink:
 
-Some further thoughts around vignettes and `pkgdown`. Since vignettes look better and are more integrated with other docs in the pkgdown website than locally, should your local vignettes contain a link to the `pkgdown` version to be sure that users that look at an offline vignette but have an internet connection can get a better user experience? And regarding the offline experience, would it make sense to also generate a PDF version of HTML vignettes, maybe with paged.js[^7]?
+Some further thoughts around vignettes and `pkgdown`. Since vignettes look better and are more integrated with other docs in the pkgdown website than locally, should your local vignettes contain a link to the `pkgdown` version to be sure that users that look at an offline vignette but have an internet connection can get a better user experience? And regarding the offline experience, would it make sense to also generate a PDF version of HTML vignettes, maybe with paged.js[^8]?
 
 ### Cross-references
 
@@ -282,12 +282,14 @@ In this post we offered a quite detailed, but probably not exhaustive, guide aro
 
 [^2]: For rendering the vignettes list in this post we used the [`printr`](https://yihui.org/printr/#vignette-dataset-lists) package.
 
-[^3]: A query like `pkgsearch::advanced_search(VignetteBuilder = "knitr AND R.rsp")` would show how many packages use both `knitr` and `R.rsp` as vignette engines, meaning they have at least one vignette using `knitr` and one vignette using `R.rsp`.
+[^3]: "Writing R Extensions" states, in [the section about DESCRIPTION](https://cran.r-project.org/doc/manuals/R-exts.html#The-DESCRIPTION-file), *Note that if, for example, a vignette has engine 'knitr::rmarkdown', then knitr provides the engine but both knitr and rmarkdown are needed for using it, so both these packages need to be in the 'VignetteBuilder' field and at least suggested (as rmarkdown is only suggested by knitr, and hence not available automatically along with it). Many packages using knitr also need the package formatR which it suggests and so the user package needs to do so too and include this in 'VignetteBuilder'.* which isn't acted upon since most CRAN packages using the `knitr::rmarkdown` engine don't list `rmarkdown` in `VignetteBuilder`; and since `VignetteBuilder` packages [need to be declared as dependencies in other fields](https://github.com/wch/r-source/blob/51cf199ca5ae142d44069235ffc8aaf0c64875e6/src/library/tools/R/QC.R#L3042).
 
 [^4]: A query like `pkgsearch::advanced_search(VignetteBuilder = "knitr AND R.rsp")` would show how many packages use both `knitr` and `R.rsp` as vignette engines, meaning they have at least one vignette using `knitr` and one vignette using `R.rsp`.
 
-[^5]: R CMD check will both [try re-building vignettes and running R code](https://github.com/wch/r-source/blob/95864f9a791189d3332b501f7544253a946e776f/src/library/tools/R/check.R#L5703) as noted [by Jenny Bryan on R-pkg-devel](https://www.mail-archive.com/r-package-devel@r-project.org/msg02488.html). It seems intricate, with the R code for check [including interesting comments](https://github.com/wch/r-source/blob/95864f9a791189d3332b501f7544253a946e776f/src/library/tools/R/check.R#L4296-L4307).
+[^5]: A query like `pkgsearch::advanced_search(VignetteBuilder = "knitr AND R.rsp")` would show how many packages use both `knitr` and `R.rsp` as vignette engines, meaning they have at least one vignette using `knitr` and one vignette using `R.rsp`.
 
-[^6]: Bioconductor has its [own vignette style](https://www.bioconductor.org/packages/release/bioc/html/BiocStyle.html).
+[^6]: R CMD check will both [try re-building vignettes and running R code](https://github.com/wch/r-source/blob/95864f9a791189d3332b501f7544253a946e776f/src/library/tools/R/check.R#L5703) as noted [by Jenny Bryan on R-pkg-devel](https://www.mail-archive.com/r-package-devel@r-project.org/msg02488.html). It seems intricate, with the R code for check [including interesting comments](https://github.com/wch/r-source/blob/95864f9a791189d3332b501f7544253a946e776f/src/library/tools/R/check.R#L4296-L4307).
 
-[^7]: Compared with [`pagedown`](https://pagedown.rbind.io/) the vague idea mentioned here would mean adding a custom print stylesheet to the vignette and using the [paged.js CLI](https://gitlab.pagedmedia.org/tools/pagedjs-cli) for generating a PDF locally before submission, PDF that'd be present in `inst/doc`, and linked to from the html vignette. There are [other efforts for making docs easier to use offline](https://cran.r-project.org/web/packages/RWsearch/vignettes/RWsearch-1-Introduction.html).
+[^7]: Bioconductor has its [own vignette style](https://www.bioconductor.org/packages/release/bioc/html/BiocStyle.html).
+
+[^8]: Compared with [`pagedown`](https://pagedown.rbind.io/) the vague idea mentioned here would mean adding a custom print stylesheet to the vignette and using the [paged.js CLI](https://gitlab.pagedmedia.org/tools/pagedjs-cli) for generating a PDF locally before submission, PDF that'd be present in `inst/doc`, and linked to from the html vignette. There are [other efforts for making docs easier to use offline](https://cran.r-project.org/web/packages/RWsearch/vignettes/RWsearch-1-Introduction.html).
