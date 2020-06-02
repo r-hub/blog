@@ -14,7 +14,7 @@ rssLimit = 5
     post = "/:year/:month/:day/:slug/"
 
 [[menu.main]]
-    name = "Blog"
+    name = "Home"
     url = "/"
     weight = 1
 [[menu.main]]
@@ -25,10 +25,12 @@ rssLimit = 5
     name = "GitHub"
     url = "https://github.com/r-hub"
     weight = 3
+    pre = "<i class=\"fab fa-github\"></i>"
 [[menu.main]]
     name = "Twitter"
     url = "https://twitter.com/rhub_"
     weight = 4
+    pre = "<i class=\"fab fa-twitter\"></i>"
 
 [params]
     description = "Blog for the R-hub project of the R Consortium, easing the R package development process."
