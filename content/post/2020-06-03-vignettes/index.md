@@ -8,7 +8,7 @@ tags:
 - package development 
 - documentation
 output: hugodown::hugo_document
-rmd_hash: 45cf895662696ab1
+rmd_hash: f38d249565a9278e
 
 ---
 
@@ -63,7 +63,9 @@ The building of package vignettes can either use the default Sweave vignette eng
 VignetteBuilder: knitr, rmarkdown
 ```
 
-The boilerplate Rmd under a new `vignettes` folder, and that `DESCRIPTION` field, are what `usethis::use_vignette()` would create for you. Then you can write as you would a standard R Markdown document, knitting for previewing it.
+And these two packages are declared as dependencies under `Suggests` as well.
+
+The creation of a boilerplate Rmd under a new `vignettes` folder, and the dependencies declaration in `DESCRIPTION`, are what `usethis::use_vignette()` would handle for you. Then you can write as you would a standard R Markdown document, knitting for previewing it.
 
 Other vignette builders include [`R.rsp`](https://cran.r-project.org/web/packages/R.rsp/index.html) that we'll mention again later, [`noweb`](https://cran.r-project.org/web/packages/noweb/index.html) to use the [noweb literate programming tool](https://en.wikipedia.org/wiki/Noweb) (which actually looks a lot like sweave?), [`rasciidocs`](https://cran.r-project.org/web/packages/rasciidoc/index.html) that was recently archived at the time of writing. It is unlikely you'll want to write your own vignette engine.
 
