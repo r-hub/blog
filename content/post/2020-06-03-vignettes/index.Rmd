@@ -109,7 +109,7 @@ Other vignette builders include [`R.rsp`](https://cran.r-project.org/web/package
 It is unlikely you'll want to write your own vignette engine. 
 
 How many packages use a non-Sweave vignette?
-One way to assess that is to look for packages that have a `VignetteBuilder` field in `DESCRIPTION` with R-hub's own [`pkgsearch`](http://r-hub.github.io/pkgsearch/).[^twovb]
+One way to assess that is to look for packages that have a `VignetteBuilder` field in `DESCRIPTION` with R-hub's own [`pkgsearch`](http://r-hub.github.io/pkgsearch/).[^julia]
 
 ```{r count-vignettebuilder}
 results <- pkgsearch::advanced_search("_exists_" = "VignetteBuilder")
@@ -300,3 +300,5 @@ Don't hesitate to share!
 [^twovb]: A query like `pkgsearch::advanced_search("VignetteBuilder: knitr AND VignetteBuilder: R.rsp")` would show how many packages use both `knitr` and `R.rsp` as vignette engines, meaning they have at least one vignette using `knitr` and one vignette using `R.rsp`.
 [^rcmd]: R CMD check will both [try re-building vignettes and running R code](https://github.com/wch/r-source/blob/95864f9a791189d3332b501f7544253a946e776f/src/library/tools/R/check.R#L5703) as noted [by Jenny Bryan on R-pkg-devel](https://www.mail-archive.com/r-package-devel@r-project.org/msg02488.html). It seems intricate, with the R code for check [including interesting comments](https://github.com/wch/r-source/blob/95864f9a791189d3332b501f7544253a946e776f/src/library/tools/R/check.R#L4296-L4307).
 [^vbrmarkdown]: "Writing R Extensions" states, in [the section about DESCRIPTION](https://cran.r-project.org/doc/manuals/R-exts.html#The-DESCRIPTION-file), _Note that if, for example, a vignette has engine ‘knitr::rmarkdown’, then knitr provides the engine but both knitr and rmarkdown are needed for using it, so both these packages need to be in the ‘VignetteBuilder’ field and at least suggested (as rmarkdown is only suggested by knitr, and hence not available automatically along with it). Many packages using knitr also need the package formatR which it suggests and so the user package needs to do so too and include this in ‘VignetteBuilder’._ which isn't acted upon since most CRAN packages using the `knitr::rmarkdown` engine don't list `rmarkdown` in `VignetteBuilder`; and since `VignetteBuilder` packages [need to be declared as dependencies in other fields](https://github.com/wch/r-source/blob/51cf199ca5ae142d44069235ffc8aaf0c64875e6/src/library/tools/R/QC.R#L3042).
+[^julia]: Another way is to use [`tools::CRAN_package_db()
+` like Julia Silge did in her blog post "Mining CRAN DESCRIPTION Files"](https://juliasilge.com/blog/mining-cran-description/).

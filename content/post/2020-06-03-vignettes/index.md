@@ -8,7 +8,7 @@ tags:
 - package development 
 - documentation
 output: hugodown::hugo_document
-rmd_hash: df0b7bccbe4acd8f
+rmd_hash: da30641c0941c6b5
 
 ---
 
@@ -286,7 +286,7 @@ In this post we offered a quite detailed, but probably not exhaustive, guide aro
 
 [^3]: "Writing R Extensions" states, in [the section about DESCRIPTION](https://cran.r-project.org/doc/manuals/R-exts.html#The-DESCRIPTION-file), *Note that if, for example, a vignette has engine 'knitr::rmarkdown', then knitr provides the engine but both knitr and rmarkdown are needed for using it, so both these packages need to be in the 'VignetteBuilder' field and at least suggested (as rmarkdown is only suggested by knitr, and hence not available automatically along with it). Many packages using knitr also need the package formatR which it suggests and so the user package needs to do so too and include this in 'VignetteBuilder'.* which isn't acted upon since most CRAN packages using the `knitr::rmarkdown` engine don't list `rmarkdown` in `VignetteBuilder`; and since `VignetteBuilder` packages [need to be declared as dependencies in other fields](https://github.com/wch/r-source/blob/51cf199ca5ae142d44069235ffc8aaf0c64875e6/src/library/tools/R/QC.R#L3042).
 
-[^4]: A query like `pkgsearch::advanced_search("VignetteBuilder: knitr AND VignetteBuilder: R.rsp")` would show how many packages use both `knitr` and `R.rsp` as vignette engines, meaning they have at least one vignette using `knitr` and one vignette using `R.rsp`.
+[^4]: Another way is to use [`tools::CRAN_package_db()` like Julia Silge did in her blog post "Mining CRAN DESCRIPTION Files"](https://juliasilge.com/blog/mining-cran-description/).
 
 [^5]: A query like `pkgsearch::advanced_search("VignetteBuilder: knitr AND VignetteBuilder: R.rsp")` would show how many packages use both `knitr` and `R.rsp` as vignette engines, meaning they have at least one vignette using `knitr` and one vignette using `R.rsp`.
 
