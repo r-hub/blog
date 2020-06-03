@@ -20,7 +20,7 @@ editor_options:
 ## TL;DR
 
 If you need to use multiple versions of R on macOS, look at the
-[`install-rstats` package](https://www.npmjs.com/package/install-rstats)
+[`install-rstats` Node package](https://www.npmjs.com/package/install-rstats)
 in the ['Installer' section below](#installer).
 
 ## Introduction
