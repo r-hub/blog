@@ -33,14 +33,14 @@
 
   <div class="container">
     <div class="row">
-    <div class="article-content col-sm-8 position-relative">
-      {{ .Content }}
-    </div>
-    <div class = "col-sm-4 toc" id = "sidebar">
-      {{.TableOfContents}}
+      <div class="article-content col-sm-8 position-relative">
+        {{ .Content }}
+      </div>
+      <div class="col-sm-4">
+        <nav id="toc" data-toggle="toc" class="sticky-top"></nav>
       </div>
     </div>
-    </div>
+  </div>
   </article>
 
 </main>
