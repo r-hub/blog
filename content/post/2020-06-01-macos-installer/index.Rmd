@@ -13,52 +13,12 @@ output: hugodown::hugo_document
 
 <!-- -*- mode: gfm; canonical: true -*- -->
 
-```{r include = FALSE}
-knitr::knit_engines$set(bash = function(options) {
-  `%||%` <- function(l, r) if (is.null(l)) r else l
-  code <- paste0(options$code, collapse = "\n")
-  options$code <- paste("$", options$code)
-
-  filename <- file.path(
-    knitr::opts_chunk$get("fig.path"),
-    paste0(options$label, ".gif")
-  )
-  
-  if (!file.exists(filename)) {
-    tmp <- tempfile(fileext = ".cast")
-    on.exit(unlink(tmp), add = TRUE)
-
-    processx::run(
-      "asciinema",
-      c("rec", "-i", "2", "-c", code, tmp),
-      echo = TRUE
-    )
-    cast <- asciicast::read_cast(tmp)
-  
-    dir.create(
-      dirname(filename), 
-      showWarnings = FALSE, 
-      recursive = TRUE
-    )
-
-    asciicast::write_gif(
-      cast, 
-      filename, 
-      rows = options$rows %||% "auto", 
-      theme = "asciinema", loop = 1,
-      speed = options$speed %||% 1.0
-    )
-  }
-  
-  extra <- knitr::knit_hooks$get('plot')(filename, options)
-  knitr::engine_output(options, options$code, '', extra)
-})
-```
-
 ## TL;DR
 
 If you need to use multiple versions of R on macOS, look at the
-`install-rstats` package in the 'Installer' section below.
+[`install-rstats`
+package](https://www.npmjs.com/package/install-rstats) in the
+['Installer' section below](#installer).
 
 ## Introduction
 
@@ -73,10 +33,10 @@ R](https://www.tidyverse.org/blog/2019/04/r-version-support/).
 The more versions you support, the more versions you typically keep on
 your development machine, to be able to reproduce problems and fix
 bugs, that are specific to older or newer versions. [R-hub is
-great](/2019/03/26/why-care/) for quick checks,
-but if there is a problem, you'll want to run R on your local machine
-to investigate. In this post we show a way to run multiple R versions
-on macOS, at the same time.
+great](/2019/03/26/why-care/) for quick checks, but if there is a
+problem, you'll want to run R on your local machine to investigate. In
+this post we show a way to run multiple R versions on macOS, at the
+same time.
 
 ## The macOS R installer
 
@@ -104,9 +64,27 @@ different minor versions. I.e. you can install R 3.6.3 and R 4.0.0
 together, but not R 3.6.2 and R 3.6.3. After installing a couple of R
 versions, `/Library/Frameworks/R.framework` may look like this:
 
-```{bash}
-tree -n -L 2 /Library/Frameworks/R.framework
+``` bash
+$ tree -L 2 /Library/Frameworks/R.framework
 ```
+
+    /Library/Frameworks/R.framework
+    ├── Headers -> Versions/Current/Headers
+    ├── Libraries -> Versions/Current/Resources/lib
+    ├── PrivateHeaders -> Versions/Current/PrivateHeaders
+    ├── R -> Versions/Current/R
+    ├── Resources -> Versions/Current/Resources
+    └── Versions
+        ├── 3.2
+        ├── 3.3
+        ├── 3.4
+        ├── 3.5
+        ├── 3.6
+        ├── 4.0
+        ├── 4.1
+        └── Current -> 4.0
+
+    13 directories, 1 file
 
 The various R versions are kept in separate directories, named
 according to their minor version numbers: `3.2`, `3.3`, etc. `Current`
@@ -137,10 +115,31 @@ The problem is that some R scripts and configuration files refer to
 the active version, throught the `Current` symbolic link, instead of
 the version specific files and directories:
 
-```{bash, rows = 21}
-cd /Library/Frameworks/R.framework/Versions/4.0
-ag --ignore '*.html' --ignore 'NEWS*' 'R\.framework'
+``` bash
+$ cd /Library/Frameworks/R.framework/Versions/4.0
+$ ag --ignore '*.html' --ignore 'NEWS*' 'R\.framework'
 ```
+
+    Resources/bin/R
+    4:R_HOME_DIR=/Library/Frameworks/R.framework/Resources
+    35:R_SHARE_DIR=/Library/Frameworks/R.framework/Resources/share
+    37:R_INCLUDE_DIR=/Library/Frameworks/R.framework/Resources/include
+    39:R_DOC_DIR=/Library/Frameworks/R.framework/Resources/doc
+
+    Resources/etc/Renviron
+    59:R_QPDF=${R_QPDF-'/Library/Frameworks/R.framework/Resources/bin/qpdf'}
+
+    Resources/etc/Makeconf
+    78:LIBR = -F/Library/Frameworks/R.framework/.. -framework R
+
+    Resources/library/rJava/jri/run
+    3:R_HOME=/Library/Frameworks/R.framework/Resources
+    5:R_SHARE_DIR=/Library/Frameworks/R.framework/Resources/share
+    7:R_INCLUDE_DIR=/Library/Frameworks/R.framework/Resources/include
+    9:R_DOC_DIR=/Library/Frameworks/R.framework/Resources/doc
+
+    Resources/fontconfig/fonts/fonts.conf
+    80: <cachedir>/Library/Frameworks/R.framework/Resources/fontconfig/cache</cachedir>
 
 Fixing these is mostly straightforward. We need to replace every
 reference to `.../R.framework/Resources/...` with
@@ -154,9 +153,18 @@ for frameworks and the compiler will always find the default
 framework within the `Versions/<version>` directory, using symbolic
 links. It looks like this for R 3.6:
 
-```{bash}
-tree /Library/Frameworks/R.framework/Versions/3.6/R.framework
+``` bash
+$ tree /Library/Frameworks/R.framework/Versions/3.6/R.framework
 ```
+
+    /Library/Frameworks/R.framework/Versions/3.6/R.framework
+    ├── Headers -> ../Headers
+    ├── Libraries -> ../Resources/lib
+    ├── PrivateHeaders -> ../PrivateHeaders
+    ├── R -> ../R
+    └── Resources -> ../Resources
+
+    4 directories, 1 file
 
 Then we can tell the compiler to look for frameworks in (e.g.)
 `/Library/Frameworks/R.framework/Versions/3.6`.
@@ -197,9 +205,30 @@ downloads and installs them, and performs all the modifications
 discussed above to make sure that they work independently. E.g. to
 install R 3.6 and a devel version, you would run
 
-```{bash rows = 25}
-install-rstats 3.6 devel
+``` bash
+$ install-rstats 3.6 devel
 ```
+
+    ✔ Resolving 2 R version(s)
+    ✔ Downloading files: 2/2 170 MB/170 MB
+    ℹ Installing R version(s): 3.6.3, devel
+    → Installing /private/tmp/R-3.6.3.pkg
+    → installer: Package name is R 3.6.3 for Mac OS X 10.11 or higher (El Capitan build)
+    → installer: Installing at base path /
+    → installer: The install was successful.
+    → Forgot package 'org.r-project.R.el-capitan.fw.pkg' on '/'.
+    → Forgot package 'org.r-project.x86_64.tcltk.x11' on '/'.
+    → Forgot package 'org.r-project.x86_64.texinfo' on '/'.
+    → Forgot package 'org.r-project.R.el-capitan.GUI.pkg' on '/'.
+    → Installing /private/tmp/R-devel.pkg
+    → installer: Package name is R 4.1.0 for macOS
+    → installer: Installing at base path /
+    → installer: The install was successful.
+    → Forgot package 'org.R-project.R.GUI.pkg' on '/'.
+    → Forgot package 'org.r-project.x86_64.texinfo' on '/'.
+    → Forgot package 'org.R-project.R.fw.pkg' on '/'.
+    → Making R 3.6 orthogonal
+    → Making R 4.1 orthogonal
 
 When `install-rstats` runs the R installer(s), they'll change the
 `Current` symbolic link, so it makes sense to close your active R
@@ -217,14 +246,19 @@ quite tedious, so `install-rstats` creates a symbolic link for each
 installed version, in `/usr/local/bin`, so to start R 3.6, you only
 need to type `R-3.6`:
 
-```{r include = FALSE}
-Sys.unsetenv("R_HOME")
+``` bash
+$ R-3.6 --vanilla -q -e 'getRversion()'
 ```
 
-```{bash}
-R-3.6 --vanilla -q -e 'getRversion()'
-R-4.1 --vanilla -q -e 'getRversion()'
+    > getRversion()
+    [1] ‘3.6.3’
+
+``` bash
+$ R-4.1 --vanilla -q -e 'getRversion()'
 ```
+
+    > getRversion()
+    [1] ‘4.1.0’
 
 ### Clean system library
 
@@ -248,8 +282,8 @@ conributed packages, all you need to do is to agree:
 
 ## Resources, links
 
--   The [`[install-rstats` npm
-    package](<https://www.npmjs.com/package/install-rstats>).
+-   The [`install-rstats` npm
+    package](https://www.npmjs.com/package/install-rstats).
 -   [`install-rstats` on
     GitHub](https://github.com/r-hub/node-install-rstats).
 -   [Shell
