@@ -9,11 +9,15 @@ tags:
 - installer
 - R versions
 output: hugodown::hugo_document
-rmd_hash: f59ae161b9307ee7
+editor_options:
+  markdown:
+    doctype: hugo
+    wrap_column: 72
+    references: block
+    canonical: true
+rmd_hash: 4323b6b3f1a458b4
 
 ---
-
-<!-- -*- mode: gfm; canonical: true -*- -->
 
 TL;DR
 -----
