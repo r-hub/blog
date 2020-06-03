@@ -6,6 +6,7 @@ authors:
 date: "2020-01-27"
 tags:
 - package development
+- documentation
 output: 
   html_document:
     keep_md: true
