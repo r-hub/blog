@@ -118,15 +118,6 @@ header {
   box-shadow: 0px 0px 7.5px 5px rgba(150,150,150,0.4);
 }
 
-header .fab {
-  font-size: 1.25em;
-  color: #B0383C;
-}
-
-header a:hover .fab {
-  color: #1f52a4;
-}
-
 .nav a {
   text-decoration: none;
   color: #1f52a4;

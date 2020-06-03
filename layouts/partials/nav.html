@@ -9,7 +9,11 @@
   <ul class="nav-links">
     {{ range .Site.Menus.main }}
     <li>
-      <a href="{{ .URL }}">{{ .Pre }}{{ .Name }}</a>
+      {{ if .Pre }}
+      <a href="{{ .URL }}" target="_blank" aria-label="{{ .Name }}">{{ .Pre }}</a>
+      {{ else }}
+      <a href="{{ .URL }}">{{ .Name }}</a>
+      {{ end }}
     </li>
     {{ end }}
   </ul>
