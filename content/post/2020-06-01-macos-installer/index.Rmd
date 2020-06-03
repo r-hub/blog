@@ -1,6 +1,6 @@
 ---
 slug: macos-installer
-title: "Using muliple versions of R on macOS"
+title: "Using multiple versions of R on macOS"
 authors:
   - Gábor Csárdi
 date: "2020-06-01"
@@ -73,7 +73,7 @@ R](https://www.tidyverse.org/blog/2019/04/r-version-support/).
 The more versions you support, the more versions you typically keep on
 your development machine, to be able to reproduce problems and fix
 bugs, that are specific to older or newer versions. [R-hub is
-great](https://blog.r-hub.io/2019/03/26/why-care/) for quick checks,
+great](/2019/03/26/why-care/) for quick checks,
 but if there is a problem, you'll want to run R on your local machine
 to investigate. In this post we show a way to run multiple R versions
 on macOS, at the same time.
@@ -119,7 +119,7 @@ crash.
 
 [RSwitch](https://rud.is/rswitch/) is a handy tool that helps you with
 the version switch. It sits on the menu bar, you can use it to select
-the desired R version, and then it will update he symbolic link
+the desired R version, and then it will update the symbolic link
 accordingly.
 
 ## Problems and workarounds
@@ -248,7 +248,7 @@ conributed packages, all you need to do is to agree:
 
 ## Resources, links
 
--   The `[install-rstats` npm
+-   The [`[install-rstats` npm
     package](<https://www.npmjs.com/package/install-rstats>).
 -   [`install-rstats` on
     GitHub](https://github.com/r-hub/node-install-rstats).
