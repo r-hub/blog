@@ -327,24 +327,46 @@ nav[data-toggle="toc"] {
   top: 42px;
 }
 
+ul.nav.navbar-nav {
+  padding-right: 0;
+}
+
+div.toc {
+  padding-right: 0;
+}
+
 nav[data-toggle="toc"] .nav-link.active, nav[data-toggle="toc"] .nav-link.active:focus, nav[data-toggle="toc"] .nav-link.active:hover {
   color: #2854A0;
   border-left: 2px solid #2854A0;
   font-size: 18px;
+  padding-right: 0;
 }
 
 nav[data-toggle="toc"] .nav>li>a:hover {
   color: #2854A0;
   border-left: 1px solid #2854A0;
   font-size: 18px;
+  padding-right: 0;
 }
 
-nav[data-toggle="toc"] .nav>li>a, nav[data-toggle="toc"] .nav .nav>li>a, nav[data-toggle="toc"] .nav .nav>li>a:hover {
+nav[data-toggle="toc"] .nav>li>a {
   font-size: 18px;
+  padding-right: 0;
+}
+
+/* subheadings */
+nav[data-toggle="toc"] .nav .nav>li>a, nav[data-toggle="toc"] .nav .nav>li>a:hover, nav[date-toggle="toc"] .nav-link.active {
+  font-size: 14px;
+  padding-right: 0;
+  font-weight: 400;
+}
+nav[data-toggle=toc] .nav .nav>li>.active, nav[data-toggle=toc] .nav .nav>li>.active:focus, nav[data-toggle=toc] .nav .nav>li>.active:hover {
+  font-weight: 700;
 }
 
 nav[data-toggle="toc"] .nav .nav {
   display: block;
+  padding-right: 0;
 }
 
 /* small screens */
