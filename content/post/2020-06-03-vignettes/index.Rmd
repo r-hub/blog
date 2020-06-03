@@ -82,7 +82,7 @@ Note that if the user installs your package from GitHub using `devtools`, [they 
 
 * see them from the [CRAN page of the package](https://cran.r-project.org/web/packages/rhub/index.html), and its [`pkgdown` website](https://r-hub.github.io/rhub/) if there's one.
 
-As a package author you could be fine only knowing about [`usethis::use_vignette()`](https://usethis.r-lib.org/reference/use_vignette.html) for creating a vignette, and that packages used in the vignette need to be listed in `DESCRIPTION` (under `Suggests` if they're only used in the vignette).
+As a package author you could be fine only knowing about [`usethis::use_vignette()`](https://usethis.r-lib.org/reference/use_vignette.html) for creating a vignette, and that packages used in the vignette need to be listed in `DESCRIPTION` (under `Suggests` if they're only used in the vignette[^suggests]).
 Still, it's useful to know about vignettes for debugging problems or finding
 workarounds for issues you might encounter.
 
@@ -302,3 +302,4 @@ Don't hesitate to share!
 [^vbrmarkdown]: "Writing R Extensions" states, in [the section about DESCRIPTION](https://cran.r-project.org/doc/manuals/R-exts.html#The-DESCRIPTION-file), _Note that if, for example, a vignette has engine ‘knitr::rmarkdown’, then knitr provides the engine but both knitr and rmarkdown are needed for using it, so both these packages need to be in the ‘VignetteBuilder’ field and at least suggested (as rmarkdown is only suggested by knitr, and hence not available automatically along with it). Many packages using knitr also need the package formatR which it suggests and so the user package needs to do so too and include this in ‘VignetteBuilder’._ which isn't acted upon since most CRAN packages using the `knitr::rmarkdown` engine don't list `rmarkdown` in `VignetteBuilder`; and since `VignetteBuilder` packages [need to be declared as dependencies in other fields](https://github.com/wch/r-source/blob/51cf199ca5ae142d44069235ffc8aaf0c64875e6/src/library/tools/R/QC.R#L3042).
 [^julia]: Another way is to use [`tools::CRAN_package_db()
 ` like Julia Silge did in her blog post "Mining CRAN DESCRIPTION Files"](https://juliasilge.com/blog/mining-cran-description/).
+[^suggests]: If a package is _suggested_ your vignette should be [resilient to its not being present](https://www.mail-archive.com/r-package-devel@r-project.org/msg05454.html); or use the workarounds from the workarounds section of this post.
