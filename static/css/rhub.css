@@ -382,3 +382,50 @@ nav[data-toggle="toc"] .nav .nav {
     display: none;
   }
 }
+
+/*------------*/
+/*----Home----*/
+/*------------*/
+#home {
+  max-width: 50%;
+}
+
+#home>ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#home li {
+  margin-bottom: 2.5%;
+}
+
+#home a {
+  color: #2854A0;
+  font-size: .8em;
+}
+
+#home a:active, #home a:hover, #home a:focus {
+  color: #B0383C;
+  text-decoration: none;
+}
+
+#home>h2 {
+  font-size: 3em;
+  margin-bottom: 5%;
+}
+
+/*------------*/
+/*--Archive---*/
+/*------------*/
+#archive {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5%;
+  margin-top: 0;
+}
+a.archive-item-link {
+  color: #2854A0;
+  border: none;
+  font-weight: 500;
+}

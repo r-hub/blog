@@ -22,14 +22,18 @@ rssLimit = 5
     url = "/about/"
     weight = 2
 [[menu.main]]
+    name = "Posts"
+    url = "/post/"
+    weight = 3 
+[[menu.main]]
     name = "GitHub"
     url = "https://github.com/r-hub"
-    weight = 3
+    weight = 4
     pre = "<i class=\"fab fa-github\"></i>"
 [[menu.main]]
     name = "Twitter"
     url = "https://twitter.com/rhub_"
-    weight = 4
+    weight = 5
     pre = "<i class=\"fab fa-twitter\"></i>"
 
 [params]
