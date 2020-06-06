@@ -1,17 +1,37 @@
 {{ define "main" }}
 
 <main role="main" class="content" id="home">
-    <ul>
-        {{ range $index, $page := first 10 (where .Site.RegularPages "Section" "in" .Site.Params.mainSections) }}
-        <li {{if eq $index 0}}class="first"{{end}}>
-        <h2><a href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></h2> 
+    
+    {{ range $index, $page := first 5 (where .Site.RegularPages "Section" "in" .Site.Params.mainSections) }}
+    <article class="container">
+        <div class="meta row justify-content">
+            <div class="col-md-auto">
+                <h2><a href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></h2>
+            </div>
+            <div class="row justify-content">
+            <div class="col-md-auto">
+                <!-- List authors with proper list formatting -->
+                {{ if gt (len .Params.authors) 2 }}
+                <h3>{{ delimit .Params.authors ", " ", and "}}.</h3>
+                {{ else }}
+                <h3>{{ delimit .Params.authors " and "}}.</h3>
+                {{ end }}
+                <!---->
+            </div>
+            <div class="col-md-auto">
+                <p>{{ .Date.Format "2006/01/02" }}</p>
+            </div>
+        </div>
+        </div>
+        <div class="row">
         <p>{{ .Summary }}</p>
         {{ if .Truncated }}
-        <a href="{{ .RelPermalink }}">{{ T "readMore" }}</a>
+        <a href="{{ .RelPermalink }}" class="readmore">Read more...</a>
         {{ end }}
-        </li>
-        {{ end }}
-    </ul>
+        </div>
+    </article>
+    {{ end }}
+
     <h2><a href="/post/">See more</a></h2>
 </main>
 
