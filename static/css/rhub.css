@@ -387,7 +387,7 @@ nav[data-toggle="toc"] .nav .nav {
 /*----Home----*/
 /*------------*/
 #home {
-  max-width: 50%;
+  max-width: 60%;
 }
 
 #home>ul {
@@ -395,7 +395,7 @@ nav[data-toggle="toc"] .nav .nav {
   padding-left: 0;
 }
 
-#home li {
+#home article {
   margin-bottom: 2.5%;
 }
 
@@ -409,9 +409,38 @@ nav[data-toggle="toc"] .nav .nav {
   text-decoration: none;
 }
 
-#home>h2 {
-  font-size: 3em;
-  margin-bottom: 5%;
+#home .meta div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#home .meta>div:first-of-type,  #home .meta div>div:last-of-type{
+  padding-left: 0;
+}
+
+#home .meta h2 {
+  padding-bottom: 2%;
+}
+
+#home .meta h3 {
+  font-size: large;
+}
+
+#home .meta p {
+  color: lightslategray;
+}
+
+#home .meta p, #home .meta h2, #home .meta h3 {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  #home {
+    max-width: 80%;
+  }
+  
 }
 
 /*------------*/
