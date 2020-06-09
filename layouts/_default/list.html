@@ -9,19 +9,27 @@
     </div>
   </article>
   {{ end }}
-  <div class="archive">
+  <section class="archive content">
     {{ range (where .Data.Pages "Section" "!=" "").GroupByDate "2006" }}
     <h2 class="archive-title">{{ .Key }}</h2>
     {{ range .Pages }}
-    <article class="archive-item">
-      <a href="{{ .RelPermalink }}" class="archive-item-link">{{ .Title }}</a>
-      <span class="archive-item-date">
-        {{ .Date.Format "2006/01/02" }}
-      </span>
+    <article>
+      <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      <div class="row">
+        <div class="col-md-auto">
+          <p>{{ .Date.Format "2006/01/02" }}</p>
+        </div>
+        <div class="col-md-auto">
+          {{ partial "authors.html" . }}
+        </div>
+        <div class="col-md-auto">
+          {{ partial "tags.html" . }}
+        </div>
+      </div>
     </article>
     {{ end }}
     {{ end }}
-  </div>
+  </section>
 
 </main>
 
