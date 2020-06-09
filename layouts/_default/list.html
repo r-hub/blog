@@ -1,6 +1,6 @@
 {{ partial "header.html" . }}
 
-<main class="content" role="main" id="archive">
+<main class="content list" role="main" id="archive">
 
   {{ if .Content }}
   <article class="article">
@@ -9,21 +9,25 @@
     </div>
   </article>
   {{ end }}
-  <section class="archive content">
+  <section class="content">
     {{ range (where .Data.Pages "Section" "!=" "").GroupByDate "2006" }}
-    <h2 class="archive-title">{{ .Key }}</h2>
+    <h2>{{ .Key }}</h2>
     {{ range .Pages }}
     <article>
-      <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-      <div class="row">
+      <div class="row meta">
         <div class="col-md-auto">
-          <p>{{ .Date.Format "2006/01/02" }}</p>
+          <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
         </div>
-        <div class="col-md-auto">
-          {{ partial "authors.html" . }}
-        </div>
-        <div class="col-md-auto">
-          {{ partial "tags.html" . }}
+        <div class="row">
+          <div class="col-md-auto">
+            <p>{{ .Date.Format "2006/01/02" }}</p>
+          </div>
+          <div class="col-md-auto">
+            {{ partial "authors.html" . }}
+          </div>
+          <div class="col-md-auto">
+            {{ partial "tags.html" . }}
+          </div>
         </div>
       </div>
     </article>

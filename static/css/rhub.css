@@ -384,60 +384,64 @@ nav[data-toggle="toc"] .nav .nav {
 }
 
 /*------------*/
-/*----Home----*/
+/*----Lists---*/
 /*------------*/
-#home {
-  max-width: 60%;
+.list {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2.5%;
+  margin-top: 2.5%;
 }
 
-#home>ul {
+.list>ul {
   list-style-type: none;
   padding-left: 0;
 }
 
-#home article {
+.list article {
   margin-bottom: 2.5%;
 }
 
-#home a {
+.list a {
   color: #2854A0;
   font-size: .8em;
 }
 
-#home a:active, #home a:hover, #home a:focus {
+.list a:active, .list a:hover, .list a:focus {
   color: #B0383C;
   text-decoration: none;
 }
 
-#home .meta div {
+.list .meta div {
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
+  text-align: left;
 }
 
-#home .meta>div:first-of-type,  #home .meta div>div:last-of-type{
+.list .meta>div:first-of-type,  .list .meta div>div:last-of-type{
   padding-left: 0;
 }
 
-#home .meta h2 {
+.list .meta h2 {
   padding-bottom: 2%;
 }
 
-#home .meta h3 {
+.list .meta h3 {
   font-size: large;
 }
 
-#home .meta p {
-  color: lightslategray;
+.list .meta p {
+  color: #727272;
 }
 
-#home .meta p, #home .meta h2, #home .meta h3 {
+.list .meta p, .list .meta h2, .list .meta h3 {
   margin: 0;
 }
 
 @media (max-width: 768px) {
-  #home {
+  .list {
     max-width: 80%;
   }
   
@@ -446,15 +450,11 @@ nav[data-toggle="toc"] .nav .nav {
 /*------------*/
 /*--Archive---*/
 /*------------*/
-#archive {
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 5%;
-  margin-top: 0;
+#archive article {
+  margin-bottom: 3%;
 }
-a.archive-item-link {
-  color: #2854A0;
-  border: none;
-  font-weight: 500;
+
+#archive {
+  max-width: 40%;
+  margin-top: 0;
 }
