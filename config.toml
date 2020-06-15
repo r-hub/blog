@@ -38,7 +38,7 @@ rssLimit = 5
 
 [params]
     description = "Blog for the R-hub project of the R Consortium, easing the R package development process."
-    customCSS = ["css/rhub.css", "css/friendly.css"]
+    customCSS = ["css/friendly.css", "css/rhub.css"]
     githubsource = "https://github.com/r-hub/blog/blob/master/content/"
 
     [params.logo]

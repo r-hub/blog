@@ -4,17 +4,26 @@
     
     {{ range $index, $page := first 5 (where .Site.RegularPages "Section" "in" .Site.Params.mainSections) }}
     <article class="container">
-        <div class="meta row justify-content">
-            <div class="col-md-auto">
+        <div class="meta row ">
+            <div class="col-md-auto title">
                 <h2><a href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></h2>
             </div>
-            <div class="row justify-content">
+            <div class="row">
             <div class="col-md-auto meta">
                 <p>{{ .Date.Format "2006/01/02" }}</p>
+            </div>
+            <div class="col-md-auto meta separator">
+                <p>|</p>
             </div>
             <div class="col-md-auto">
                 {{ partial "authors.html" . }}
             </div>
+            <div class="col-md-auto meta separator">
+                <p>|</p>
+            </div>
+            <div class="col-md-auto">
+                {{ partial "tags.html" . }}
+              </div>
         </div>
         </div>
         <div class="row">

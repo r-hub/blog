@@ -420,8 +420,9 @@ nav[data-toggle="toc"] .nav .nav {
   text-align: left;
 }
 
-.list .meta>div:first-of-type,  .list .meta div>div:last-of-type{
+.separator {
   padding-left: 0;
+  padding-right: 0;
 }
 
 .list .meta h2 {
@@ -440,9 +441,17 @@ nav[data-toggle="toc"] .nav .nav {
   margin: 0;
 }
 
+.list .title {
+  padding-left: 0;
+}
+
+.list div.meta.row {
+  margin-bottom: .75em;
+}
+
 @media (max-width: 768px) {
   .list {
-    max-width: 80%;
+    max-width: 100%;
   }
   
 }
@@ -451,10 +460,19 @@ nav[data-toggle="toc"] .nav .nav {
 /*--Archive---*/
 /*------------*/
 #archive article {
-  margin-bottom: 3%;
+  margin-bottom: .15em;
 }
 
 #archive {
   max-width: 40%;
   margin-top: 0;
+}
+
+#archive .col-md-auto {
+  padding-left: 0;
+  color: #727272;
+}
+
+#archive div.row.meta {
+  margin-bottom: 0;
 }

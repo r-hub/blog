@@ -3,7 +3,7 @@
     {{ if gt (len .Params.authors) 2 }}
     <p>{{ delimit .Params.authors ", " ", and "}}.</p>
     {{ else }}
-    <p>{{ delimit .Params.authors " and "}}.</p>
+    <p>{{ delimit .Params.authors " and "}}</p>
     {{ end }}
 {{ end }}
 <!---->
