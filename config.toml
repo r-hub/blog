@@ -9,6 +9,8 @@ googleAnalytics = "UA-141769052-1"
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "index\\.html", '\.knit\.md$', '\.utf8\.md$']
 rssLimit = 5
+removePathAccents = true
+disableKinds = ["taxonomyTerm"]
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
@@ -46,6 +48,12 @@ rssLimit = 5
     width = 50
     height = 50
     alt = "Logo"
+
+[taxonomies]
+  author = "authors"
+  tag = "tags"
+  category = "categories"
+
 
 [privacy]
   [privacy.disqus]

@@ -1,0 +1,6 @@
+<!-- List authors with proper list formatting -->
+{{ range $index, $value := .Params.authors }}
+    {{ if $index }}, {{ end }}
+    <a href='{{ "/authors/" | relLangURL }}{{ . | urlize }}'>{{ $value | humanize }}</a>
+{{ end }}
+<!---->

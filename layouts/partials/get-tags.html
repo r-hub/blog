@@ -1,0 +1,6 @@
+<!-- List tags with proper list formatting -->
+{{ range $index, $value := .Params.tags -}}
+    {{ if $index }},{{ end }}
+    <a href='{{ "/tags/" | relLangURL }}{{ . | urlize }}'>{{ $value | humanize }}</a>
+{{ end }}
+<!---->

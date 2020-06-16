@@ -1,9 +1,0 @@
-<!-- List authors with proper list formatting -->
-{{ if .Params.authors }}
-    {{ if gt (len .Params.authors) 2 }}
-    <p>{{ delimit .Params.authors ", " ", and "}}.</p>
-    {{ else }}
-    <p>{{ delimit .Params.authors " and "}}</p>
-    {{ end }}
-{{ end }}
-<!---->
