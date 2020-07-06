@@ -23,6 +23,9 @@
         <p>{{ partial "get-tags.html" . }}</p>
       </div>
       <div class="col-md-auto">
+        |
+      </div>
+      <div class="col-md-auto">
         <!--this adds github edit button to all posts-->
         {{ if $.File.Path }}
 
@@ -36,9 +39,11 @@
 
           {{ with $.Site.Params.githubsource }}  
           <span class="article-date">
-            {{ partial "fontawesome.html" "github" }}
-            <a href="{{ . }}{{ $.Scratch.Get "FilePath" }}" target="_blank">Amend source</a>&nbsp</span>{{ else }}@{{ . }}
-        
+            {{/* partial "fontawesome.html" "github" */}}
+            
+            <a href="{{ . }}{{ $.Scratch.Get "FilePath" }}" target="_blank"><i class="fab fa-github mr-2"></i></a>
+            <a href="{{ . }}{{ $.Scratch.Get "FilePath" }}" target="_blank">Amend source</a>{{ else }}@{{ . }}
+          </span>
           {{ end }}
         {{ end }}
         <!--end github edit code-->
