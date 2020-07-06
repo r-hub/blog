@@ -403,16 +403,15 @@ nav[data-toggle="toc"] .nav .nav {
   padding-left: 0;
 }
 
-.list article {
+.meta article {
   margin-bottom: 2.5%;
 }
 
-.list a {
+.meta a, a.readmore, .seemore a {
   color: #2854A0;
-  font-size: .8em;
 }
 
-.list a:active, .list a:hover, .list a:focus {
+.meta a:active, .meta a:hover, .meta a:focus, a.readmore:hover, a.readmore:active, a.readmore:focus, .seemore a:hover, .seemore a:focus, .seemore a:active {
   color: #B0383C;
   text-decoration: none;
 }
@@ -437,11 +436,11 @@ nav[data-toggle="toc"] .nav .nav {
   font-size: large;
 }
 
-.list .meta p {
+.meta p {
   color: #727272;
 }
 
-.list .meta p, .list .meta h2, .list .meta h3 {
+.meta p, .meta h2, .meta h3 {
   margin: 0;
 }
 
@@ -449,7 +448,7 @@ nav[data-toggle="toc"] .nav .nav {
   padding-left: 0;
 }
 
-.list div.meta.row {
+div.meta.row {
   margin-bottom: .75em;
 }
 

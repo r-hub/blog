@@ -3,7 +3,7 @@
 <main role="main" class="content list" id="home">
     
     {{ range $index, $page := first 5 (where .Site.RegularPages "Section" "in" .Site.Params.mainSections) }}
-    <article class="container">
+    <article class="container mb-4">
         <div class="meta row ">
             <div class="col-md-auto title">
                 <h2><a href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></h2>
@@ -35,7 +35,7 @@
     </article>
     {{ end }}
 
-    <div class="container pl-0">
+    <div class="container seemore pl-0 pt-4">
         <h2><a href="/post/">See more</a></h2>
     </div>
 </main>
