@@ -111,6 +111,10 @@ table, th, td {
 
 tr:nth-child(even) {background-color: #f2f2f2;}
 
+div.utterances {
+  margin-left: 0;
+}
+
 /*------------*/
 /* --HEADER-- */
 /*------------*/
