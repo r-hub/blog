@@ -71,18 +71,46 @@ Under the R folder, there are three files that don't even have the dot R extensi
 
 Now, regarding the code, let's mention two important things happening to it.
 
+### Byte compilation
+
 Since [R 3.5](https://cran.r-project.org/doc/manuals/r-release/NEWS.3.html), the code is byte-compiled by default which means it is also stored in a format easier for a machine to deal with.
 You can learn more about byte compilation in the [Efficient R Programming book by Colin Gillespie and Robin Lovelace](https://bookdown.org/csgillespie/efficientR/programming.html#the-byte-compiler), and in [a talk by R Core Member Tomas Kalibera](https://blog.revolutionanalytics.com/2017/08/take-advantage-compiler.html).
 
-Then, by default, the source code is stripped of all empty lines and comments because they are useless for code execution and take up space.
-It is similar to CSS, JS, HTML being minified to make its loading faster.
-Now sometimes you might want to keep code with its comments for being able to read it locally with all its comments.
+### Original formatting and comments?
 
+Then, by default, the source code is stripped of all empty lines and comments because they are useless for code execution and take up space.[^thx]
+
+[^thx]: This came to my attention thanks to [a question by Ofek Shilon on RStudio community](https://community.rstudio.com/t/keep-source-pkgs-vs-keep-source-options/69245).
+
+It is similar to CSS, JS, HTML being minified in web development to make websites load faster.
+Now sometimes you might want to keep code with its comments: 
+as an user for being able to read it locally with all its comments,
+as a developer for debugging or profiling.
+
+As an user installing packages, you need to look into the `keep.source.pkgs` option in `options()` that influences the behavior of package installation, or for a specific package you'd write `install.packages("rhub", INSTALL_opts = "--with-keep.source")`
+
+As a developer working on a package, you need to make sure the source is kept as is [when building the package, thanks to the `--with-keep.source` option](https://support.rstudio.com/hc/en-us/articles/205612627-Debugging-with-RStudio#debugging-in-packages), and when loading it (lucky you, the relevant `keep.source` option is `TRUE` by default in interactive sessions :tada:).
 
 Note that when viewing source code you might get a better default experience by [loading `lookup`](https://github.com/jimhester/lookup#default-printing) in your [.Rprofile]
+
+As a developer you might also encounter the case where `R CMD check` will tell you about another switch, in an environment variable. [See the lines below from the R source mirror](https://github.com/wch/r-source/blob/f27cbf1a52a31cd9b9676340394946a22041a4ae/src/library/tools/R/check.R#L5248-L5253):
+```r
+                        wrapLog("Information on the location(s)",
+                                "of code generating the",
+                                paste0(sQuote("Note"), "s"),
+                                "can be obtained by re-running with",
+                                "environment variable R_KEEP_PKG_SOURCE",
+                                "set to 'yes'.\n")
+```
 
 Also note that there is also a way for package maintainers for forcing the installation of their package to keep the source, which seems less useful?
 Here are [packages that do that](https://github.com/search?q=keepsource+user%3Acran+filename%3ADESCRIPTION&type=Code&ref=advsearch&l=&l=).
 A potential use case might be to try and hire people [like the web development team at The Guardian seems to do if you view the source of its website](https://www.theguardian.com/international).
+
+## Conclusion
+
+In this post we summarized where packages live once installed, in what format, and how their code is processed at installation.
+An important aspect was the original code formatting and commenting being removed by default, unless one changes some options for building and installing packages.
+Do you use any of options related to keeping source in your R usage and development?
 
 [^libraries]: Note that if your wish is to isolate packages you are installing for a given project, you might find a better workflow by using Docker or [the `renv` package](https://rstudio.github.io/renv/index.html).
