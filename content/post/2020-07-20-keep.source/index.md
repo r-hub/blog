@@ -7,7 +7,7 @@ date: "2020-07-20"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 2f56d2d8b68c334e
+rmd_hash: 8a993a52996324f2
 
 ---
 
@@ -39,54 +39,16 @@ The installed packages in the library are a decompressed version of the binary s
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>fs</span>::<span class='nf'><a href='http://fs.r-lib.org/reference/dir_tree.html'>dir_tree</a></span>(<span class='nf'><a href='https://rdrr.io/r/base/find.package.html'>find.package</a></span>(<span class='s'>"ggplot2"</span>))
-[01;34m/home/maelle/R/x86_64-pc-linux-gnu-library/4.0/ggplot2[0m
-├── CITATION
-├── DESCRIPTION
-├── INDEX
-├── LICENSE
-├── [01;34mMeta[0m
-│   ├── Rd.rds
-│   ├── data.rds
-│   ├── features.rds
-│   ├── hsearch.rds
-│   ├── links.rds
-│   ├── nsInfo.rds
-│   ├── package.rds
-│   └── vignette.rds
-├── NAMESPACE
-├── NEWS.md
-├── [01;34mR[0m
-│   ├── ggplot2
-│   ├── ggplot2.rdb
-│   └── ggplot2.rdx
-├── [01;34mdata[0m
-│   ├── Rdata.rdb
-│   ├── Rdata.rds
-│   └── Rdata.rdx
-├── [01;34mdoc[0m
-│   ├── [32mextending-ggplot2.R[0m
-│   ├── [32mextending-ggplot2.Rmd[0m
-│   ├── extending-ggplot2.html
-│   ├── [32mggplot2-in-packages.R[0m
-│   ├── [32mggplot2-in-packages.Rmd[0m
-│   ├── ggplot2-in-packages.html
-│   ├── [32mggplot2-specs.R[0m
-│   ├── [32mggplot2-specs.Rmd[0m
-│   ├── ggplot2-specs.html
-│   └── index.html
-├── [01;34mhelp[0m
-│   ├── AnIndex
-│   ├── aliases.rds
-│   ├── [01;34mfigures[0m
-│   │   ├── [01;35mREADME-example-1.png[0m
-│   │   └── [01;35mlogo.png[0m
-│   ├── ggplot2.rdb
-│   ├── ggplot2.rdx
-│   └── paths.rds
-└── [01;34mhtml[0m
-    ├── 00Index.html
-    └── R.css
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>fs</span>::<span class='nf'><a href='http://fs.r-lib.org/reference/dir_tree.html'>dir_tree</a></span>(
+  <span class='nf'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(
+    <span class='nf'><a href='https://rdrr.io/r/base/find.package.html'>find.package</a></span>(<span class='s'>"ggplot2"</span>),
+    <span class='s'>"R"</span>
+    )
+  )
+[01;34m/home/maelle/R/x86_64-pc-linux-gnu-library/4.0/ggplot2/R[0m
+├── ggplot2
+├── ggplot2.rdb
+└── ggplot2.rdx
 </code></pre>
 
 </div>
@@ -108,13 +70,11 @@ Then, by default, the source code is stripped of all empty lines and comments be
 
 It is similar to CSS, JS, HTML being minified in web development to make websites load faster. Now sometimes you might want to keep code with its comments: as an user for being able to read it locally with all its comments, as a developer for debugging or profiling.
 
-As an user installing packages, you need to look into the `keep.source.pkgs` option in [`options()`](https://rdrr.io/r/base/options.html) that influences the behavior of package installation, or for a specific package you'd write [`install.packages("rhub", INSTALL_opts = "--with-keep.source")`](https://rdrr.io/r/utils/install.packages.html)
+As an user installing packages, you need to look into the `keep.source.pkgs` option in [`options()`](https://rdrr.io/r/base/options.html) that influences the behavior of package installation, or for a specific package you'd write [`install.packages("rhub", INSTALL_opts = "--with-keep.source")`](https://rdrr.io/r/utils/install.packages.html).[^3]
 
 As a developer working on a package, you need to make sure the source is kept as is [when building the package, thanks to the `--with-keep.source` option](https://support.rstudio.com/hc/en-us/articles/205612627-Debugging-with-RStudio#debugging-in-packages), and when loading it (lucky you, the relevant `keep.source` option is `TRUE` by default in interactive sessions :tada:).
 
-Note that when viewing source code you might get a better default experience by [loading `lookup`](https://github.com/jimhester/lookup#default-printing) in your \[.Rprofile\]
-
-As a developer you might also encounter the case where `R CMD check` will tell you about another switch, in an environment variable. [See the lines below from the R source mirror](https://github.com/wch/r-source/blob/f27cbf1a52a31cd9b9676340394946a22041a4ae/src/library/tools/R/check.R#L5248-L5253):
+As a developer you might also encounter the case where `R CMD check` will tell you about another switch, in an environment variable. It is a switch related to package installation, since `R CMD check` will install your package for checking it . [See the lines below from the R source mirror](https://github.com/wch/r-source/blob/f27cbf1a52a31cd9b9676340394946a22041a4ae/src/library/tools/R/check.R#L5248-L5253):
 
 ``` r
                         wrapLog("Information on the location(s)",
@@ -125,14 +85,16 @@ As a developer you might also encounter the case where `R CMD check` will tell y
                                 "set to 'yes'.\n")
 ```
 
-Also note that there is also a way for package maintainers for forcing the installation of their package to keep the source, which seems less useful? Here are [packages that do that](https://github.com/search?q=keepsource+user%3Acran+filename%3ADESCRIPTION&type=Code&ref=advsearch&l=&l=). A potential use case might be to try and hire people [like the web development team at The Guardian seems to do if you view the source of its website](https://www.theguardian.com/international).
+Also note that there is also a way for package maintainers to [force the installation of their package to keep the source](https://stat.ethz.ch/pipermail/r-devel/2011-April/060410.html), which seems less useful? Here are [packages that do that](https://github.com/search?q=keepsource+user%3Acran+filename%3ADESCRIPTION&type=Code&ref=advsearch&l=&l=). A potential use case might be to try and hire people [like the web development team at The Guardian seems to do if you view the source of its website](https://www.theguardian.com/international).
 
 Conclusion
 ----------
 
 In this post we summarized where packages live once installed, in what format, and how their code is processed at installation. An important aspect was the original code formatting and commenting being removed by default, unless one changes some options for building and installing packages. Do you use any of options related to keeping source in your R usage and development?
 
-[^1]: Note that if your wish is to isolate packages you are installing for a given project, you might find a better workflow by using Docker or [the `renv` package](https://rstudio.github.io/renv/index.html).
+[^1]: If your wish is to isolate packages you are installing for a given project, you might find a better workflow by using Docker or [the `renv` package](https://rstudio.github.io/renv/index.html).
 
 [^2]: This came to my attention thanks to [a question by Ofek Shilon on RStudio community](https://community.rstudio.com/t/keep-source-pkgs-vs-keep-source-options/69245).
+
+[^3]: When viewing source code you might get a better default experience by [loading `lookup`](https://github.com/jimhester/lookup#default-printing) in your [.Rprofile](https://rstats.wtf/r-startup.html#rprofile).
 
