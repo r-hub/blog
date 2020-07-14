@@ -1,0 +1,88 @@
+--- 
+slug: keep.source 
+title: "State of R packages in your library" 
+authors: 
+- Maëlle Salmon 
+date: "2020-07-20" 
+tags: 
+- package development 
+output: hugodown::hugo_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(fig.path = "", comment = "")
+# knitr hook to make images output use Hugo options
+knitr::knit_hooks$set(
+  plot = function(x, options) {
+    hugoopts <- options$hugoopts
+    paste0(
+      "{{<figure src=",
+      '"', x, '" ',
+      if (!is.null(hugoopts)) {
+        glue::glue_collapse(
+          glue::glue('{names(hugoopts)}="{hugoopts}"'),
+          sep = " "
+        )
+      },
+      ">}}\n"
+    )
+  }
+)
+
+```
+
+Ever wondered where packages in general and their code in particular go when you run something like `install.packages()`?
+This post is for you!
+
+## Where do installed packages live?
+
+Packages are installed 
+
+* at the path you give as `lib` argument to `install.packages()` (or to any `remotes::install_` function, that will pass them on to `install.packages()`);
+
+* most often since you won't give any, at the first path returned by `.libPaths()` that exists and for which the user has the right permissions. There are [several ways to change the paths returned, should you want to do so](https://stackoverflow.com/a/31707983/5489251).[^libraries]
+
+Now at library loading, the important argument is called `lib.loc`, not `lib`. 
+
+`r hugodown::embed_tweet("1275366793423523842")`
+
+Now how do you know where any of your installed packages was installed?
+You can use `find.package()` and `path.package()`!
+
+To check whether a package is installed, it is better to use `find.package()` than `installed.packages()` because the latter, as its docs state, can be slow on some systems.
+In both cases, it does not mean the package is usable, for that you'd need to use `require()`.
+
+## What files are stored locally?
+
+The [R packages book by Hadley Wickham and Jenny Bryan](https://r-pkgs.org/) has [a very neat package called "Package structure and state", including an explanation of the binary state](https://r-pkgs.org/package-structure-state.html#binary-package).
+It says _"There are no .R files in the R/ directory - instead there are three files that store the parsed functions in an efficient file format. This is basically the result of loading all the R code and then saving the functions with save(). (In the process, this adds a little extra metadata to make things as fast as possible)."_
+
+The installed packages in the library are a decompressed version of the binary state.
+There are not all the R files, see [ggplot2 source code](https://github.com/tidyverse/ggplot2/) and ggplot2 on my disk
+
+```{r}
+fs::dir_tree(find.package("ggplot2"))
+```
+
+Under the R folder, there are three files that don't even have the dot R extension!
+
+## What code format
+
+Now, regarding the code, let's mention two important things happening to it.
+
+Since [R 3.5](https://cran.r-project.org/doc/manuals/r-release/NEWS.3.html), the code is byte-compiled by default which means it is also stored in a format easier for a machine to deal with.
+You can learn more about byte compilation in the [Efficient R Programming book by Colin Gillespie and Robin Lovelace](https://bookdown.org/csgillespie/efficientR/programming.html#the-byte-compiler), and in [a talk by R Core Member Tomas Kalibera](https://blog.revolutionanalytics.com/2017/08/take-advantage-compiler.html).
+
+Then, by default, the source code is stripped of all empty lines and comments because they are useless for code execution and take up space.
+It is similar to CSS, JS, HTML being minified to make its loading faster.
+Now sometimes you might want to keep code with its comments for being able to read it locally with all its comments.
+
+
+Note that when viewing source code you might get a better default experience by [loading `lookup`](https://github.com/jimhester/lookup#default-printing) in your [.Rprofile]
+
+Also note that there is also a way for package maintainers for forcing the installation of their package to keep the source, which seems less useful?
+Here are [packages that do that](https://github.com/search?q=keepsource+user%3Acran+filename%3ADESCRIPTION&type=Code&ref=advsearch&l=&l=).
+A potential use case might be to try and hire people [like the web development team at The Guardian seems to do if you view the source of its website](https://www.theguardian.com/international).
+
+[^libraries]: Note that if your wish is to isolate packages you are installing for a given project, you might find a better workflow by using Docker or [the `renv` package](https://rstudio.github.io/renv/index.html).
