@@ -72,7 +72,7 @@ fs::dir_tree(
 
 Under the R folder, there are three files that don't even have the dot R extension!
 
-## What code format
+## How is code stored?
 
 Now, regarding the code, let's mention two important things happening to it.
 

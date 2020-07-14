@@ -7,7 +7,7 @@ date: "2020-07-20"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 8a993a52996324f2
+rmd_hash: 4663458a36ea76d2
 
 ---
 
@@ -55,8 +55,8 @@ The installed packages in the library are a decompressed version of the binary s
 
 Under the R folder, there are three files that don't even have the dot R extension!
 
-What code format
-----------------
+How is code stored?
+-------------------
 
 Now, regarding the code, let's mention two important things happening to it.
 
