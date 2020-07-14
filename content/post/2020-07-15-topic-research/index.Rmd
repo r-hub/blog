@@ -1,0 +1,50 @@
+--- 
+slug: topic-research 
+title: "Picking and researching blog topics about R package development" 
+authors: 
+- Maëlle Salmon 
+date: "2020-07-15" 
+tags: 
+- package development 
+- documentation
+output: hugodown::hugo_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(fig.path = "", comment = "")
+# knitr hook to make images output use Hugo options
+knitr::knit_hooks$set(
+  plot = function(x, options) {
+    hugoopts <- options$hugoopts
+    paste0(
+      "{{<figure src=",
+      '"', x, '" ',
+      if (!is.null(hugoopts)) {
+        glue::glue_collapse(
+          glue::glue('{names(hugoopts)}="{hugoopts}"'),
+          sep = " "
+        )
+      },
+      ">}}\n"
+    )
+  }
+)
+
+```
+
+An alternative title for this post would be "the very meta one". :wink:
+In this post we shall present some principles and tips used in preparing posts on this blog, that might be useful for problem solving for R package developers and for blogging here or elsewhere.
+
+## Choosing and finding relevant topics
+
+A topic is relevant if it's related to R package development, and if it's covered extensively elsewhere: unless a blog post can provide more context, presentation of newer tooling, a new perspective, we are not going to duplicate existing content.
+We are quite lucky that nothing is too niche for the R-hub blog. :grin:
+There is also no such thing as a too basic or too advanced topic: for [advanced topics](/2020/02/20/processx-blocked-sigchld/), the introduction should make clear it might be of interest to a few readers only; for [supposedly basic topics](/2019/12/12/internal-functions/), we hope there will always be something new to some readers.
+
+Now how do we find inspiration?
+All authors of posts on this blog develop R packages or spend time helping others do that, therefore they can encounter some tricky problems themselves that can be relevant.
+Then, reading places where people look for help about package development, namely the R-package-devel mailing list, the R Package Development category of [community.rstudio.com](https://community.rstudio.com), the [rOpenSci forum](https://discuss.ropensci.org) and Twitter can help uncover interesting questions.
+
+A question can be a post topic on its own, as was the case for [our post about code generation inspired by a tweet of Miles McBain's](/2020/02/10/code-generation/).
+Or several questions can be put together to knit a post, such as [our post about optimal vignette workflows](/2020/06/03/vignettes/)
