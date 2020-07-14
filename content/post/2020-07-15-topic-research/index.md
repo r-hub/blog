@@ -6,9 +6,9 @@ authors:
 date: "2020-07-15" 
 tags: 
 - package development 
-- documentation
+- blogging
 output: hugodown::hugo_document
-rmd_hash: 4a571a6a77f105e6
+rmd_hash: 6e529d9974f283ee
 
 ---
 
