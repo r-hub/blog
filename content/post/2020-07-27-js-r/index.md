@@ -8,7 +8,7 @@ tags:
 - package development 
 - JS
 output: hugodown::hugo_document
-rmd_hash: c14c85b13b22471e
+rmd_hash: 119ecb7c3042f6c4
 
 ---
 
@@ -65,6 +65,8 @@ As an example, and using Garrick Aden-Buie's words,
 -   *[use\_tachyons()](https://github.com/gadenbuie/xaringanExtra/blob/master/R/tachyons.R) repackages an external dependency*
 -   *[use\_editable()](https://github.com/gadenbuie/xaringanExtra/blob/master/R/editable.R) combines custom JavaScript with external dependencies and passes configuration options from R to the code in the rendered document.*
 -   *Finally [use\_logo()](https://github.com/gadenbuie/xaringanExtra/blob/master/R/use_logo.R) dynamically writes both the CSS and JS dependency from R and bundles into an `htmlDependency()`.*
+
+Note that an alternative approach to add a JS dependency might be [to use a CDN](https://github.com/feddelegrand7/bubblyr/blob/master/R/bubbly.R?rgh-link-date=2020-06-02T14%3A13%3A59Z) which means less maintenance but also more risk.
 
 Learning and showing JavaScript from R
 --------------------------------------

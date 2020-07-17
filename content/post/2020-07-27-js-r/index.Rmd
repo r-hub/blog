@@ -101,6 +101,8 @@ _I'd offer [xaringanExtra](https://github.com/gadenbuie/xaringanExtra) as a bett
 - _[use_editable()](https://github.com/gadenbuie/xaringanExtra/blob/master/R/editable.R) combines custom JavaScript with external dependencies and passes configuration options from R to the code in the rendered document._
 - _Finally [use_logo()](https://github.com/gadenbuie/xaringanExtra/blob/master/R/use_logo.R) dynamically writes both the CSS and JS dependency from R and bundles into an `htmlDependency()`._
 
+Note that an alternative approach to add a JS dependency might be [to use a CDN](https://github.com/feddelegrand7/bubblyr/blob/master/R/bubbly.R?rgh-link-date=2020-06-02T14%3A13%3A59Z) which means less maintenance but also more risk.
+
 ## Learning and showing JavaScript from R
 
 Now, what if you want to learn JavaScript?
