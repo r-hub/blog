@@ -8,17 +8,17 @@ tags:
 - package development 
 - JS
 output: hugodown::hugo_document
-rmd_hash: a293df636df7bec2
+rmd_hash: c14c85b13b22471e
 
 ---
 
 JS and R, what a clickbait! Come for JS, stay for our posts about [Solaris](/2020/05/14/checking-your-r-package-on-solaris/) and [WinBuilder](/2020/04/01/win-builder/). :wink: No matter how strongly you believe in JavaScript being the language of the future (see below), you might still gain from using it in your R practice, be it back-end or front-end.
 
-{{&lt; tweet 1272595824112029696 &gt;}}
+{{< tweet 1272595824112029696 >}}
 
 In this blog post, we shall share a roundup of resources around JavaScript for R package developers.
 
-> Let us start by thanking Garrick AdenBuie who not only develops great materials and tools with R and JavaScript but also took the time to chime in draft notes for this post. :pray:
+> Let us start by thanking [Garrick Aden-Buie](https://www.garrickadenbuie.com/) who not only develops great materials and tools with R and JavaScript but also took the time to chime in draft notes for this post. :pray:
 
 JavaScript in your R package
 ----------------------------
@@ -43,6 +43,8 @@ The [roxygenlabs package, that is an incubator for experimental roxygen features
 
 Noam Ross once described [a way to include a searchable table in reference pages, with DT](https://discuss.ropensci.org/t/searchable-metadata-in-help-files-with-htmlwidgets/1078).
 
+{{< tweet 1240272226768822272 >}}
+
 In [writexl docs](https://docs.ropensci.org/writexl/reference/write_xlsx.html), the infamous Clippy makes an appeance. It triggers a tweet nearly once a week, which might be a way to check people are reading the docs?
 
 For actual analytics in manual pages, it seems [the unknown package](https://github.com/cran/unknownR/blob/9d5cd70c15837b59ef9d215971fad82358f29ff4/man/unk.Rd) found a trick by adding a script from [statcounter](https://github.com/cran/unknownR/blob/9d5cd70c15837b59ef9d215971fad82358f29ff4/man/unk.Rd).
@@ -55,7 +57,7 @@ In HTML vignettes, you can also use web dependencies. On a pkgdown website, you 
 
 A third way in which you as an R package developer might interact with JavaScript is via helping others use and manage web dependencies i.e. in particular JavaScript libraries that enhance HTML documents and Shiny apps! For that, you'll want to learn about the [htmltools package](https://cran.r-project.org/web/packages/htmltools/index.html).
 
-As an example, and using Garrick AdenBuie's words,
+As an example, and using Garrick Aden-Buie's words,
 
 *I'd offer [xaringanExtra](https://github.com/gadenbuie/xaringanExtra) as a better example of a few approaches to web dependency management in R packages:*
 
@@ -67,51 +69,49 @@ As an example, and using Garrick AdenBuie's words,
 Learning and showing JavaScript from R
 --------------------------------------
 
+Now, what if you want to learn JavaScript? Besides the resources that one would recommend to any JS learner, there are interesting ones just for you as R user!
+
 ### Learning materials
 
-Mostly for Shiny
+The resources for learning we found are mostly related to Shiny, but might be relevant anyway.
 
-<a href="https://connect.thinkr.fr/js4shinyfieldnotes/" class="uri">https://connect.thinkr.fr/js4shinyfieldnotes/</a>
+-   [Colin Fay's field notes about JS for Shiny](https://connect.thinkr.fr/js4shinyfieldnotes/)
 
-<a href="https://github.com/rstudio-conf-2020/js-for-shiny" class="uri">https://github.com/rstudio-conf-2020/js-for-shiny</a>
+-   [Materials from the RStudio conf 2020 workshop about JS for Shiny lead by Garrick Aden-Buie](https://github.com/rstudio-conf-2020/js-for-shiny)
 
-<a href="https://shiny.rstudio.com/articles/packaging-javascript.html" class="uri">https://shiny.rstudio.com/articles/packaging-javascript.html</a>
-
-Shiny apps as packages <a href="https://golemverse.org/" class="uri">https://golemverse.org/</a>
+-   Really only for Shiny, see the documentation about [packaging JavaScript in Shiny apps](https://shiny.rstudio.com/articles/packaging-javascript.html)
 
 ### Literate JavaScript programming
 
-<a href="https://rmarkdown.rstudio.com/authoring_knitr_engines.html%23sql#JavaScript" class="uri">https://rmarkdown.rstudio.com/authoring_knitr_engines.html%23sql#JavaScript</a>
+As an R user, you might really appreciate literate R programming. You're lucky, you can actually use JavaScript in R Markdown.
 
-<a href="https://github.com/yihui/knitr/blob/6907b428572c130982f6b3d6c91a164a15b94a30/R/engine.R#L483" class="uri">https://github.com/yihui/knitr/blob/6907b428572c130982f6b3d6c91a164a15b94a30/R/engine.R#L483</a>
+A first, maybe less exciting JavaScript / R Markdown integration consists in transforming your JS chunks into scripts embedded in a HTML output so that the *browser* executes the JavaScript code. See [knitr default JS engine](https://rmarkdown.rstudio.com/authoring_knitr_engines.html%23sql#JavaScript), and for more functionality, [js4shiny](https://pkg.js4shiny.com/reference/html_document_js.html).
 
-<a href="https://github.com/ColinFay/bubble#knitr" class="uri">https://github.com/ColinFay/bubble#knitr</a>
-
-<a href="https://pkg.js4shiny.com/reference/html_document_js.html" class="uri">https://pkg.js4shiny.com/reference/html_document_js.html</a>
-
-View time for knitr and one option of js4shiny, compile time for bubble and one option of js4shiny.
+Now, what about executing JS code at compile time i.e. when knitting? For that there are two experimental packages providing knitr engines both using Node, [bubble](https://github.com/ColinFay/bubble#knitr) and again [js4shiny](https://pkg.js4shiny.com/reference/html_document_js.html).
 
 #### Different problem, using JS libraries in Rmd documents
 
-<a href="https://github.com/ramnathv/htmlwidgets" class="uri">https://github.com/ramnathv/htmlwidgets</a>
-
-<a href="https://community.rstudio.com/t/proper-way-to-do-dependency-ingestion-of-js-for-rmarkdown/64807" class="uri">https://community.rstudio.com/t/proper-way-to-do-dependency-ingestion-of-js-for-rmarkdown/64807</a> (that's a thing you'd distribute in a package)
+More as a side-note let us mention [the htmlwidgets package](https://github.com/ramnathv/htmlwidgets) for adding elements such as leaflet maps to your HTML documents and Shiny apps.
 
 ### Playground
 
-<a href="https://pkg.js4shiny.com/reference/repl.html" class="uri">https://pkg.js4shiny.com/reference/repl.html</a>
+When learning a new language, using a playground is great. Did you know that the js4shiny package provides a [JS playground you can use from RStudio](https://pkg.js4shiny.com/reference/repl.html)? Less new things at once if you already use RStudio, so more confidence for learning!
 
 R from JavaScript?
 ------------------
 
-Shiny of course
+Before we jump to the conclusion, let us mention a few ways to go the other way round, calling R from JavaScript...
 
-<a href="https://www.opencpu.org/" class="uri">https://www.opencpu.org/</a>
+[Shiny](https://shiny.rstudio.com/), *"an R package that makes it easy to build interactive web apps straight from R."*, and [the golemverse, a set of packages for developing Shiny apps as packages](https://golemverse.org/)
 
-<a href="https://solutions.rstudio.com/examples/rest-apis/clients/nodejs/" class="uri">https://solutions.rstudio.com/examples/rest-apis/clients/nodejs/</a>
+[OpenCPU](https://www.opencpu.org/) is *"An API for Embedded Scientific Computing"* that can allow you to use JS and R together.
 
-<a href="https://colinfay.me/hello-hordes/" class="uri">https://colinfay.me/hello-hordes/</a>
+If you use [the plumber R package](https://www.rplumber.io/) to make a web API out of R code, you can then [interact with that API from e.g. Node](https://solutions.rstudio.com/examples/rest-apis/clients/nodejs/).
+
+Colin Fay wrote [an experimental Node package for calling R](https://colinfay.me/hello-hordes/).
 
 Conclusion
 ----------
+
+In this post we went over some resources useful to R package developers looking to use JavaScript code in the backend or docs of their packages, or to help others use JavaScript dependencies. Do not hesitate to share more links or experience in the comments below!
 

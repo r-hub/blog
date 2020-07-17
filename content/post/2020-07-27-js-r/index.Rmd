@@ -39,11 +39,11 @@ JS and R, what a clickbait!
 Come for JS, stay for our posts about [Solaris](/2020/05/14/checking-your-r-package-on-solaris/) and [WinBuilder](/2020/04/01/win-builder/). :wink:
 No matter how strongly you believe in JavaScript being the language of the future (see below), you might still gain from using it in your R practice, be it back-end or front-end.
 
-{{< tweet 1272595824112029696 >}}
+`r hugodown::embed_tweet("1272595824112029696")`
 
 In this blog post, we shall share a roundup of resources around JavaScript for R package developers.
 
-> Let us start by thanking Garrick AdenBuie who not only develops great materials and tools with R and JavaScript but also took the time to chime in draft notes for this post. :pray:
+> Let us start by thanking [Garrick Aden-Buie](https://www.garrickadenbuie.com/) who not only develops great materials and tools with R and JavaScript but also took the time to chime in draft notes for this post. :pray:
 
 ## JavaScript in your R package
 
@@ -75,6 +75,8 @@ With its default JS script, your examples gain a copy-paste button!
 
 Noam Ross once described [a way to include a searchable table in reference pages, with DT](https://discuss.ropensci.org/t/searchable-metadata-in-help-files-with-htmlwidgets/1078).
 
+`r hugodown::embed_tweet("1240272226768822272")`
+
 In [writexl docs](https://docs.ropensci.org/writexl/reference/write_xlsx.html), the infamous Clippy makes an appeance.
 It triggers a tweet nearly once a week, which might be a way to check people are reading the docs?
 
@@ -90,7 +92,7 @@ On a pkgdown website, you might encounter some incompatibilities between your, s
 A third way in which you as an R package developer might interact with JavaScript is via helping others use and manage web dependencies i.e. in particular JavaScript libraries that enhance HTML documents and Shiny apps!
 For that, you'll want to learn about the [htmltools package](https://cran.r-project.org/web/packages/htmltools/index.html).
 
-As an example, and using Garrick AdenBuie's words,
+As an example, and using Garrick Aden-Buie's words,
 
 _I'd offer [xaringanExtra](https://github.com/gadenbuie/xaringanExtra) as a better example of a few approaches to web dependency management in R packages:_
 
@@ -101,51 +103,54 @@ _I'd offer [xaringanExtra](https://github.com/gadenbuie/xaringanExtra) as a bett
 
 ## Learning and showing JavaScript from R
 
+Now, what if you want to learn JavaScript?
+Besides the resources that one would recommend to any JS learner, there are interesting ones just for you as R user!
+
 ### Learning materials
 
-Mostly for Shiny
+The resources for learning we found are mostly related to Shiny, but might be relevant anyway.
 
-https://connect.thinkr.fr/js4shinyfieldnotes/
+* [Colin Fay's field notes about JS for Shiny](https://connect.thinkr.fr/js4shinyfieldnotes/)
 
-https://github.com/rstudio-conf-2020/js-for-shiny
+* [Materials from the RStudio conf 2020 workshop about JS for Shiny lead by Garrick Aden-Buie](https://github.com/rstudio-conf-2020/js-for-shiny)
 
-https://shiny.rstudio.com/articles/packaging-javascript.html
-
-Shiny apps as packages https://golemverse.org/
+* Really only for Shiny, see the documentation about [packaging JavaScript in Shiny apps](https://shiny.rstudio.com/articles/packaging-javascript.html) 
 
 ### Literate JavaScript programming
 
-https://rmarkdown.rstudio.com/authoring_knitr_engines.html%23sql#JavaScript
+As an R user, you might really appreciate literate R programming. 
+You're lucky, you can actually use JavaScript in R Markdown.
 
-https://github.com/yihui/knitr/blob/6907b428572c130982f6b3d6c91a164a15b94a30/R/engine.R#L483
+A first, maybe less exciting JavaScript / R Markdown integration consists in transforming your JS chunks into scripts embedded in a HTML output so that the _browser_ executes the JavaScript code.
+See [knitr default JS engine](https://rmarkdown.rstudio.com/authoring_knitr_engines.html%23sql#JavaScript), and for more functionality, [js4shiny](https://pkg.js4shiny.com/reference/html_document_js.html).
 
-https://github.com/ColinFay/bubble#knitr
-
-https://pkg.js4shiny.com/reference/html_document_js.html
-
-View time for knitr and one option of js4shiny, compile time for bubble and one option of js4shiny.
+Now, what about executing JS code at compile time i.e. when knitting?
+For that there are two experimental packages providing knitr engines both using Node, [bubble](https://github.com/ColinFay/bubble#knitr) and again [js4shiny](https://pkg.js4shiny.com/reference/html_document_js.html).
 
 #### Different problem, using JS libraries in Rmd documents
 
-https://github.com/ramnathv/htmlwidgets
-
-https://community.rstudio.com/t/proper-way-to-do-dependency-ingestion-of-js-for-rmarkdown/64807 (that's a thing you'd distribute in a package)
-
+More as a side-note let us mention [the htmlwidgets package](https://github.com/ramnathv/htmlwidgets) for adding elements such as leaflet maps to your HTML documents and Shiny apps.
 
 
 ### Playground
 
-https://pkg.js4shiny.com/reference/repl.html 
+When learning a new language, using a playground is great.
+Did you know that the js4shiny package provides a [JS playground you can use from RStudio](https://pkg.js4shiny.com/reference/repl.html )?
+Less new things at once if you already use RStudio, so more confidence for learning!
 
 ## R from JavaScript?
 
-Shiny of course
+Before we jump to the conclusion, let us mention a few ways to go the other way round, calling R from JavaScript...
 
-https://www.opencpu.org/
+[Shiny](https://shiny.rstudio.com/), _"an R package that makes it easy to build interactive web apps straight from R."_, and [the golemverse, a set of packages for developing Shiny apps as packages](https://golemverse.org/)
 
-https://solutions.rstudio.com/examples/rest-apis/clients/nodejs/
+[OpenCPU](https://www.opencpu.org/) is _"An API for Embedded Scientific Computing"_ that can allow you to use JS and R together.
 
-https://colinfay.me/hello-hordes/
+If you use [the plumber R package](https://www.rplumber.io/) to make a web API out of R code, you can then [interact with that API from e.g. Node](https://solutions.rstudio.com/examples/rest-apis/clients/nodejs/).
+
+Colin Fay wrote [an experimental Node package for calling R](https://colinfay.me/hello-hordes/).
 
 ## Conclusion
 
+In this post we went over some resources useful to R package developers looking to use JavaScript code in the backend or docs of their packages, or to help others use JavaScript dependencies.
+Do not hesitate to share more links or experience in the comments below!
