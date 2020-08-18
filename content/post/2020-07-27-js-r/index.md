@@ -8,7 +8,7 @@ tags:
 - package development 
 - JS
 output: hugodown::hugo_document
-rmd_hash: e5c45e0e66b4c62f
+rmd_hash: 8806f4ddacc7aab9
 html_dependencies:
 - <link href="applause-button-3.3.2/applause-button.css" rel="stylesheet" />
 - <script src="applause-button-3.3.2/applause-button.js"></script>
@@ -48,7 +48,7 @@ Noam Ross once described [a way to include a searchable table in reference pages
 
 {{< tweet 1082857041868144645 >}}
 
-In [writexl docs](https://docs.ropensci.org/writexl/reference/write_xlsx.html), the infamous Clippy makes an appeance. It triggers [a tweet nearly once a week](https://twitter.com/search?q=clippy%20%23rstats), which might be a way to check people are reading the docs?
+In [writexl docs](https://docs.ropensci.org/writexl/reference/write_xlsx.html), the infamous Clippy makes an appearance. It triggers [a tweet nearly once a week](https://twitter.com/search?q=clippy%20%23rstats), which might be a way to check people are reading the docs?
 
 For actual analytics in manual pages, it seems [the unknown package](https://github.com/cran/unknownR/blob/9d5cd70c15837b59ef9d215971fad82358f29ff4/man/unk.Rd) found a trick by adding a script from [statcounter](https://github.com/cran/unknownR/blob/9d5cd70c15837b59ef9d215971fad82358f29ff4/man/unk.Rd).
 
