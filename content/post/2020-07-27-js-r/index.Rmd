@@ -303,6 +303,8 @@ When learning a new language, using a playground is great.
 Did you know that the js4shiny package provides a [JS playground you can use from RStudio](https://pkg.js4shiny.com/reference/repl.html)?
 Less new things at once if you already use RStudio, so more confidence for learning!
 
+And if you'd rather stick to the command line, bubble can [launch a Node terminal](https://github.com/ColinFay/bubble#using-bubble-to-launch-a-nodejs-terminal) where you can interactively run JavaScript, just like the R console.
+
 ## R from JavaScript?
 
 Before we jump to the conclusion, let us mention a few ways to go the other way round, calling R from JavaScript...
