@@ -8,7 +8,7 @@ tags:
 - package development 
 - JS
 output: hugodown::hugo_document
-rmd_hash: 8806f4ddacc7aab9
+rmd_hash: 3c89fe4f98094312
 html_dependencies:
 - <link href="applause-button-3.3.2/applause-button.css" rel="stylesheet" />
 - <script src="applause-button-3.3.2/applause-button.js"></script>
@@ -172,9 +172,13 @@ The resources for learning we found are mostly related to Shiny, but might be re
 
 As an R user, you might really appreciate literate R programming. You're lucky, you can actually use JavaScript in R Markdown.
 
-A first, maybe less exciting JavaScript / R Markdown integration consists in transforming your JS chunks into scripts embedded in a HTML output so that the *browser* executes the JavaScript code. See [knitr default JS engine](https://rmarkdown.rstudio.com/authoring_knitr_engines.html%23sql#JavaScript), and for more functionality, [js4shiny](https://pkg.js4shiny.com/reference/html_document_js.html).
+At a basic level, `knitr` includes a [JavaScript chunk engine](https://rmarkdown.rstudio.com/authoring_knitr_engines.html%23sql#JavaScript) that writes the code in JavaScript chunks marked with <code>\`\`\`{js}</code> into a `<script>` tag in the HTML document. The JS code is then rendered *in the browser* when the reader opens the output document!
 
-Now, what about executing JS code at compile time i.e. when knitting? For that there are two experimental packages providing knitr engines both using Node, [bubble](https://github.com/ColinFay/bubble#knitr) and again [js4shiny](https://pkg.js4shiny.com/reference/html_document_js.html).
+Now, what about executing JS code at compile time i.e. when knitting? For that the experimental [bubble](https://github.com/ColinFay/bubble#knitr) package provides a knitr engines that uses [Node](https://nodejs.org/en/) to run JavaScript chunks and insert the results in the rendered output.
+
+The [js4shiny](https://pkg.js4shiny.com) package blends of the above approaches in [html\_document\_js()](https://pkg.js4shiny.com/articles/literate-javascript.html), an R Markdown output for [literate JavaScript programming](https://pkg.js4shiny.com/articles/literate-javascript.html). In this case, JavaScript chunks are run in the reader's browser and console outputs and results are written into output chunks in the page, mimicking R Markdown's R chunks.
+
+If you like the literate programming approach to learning and using JavaScript, keep your eye on the [reactor](https://github.com/herbps10/reactor) package. It's an experimental package that aims to bring [Observable notebooks](https://observablehq.com/) into R Markdown documents.
 
 #### Different problem, using JS libraries in Rmd documents
 
@@ -183,6 +187,8 @@ More as a side-note let us mention [the htmlwidgets package](https://github.com/
 ### Playground
 
 When learning a new language, using a playground is great. Did you know that the js4shiny package provides a [JS playground you can use from RStudio](https://pkg.js4shiny.com/reference/repl.html)? Less new things at once if you already use RStudio, so more confidence for learning!
+
+And if you'd rather stick to the command line, bubble can [launch a Node terminal](https://github.com/ColinFay/bubble#using-bubble-to-launch-a-nodejs-terminal) where you can interactively run JavaScript, just like the R console.
 
 R from JavaScript?
 ------------------
