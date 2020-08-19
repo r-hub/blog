@@ -4,7 +4,7 @@ title: "JavaScript for the R package developer"
 authors: 
 - Maëlle Salmon
 - Garrick Aden-Buie
-date: "2020-07-27" 
+date: "2020-08-20" 
 tags: 
 - package development 
 - JS
@@ -186,7 +186,7 @@ and the `href` element indicates the URL to the containing folder on a remote se
 
 To ship dependencies in your package,
 copy the dependencies into a sub-directory of `inst` in your package
-(but not `inst/src` or `inst/lib`, these are reserved directory names).
+(but not `inst/src` or `inst/lib`, these are reserved directory names[^reserved]).
 As long as the dependencies are a reasonable size,
 it's best to include the dependencies in your R package
 so that an internet connection isn't strictly required.
@@ -228,44 +228,15 @@ and htmltools will ensure that the web dependency files are added only once to t
 Some web dependencies only need to be included in the output document and don't require any HTML tags.
 In these cases,
 the dependency can appear alone in the `htmltools::tagList()`,
-as in [this example from xaringanExtra::use_tachyons()](https://github.com/gadenbuie/xaringanExtra/blob/master/R/tachyons.R).
+as in [this example](https://github.com/gadenbuie/xaringanExtra/blob/master/R/webcam.R) from [xaringanExtra::use_webcam()](https://pkg.garrickadenbuie.com/xaringanExtra/#/?id=webcam).
 The names of these types of functions commonly include the `use_` prefix.
 
 ```{r eval=FALSE}
-use_tachyons <- function(minified = TRUE) {
-  htmltools::tagList(
-    html_dependency_tachyons(minified)
-  )
+use_webcam <- function(width = 200, height = 200, margin = "1em") {
+	htmltools::tagList(
+		html_dependency_webcam(width, height)
+	)
 }
-```
-
-### Wild-Caught Examples
-
-```{r echo=FALSE}
-examples <- list(
-  list(
-    pkg = "aos",
-    pkg_url = "https://felixluginbuhl.com/aos",
-    author = "Félix Luginbühl",
-    author_url = "https://felixluginbuhl.com/",
-    ex_fn = "use_aos",
-    ex_url = "https://github.com/lgnbhl/aos/blob/master/R/use_aos.R",
-    notes = "Formats user-provided options into JSON for use in a JavaScript initialization function"
-  ),
-  list(
-    pkg = "xaringanExtra",
-    pkg_url = "https://pkg.garrickadenbuie.com/xaringanExtra",
-    author = "Garrick Aden-Buie",
-    author_url = "https://www.garrickadenbuie.com",
-    ex_fn = "use_editable",
-    ex_url = "https://github.com/gadenbuie/xaringanExtra/blob/master/R/editable.R",
-    notes = paste(
-      "Provides custom JavaScript supported by additional web dependencies",
-      "and document-level user options are passed from the R call into the",
-      "rendered document as JSON."
-    )
-  )
-)
 ```
 
 ## Learning and showing JavaScript from R
@@ -337,3 +308,5 @@ Colin Fay wrote [an experimental Node package for calling R](https://colinfay.me
 
 In this post we went over some resources useful to R package developers looking to use JavaScript code in the backend or docs of their packages, or to help others use JavaScript dependencies.
 Do not hesitate to share more links or experience in the comments below!
+
+[^reserved]: Refer to the R packages book by Hadley Wickham and Jenny Bryan [for a full list of reserved directory names](https://r-pkgs.org/inst.html).

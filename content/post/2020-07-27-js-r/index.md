@@ -4,12 +4,12 @@ title: "JavaScript for the R package developer"
 authors: 
 - Maëlle Salmon
 - Garrick Aden-Buie
-date: "2020-07-27" 
+date: "2020-08-20" 
 tags: 
 - package development 
 - JS
 output: hugodown::hugo_document
-rmd_hash: a981b97b73ccc0c5
+rmd_hash: 2b74362c8d24af69
 html_dependencies:
 - <link href="applause-button-3.3.2/applause-button.css" rel="stylesheet" />
 - <script src="applause-button-3.3.2/applause-button.js"></script>
@@ -115,7 +115,7 @@ Inside the R package source, the applause button dependencies are stored in [ins
 
 The `package`, `src`, and `script` or `stylesheet` arguments work together to locate the dependency's resources: `htmlDependency()` finds the `package`'s installation directory (i.e. `inst/`), then finds the directory specified by `src`, where the `script` (`.js`) and/or `stylesheet` (`.css`) files are located. The `src` argument can be a named vector or a single character of the directory in your package's `inst` folder. If `src` is named, the `file` element indicates the directory in the `inst` folder, and the `href` element indicates the URL to the containing folder on a remote server, like a [CDN](https://en.wikipedia.org/wiki/Content_delivery_network).
 
-To ship dependencies in your package, copy the dependencies into a sub-directory of `inst` in your package (but not `inst/src` or `inst/lib`, these are reserved directory names). As long as the dependencies are a reasonable size, it's best to include the dependencies in your R package so that an internet connection isn't strictly required. Users who want to explicitly use the version hosted at a CDN can use [shiny::createWebDependency()](https://shiny.rstudio.com/reference/shiny/1.4.0/createWebDependency.html).
+To ship dependencies in your package, copy the dependencies into a sub-directory of `inst` in your package (but not `inst/src` or `inst/lib`, these are reserved directory names[^1]). As long as the dependencies are a reasonable size, it's best to include the dependencies in your R package so that an internet connection isn't strictly required. Users who want to explicitly use the version hosted at a CDN can use [shiny::createWebDependency()](https://shiny.rstudio.com/reference/shiny/1.4.0/createWebDependency.html).
 
 Finally, it's important that the HTML dependency be provided by a *function* and not stored as a variable in your package namespace. This allows htmltools to correctly locate the dependency's files once the package is installed on a user's computer. By convention, the function providing the dependency object is typically prefixed with `html_dependency_`.
 
@@ -136,21 +136,15 @@ Functions that provide HTML dependencies like `html_dependency_applause()` aren'
 
 Note that package authors can and should attach HTML dependencies to any tags produced by package functions that require the web dependencies shipped by the package. This way, users don't need to worry about having to manually attach dependencies and htmltools will ensure that the web dependency files are added only once to the output.
 
-Some web dependencies only need to be included in the output document and don't require any HTML tags. In these cases, the dependency can appear alone in the [`htmltools::tagList()`](https://rdrr.io/pkg/htmltools/man/tag.html), as in [this example from xaringanExtra::use\_tachyons()](https://github.com/gadenbuie/xaringanExtra/blob/master/R/tachyons.R). The names of these types of functions commonly include the `use_` prefix.
+Some web dependencies only need to be included in the output document and don't require any HTML tags. In these cases, the dependency can appear alone in the [`htmltools::tagList()`](https://rdrr.io/pkg/htmltools/man/tag.html), as in [this example](https://github.com/gadenbuie/xaringanExtra/blob/master/R/webcam.R) from [xaringanExtra::use\_webcam()](https://pkg.garrickadenbuie.com/xaringanExtra/#/?id=webcam). The names of these types of functions commonly include the `use_` prefix.
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>use_tachyons</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>minified</span> = <span class='kc'>TRUE</span>) {
-  <span class='k'>htmltools</span>::<span class='nf'><a href='https://rdrr.io/pkg/htmltools/man/tag.html'>tagList</a></span>(
-    <span class='nf'>html_dependency_tachyons</span>(<span class='k'>minified</span>)
-  )
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>use_webcam</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>width</span> = <span class='m'>200</span>, <span class='k'>height</span> = <span class='m'>200</span>, <span class='k'>margin</span> = <span class='s'>"1em"</span>) {
+    htmltoo<span class='k'>htmltools</span>st<span class='nf'><a href='https://rdrr.io/pkg/htmltools/man/tag.html'>tagList</a></span>
+        html_dependenc<span class='nf'>html_dependency_webcam</span>)<span class='k'>width</span><span class='k'>height</span>
+    )
 }</code></pre>
-
-</div>
-
-### Wild-Caught Examples
-
-<div class="highlight">
 
 </div>
 
@@ -208,4 +202,6 @@ Conclusion
 ----------
 
 In this post we went over some resources useful to R package developers looking to use JavaScript code in the backend or docs of their packages, or to help others use JavaScript dependencies. Do not hesitate to share more links or experience in the comments below!
+
+[^1]: Refer to the R packages book by Hadley Wickham and Jenny Bryan [for a full list of reserved directory names](https://r-pkgs.org/inst.html).
 
