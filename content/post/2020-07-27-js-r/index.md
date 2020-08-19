@@ -9,7 +9,7 @@ tags:
 - package development 
 - JS
 output: hugodown::hugo_document
-rmd_hash: 2b74362c8d24af69
+rmd_hash: 1e094983ae17577a
 html_dependencies:
 - <link href="applause-button-3.3.2/applause-button.css" rel="stylesheet" />
 - <script src="applause-button-3.3.2/applause-button.js"></script>
@@ -138,15 +138,13 @@ Note that package authors can and should attach HTML dependencies to any tags pr
 
 Some web dependencies only need to be included in the output document and don't require any HTML tags. In these cases, the dependency can appear alone in the [`htmltools::tagList()`](https://rdrr.io/pkg/htmltools/man/tag.html), as in [this example](https://github.com/gadenbuie/xaringanExtra/blob/master/R/webcam.R) from [xaringanExtra::use\_webcam()](https://pkg.garrickadenbuie.com/xaringanExtra/#/?id=webcam). The names of these types of functions commonly include the `use_` prefix.
 
-<div class="highlight">
-
-<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>use_webcam</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>width</span> = <span class='m'>200</span>, <span class='k'>height</span> = <span class='m'>200</span>, <span class='k'>margin</span> = <span class='s'>"1em"</span>) {
-    htmltoo<span class='k'>htmltools</span>st<span class='nf'><a href='https://rdrr.io/pkg/htmltools/man/tag.html'>tagList</a></span>
-        html_dependenc<span class='nf'>html_dependency_webcam</span>)<span class='k'>width</span><span class='k'>height</span>
+``` r
+use_webcam <- function(width = 200, height = 200, margin = "1em") {
+    htmltools::tagList(
+        html_dependency_webcam(width, height)
     )
-}</code></pre>
-
-</div>
+}
+```
 
 Learning and showing JavaScript from R
 --------------------------------------

@@ -231,7 +231,7 @@ the dependency can appear alone in the `htmltools::tagList()`,
 as in [this example](https://github.com/gadenbuie/xaringanExtra/blob/master/R/webcam.R) from [xaringanExtra::use_webcam()](https://pkg.garrickadenbuie.com/xaringanExtra/#/?id=webcam).
 The names of these types of functions commonly include the `use_` prefix.
 
-```{r eval=FALSE}
+```r
 use_webcam <- function(width = 200, height = 200, margin = "1em") {
 	htmltools::tagList(
 		html_dependency_webcam(width, height)
