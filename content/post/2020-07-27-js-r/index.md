@@ -2,13 +2,14 @@
 slug: js-r 
 title: "JavaScript for the R package developer" 
 authors: 
-- Maëlle Salmon 
+- Maëlle Salmon
+- Garrick Aden-Buie
 date: "2020-07-27" 
 tags: 
 - package development 
 - JS
 output: hugodown::hugo_document
-rmd_hash: 3c89fe4f98094312
+rmd_hash: bb37db43bfeaa805
 html_dependencies:
 - <link href="applause-button-3.3.2/applause-button.css" rel="stylesheet" />
 - <script src="applause-button-3.3.2/applause-button.js"></script>
@@ -21,7 +22,7 @@ JS and R, what a clickbait! Come for JS, stay for our posts about [Solaris](/202
 
 In this blog post, we shall share a roundup of resources around JavaScript for R package developers.
 
-> Let us start by thanking [Garrick Aden-Buie](https://www.garrickadenbuie.com/) who not only develops great materials and tools with R and JavaScript but also took the time to chime in draft notes for this post. :pray:
+> All the smart JavaScript content of this post can be attributed to [Garrick Aden-Buie](https://www.garrickadenbuie.com/). :pray:
 
 JavaScript in your R package
 ----------------------------

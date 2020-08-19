@@ -2,7 +2,8 @@
 slug: js-r 
 title: "JavaScript for the R package developer" 
 authors: 
-- Maëlle Salmon 
+- Maëlle Salmon
+- Garrick Aden-Buie
 date: "2020-07-27" 
 tags: 
 - package development 
@@ -43,7 +44,7 @@ No matter how strongly you believe in JavaScript being the language of the futur
 
 In this blog post, we shall share a roundup of resources around JavaScript for R package developers.
 
-> Let us start by thanking [Garrick Aden-Buie](https://www.garrickadenbuie.com/) who not only develops great materials and tools with R and JavaScript but also took the time to chime in draft notes for this post. :pray:
+> All the smart JavaScript content of this post can be attributed to [Garrick Aden-Buie](https://www.garrickadenbuie.com/). :pray:
 
 ## JavaScript in your R package
 
