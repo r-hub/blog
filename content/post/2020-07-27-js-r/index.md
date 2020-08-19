@@ -9,7 +9,7 @@ tags:
 - package development 
 - JS
 output: hugodown::hugo_document
-rmd_hash: bb37db43bfeaa805
+rmd_hash: a981b97b73ccc0c5
 html_dependencies:
 - <link href="applause-button-3.3.2/applause-button.css" rel="stylesheet" />
 - <script src="applause-button-3.3.2/applause-button.js"></script>
@@ -63,7 +63,7 @@ In HTML vignettes, you can also use web dependencies. On a pkgdown website, you 
 
 A third, and most common, way in which you as an R package developer might interact with JavaScript is to repackage web dependencies, such as JavaScript and CSS libraries, that enhance HTML documents and Shiny apps! For that, you'll want to learn about the [htmltools package](https://cran.r-project.org/web/packages/htmltools/index.html), in particular for its `htmlDependency()` function.
 
-As Hadley Wickham describes in the [Managing JavaScript/CSS dependencies](https://mastering-shiny.org/advanced-ui.html#dependencies) section of [*Mastering Shiny*](https://mastering-shiny.org/), an HTML dependency object describes a single JavaScript/CSS library, which often contain one or more JavaScript and/or CSS files and additional assets. As an R package author providing reusable web components for Shiny or R Markdown, in Hadley's words, you "absolutely should be using HTML dependency objects rather than calling `tags$link()`, `tags$script()`, `includeCSS()`, or `includeScript()` directly."
+As Hadley Wickham describes in the [Managing JavaScript/CSS dependencies](https://mastering-shiny.org/advanced-ui.html#dependencies) section of [*Mastering Shiny*](https://mastering-shiny.org/), an HTML dependency object describes a single JavaScript/CSS library, which often contains one or more JavaScript and/or CSS files and additional assets. As an R package author providing reusable web components for Shiny or R Markdown, in Hadley's words, you "absolutely should be using HTML dependency objects rather than calling `tags$link()`, `tags$script()`, `includeCSS()`, or `includeScript()` directly."
 
 #### htmlDependency()
 

@@ -100,7 +100,7 @@ As Hadley Wickham describes in the
 section of
 [*Mastering Shiny*](https://mastering-shiny.org/),
 an HTML dependency object describes a single JavaScript/CSS library,
-which often contain one or more JavaScript and/or CSS files and additional assets.
+which often contains one or more JavaScript and/or CSS files and additional assets.
 As an R package author providing reusable web components for Shiny or R Markdown, 
 in Hadley's words,
 you "absolutely should be using HTML dependency objects rather than calling `tags$link()`, `tags$script()`, `includeCSS()`, or `includeScript()` directly."
