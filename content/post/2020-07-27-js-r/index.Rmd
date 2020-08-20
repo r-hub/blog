@@ -42,7 +42,7 @@ No matter how strongly you believe in JavaScript being the language of the futur
 
 `r hugodown::embed_tweet("1272595824112029696")`
 
-In this blog post, we shall share a roundup of resources around JavaScript for R package developers.
+In this blog post, [Garrick Aden-Buie](https://www.garrickadenbuie.com) and I share a roundup of resources around JavaScript for R package developers.
 
 > All the smart JavaScript content of this post can be attributed to [Garrick Aden-Buie](https://www.garrickadenbuie.com/). :pray:
 
