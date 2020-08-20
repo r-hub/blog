@@ -4,12 +4,12 @@ title: "JavaScript for the R package developer"
 authors: 
 - Maëlle Salmon
 - Garrick Aden-Buie
-date: "2020-08-20" 
+date: "2020-08-24" 
 tags: 
 - package development 
 - JS
 output: hugodown::hugo_document
-rmd_hash: 1e094983ae17577a
+rmd_hash: f0584283539cb9f6
 html_dependencies:
 - <link href="applause-button-3.3.2/applause-button.css" rel="stylesheet" />
 - <script src="applause-button-3.3.2/applause-button.js"></script>
@@ -20,9 +20,7 @@ JS and R, what a clickbait! Come for JS, stay for our posts about [Solaris](/202
 
 {{< tweet 1272595824112029696 >}}
 
-In this blog post, we shall share a roundup of resources around JavaScript for R package developers.
-
-> All the smart JavaScript content of this post can be attributed to [Garrick Aden-Buie](https://www.garrickadenbuie.com/). :pray:
+In this blog post, [Garrick Aden-Buie](https://www.garrickadenbuie.com) and I share a roundup of resources around JavaScript for R package developers.
 
 JavaScript in your R package
 ----------------------------
@@ -115,7 +113,7 @@ Inside the R package source, the applause button dependencies are stored in [ins
 
 The `package`, `src`, and `script` or `stylesheet` arguments work together to locate the dependency's resources: `htmlDependency()` finds the `package`'s installation directory (i.e. `inst/`), then finds the directory specified by `src`, where the `script` (`.js`) and/or `stylesheet` (`.css`) files are located. The `src` argument can be a named vector or a single character of the directory in your package's `inst` folder. If `src` is named, the `file` element indicates the directory in the `inst` folder, and the `href` element indicates the URL to the containing folder on a remote server, like a [CDN](https://en.wikipedia.org/wiki/Content_delivery_network).
 
-To ship dependencies in your package, copy the dependencies into a sub-directory of `inst` in your package (but not `inst/src` or `inst/lib`, these are reserved directory names[^1]). As long as the dependencies are a reasonable size, it's best to include the dependencies in your R package so that an internet connection isn't strictly required. Users who want to explicitly use the version hosted at a CDN can use [shiny::createWebDependency()](https://shiny.rstudio.com/reference/shiny/1.4.0/createWebDependency.html).
+To ship dependencies in your package, copy the dependencies into a sub-directory of `inst` in your package (but not `inst/src` or `inst/lib`, these are reserved directory names[^1]). As long as the dependencies are a reasonable size[^2], it's best to include the dependencies in your R package so that an internet connection isn't strictly required. Users who want to explicitly use the version hosted at a CDN can use [shiny::createWebDependency()](https://shiny.rstudio.com/reference/shiny/1.4.0/createWebDependency.html).
 
 Finally, it's important that the HTML dependency be provided by a *function* and not stored as a variable in your package namespace. This allows htmltools to correctly locate the dependency's files once the package is installed on a user's computer. By convention, the function providing the dependency object is typically prefixed with `html_dependency_`.
 
@@ -134,17 +132,28 @@ Functions that provide HTML dependencies like `html_dependency_applause()` aren'
 
 </div>
 
-Note that package authors can and should attach HTML dependencies to any tags produced by package functions that require the web dependencies shipped by the package. This way, users don't need to worry about having to manually attach dependencies and htmltools will ensure that the web dependency files are added only once to the output.
+Note that package authors can and should attach HTML dependencies to any tags produced by package functions that require the web dependencies shipped by the package. This way, users don't need to worry about having to manually attach dependencies and htmltools will ensure that the web dependency files are added only once to the output. This way, for instance, to include a button, using the `applause` package an user only needs to type in e.g. their Hugo blog post[^3] or Shiny app:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>applause</span>::<span class='nf'><a href='https://rdrr.io/pkg/applause/man/button.html'>button</a></span>()
+</code></pre>
+<!--html_preserve-->
+<applause-button style="width: 50px; height: 50px;"></applause-button><!--/html_preserve-->
+
+</div>
 
 Some web dependencies only need to be included in the output document and don't require any HTML tags. In these cases, the dependency can appear alone in the [`htmltools::tagList()`](https://rdrr.io/pkg/htmltools/man/tag.html), as in [this example](https://github.com/gadenbuie/xaringanExtra/blob/master/R/webcam.R) from [xaringanExtra::use\_webcam()](https://pkg.garrickadenbuie.com/xaringanExtra/#/?id=webcam). The names of these types of functions commonly include the `use_` prefix.
 
-``` r
-use_webcam <- function(width = 200, height = 200, margin = "1em") {
-    htmltools::tagList(
-        html_dependency_webcam(width, height)
-    )
-}
-```
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='k'>use_webcam</span> <span class='o'>&lt;-</span> <span class='nf'>function</span>(<span class='k'>width</span> = <span class='m'>200</span>, <span class='k'>height</span> = <span class='m'>200</span>, <span class='k'>margin</span> = <span class='s'>"1em"</span>) {
+<span class='k'>htmltools</span>::<span class='nf'><a href='https://rdrr.io/pkg/htmltools/man/tag.html'>tagList</a></span>(
+    <span class='nf'>html_dependency_webcam</span>(<span class='k'>width</span>, <span class='k'>height</span>)
+  )
+}</code></pre>
+
+</div>
 
 Learning and showing JavaScript from R
 --------------------------------------
@@ -170,8 +179,6 @@ At a basic level, `knitr` includes a [JavaScript chunk engine](https://rmarkdown
 Now, what about executing JS code at compile time i.e. when knitting? For that the experimental [bubble](https://github.com/ColinFay/bubble#knitr) package provides a knitr engines that uses [Node](https://nodejs.org/en/) to run JavaScript chunks and insert the results in the rendered output.
 
 The [js4shiny](https://pkg.js4shiny.com) package blends of the above approaches in [html\_document\_js()](https://pkg.js4shiny.com/articles/literate-javascript.html), an R Markdown output for [literate JavaScript programming](https://pkg.js4shiny.com/articles/literate-javascript.html). In this case, JavaScript chunks are run in the reader's browser and console outputs and results are written into output chunks in the page, mimicking R Markdown's R chunks.
-
-If you like the literate programming approach to learning and using JavaScript, keep your eye on the [reactor](https://github.com/herbps10/reactor) package. It's an experimental package that aims to bring [Observable notebooks](https://observablehq.com/) into R Markdown documents.
 
 #### Different problem, using JS libraries in Rmd documents
 
@@ -202,4 +209,8 @@ Conclusion
 In this post we went over some resources useful to R package developers looking to use JavaScript code in the backend or docs of their packages, or to help others use JavaScript dependencies. Do not hesitate to share more links or experience in the comments below!
 
 [^1]: Refer to the R packages book by Hadley Wickham and Jenny Bryan [for a full list of reserved directory names](https://r-pkgs.org/inst.html).
+
+[^2]: For instance, remember that [for CRAN](https://cran.r-project.org/web/packages/policies.html), "*neither data nor documentation should exceed 5MB*".
+
+[^3]: And some setup work to use HTML widgets, see [`hugodown` docs](https://hugodown.r-lib.org/articles/config.html#hugo-1).
 
