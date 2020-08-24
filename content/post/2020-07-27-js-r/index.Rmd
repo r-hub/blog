@@ -1,10 +1,10 @@
----
+`---
 slug: js-r 
 title: "JavaScript for the R package developer" 
 authors: 
 - Maëlle Salmon
 - Garrick Aden-Buie
-date: "2020-08-24" 
+date: "2020-08-25" 
 tags: 
 - package development 
 - JS
@@ -172,6 +172,15 @@ htmltools::tagList(
 }
 ```
 
+### JS and package robustness
+
+How do you test JS code for your package, and how do you test your package that helps managing JS dependencies?
+We'll simply offer some food for thought here.
+If you bundle or help bundling an existing JS library, be careful to choose dependencies as you would with R packages.
+Check the reputation and health of that library (is it tested?).
+If you are packaging your own JS code, also make sure you use best practice for JS development. :wink:
+Lastly, if you want to check how using your package works in a Shiny app, e.g. how does that applause button turn out, you might find interesting ideas in the [book "Engineering Production-Grade Shiny Apps" by Colin Fay, Sébastien Rochette, Vincent Guyader and Cervan Girard](https://engineering-shiny.org/step-secure.html#testing-the-interactive-logic), in particular the quote "_instead of deliberately clicking on the application interface, you let a program do it for you_".
+
 ## Learning and showing JavaScript from R
 
 Now, what if you want to learn JavaScript? Besides the resources that one would recommend to any JS learner, there are interesting ones just for you as R user!
@@ -223,3 +232,4 @@ Colin Fay wrote [an experimental Node package for calling R](https://colinfay.me
 In this post we went over some resources useful to R package developers looking to use JavaScript code in the backend or docs of their packages, or to help others use JavaScript dependencies. Do not hesitate to share more links or experience in the comments below!
 
 [^size]: For instance, remember that [for CRAN](https://cran.r-project.org/web/packages/policies.html), "*neither data nor documentation should exceed 5MB*".
+`
