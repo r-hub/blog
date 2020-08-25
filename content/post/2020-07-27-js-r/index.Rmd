@@ -1,4 +1,4 @@
-`---
+---
 slug: js-r 
 title: "JavaScript for the R package developer" 
 authors: 
@@ -232,4 +232,3 @@ Colin Fay wrote [an experimental Node package for calling R](https://colinfay.me
 In this post we went over some resources useful to R package developers looking to use JavaScript code in the backend or docs of their packages, or to help others use JavaScript dependencies. Do not hesitate to share more links or experience in the comments below!
 
 [^size]: For instance, remember that [for CRAN](https://cran.r-project.org/web/packages/policies.html), "*neither data nor documentation should exceed 5MB*".
-`

@@ -4,12 +4,12 @@ title: "JavaScript for the R package developer"
 authors: 
 - Maëlle Salmon
 - Garrick Aden-Buie
-date: "2020-08-24" 
+date: "2020-08-25" 
 tags: 
 - package development 
 - JS
 output: hugodown::hugo_document
-rmd_hash: f0584283539cb9f6
+rmd_hash: 10c020e3e5ba25a6
 html_dependencies:
 - <link href="applause-button-3.3.2/applause-button.css" rel="stylesheet" />
 - <script src="applause-button-3.3.2/applause-button.js"></script>
@@ -154,6 +154,10 @@ Some web dependencies only need to be included in the output document and don't 
 }</code></pre>
 
 </div>
+
+### JS and package robustness
+
+How do you test JS code for your package, and how do you test your package that helps managing JS dependencies? We'll simply offer some food for thought here. If you bundle or help bundling an existing JS library, be careful to choose dependencies as you would with R packages. Check the reputation and health of that library (is it tested?). If you are packaging your own JS code, also make sure you use best practice for JS development. :wink: Lastly, if you want to check how using your package works in a Shiny app, e.g. how does that applause button turn out, you might find interesting ideas in the [book "Engineering Production-Grade Shiny Apps" by Colin Fay, Sébastien Rochette, Vincent Guyader and Cervan Girard](https://engineering-shiny.org/step-secure.html#testing-the-interactive-logic), in particular the quote "*instead of deliberately clicking on the application interface, you let a program do it for you*".
 
 Learning and showing JavaScript from R
 --------------------------------------
