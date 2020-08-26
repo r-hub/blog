@@ -3,6 +3,7 @@ slug: keep.source
 title: "State of R packages in your library" 
 authors: 
 - Maëlle Salmon 
+- Gábor Csárdi
 date: "2020-08-30" 
 tags: 
 - package development 
@@ -97,7 +98,7 @@ As an user installing packages, you need to look into the `keep.source.pkgs` opt
 
 [^lookup]: When viewing source code you might get a better default experience by [loading `lookup`](https://github.com/jimhester/lookup#default-printing) in your [.Rprofile](https://rstats.wtf/r-startup.html#rprofile) **if you don't use Windows, because if you use Windows and do this you won't be able to update the loaded packages with compiled code**.
 
-As a developer working on a package, you need to make sure the source is kept as is [when building the package, thanks to the `--with-keep.source` option](https://support.rstudio.com/hc/en-us/articles/205612627-Debugging-with-RStudio#debugging-in-packages), and when loading it (lucky you, the relevant `keep.source` option is `TRUE` by default in interactive sessions :tada:).
+As a developer working interactively on a package (with e.g. `devtools::load_all()`), you need to make sure the source is kept as is when loading the package, and when loading it (lucky you, the relevant `keep.source` option is `TRUE` by default in interactive sessions :tada:).
 
 
 As a developer you might also encounter the case where `R CMD check` will tell you about another switch, in an environment variable.
@@ -112,13 +113,11 @@ It is a switch related to package installation, since `R CMD check` will install
                                 "set to 'yes'.\n")
 ```
 
-This will only work if you keep the source when building since building happens before installing, of course. :wink:
-
-Also note that there is also a way for package maintainers to [force the installation of their package to keep the source](https://stat.ethz.ch/pipermail/r-devel/2011-April/060410.html), which seems less useful?
+Also note that there is also a way for package maintainers to [force the installation of their package to keep the source](https://stat.ethz.ch/pipermail/r-devel/2011-April/060410.html).
 Here are [packages that do that](https://github.com/search?q=keepsource+user%3Acran+filename%3ADESCRIPTION&type=Code&ref=advsearch&l=&l=).
 A potential use case might be to try and hire people [like the web development team at The Guardian seems to do if you view the source of its website](https://www.theguardian.com/international).
 
-As a summary: for keeping the source when building a package there is the `keep.source` option (`R CMD build --with-keep.source`). For keeping the source of a package at installation you need a) its having kept source at building b) to use the `keep.source.pkgs` option (`R CMD build --with-keep.source`) or the `R_KEEP_PKG_SOURCE` environment variable.
+As a summary: for keeping the source when loading code, in particular for a package with `devtools::load_all()`, there is the `keep.source` option. For keeping the source of a package at installation you need to use the `keep.source.pkgs` option (`R CMD build --with-keep.source`) or the `R_KEEP_PKG_SOURCE` environment variable or to be installating a package that forces the source keeping.
 
 ## Conclusion
 

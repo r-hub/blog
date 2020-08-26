@@ -3,11 +3,12 @@ slug: keep.source
 title: "State of R packages in your library" 
 authors: 
 - Maëlle Salmon 
+- Gábor Csárdi
 date: "2020-08-30" 
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 66691f2e4dadc077
+rmd_hash: c9cf1bc59bd08620
 
 ---
 
@@ -47,7 +48,7 @@ The installed packages in the library do not contain the original R files, see [
     <span class='s'>"R"</span>
     )
   )
-
+[01;34m/usr/lib/R/site-library/ggplot2/R[0m
 ├── ggplot2
 ├── ggplot2.rdb
 └── ggplot2.rdx
@@ -74,7 +75,7 @@ It is similar to CSS, JS, HTML being minified in web development to make website
 
 As an user installing packages, you need to look into the `keep.source.pkgs` option in [`options()`](https://rdrr.io/r/base/options.html) that influences the behavior of package installation, or for a specific package you'd write [`install.packages("rhub", INSTALL_opts = "--with-keep.source", type = "source")`](https://rdrr.io/r/utils/install.packages.html).[^3] If you use Windows or Mac and don't write `type = "source"`, binaries might be use in which case the `keep.source.pkgs` option is ignored.
 
-As a developer working on a package, you need to make sure the source is kept as is [when building the package, thanks to the `--with-keep.source` option](https://support.rstudio.com/hc/en-us/articles/205612627-Debugging-with-RStudio#debugging-in-packages), and when loading it (lucky you, the relevant `keep.source` option is `TRUE` by default in interactive sessions :tada:).
+As a developer working interactively on a package (with e.g. [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html)), you need to make sure the source is kept as is when loading the package, and when loading it (lucky you, the relevant `keep.source` option is `TRUE` by default in interactive sessions :tada:).
 
 As a developer you might also encounter the case where `R CMD check` will tell you about another switch, in an environment variable. It is a switch related to package installation, since `R CMD check` will install your package for checking it . [See the lines below from the R source mirror](https://github.com/wch/r-source/blob/f27cbf1a52a31cd9b9676340394946a22041a4ae/src/library/tools/R/check.R#L5248-L5253):
 
@@ -87,11 +88,9 @@ As a developer you might also encounter the case where `R CMD check` will tell y
                                 "set to 'yes'.\n")
 ```
 
-This will only work if you keep the source when building since building happens before installing, of course. :wink:
+Also note that there is also a way for package maintainers to [force the installation of their package to keep the source](https://stat.ethz.ch/pipermail/r-devel/2011-April/060410.html). Here are [packages that do that](https://github.com/search?q=keepsource+user%3Acran+filename%3ADESCRIPTION&type=Code&ref=advsearch&l=&l=). A potential use case might be to try and hire people [like the web development team at The Guardian seems to do if you view the source of its website](https://www.theguardian.com/international).
 
-Also note that there is also a way for package maintainers to [force the installation of their package to keep the source](https://stat.ethz.ch/pipermail/r-devel/2011-April/060410.html), which seems less useful? Here are [packages that do that](https://github.com/search?q=keepsource+user%3Acran+filename%3ADESCRIPTION&type=Code&ref=advsearch&l=&l=). A potential use case might be to try and hire people [like the web development team at The Guardian seems to do if you view the source of its website](https://www.theguardian.com/international).
-
-As a summary: for keeping the source when building a package there is the `keep.source` option (`R CMD build --with-keep.source`). For keeping the source of a package at installation you need a) its having kept source at building b) to use the `keep.source.pkgs` option (`R CMD build --with-keep.source`) or the `R_KEEP_PKG_SOURCE` environment variable.
+As a summary: for keeping the source when loading code, in particular for a package with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html), there is the `keep.source` option. For keeping the source of a package at installation you need to use the `keep.source.pkgs` option (`R CMD build --with-keep.source`) or the `R_KEEP_PKG_SOURCE` environment variable or to be installating a package that forces the source keeping.
 
 Conclusion
 ----------
