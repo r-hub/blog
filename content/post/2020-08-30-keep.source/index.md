@@ -48,7 +48,7 @@ The installed packages in the library do not contain the original R files, see [
     <span class='s'>"R"</span>
     )
   )
-[01;34m/usr/lib/R/site-library/ggplot2/R[0m
+
 ├── ggplot2
 ├── ggplot2.rdb
 └── ggplot2.rdx
