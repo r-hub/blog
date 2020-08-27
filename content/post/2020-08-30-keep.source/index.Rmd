@@ -117,12 +117,12 @@ Also note that there is also a way for package maintainers to [force the install
 Here are [packages that do that](https://github.com/search?q=keepsource+user%3Acran+filename%3ADESCRIPTION&type=Code&ref=advsearch&l=&l=).
 A potential use case might be to try and hire people [like the web development team at The Guardian seems to do if you view the source of its website](https://www.theguardian.com/international).
 
-As a summary: for keeping the source when loading code, in particular for a package with `devtools::load_all()`, there is the `keep.source` option. For keeping the source of a package at installation you need to use the `keep.source.pkgs` option (`R CMD build --with-keep.source`) or the `R_KEEP_PKG_SOURCE` environment variable or to be installating a package that forces the source keeping.
+As a summary: for keeping the source when loading code, in particular for a package with `devtools::load_all()`, there is the `keep.source` option. For keeping the source of a package at installation you need to use the `keep.source.pkgs` option (`R CMD install --with-keep.source`) or the `R_KEEP_PKG_SOURCE` environment variable or to be installing a package that forces the source keeping.
 
 ## Conclusion
 
 In this post we summarized where packages live once installed, in what format, and how their code is processed at installation.
-An important aspect was the original code formatting and commenting being removed by default, unless one changes some options for building and installing packages.
+An important aspect was the original code formatting and commenting being removed by default, unless one changes some options for installing packages.
 Do you use any of options related to keeping source in your R usage and development?
 How do you [read source code](/2019/05/14/read-the-source/)?
 

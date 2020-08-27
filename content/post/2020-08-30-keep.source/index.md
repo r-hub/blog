@@ -8,7 +8,7 @@ date: "2020-08-30"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: c9cf1bc59bd08620
+rmd_hash: ebb95624f8400ae5
 
 ---
 
@@ -90,12 +90,12 @@ As a developer you might also encounter the case where `R CMD check` will tell y
 
 Also note that there is also a way for package maintainers to [force the installation of their package to keep the source](https://stat.ethz.ch/pipermail/r-devel/2011-April/060410.html). Here are [packages that do that](https://github.com/search?q=keepsource+user%3Acran+filename%3ADESCRIPTION&type=Code&ref=advsearch&l=&l=). A potential use case might be to try and hire people [like the web development team at The Guardian seems to do if you view the source of its website](https://www.theguardian.com/international).
 
-As a summary: for keeping the source when loading code, in particular for a package with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html), there is the `keep.source` option. For keeping the source of a package at installation you need to use the `keep.source.pkgs` option (`R CMD build --with-keep.source`) or the `R_KEEP_PKG_SOURCE` environment variable or to be installating a package that forces the source keeping.
+As a summary: for keeping the source when loading code, in particular for a package with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html), there is the `keep.source` option. For keeping the source of a package at installation you need to use the `keep.source.pkgs` option (`R CMD install --with-keep.source`) or the `R_KEEP_PKG_SOURCE` environment variable or to be installing a package that forces the source keeping.
 
 Conclusion
 ----------
 
-In this post we summarized where packages live once installed, in what format, and how their code is processed at installation. An important aspect was the original code formatting and commenting being removed by default, unless one changes some options for building and installing packages. Do you use any of options related to keeping source in your R usage and development? How do you [read source code](/2019/05/14/read-the-source/)?
+In this post we summarized where packages live once installed, in what format, and how their code is processed at installation. An important aspect was the original code formatting and commenting being removed by default, unless one changes some options for installing packages. Do you use any of options related to keeping source in your R usage and development? How do you [read source code](/2019/05/14/read-the-source/)?
 
 [^1]: If your wish is to isolate packages you are installing for a given project, you might find a better workflow by using Docker or [the `renv` package](https://rstudio.github.io/renv/index.html).
 
