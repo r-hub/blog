@@ -1,12 +1,9 @@
 {{ partial "header.html" . }}
 
 <main class="content list" role="main" id="archive">
-
   {{ if .Content }}
   <article class="article">
-    <div class="article-content">
-      {{ .Content }}
-    </div>
+    <div class="article-content">{{ .Content }}</div>
   </article>
   {{ end }}
   <section class="content">
@@ -21,23 +18,14 @@
         <div class="col-md-auto">
           <p>{{ .Date.Format "2006/01/02" }}</p>
         </div>
-        <div class="col-md-auto">
-          |
-        </div>
-        <div class="col-md-auto">
-          {{ partial "get-authors.html" . }}
-        </div>
-        <div class="col-md-auto">
-          |
-        </div>
-        <div class="col-md-auto">
-          {{ partial "get-tags.html" . }}
-        </div>
+        <div class="col-md-auto">|</div>
+        <div class="col-md-auto">{{ partial "get-authors.html" . }}</div>
+        <div class="col-md-auto">|</div>
+        <div class="col-md-auto">{{ partial "get-tags.html" . }}</div>
       </div>
     </article>
     {{ end }}
   </section>
-
 </main>
 
 {{ partial "footer.html" . }}
