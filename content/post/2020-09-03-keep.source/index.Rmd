@@ -4,7 +4,7 @@ title: "State of R packages in your library"
 authors: 
 - Maëlle Salmon 
 - Gábor Csárdi
-date: "2020-08-30" 
+date: "2020-09-03" 
 tags: 
 - package development 
 output: hugodown::hugo_document

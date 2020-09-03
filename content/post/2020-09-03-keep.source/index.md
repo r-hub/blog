@@ -4,11 +4,11 @@ title: "State of R packages in your library"
 authors: 
 - Maëlle Salmon 
 - Gábor Csárdi
-date: "2020-08-30" 
+date: "2020-09-03" 
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: ebb95624f8400ae5
+rmd_hash: 2617bda8bb68a0eb
 
 ---
 
