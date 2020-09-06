@@ -8,7 +8,11 @@
   {{ end }}
   <section class="content">
     <div class="row">
+      {{ if in .Permalink "authors" }}
+      <h1>Posts by {{ .Title }}</h1>
+      {{ else }}
       <h1>Posts with the "{{ .Title }}" tag</h1>
+      {{ end }}
     </div>
     {{ range .Pages }}
     <article>
