@@ -513,3 +513,7 @@ div.meta.row {
 #archive .content article {
   margin-bottom: 2em;
 }
+
+#archive h1 {
+  margin-bottom: 1em;
+}
