@@ -7,6 +7,9 @@
   </article>
   {{ end }}
   <section class="content">
+    <div class="row">
+      <h1>Posts with the "{{ .Title }}" tag</h1>
+    </div>
     {{ range .Pages }}
     <article>
       <div class="row meta">
