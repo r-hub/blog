@@ -1,24 +1,46 @@
 {{ partial "header.html" . }}
 
 <main class="content list" role="main" id="archive">
-  {{ if .Content }}
-  <article class="article">
-    <div class="article-content">{{ .Content }}</div>
-  </article>
-  {{ end }}
   <section class="content">
-    <div class="row">
-      {{ if in .Permalink "authors" }}
-      <h1>Posts by {{ .Title }}</h1>
-      {{ else }}
-      <h1>Posts with the "{{ .Title }}" tag</h1>
+    {{ if in .Permalink "authors" }}
+    <article>
+      <div class="row">
+        <h1>{{ .Params.name }}</h1>
+      </div>
+      <div class="row">
+        <div class="col-md-auto">
+          <img src="{{ .Params.img }}" alt="{{ .Params.img }}" width="250" height="250">
+        </div>
+        <div class="col-md-auto">
+          <i class="fab fa-github mr-2"></i>
+            {{ $name := .Params.name }}
+            <ul>
+            {{ range .Params.social }}
+            <li>
+            <a href="{{ .link }}" target="_blank" title="{{ $name }} on {{ .service }}" alt="{{ .link }}"><i class="fab fa-github mr-2"></i>{{ $name }} on {{ .service }}</a>
+          </li>
+            {{ end }}
+          </ul>
+        </div>
+      </div>
+      {{ if .Content }}
+      <div class="row">{{ .Content }}</div>
       {{ end }}
+    </article>
+    <div class="row">
+      <h2>Posts by {{ .Params.name }}</h2>
     </div>
+    {{ end }} 
+    {{ if in .Permalink "tags" }}
+    <div class="row">
+      <h1>Posts with the "{{ .Title }}" tag</h1>
+    </div>
+    {{ end }} 
     {{ range .Pages }}
     <article>
       <div class="row meta">
         <div class="col-md-auto">
-          <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
         </div>
       </div>
       <div class="row meta">
