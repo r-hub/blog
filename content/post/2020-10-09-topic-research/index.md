@@ -3,7 +3,7 @@ slug: topic-research
 title: "Picking and researching blog topics about R package development" 
 authors: 
 - Maëlle Salmon 
-date: "2020-07-15" 
+date: "2020-10-09" 
 tags: 
 - package development 
 - blogging
@@ -17,7 +17,7 @@ An alternative title for this post would be "the very meta one". :wink: In this 
 Choosing and finding relevant topics
 ------------------------------------
 
-A topic is relevant if it's related to R package development, and if it's covered extensively elsewhere: unless a blog post can provide more context, presentation of newer tooling, a new perspective, we are not going to duplicate existing content. We are quite lucky that nothing is too niche for the R-hub blog. :grin: There is also no such thing as a too basic or too advanced topic: for [advanced topics](/2020/02/20/processx-blocked-sigchld/), the introduction should make clear it might be of interest to a few readers only; for [supposedly basic topics](/2019/12/12/internal-functions/), we hope there will always be something new to some readers.
+A topic is relevant if it's related to R package development, and if it's not covered extensively elsewhere: unless a blog post can provide more context, presentation of newer tooling, a new perspective, we are not going to duplicate existing content. We are quite lucky that nothing is too niche for the R-hub blog. :grin: There is also no such thing as a too basic or too advanced topic: for [advanced topics](/2020/02/20/processx-blocked-sigchld/), the introduction should make clear it might be of interest to a few readers only; for [supposedly basic topics](/2019/12/12/internal-functions/), we hope there will always be something new to some readers.
 
 Compared to extensive documentation like [Writing R Extensions](https://cran.r-project.org/doc/manuals/r-release/R-exts.html), how-to books like the [R packages book by Hadley Wickham and Jenny Bryan](https://r-pkgs.org/), and the [rOpenSci dev guide](https://devguide.ropensci.org), our blog post have more style and structure freedom, can list tools of various maturity levels since it's expected that blog posts will age and since we are not formulating standards.
 
