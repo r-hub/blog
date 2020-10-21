@@ -1,5 +1,4 @@
 
 <!-- List tags with proper list formatting -->
-<a href="/tags" title="Tags" alt="/tags"><i class="fas fa-tags mr-2"></i></a>{{- range $index, $value := .Params.tags -}}{{- if $index }},&nbsp;{{- end -}}<a href='{{ "/tags/" | relLangURL }}{{ . | urlize }}'>{{- $value | humanize -}}</a>{{ end }}
-
+<a href="/tags" title="Tags" alt="/tags"><i class="fa fa-tags mr-2"></i></a>{{- range $index, $value := .Params.tags -}}{{- if $index }},&nbsp;{{- end -}}<a href='{{ "/tags/" | relLangURL }}{{ . | urlize }}'>{{- $value | humanize -}}</a>{{ end }}
 <!---->
