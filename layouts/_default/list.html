@@ -5,19 +5,18 @@
     {{ if in .Permalink "authors" }}
     <article>
       <div class="row">
-        <h1>{{ .Params.name }}</h1>
+        <h1 class="mb-2">{{ .Params.name }}</h1>
       </div>
       <div class="row">
         <div class="col-md-auto">
-          <img src="{{ .Params.img }}" alt="{{ .Params.img }}" width="250" height="250">
+          <img src="{{ .Params.img }}" alt="{{ .Params.img }}" width="250" height="250" class="mb-4">
         </div>
-        <div class="col-md-auto">
-          <i class="fab fa-github mr-2"></i>
+        <div class="col-md-auto meta">
             {{ $name := .Params.name }}
             <ul>
             {{ range .Params.social }}
             <li>
-            <a href="{{ .link }}" target="_blank" title="{{ $name }} on {{ .service }}" alt="{{ .link }}"><i class="fab fa-github mr-2"></i>{{ $name }} on {{ .service }}</a>
+            <a href="{{ .link }}" target="_blank" title="{{ $name }} on {{ .service }}" alt="{{ .link }}"><i class="fa {{ .icon }} mr-2"></i>{{ $name }} on {{ .service }}</a>
           </li>
             {{ end }}
           </ul>
