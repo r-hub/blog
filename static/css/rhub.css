@@ -441,6 +441,10 @@ a.readmore:focus,
   text-decoration: none;
 }
 
+.meta ul {
+  list-style-type: none;
+}
+
 .list .meta div {
   display: flex;
   justify-content: center;
