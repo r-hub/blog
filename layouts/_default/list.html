@@ -43,13 +43,7 @@
         </div>
       </div>
       <div class="row meta">
-        <div class="col-md-auto">
-          <p>{{ .Date.Format "2006/01/02" }}</p>
-        </div>
-        <div class="col-md-auto">|</div>
-        <div class="col-md-auto">{{ partial "get-authors.html" . }}</div>
-        <div class="col-md-auto">|</div>
-        <div class="col-md-auto">{{ partial "get-tags.html" . }}</div>
+        {{ partial "meta.html" . }}
       </div>
     </article>
     {{ end }}
