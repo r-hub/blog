@@ -30,7 +30,7 @@
       {{ end }}
     </article>
     <div class="row">
-      <h2>Posts by {{ .Params.name }}</h2>
+      <h2>Post{{ if gt ( len .Pages ) 1 }}s{{ end }} by {{ .Params.name }}</h2>
     </div>
     {{ end }} 
     {{ range .Data.Pages }}

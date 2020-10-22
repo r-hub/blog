@@ -19,7 +19,7 @@
 <meta property="og:title" content="{{ .Site.Title }}">
 <meta property="og:type" content="website">
 {{ else }}
-<title>{{ .Title }} - {{ .Site.Title }}</title>
+<title>{{ .Title }}{{ .Params.name }} - {{ .Site.Title }}</title>
 <meta property="og:title" content="{{ .Title }} - {{ .Site.Title }}">
 {{ end }}
 
