@@ -10,4 +10,4 @@ social:
   icon: fa-github
 ---
 
-R-hub maintainer and creator, Software Engineer at RStudio.
+R-hub creator and maintainer, Software Engineer at RStudio.
