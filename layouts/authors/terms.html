@@ -1,0 +1,26 @@
+
+{{ define "main" }}
+
+<main class="content" role="main">
+
+  <article class="article">
+
+    <h1 class="article-title">Authors</h1>
+    
+
+    <div class="article-content">
+      {{ $max := (len .Data.Terms) }}
+    {{ range $key, $value := .Data.Terms.ByCount }}
+                  <a href="{{ $value.Page.Permalink }}">
+                <div class="author-label">
+                  <span class="author-name">{{ $value.Page.Params.name }}</span>
+                  <span class="author-post">({{ $value.Count }})</span>
+                </div>
+              </a>
+    {{ end }}
+    </div>
+  </article>
+
+
+</main>
+{{ end }}
