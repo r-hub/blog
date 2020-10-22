@@ -11,7 +11,7 @@
     <div class="article-content">
 {{ range $key, $value := .Data.Terms.ByCount }}
 {{ if $key }} · {{ end}}
- <a href="{{ $value.Page.Permalink }}">{{ $value.Page.Params.name }} ({{ $value.Count }})</a>
+ <a href="{{ $value.Page.Permalink }}">{{ $value.Name }} ({{ $value.Count }})</a>
 {{ end }}
 
     </div>

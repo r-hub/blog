@@ -10,7 +10,6 @@ disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "index\\.html", '\.knit\.md$', '\.utf8\.md$']
 rssLimit = 5
 removePathAccents = true
-disableKinds = ["taxonomyTerm"]
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
