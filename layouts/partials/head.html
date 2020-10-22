@@ -14,7 +14,7 @@
 <meta name="twitter:site" content="@rhub_">
 
 <meta name="twitter:image" content="{{.Site.BaseURL}}rhub-square-white.png" >
-{{ if eq .URL "/" }}
+{{ if eq .RelPermalink  "/" }}
 <title>{{ .Site.Title }}</title>
 <meta property="og:title" content="{{ .Site.Title }}">
 <meta property="og:type" content="website">
@@ -23,7 +23,7 @@
 <meta property="og:title" content="{{ .Title }} - {{ .Site.Title }}">
 {{ end }}
 
-{{ if eq .URL "/" }}
+{{ if eq .RelPermalink  "/" }}
 <meta property="description" content="{{ .Site.Params.description }}">
 <meta property="og:description" content="{{ .Site.Params.description }}">
 {{ else }}
