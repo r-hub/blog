@@ -8,7 +8,7 @@
 
   <ul class="nav-links">
     {{ range .Site.Menus.main }}
-    <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+    <li><a href="{{ .RelPermalink }}">{{ .Name }}</a></li>
     {{ end }}
   </ul>
 </nav>

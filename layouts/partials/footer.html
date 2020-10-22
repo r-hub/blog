@@ -1,32 +1,57 @@
-      <footer class="footer">
-        <ul class="footer-links">
-          <li>
-            <a href="/post/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
-          </li>
-          <li>
-            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="{{ "images/hugo-logo.png" | relURL }}" alt="Img link to Hugo website" width="22" height="22"></a>
-          </li>
-          <li>
-            <a href="https://www.r-consortium.org/" class="footer-links-kudos">Funded by the <img src="{{ "images/rc.png" | relURL }}" alt="Img link to R Consortium website" height="22"></a>
-          </li>
-          <li>
-            <a href="/privacy/" class="footer-links-kudos">Privacy policy</a>
-          </li>
-        </ul>
-      </footer>
+<footer>
+    
+    <div id="links-master-container">
+        <div class="legal-container">
+            <img src="/logo.png" alt="R-hub" width="150" />
+            <br>
 
+            <p>Funded by the <a href="https://www.r-consortium.org/"><img class="rc" src="{{ "rc.png" | relURL }}" alt="Img link to R Consortium website" height="30"></a></p>
+            <p>Except where otherwise noted, content on this site is licensed under the <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY license</a>.</p>
+        </div>
+        <div id="links-rhs-container">
+            <div class="links-container">
+                <h2 data-toc-skip>Info</h2>
+                <a href="https://docs.r-hub.io/#intro" target="_blank" alt="#">What is R-Hub?</a>
+                <a href="https://docs.r-hub.io/" target="_blank" alt="#">R-Hub docs</a>
+                <a href="https://vimeo.com/rhub" target="_blank" alt="#">Screencasts</a>
+            </div>
+            
+            <div class="links-container">
+                <h2 data-toc-skip>Social</h2>
+                <a href="https://blog.r-hub.io/" target="_blank" alt="#">Blog</a>
+                <a href="https://twitter.com/rhub_/" target="_blank" alt="#">Twitter</a>
+            </div>
+            
+            <div class="links-container">
+                <h2 data-toc-skip>Participate</h2>
+                <a href="https://github.com/r-hub" target="_blank" alt="#">Source code on GitHub</a>
+                <a href="https://github.com/r-hub/rhub/issues" target="_blank" alt="#">Bug reports & feature requests</a>
+                <a href="https://gitter.im/r-hub/community" target="_blank" alt="#">Discussions</a>
+            </div>
+            
+            <div class="links-container">
+                <h2 data-toc-skip>Package Builder</h2>
+                <a href="https://builder.r-hub.io/" target="_blank" alt="#">Package Builder</a>
+                <a href="https://r-hub.github.io/rhub/" target="_blank" alt="#">Package Buider from R</a>
+                <a href="https://r-hub.github.io/rhub/articles/local-debugging.html" target="_blank" alt="#">Local debugging with Docker</a>
+            </div>
+
+            <div class="links-container">
+                <h2 data-toc-skip>Other Services</h2>
+                <a href="https://github.com/cran/" target="_blank" alt="#">CRAN source code mirror</a>
+                <a href="https://docs.r-hub.io/#cranlogs" target="_blank" alt="#">Download counts of CRAN packages</a>
+                <a href="https://docs.r-hub.io/#pkgsearch" target="_blank" alt="#">Search CRAN packages</a>
+                <a href="https://docs.r-hub.io/#badges" target="_blank" alt="#">Badges for CRAN packages</a>
+                <a href="https://docs.r-hub.io/#rversions" target="_blank" alt="#">Query R versions</a>
+            </div>
+        </div>
     </div>
-    {{ template "_internal/google_analytics.html" . }}
-    <script
-  src="https://unpkg.com/littlefoot/dist/littlefoot.js"
-  type="application/javascript"
-></script>
-<script type="application/javascript">
-  littlefoot.default({
-  activateOnHover: false,
-  dismissDelay: 50,
-  buttonTemplate: "<button aria-controls='fncontent:<% id %>' aria-expanded='false' aria-label='Footnote <% number %>' class='littlefoot-footnote__button' id='<% reference %>' rel='footnote' title='See Footnote <% number %>' /><% number %></button>"
-})
-</script>
-  </body>
-</html>
+
+    <div id="terms-container">
+        <p>&copy; <script>document.write(new Date().getFullYear());</script> R-hub</p> 
+        <a href="#" target="_blank" alt="#">Terms</a>
+        <a href="#" target="_blank" alt="#">Privacy</a>
+        <a href="#" target="_blank" alt="#">Cookies</a>
+    </div>
+
+    </footer>

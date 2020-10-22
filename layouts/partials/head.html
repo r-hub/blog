@@ -14,16 +14,16 @@
 <meta name="twitter:site" content="@rhub_">
 
 <meta name="twitter:image" content="{{.Site.BaseURL}}rhub-square-white.png" >
-{{ if eq .URL "/" }}
+{{ if eq .RelPermalink  "/" }}
 <title>{{ .Site.Title }}</title>
 <meta property="og:title" content="{{ .Site.Title }}">
 <meta property="og:type" content="website">
 {{ else }}
-<title>{{ .Title }} - {{ .Site.Title }}</title>
+<title>{{ .Title }}{{ .Params.name }} - {{ .Site.Title }}</title>
 <meta property="og:title" content="{{ .Title }} - {{ .Site.Title }}">
 {{ end }}
 
-{{ if eq .URL "/" }}
+{{ if eq .RelPermalink  "/" }}
 <meta property="description" content="{{ .Site.Params.description }}">
 <meta property="og:description" content="{{ .Site.Params.description }}">
 {{ else }}
@@ -42,13 +42,13 @@
 
 
  <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+ <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css"/>
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> 
 <script src="{{ "js/rhub.js" | relURL }}"></script> 
 <link
   rel="stylesheet"
@@ -56,6 +56,8 @@
 />
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400|Lato:400,400italic,700">
 <link rel="stylesheet" href="{{ "css/main.css" | relURL }}" media="all">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 {{ range .Site.Params.customCSS }}
 <link rel="stylesheet" href="{{ . | relURL }}">

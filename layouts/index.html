@@ -1,0 +1,29 @@
+{{ define "main" }}
+
+<main role="main" class="content list" id="home">
+    
+    {{ range $index, $page := first 5 (where .Site.RegularPages "Section" "in" .Site.Params.mainSections) }}
+    <article class="container mb-4">
+        <div class="meta row ">
+            <div class="col-md-auto title">
+                <h2><a href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></h2>
+            </div>
+            <div class="row">
+                {{ partial "meta.html" . }}
+            </div>
+        </div>
+        <div class="row">
+        <p>{{ .Summary }}</p>
+        {{ if .Truncated }}
+        <a href="{{ .RelPermalink }}" class="readmore">Read more...</a>
+        {{ end }}
+        </div>
+    </article>
+    {{ end }}
+
+    <div class="container seemore pl-0 pt-4">
+        <h2><a href="/post/">See more</a></h2>
+    </div>
+</main>
+
+{{ end }}

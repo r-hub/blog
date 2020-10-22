@@ -1,0 +1,22 @@
+
+{{ define "main" }}
+
+<main class="content" role="main">
+
+  <article class="article">
+
+    <h1 class="article-title">{{ .Title }}</h1>
+    
+
+    <div class="article-content">
+{{ range $key, $value := .Data.Terms.ByCount }}
+{{ if $key }} · {{ end}}
+ <a href="{{ $value.Page.Permalink }}">{{ $value.Name }} ({{ $value.Count }})</a>
+{{ end }}
+
+    </div>
+  </article>
+
+
+</main>
+{{ end }}

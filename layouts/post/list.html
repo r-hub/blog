@@ -1,0 +1,25 @@
+{{ partial "header.html" . }}
+
+<main class="content list" role="main" id="archive">
+  {{ if .Content }}
+  <article class="article">
+    <div class="article-content">{{ .Content }}</div>
+  </article>
+  {{ end }}
+  <section class="content">
+    {{ range .Pages }}
+    <article>
+      <div class="row meta">
+        <div class="col-md-auto">
+          <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        </div>
+      </div>
+      <div class="row meta">
+        {{ partial "meta.html" . }}
+      </div>
+    </article>
+    {{ end }}
+  </section>
+</main>
+
+{{ partial "footer.html" . }}

@@ -9,30 +9,50 @@ googleAnalytics = "UA-141769052-1"
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "index\\.html", '\.knit\.md$', '\.utf8\.md$']
 rssLimit = 5
+removePathAccents = true
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
 
 [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+[[menu.main]]
     name = "About"
     url = "/about/"
+    weight = 2
+[[menu.main]]
+    name = "Posts"
+    url = "/post/"
+    weight = 3 
 [[menu.main]]
     name = "GitHub"
     url = "https://github.com/r-hub"
+    weight = 4
+    pre = "<i class=\"fa fa-github\"></i>"
 [[menu.main]]
     name = "Twitter"
     url = "https://twitter.com/rhub_"
+    weight = 5
+    pre = "<i class=\"fa fa-twitter\"></i>"
 
 [params]
     description = "Blog for the R-hub project of the R Consortium, easing the R package development process."
-    customCSS = ["css/rhub.css", "css/friendly.css"]
+    customCSS = ["css/friendly.css", "css/rhub.css"]
     githubsource = "https://github.com/r-hub/blog/blob/master/content/"
 
     [params.logo]
-    url = "logo.png"
+    url = "images/logo.png"
     width = 50
     height = 50
     alt = "Logo"
+
+[taxonomies]
+  author = "authors"
+  tag = "tags"
+  category = "categories"
+
 
 [privacy]
   [privacy.disqus]
