@@ -8,7 +8,7 @@ tags:
 - package development 
 - testing
 output: hugodown::hugo_document
-rmd_hash: 36eafa6bbe72ae11
+rmd_hash: 7451127e4646d99a
 
 ---
 
@@ -21,25 +21,27 @@ Remember our post about internal functions in R packages? What about internal fu
 
 Where to put your code and function depends on where you'll want to use them.
 
--   It's best not to touch `tests/testthat/test.R`
+-   It's best not to touch `tests/testthat/test.R`.
 -   R scripts under `tests/testthat/` whose name start with `setup-` are loaded before tests are run but not with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html) which means the code in there is *not* available when you're interactively debugging a test. And yes, you'll be interactively debugging tests more often than you wish. :wink:
 -   R scripts under `tests/testthat/` whose name start with `helper-` are loaded with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html) so they are available for both tests and interactive debugging. Now, it also means their behavior does not different from R scripts under `R/` so you might put them in that directory too as recommended in testthat docs. However, it also means they are installed with the package which might (slightly!) increase its size, and that they are with the rest of your package code which might put you off.
 
 To summarize,
 
-| File                           | Run before tests | Loaded via `load_all()` | Installed with the package | Testable |     |
-|--------------------------------|------------------|-------------------------|----------------------------|----------|-----|
-| tests/testthat/setup-.\*.R     | ✔️               | \-                      | \-                         | \-       |     |
-| tests/testthat/helper-.\*.R    | ✔️               | ✔️                      | \-                         | \-       |     |
-| R/any-name.R                   | ✔️               | ✔️                      | ✔️                         | ✔️       |     |
-| tests/testthat/anything-else.R | \-               | \-                      | \-                         | \-       |     |
+| File                           | Run before tests | Loaded via `load_all()` | Installed with the package | Testable |
+|--------------------------------|------------------|-------------------------|----------------------------|----------|
+| tests/testthat/setup-.\*.R     | ✔️               | \-                      | \-                         | \-       |
+| tests/testthat/helper-.\*.R    | ✔️               | ✔️                      | \-                         | \-       |
+| R/any-name.R                   | ✔️               | ✔️                      | ✔️                         | ✔️       |
+| tests/testthat/anything-else.R | \-               | \-                      | \-                         | \-       |
 
-`tests/testthat/helper-.*.R` are no longer recommended in testthat but they are still supported. :relieved:
+`tests/testthat/helper-.*.R` are [no longer recommended in testthat](https://testthat.r-lib.org/reference/test_dir.html#special-files) but they are still supported. :relieved:
+
+And yes, by testable we mean that you could test the code supporting your tests.
 
 In practice,
 
 -   In `tests/testthat/setup.R` you might do something like loading a package that helps your unit testing like `{vcr}`, `{httptest}` or `{presser}` if you're testing an API client.
--   In a helper like `tests/testthat/helper.R` or `R/test-helpers.R` you might define functions that you'll use throughout your tests, even [custom skippers](https://testthat.r-lib.org/articles/skipping.html#helpers). To choose between the two locations, refer to the table above and your own needs and preferences. Note that if someone wanted to study testthat "utility belts" à la \[Bob Rudis\], they would probably only identify helper files like `tests/testthat/helper.R`.
+-   In a helper like `tests/testthat/helper.R` or `R/test-helpers.R` you might define functions that you'll use throughout your tests, even [custom skippers](https://testthat.r-lib.org/articles/skipping.html#helpers). To choose between the two locations, refer to the table above and your own needs and preferences. Note that if someone wanted to study testthat "utility belts" à la [Bob Rudis](https://rud.is/b/2018/04/08/dissecting-r-package-utility-belts/), they would probably only identify helper files like `tests/testthat/helper.R`.
 
 You'll notice testthat no longer recommends having a file with code to be run after tests... So how do you clean up after tests? Well, with `withr`'s various helper functions for deferring clean-up. So basically it means the code for cleaning lives near the code for making a mess. To learn more about this, read [the "self-cleaning text fixtures" vignette in testthat](https://testthat.r-lib.org/articles/test-fixtures.html).
 
