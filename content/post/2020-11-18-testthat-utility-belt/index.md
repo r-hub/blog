@@ -8,7 +8,7 @@ tags:
 - package development 
 - testing
 output: hugodown::hugo_document
-rmd_hash: 7451127e4646d99a
+rmd_hash: 664a7ecc10376619
 
 ---
 
@@ -17,13 +17,13 @@ If your package uses testthat for unit testing, as [many packages on CRAN](https
 Code called in your tests
 -------------------------
 
-Remember our post about internal functions in R packages? What about internal functions in *unit tests* of R packages? And code that needs to be run for tests?
+Remember our post about [internal functions in R packages](/2019/12/12/internal-functions/)? What about internal functions in *unit tests* of R packages? And code that needs to be run for tests?
 
 Where to put your code and function depends on where you'll want to use them.
 
 -   It's best not to touch `tests/testthat/test.R`.
 -   R scripts under `tests/testthat/` whose name start with `setup-` are loaded before tests are run but not with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html) which means the code in there is *not* available when you're interactively debugging a test. And yes, you'll be interactively debugging tests more often than you wish. :wink:
--   R scripts under `tests/testthat/` whose name start with `helper-` are loaded with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html) so they are available for both tests and interactive debugging. Now, it also means their behavior does not different from R scripts under `R/` so you might put them in that directory too as recommended in testthat docs. However, it also means they are installed with the package which might (slightly!) increase its size, and that they are with the rest of your package code which might put you off.
+-   R scripts under `tests/testthat/` whose name start with `helper-` are loaded with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html) so they are available for both tests and interactive debugging. Now, it also means their behavior does not different from R scripts under `R/` so you might put them in that directory too as recommended in testthat docs. However, it also means they are installed with the package which might (slightly!) increase its size, and that they are with the rest of your package code which might [put you off](https://community.rstudio.com/t/why-are-tests-testthat-helper-files-discouraged-in-testthat/85253).
 
 To summarize,
 
@@ -40,7 +40,7 @@ And yes, by testable we mean that you could test the code supporting your tests.
 
 In practice,
 
--   In `tests/testthat/setup.R` you might do something like loading a package that helps your unit testing like `{vcr}`, `{httptest}` or `{presser}` if you're testing an API client.
+-   In `tests/testthat/setup.R` you might do something like loading a package that helps your unit testing like `{vcr}`, `{httptest}` or `{presser}` if you're [testing an API client](https://books.ropensci.org/http-testing/).
 -   In a helper like `tests/testthat/helper.R` or `R/test-helpers.R` you might define functions that you'll use throughout your tests, even [custom skippers](https://testthat.r-lib.org/articles/skipping.html#helpers). To choose between the two locations, refer to the table above and your own needs and preferences. Note that if someone wanted to study testthat "utility belts" à la [Bob Rudis](https://rud.is/b/2018/04/08/dissecting-r-package-utility-belts/), they would probably only identify helper files like `tests/testthat/helper.R`.
 
 You'll notice testthat no longer recommends having a file with code to be run after tests... So how do you clean up after tests? Well, with `withr`'s various helper functions for deferring clean-up. So basically it means the code for cleaning lives near the code for making a mess. To learn more about this, read [the "self-cleaning text fixtures" vignette in testthat](https://testthat.r-lib.org/articles/test-fixtures.html).
