@@ -8,7 +8,7 @@ tags:
 - package development 
 - testing
 output: hugodown::hugo_document
-rmd_hash: 81ca0159f86e547a
+rmd_hash: 011160bc3bd12f82
 
 ---
 
@@ -34,6 +34,15 @@ To summarize,
 | R/any-name.R                   | ✔️               | ✔️                      | ✔️                         | ✔️                      |
 | tests/testthat/anything-else.R | \-               | \-                      | \-                         | \-                      |
 
+`tests/testthat/helper-.*.R` are no longer
+
+In practice,
+
+-   In `tests/testthat/setup.R` you might do something like loading a package that helps your unit testing like `{vcr}`, `{httptest}` or `{presser}` if you're testing an API client.
+-   In a helper like `tests/testthat/helper.R` or `R/test-helpers.R` you might define functions that you'll use throughout your tests.
+
+You'll notice testthat no longer recommends having a file with code to be run after tests... So how do you clean up after tests? Well, with `withr`'s various helper functions for deferring clean-up. So basically it means the code for cleaning lives near the code for making a mess. To learn more about this, read [the "self-cleaning text fixtures" vignette in testthat](https://testthat.r-lib.org/articles/test-fixtures.html).
+
 Files called from your tests
 ----------------------------
 
@@ -50,6 +59,8 @@ It might seem easier to have the fake folders live under the `testthat/` directo
 ### Use other files in your tests
 
 Now, there are files that might be harder to re-create from your tests, like images, or even some text files with a ton of information in them. If you look at [usethis `testthat/` folder](https://github.com/r-lib/usethis/tree/master/tests/testthat/) you'll notice a `ref` folder for instance, with zip files used in tests. You are free to organize files under `testthat/` as you wish, they do not even need to be in a subdirectory, but sorting them in different folders might help you.
+
+All files under `testthat/` and its subfolders are available to your tests so you can read from them, source them if they are R scripts, copy them to a temp dir, etc.
 
 Now, to refer to these files in your tests, use [`testthat::test_path()`](https://testthat.r-lib.org/reference/test_path.html), this way you will get a filepath that works "both interactively and during tests". E.g. if you create a file under `tests/testthat/examples/image.png` in your tests you'll have to write [`testthat::test_path("examples/image.png")`](https://testthat.r-lib.org/reference/test_path.html).
 
