@@ -8,7 +8,7 @@ tags:
 - package development 
 - testing
 output: hugodown::hugo_document
-rmd_hash: 011160bc3bd12f82
+rmd_hash: 36eafa6bbe72ae11
 
 ---
 
@@ -27,19 +27,19 @@ Where to put your code and function depends on where you'll want to use them.
 
 To summarize,
 
-| File                           | Run before tests | Loaded via `load_all()` | Installed with the package | Recommended in testthat |
-|--------------------------------|------------------|-------------------------|----------------------------|-------------------------|
-| tests/testthat/setup-.\*.R     | ✔️               | \-                      | \-                         | ✔️                      |
-| tests/testthat/helper-.\*.R    | ✔️               | ✔️                      | \-                         | \-                      |
-| R/any-name.R                   | ✔️               | ✔️                      | ✔️                         | ✔️                      |
-| tests/testthat/anything-else.R | \-               | \-                      | \-                         | \-                      |
+| File                           | Run before tests | Loaded via `load_all()` | Installed with the package | Testable |     |
+|--------------------------------|------------------|-------------------------|----------------------------|----------|-----|
+| tests/testthat/setup-.\*.R     | ✔️               | \-                      | \-                         | \-       |     |
+| tests/testthat/helper-.\*.R    | ✔️               | ✔️                      | \-                         | \-       |     |
+| R/any-name.R                   | ✔️               | ✔️                      | ✔️                         | ✔️       |     |
+| tests/testthat/anything-else.R | \-               | \-                      | \-                         | \-       |     |
 
-`tests/testthat/helper-.*.R` are no longer
+`tests/testthat/helper-.*.R` are no longer recommended in testthat but they are still supported. :relieved:
 
 In practice,
 
 -   In `tests/testthat/setup.R` you might do something like loading a package that helps your unit testing like `{vcr}`, `{httptest}` or `{presser}` if you're testing an API client.
--   In a helper like `tests/testthat/helper.R` or `R/test-helpers.R` you might define functions that you'll use throughout your tests.
+-   In a helper like `tests/testthat/helper.R` or `R/test-helpers.R` you might define functions that you'll use throughout your tests, even [custom skippers](https://testthat.r-lib.org/articles/skipping.html#helpers). To choose between the two locations, refer to the table above and your own needs and preferences. Note that if someone wanted to study testthat "utility belts" à la \[Bob Rudis\], they would probably only identify helper files like `tests/testthat/helper.R`.
 
 You'll notice testthat no longer recommends having a file with code to be run after tests... So how do you clean up after tests? Well, with `withr`'s various helper functions for deferring clean-up. So basically it means the code for cleaning lives near the code for making a mess. To learn more about this, read [the "self-cleaning text fixtures" vignette in testthat](https://testthat.r-lib.org/articles/test-fixtures.html).
 
