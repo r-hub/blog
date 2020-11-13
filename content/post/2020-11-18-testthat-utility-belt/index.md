@@ -1,0 +1,60 @@
+---
+slug: testthat-utility-belt
+title: "Helper code and files for your testthat tests" 
+authors: 
+- Maëlle Salmon 
+date: "2020-11-18" 
+tags: 
+- package development 
+- testing
+output: hugodown::hugo_document
+rmd_hash: 81ca0159f86e547a
+
+---
+
+If your package uses testthat for unit testing, as [many packages on CRAN](https://www.tidyverse.org/blog/2019/11/testthat-2-3-0/), you might have wondered at least once about where to put "things" you wished to use in several tests: a function generating a random string, an example image, etc. In this blog post, we shall offer a round-up of how to use such code and files when testing your package.
+
+Code called in your tests
+-------------------------
+
+Remember our post about internal functions in R packages? What about internal functions in *unit tests* of R packages? And code that needs to be run for tests?
+
+Where to put your code and function depends on where you'll want to use them.
+
+-   It's best not to touch `tests/testthat/test.R`
+-   R scripts under `tests/testthat/` whose name start with `setup-` are loaded before tests are run but not with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html) which means the code in there is *not* available when you're interactively debugging a test. And yes, you'll be interactively debugging tests more often than you wish. :wink:
+-   R scripts under `tests/testthat/` whose name start with `helper-` are loaded with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html) so they are available for both tests and interactive debugging. Now, it also means their behavior does not different from R scripts under `R/` so you might put them in that directory too as recommended in testthat docs. However, it also means they are installed with the package which might (slightly!) increase its size, and that they are with the rest of your package code which might put you off.
+
+To summarize,
+
+| File                           | Run before tests | Loaded via `load_all()` | Installed with the package | Recommended in testthat |
+|--------------------------------|------------------|-------------------------|----------------------------|-------------------------|
+| tests/testthat/setup-.\*.R     | ✔️               | \-                      | \-                         | ✔️                      |
+| tests/testthat/helper-.\*.R    | ✔️               | ✔️                      | \-                         | \-                      |
+| R/any-name.R                   | ✔️               | ✔️                      | ✔️                         | ✔️                      |
+| tests/testthat/anything-else.R | \-               | \-                      | \-                         | \-                      |
+
+Files called from your tests
+----------------------------
+
+Say your package deals with files in some way or the other. To test it you can use two strategies, depending on your needs.
+
+### Create fake folders and text files from your tests
+
+If the functionality under scrutiny depends on files that are fairly simple to generate with code, the best strategy might be to create them before running tests, and to delete them after running them. So you'll need to re-read the first section of this post and the resources we linked from there. In the [words of Jenny Bryan](https://github.com/hadley/r-pkgs/issues/483#issuecomment-691319934)
+
+> I have basically come to the opinion that any file system work done in tests should happen below the temp directory anyway. So, if you need to stand up a directory, then do stuff to or in it, the affected test(s) should create such a directory explicitly, below tempdir, for themselves (and delete it when they're done).
+
+It might seem easier to have the fake folders live under the `testthat/` directory but this might bite you later, so better make the effort to create self-cleaning text fixtures, especially as, as mentioned earlier, this is a skill you'll need often.
+
+### Use other files in your tests
+
+Now, there are files that might be harder to re-create from your tests, like images, or even some text files with a ton of information in them. If you look at [usethis `testthat/` folder](https://github.com/r-lib/usethis/tree/master/tests/testthat/) you'll notice a `ref` folder for instance, with zip files used in tests. You are free to organize files under `testthat/` as you wish, they do not even need to be in a subdirectory, but sorting them in different folders might help you.
+
+Now, to refer to these files in your tests, use [`testthat::test_path()`](https://testthat.r-lib.org/reference/test_path.html), this way you will get a filepath that works "both interactively and during tests". E.g. if you create a file under `tests/testthat/examples/image.png` in your tests you'll have to write [`testthat::test_path("examples/image.png")`](https://testthat.r-lib.org/reference/test_path.html).
+
+Conclusion
+----------
+
+In this post we offered a roundup around helper code and example files for your testthat unit tests. As often it was inspired by [a help thread](https://community.rstudio.com/t/why-are-tests-testthat-helper-files-discouraged-in-testthat/85253), on RStudio community. If you have some wisdom from your own testthat bag of tricks, please share it in the comments below!
+
