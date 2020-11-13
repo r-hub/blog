@@ -1,0 +1,59 @@
+--- 
+slug: testthat-utility-belt
+title: "Helper code and files for your testthat tests" 
+authors: 
+- Maëlle Salmon 
+date: "2020-11-18" 
+tags: 
+- package development 
+- testing
+output: hugodown::hugo_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(fig.path = "", comment = "")
+# knitr hook to make images output use Hugo options
+knitr::knit_hooks$set(
+  plot = function(x, options) {
+    hugoopts <- options$hugoopts
+    paste0(
+      "{{<figure src=",
+      '"', x, '" ',
+      if (!is.null(hugoopts)) {
+        glue::glue_collapse(
+          glue::glue('{names(hugoopts)}="{hugoopts}"'),
+          sep = " "
+        )
+      },
+      ">}}\n"
+    )
+  }
+)
+
+```
+
+If your package uses testthat for unit testing, as [many packages on CRAN](https://www.tidyverse.org/blog/2019/11/testthat-2-3-0/), you might have wondered at least once about where to put "things" you wished to use in several tests: a function generating a random string, an example image, etc.
+In this blog post, we shall offer a round-up of how to use such code and files when testing your package.
+
+## Files called from your tests
+
+Say your package deals with files in some way or the other.
+To test it you can use two strategies, depending on your needs.
+
+### Create fake folders and text files from your tests
+
+If the functionality under scrutiny depends on files that are fairly simple to generate with code, the best strategy might be to create them before running tests, and to delete them after running them.
+So you'll need to re-read the first section of this post and the resources we linked from there.
+In the [words of Jenny Bryan](https://github.com/hadley/r-pkgs/issues/483#issuecomment-691319934)
+
+>  I have basically come to the opinion that any file system work done in tests should happen below the temp directory anyway. So, if you need to stand up a directory, then do stuff to or in it, the affected test(s) should create such a directory explicitly, below tempdir, for themselves (and delete it when they're done).
+
+It might seem easier to have the fake folders live under the `testthat/` directory but this might bite you later, so better make the effort to create self-cleaning text fixtures, especially as, as mentioned earlier, this is a skill you'll need often.
+
+### Use other files in your tests
+
+Now, there are files that might be harder to re-create from your tests, like images, or even some text files with a ton of information in them.
+If you look at pkgdown
+
+## Conclusion
