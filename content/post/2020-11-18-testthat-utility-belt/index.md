@@ -8,7 +8,7 @@ tags:
 - package development 
 - testing
 output: hugodown::hugo_document
-rmd_hash: 08687aebeac34f93
+rmd_hash: 9fd137689eec2557
 
 ---
 
@@ -27,16 +27,14 @@ Where to put your code and function depends on where you'll want to use them.
 
 To summarize,
 
-| File                           | Run before tests | Loaded via `load_all()` | Installed with the package | Testable |
-|--------------------------------|------------------|-------------------------|----------------------------|----------|
-| tests/testthat/setup-.\*.R     | ✔️               | \-                      | \-                         | \-       |
-| tests/testthat/helper-.\*.R    | ✔️               | ✔️                      | \-                         | \-       |
-| R/any-name.R                   | ✔️               | ✔️                      | ✔️                         | ✔️       |
-| tests/testthat/anything-else.R | \-               | \-                      | \-                         | \-       |
+| File                           | Run before tests | Loaded via `load_all()` | Installed with the package[^1] | Testable[^2] |
+|--------------------------------|------------------|-------------------------|--------------------------------|--------------|
+| tests/testthat/setup-.\*.R     | ✔️               | \-                      | \-                             | \-           |
+| tests/testthat/helper-.\*.R    | ✔️               | ✔️                      | \-                             | \-           |
+| R/any-name.R                   | ✔️               | ✔️                      | ✔️                             | ✔️           |
+| tests/testthat/anything-else.R | \-               | \-                      | \-                             | \-           |
 
 `tests/testthat/helper-.*.R` are [no longer recommended in testthat](https://testthat.r-lib.org/reference/test_dir.html#special-files) but they are still supported. :relieved:
-
-And yes, by testable we mean that you could test the code supporting your tests.
 
 In practice,
 
@@ -70,4 +68,8 @@ Conclusion
 ----------
 
 In this post we offered a roundup around helper code and example files for your testthat unit tests. As often it was inspired by [a help thread](https://community.rstudio.com/t/why-are-tests-testthat-helper-files-discouraged-in-testthat/85253), on RStudio community. If you have some wisdom from your own testthat bag of tricks, please share it in the comments below!
+
+[^1]: Installed with the package, and [run at package installation time](https://github.com/r-lib/testthat/issues/1206#issuecomment-713519962).
+
+[^2]: Yes, you could [test the code supporting your tests](https://github.com/r-lib/testthat/issues/1206#issuecomment-713583205).
 
