@@ -8,7 +8,7 @@ tags:
 - package development 
 - testing
 output: hugodown::hugo_document
-rmd_hash: 88ddef3c6bf96281
+rmd_hash: 36a5ace9c0ac3cff
 
 ---
 
@@ -62,7 +62,7 @@ Now, there are files that might be harder to re-create from your tests, like ima
 
 All files under `testthat/` and its subfolders are available to your tests so you can read from them, source them if they are R scripts, copy them to a temp dir, etc.
 
-Now, to refer to these files in your tests, use [`testthat::test_path()`](https://testthat.r-lib.org/reference/test_path.html), this way you will get a filepath that works "both interactively and during tests". E.g. if you create a file under `tests/testthat/examples/image.png` in your tests you'll have to write [`testthat::test_path("examples/image.png")`](https://testthat.r-lib.org/reference/test_path.html).
+Now, to refer to these files in your tests, use [`testthat::test_path()`](https://testthat.r-lib.org/reference/test_path.html), this way you will get a filepath that works "both interactively and during tests". E.g. if you create a file under `tests/testthat/examples/image.png` in your tests you'll have to write [`testthat::test_path("examples", "image.png")`](https://testthat.r-lib.org/reference/test_path.html).
 
 Conclusion
 ----------

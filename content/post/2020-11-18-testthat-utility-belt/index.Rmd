@@ -96,7 +96,7 @@ You are free to organize files under `testthat/` as you wish, they do not even n
 All files under `testthat/` and its subfolders are available to your tests so you can read from them, source them if they are R scripts, copy them to a temp dir, etc.
 
 Now, to refer to these files in your tests, use `testthat::test_path()`, this way you will get a filepath that works "both interactively and during tests".
-E.g. if you create a file under `tests/testthat/examples/image.png` in your tests you'll have to write `testthat::test_path("examples/image.png")`.
+E.g. if you create a file under `tests/testthat/examples/image.png` in your tests you'll have to write `testthat::test_path("examples", "image.png")`.
 
 
 ## Conclusion
