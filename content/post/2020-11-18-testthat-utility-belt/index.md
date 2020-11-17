@@ -8,7 +8,7 @@ tags:
 - package development 
 - testing
 output: hugodown::hugo_document
-rmd_hash: 9fd137689eec2557
+rmd_hash: 88ddef3c6bf96281
 
 ---
 
@@ -50,7 +50,7 @@ Say your package deals with files in some way or the other. To test it you can u
 
 ### Create fake folders and text files from your tests
 
-If the functionality under scrutiny depends on files that are fairly simple to generate with code, the best strategy might be to create them before running tests, and to delete them after running them. So you'll need to re-read the first section of this post and the resources we linked from there. In the [words of Jenny Bryan](https://github.com/hadley/r-pkgs/issues/483#issuecomment-691319934)
+If the functionality under scrutiny depends on files that are fairly simple to generate with code, the best strategy might be to create them before running tests, and to delete them after running them. So you'll need to (re-)read [the "self-cleaning text fixtures" vignette in testthat](https://testthat.r-lib.org/articles/test-fixtures.html). In the [words of Jenny Bryan](https://github.com/hadley/r-pkgs/issues/483#issuecomment-691319934)
 
 > I have basically come to the opinion that any file system work done in tests should happen below the temp directory anyway. So, if you need to stand up a directory, then do stuff to or in it, the affected test(s) should create such a directory explicitly, below tempdir, for themselves (and delete it when they're done).
 
