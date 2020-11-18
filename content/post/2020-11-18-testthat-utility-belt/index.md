@@ -8,7 +8,7 @@ tags:
 - package development 
 - testing
 output: hugodown::hugo_document
-rmd_hash: 36a5ace9c0ac3cff
+rmd_hash: eaf6e60bd0337eb7
 
 ---
 
@@ -21,20 +21,23 @@ Remember our post about [internal functions in R packages](/2019/12/12/internal-
 
 Where to put your code and function depends on where you'll want to use them.
 
--   It's best not to touch `tests/testthat/test.R`.
--   R scripts under `tests/testthat/` whose name start with `setup-` are loaded before tests are run but not with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html) which means the code in there is *not* available when you're interactively debugging a test. And yes, you'll be interactively debugging tests more often than you wish. :wink:
--   R scripts under `tests/testthat/` whose name start with `helper-` are loaded with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html) so they are available for both tests and interactive debugging. Now, it also means their behavior does not different from R scripts under `R/` so you might put them in that directory too as recommended in testthat docs. However, it also means they are installed with the package which might (slightly!) increase its size, and that they are with the rest of your package code which might [put you off](https://community.rstudio.com/t/why-are-tests-testthat-helper-files-discouraged-in-testthat/85253).
+-   It's best not to touch `tests/testthat.R`.
+-   R scripts under `tests/testthat/` whose name starts with `setup` are loaded before tests are run but not with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html). This can be important: it means the code in test setup files is *not* available when you try debugging a test error (or developping a new test) by running [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html) then the code of your test.[^1] And yes, you'll be interactively debugging tests more often than you wish. :wink:
+
+<!-- -->
+
+-   R scripts under `tests/testthat/` whose name start with `helper` are loaded with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html)[^2] so they are available for both tests and interactive debugging. Just like... R scripts under `R/` so you might put your testthat helpers in the R directory instead, as recommended in testthat docs. So instead of living in `tests/testthat/helper.R` they'd live in e.g. `R/testthat-helpers.R` (the name is not important in the R directory). However, it also means they are installed with the package which might (slightly!) increase its size, and that they are with the rest of your package code which might [put you off](https://community.rstudio.com/t/why-are-tests-testthat-helper-files-discouraged-in-testthat/85253).
 
 To summarize,
 
-| File                           | Run before tests | Loaded via `load_all()` | Installed with the package[^1] | Testable[^2] |
+| File                           | Run before tests | Loaded via `load_all()` | Installed with the package[^3] | Testable[^4] |
 |--------------------------------|------------------|-------------------------|--------------------------------|--------------|
-| tests/testthat/setup-.\*.R     | ✔️               | \-                      | \-                             | \-           |
-| tests/testthat/helper-.\*.R    | ✔️               | ✔️                      | \-                             | \-           |
+| tests/testthat/setup\*.R       | ✔️               | \-                      | \-                             | \-           |
+| tests/testthat/helper\*.R      | ✔️               | ✔️                      | \-                             | \-           |
 | R/any-name.R                   | ✔️               | ✔️                      | ✔️                             | ✔️           |
 | tests/testthat/anything-else.R | \-               | \-                      | \-                             | \-           |
 
-`tests/testthat/helper-.*.R` are [no longer recommended in testthat](https://testthat.r-lib.org/reference/test_dir.html#special-files) but they are still supported. :relieved:
+`tests/testthat/helper*.R` are [no longer recommended in testthat](https://testthat.r-lib.org/reference/test_dir.html#special-files) but they are still supported. :relieved:
 
 In practice,
 
@@ -69,7 +72,11 @@ Conclusion
 
 In this post we offered a roundup around helper code and example files for your testthat unit tests. As often it was inspired by [a help thread](https://community.rstudio.com/t/why-are-tests-testthat-helper-files-discouraged-in-testthat/85253), on RStudio community. If you have some wisdom from your own testthat bag of tricks, please share it in the comments below!
 
-[^1]: Installed with the package, and [run at package installation time](https://github.com/r-lib/testthat/issues/1206#issuecomment-713519962).
+[^1]: If you use something like [`browser()`](https://rdrr.io/r/base/browser.html), [`debug()`](https://rdrr.io/r/base/debug.html) etc. somewhere in your code and run the tests, the setup file will have been loaded.
 
-[^2]: Yes, you could [test the code supporting your tests](https://github.com/r-lib/testthat/issues/1206#issuecomment-713583205).
+[^2]: Actually you can choose to have [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html) *not* load the testthat helpers by using its `helpers` argument (`TRUE` by default).
+
+[^3]: Installed with the package, and [run at package installation time](https://github.com/r-lib/testthat/issues/1206#issuecomment-713519962).
+
+[^4]: Yes, you could [test the code supporting your tests](https://github.com/r-lib/testthat/issues/1206#issuecomment-713583205).
 
