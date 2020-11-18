@@ -8,7 +8,7 @@ tags:
 - package development 
 - testing
 output: hugodown::hugo_document
-rmd_hash: a4f1c2affc40d91f
+rmd_hash: 583417d9b4628a12
 
 ---
 
@@ -44,7 +44,7 @@ In practice,
 -   In `tests/testthat/setup.R` you might do something like loading a package that helps your unit testing like `{vcr}`, `{httptest}` or `{presser}` if you're [testing an API client](https://books.ropensci.org/http-testing/).
 -   In a helper like `tests/testthat/helper.R` or `R/test-helpers.R` you might define variables and functions that you'll use throughout your tests, even [custom skippers](https://testthat.r-lib.org/articles/skipping.html#helpers). To choose between the two locations, refer to the table above and your own needs and preferences. Note that if someone wanted to study testthat "utility belts" à la [Bob Rudis](https://rud.is/b/2018/04/08/dissecting-r-package-utility-belts/), they would probably only identify helper files like `tests/testthat/helper.R`.
 
-You'll notice testthat no longer recommends having a file with code to be run after tests... So how do you clean up after tests? Well, use withr's various helper functions for deferring clean-up. So basically it means the code for cleaning lives near the code for making a mess. To learn more about this, read [the "self-cleaning text fixtures" vignette in testthat](https://testthat.r-lib.org/articles/test-fixtures.html).
+You'll notice testthat no longer recommends having a file with code to be run after tests... So how do you clean up after tests? Well, use [withr](https://withr.r-lib.org/index.html)'s various helper functions for deferring clean-up. So basically it means the code for cleaning lives near the code for making a mess. To learn more about this, read [the "self-cleaning text fixtures" vignette in testthat](https://testthat.r-lib.org/articles/test-fixtures.html) that includes examples.
 
 Files called from your tests
 ----------------------------
