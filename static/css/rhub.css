@@ -534,3 +534,10 @@ div.meta.row {
 #archive h1 {
   margin-bottom: 1em;
 }
+
+
+blockquote {
+border-left: 4px solid #2854a0;
+padding-left: 1rem;
+font-style: italic;
+}
