@@ -2,6 +2,9 @@
 <html lang="{{ .Site.LanguageCode }}">
   <head>
     {{ partial "head.html" . }}
+    {{ range .Params.html_dependencies }}
+      {{ . | safeHTML }}
+    {{ end }}
   </head>
   <body data-spy="scroll" data-target="#toc" data-offset="20">
     <div class="wrapper">

@@ -63,12 +63,12 @@ Another possible approach to helper functions when used in several packages is t
 
 ### How to document internal functions?
 
-You should at least add a few comments in their code as usual. Best practice recommended in the [tidyverse style guide](https://style.tidyverse.org/documentation.html#internal-functions) and the [rOpenSci dev guide](https://devguide.ropensci.org/building.html) is to document them with roxygen2 tags like other functions, but to use `#' @NoRd` to prevent manual pages to be created. 
+You should at least add a few comments in their code as usual. Best practice recommended in the [tidyverse style guide](https://style.tidyverse.org/documentation.html#internal-functions) and the [rOpenSci dev guide](https://devguide.ropensci.org/building.html) is to document them with roxygen2 tags like other functions, but to use `#' @noRd` to prevent manual pages to be created. 
 
 ```r
 #' Compare x to 1
 #' @param x an integer
-#' @NoRd
+#' @noRd
 is_one <- function(x) {
   x == 1
 }

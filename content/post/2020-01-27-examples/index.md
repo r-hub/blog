@@ -6,6 +6,7 @@ authors:
 date: "2020-01-27"
 tags:
 - package development
+- documentation
 output: 
   html_document:
     keep_md: true
@@ -114,7 +115,7 @@ To complicate things a bit more, `example()` and `R CMD check` have toggles too!
 
 Here's a summary
 
-* Example that works out of the box but long or interactive :arrow_right: donttest (used [2,019 times in CRAN packages at the time of writing](https://github.com/search?utf8=%E2%9C%93&q=%22%5Cdontrun%7B%22+user%3Acran+extension%3ARd&type=Code&ref=advsearch&l=&l=)).
+* Example that works out of the box but long or interactive :arrow_right: donttest (used [2,019 times in CRAN packages at the time of writing](https://github.com/search?utf8=%E2%9C%93&q=%22%5Cdonttest%7B%22+user%3Acran+extension%3ARd&type=Code&ref=advsearch&l=&l=)).
 
 * Example that doesn't work out of the box or doesn't work at all :arrow_right: dontrun (used [19,065 times in CRAN packages at the time of writing](https://github.com/search?utf8=%E2%9C%93&q=%22%5Cdontrun%7B%22+user%3Acran+extension%3ARd&type=Code&ref=advsearch&l=&l=)).
 
