@@ -169,6 +169,14 @@ a:focus {
   margin-left: 10em;
 }
 
+@media (max-width: 768px) {
+  .nav-logo img {
+    max-height: 30px;
+    margin-left: 1em;
+  }
+}
+
+
 /*------------*/
 /* --FOOTER-- */
 /*------------*/
@@ -447,7 +455,7 @@ a.readmore:focus,
 
 .list .meta div {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   text-align: left;
 }
@@ -485,19 +493,9 @@ div.meta.row {
 
 @media (max-width: 768px) {
   .list {
-    max-width: 100%;
+    width: 100%;
   }
-}
-
-@media (max-width: 768px) {
-  .list {
-    max-width: 100%;
-    text-align: center;
-  }
-  .list .meta div {
-    text-align: center;
-  }
-  .separator p {
+  .separator, .separator p {
     display: none;
   }
 }
@@ -533,4 +531,11 @@ div.meta.row {
 
 #archive h1 {
   margin-bottom: 1em;
+}
+
+@media (max-width: 768px) {
+  #archive {
+    width: 100%;
+    max-width: 100%;
+  }
 }
