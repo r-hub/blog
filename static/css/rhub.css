@@ -489,6 +489,19 @@ div.meta.row {
   }
 }
 
+@media (max-width: 768px) {
+  .list {
+    max-width: 100%;
+    text-align: center;
+  }
+  .list .meta div {
+    text-align: center;
+  }
+  .separator p {
+    display: none;
+  }
+}
+
 /*------------*/
 /*--Archive---*/
 /*------------*/
@@ -497,7 +510,7 @@ div.meta.row {
 }
 
 #archive {
-  max-width: 40%;
+  max-width: 60%;
   margin-top: 0;
 }
 

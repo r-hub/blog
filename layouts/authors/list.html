@@ -1,5 +1,4 @@
-{{ define "main" }}
-
+{{ partial "header.html" . }}
 <main class="content list" role="main" id="archive">
   <section class="content">
     {{ if in .Permalink "authors" }}
@@ -15,9 +14,13 @@
             {{ $name := .Params.name }}
             <ul>
             {{ range .Params.social }}
+            {{ if eq .service "Home" }}
+            <a href="{{ .link }}" target="_blank" title="{{ $name }}'s homepage" alt="{{ .link }}"><i class="fa fa-home mr-2"></i>Homepage</a>
+            {{ else }}
             <li>
-            <a href="{{ .link }}" target="_blank" title="{{ $name }} on {{ .service }}" alt="{{ .link }}"><i class="fa {{ .icon }} mr-2"></i>{{ $name }} on {{ .service }}</a>
+            <a href="{{ .link }}" target="_blank" title="{{ $name }} on {{ .service }}" alt="{{ .link }}"><i class="fa {{ .icon }} mr-2"></i>{{ .service }}</a>
           </li>
+          {{ end }}
             {{ end }}
           </ul>
         </div>
@@ -27,15 +30,10 @@
       {{ end }}
     </article>
     <div class="row">
-      <h2>Posts by {{ .Params.name }}</h2>
+      <h2>Post{{ if gt ( len .Pages ) 1 }}s{{ end }} by {{ .Params.name }}</h2>
     </div>
     {{ end }} 
-    {{ if in .Permalink "tags" }}
-    <div class="row">
-      <h1>Posts with the "{{ .Title }}" tag</h1>
-    </div>
-    {{ end }} 
-    {{ range .Pages }}
+    {{ range .Data.Pages }}
     <article>
       <div class="row meta">
         <div class="col-md-auto">
@@ -50,4 +48,4 @@
   </section>
 </main>
 
-{{ end }}
+{{ partial "footer.html" . }}

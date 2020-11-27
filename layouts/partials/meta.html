@@ -1,0 +1,15 @@
+<div class="col-md-auto meta">
+    <p>{{ .Date.Format "2006/01/02" }}</p>
+</div>
+<div class="col-md-auto meta separator">
+    <p class="mr-2">|</p>
+</div>
+<div class="col-md-auto">
+    {{ partial "get-authors.html" . }}
+</div>
+<div class="col-md-auto meta separator">
+    <p class="mr-2">|</p>
+</div>
+<div class="col-md-auto">
+    {{ partial "get-tags.html" . }}
+</div>
