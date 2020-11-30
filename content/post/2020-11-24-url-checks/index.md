@@ -8,11 +8,11 @@ tags:
 - package development 
 - testing
 output: hugodown::hugo_document
-rmd_hash: 2233423ce7ffb445
+rmd_hash: b0be117d91aa7440
 
 ---
 
-Have you ever tried submitting your R package to CRAN and gotten the NOTE `Found the following (possibly) invalid URLs:`? In this post, we shall explain where and how CRAN checks URLs validity, and we shall explain how to best prepare your package for this check.
+Have you ever tried submitting your R package to CRAN and gotten the NOTE `Found the following (possibly) invalid URLs:`? In this post, we shall explain where and how CRAN checks URLs validity, and we shall explain how to best prepare your package for this check. We shall start by a small overview of links, including cross-references, in the documentation of R packages.
 
 Links where and how?
 --------------------
@@ -40,28 +40,51 @@ The auto-linking (i.e. from `<doi:10.21105/joss.01857>` to `<a href="https://do
 
 ### Links in manual pages
 
-For adding links to manual pages, it is best to have [roxygen2 docs about linking](https://roxygen2.r-lib.org/articles/rd-formatting.html#links-2) in mind or open in a browser tab.
+For adding links to manual pages, it is best to have [roxygen2 docs about linking](https://roxygen2.r-lib.org/articles/rd-formatting.html#links-2) in mind or open in a browser tab. Also refer to the [Writing R Extensions section about cross-references](https://cran.r-project.org/doc/manuals/R-exts.html#Cross_002dreferences).[^1]
 
-There are links you add yourself, but also generated links when you want to refer to another topic or function, typeset as code or not. The documentation features useful tables summarizing how to use the syntax `[thing]` and `[text][thing]` to produce the links and look you expect.
+There are links you add yourself (i.e. actual URLs), but also generated links when you want to refer to another topic or function, typeset as code or not. The documentation features useful tables summarizing how to use the syntax `[thing]` and `[text][thing]` to produce the links and look you expect.
 
 And see also... the [`@seealso` roxygen2 tag](https://roxygen2.r-lib.org/articles/rd.html#cross-references)/`\Seealso` section! It is meant especially for storing cross-references and external links, following the syntax of links mentioned before.
 
 The links to documentation topics are not *URLs* but they will be checked by [`roxygen2::roxygenize()`](https://roxygen2.r-lib.org/reference/roxygenize.html) ([`devtools::document()`](https://devtools.r-lib.org//reference/document.html)) and `R CMD check`. roxygen2 will warn `Link to unknown topic` and `R CMD check` will warn too `Missing link or links in documentation object 'foo.Rd'`.
 
-### Links in pkgdown
+### Links in vignettes
 
-In the pkgdown website of your package, you will notice links in inline and block code, for which you can thank [downlit](https://github.com/r-lib/downlit#features).
+When adding links in a vignette, use the format dictated by the vignette engine and format you are using. Note that in R Markdown vignettes, even plain URLs (e.g. `https://r-project.org`) will be "linkified" (to `<a href="https://r-project.org">https://r-project.org</a>`).
+
+### Links in pkgdown websites
+
+In the pkgdown website of your package, you will notice links in inline and block code, for which you can thank [downlit](https://github.com/r-lib/downlit#features). These links won't be checked by `R CMD check`.
 
 URLs checks by CRAN
 -------------------
 
-For URLs in docs to serve this goal, they need to be "valid". Therefore, CRAN submission checks include a check of URLs.
+At this point we have seen that there might be URLs in your package DESCRIPTION, manual pages and vignettes, coming from
+
+-   Actual links (`[The R project](https://r-project.org)`, `<https://r-project.org>`),
+-   Plain URLs in vignettes,
+-   Special formatting for DOIs and arXiv links.
+
+For these URLs to be of any use to users, they need to be "valid". Therefore, CRAN submission checks include a check of URLs.
 
 URLs checks locally
 -------------------
 
+URL fixes or escaping?
+----------------------
+
+What if you can't fix an URL, what if there's a false positive?
+
+-   You could try and have the provider of the resource fix the URL;
+-   You could add a comment in cran-comments.md (but this will slow a release);
+-   You could escape the URL by writing it as plain text (which won't work in vignettes since plain URLs are linkified, so put it as inline code?)
+
 Conclusion
 ----------
 
-In this post we have summarized why, where and how URLs are stored in the documentation of R packages; how CRAN checks them and how you can reproduce such checks to fix URLs in time.
+In this post we have summarized why, where and how URLs are stored in the documentation of R packages; how CRAN checks them and how you can reproduce such checks to fix URLs in time. We have also provided resources for dealing with another type of links in package docs: cross-references.
+
+A problem we can't solve regarding URLs is when you'd like to make a bug fix release very fast but there's some sort of false positive in URL checks and therefore a human might need to look at the submission, slowing down the release: do you remove the URL or escape it somehow?
+
+[^1]: Furthermore, the guidance (and therefore roxygen2 implementation) sometimes change, so it's good to know this could happen to you --- hopefully this won't scare you away for adding cross-references! <a href="https://www.mail-archive.com/r-package-devel@r-project.org/msg05504.html" class="uri">https://www.mail-archive.com/r-package-devel@r-project.org/msg05504.html</a>
 
