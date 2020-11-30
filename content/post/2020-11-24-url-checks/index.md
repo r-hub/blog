@@ -6,9 +6,10 @@ authors:
 date: "2020-11-24" 
 tags: 
 - package development 
-- testing
+- documentation
+- description
 output: hugodown::hugo_document
-rmd_hash: 08960bb37ff0d8ae
+rmd_hash: f28eab70941a39f2
 
 ---
 
@@ -21,7 +22,7 @@ Adding URLs in your documentation (DESCRIPTION, manual pages, README, vignettes)
 
 ### Links in DESCRIPTION's Description
 
-We've already made the case for storing URLs to your development repository and package documentation website in [DESCRIPTION](/2019/12/10/urls/). Now, the *Description* part of the DESCRIPTION, that gives a short summary about what your package does, can contain URLs.
+We've already made the case for storing URLs to your development repository and package documentation website in [DESCRIPTION](/2019/12/10/urls/). Now, the *Description* part of the DESCRIPTION, that gives a short summary about what your package does, can contain URLs between [`<`](https://rdrr.io/r/base/Comparison.html) and [`>`](https://rdrr.io/r/base/Comparison.html).
 
 -   URL to the [data source your package is wrapping](https://devguide.ropensci.org/building.html#general), if relevant (not the API URL, an human facing website instead);
 
@@ -50,7 +51,7 @@ The links to documentation topics are not *URLs* but they will be checked by [`r
 
 ### Links in vignettes
 
-When adding links in a vignette, use the format dictated by the vignette engine and format you are using. Note that in R Markdown vignettes, even plain URLs (e.g. `https://r-project.org`) will be "linkified" (to `<a href="https://r-project.org">https://r-project.org</a>`).
+When adding links in a vignette, use the format dictated by the vignette engine and format you are using. Note that in R Markdown vignettes, even plain URLs (e.g. `https://r-project.org`) will be "linkified" by Pandoc (to `<a href="https://r-project.org">https://r-project.org</a>`) so their validity will be checked.
 
 ### Links in pkgdown websites
 
