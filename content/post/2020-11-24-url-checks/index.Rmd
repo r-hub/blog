@@ -99,15 +99,35 @@ At this point we have seen that there might be URLs in your package DESCRIPTION,
 
 For these URLs to be of any use to users, they need to be "valid".
 Therefore, CRAN submission checks include a check of URLs.
+There is a whole official page dedicated to [CRAN URL checks](https://cran.r-project.org/web/packages/URL_checks.html), that is quite short.
+It states "The checks done are equivalent to using `curl -I -L`" and lists potential sources of headache (like websites behaving differently when called via curl vs via a browser).
 
+Even before an actual submission, you can obtain CRAN checks of the URLs in your package by using [WinBuilder](/2020/04/01/win-builder/).
 
 ## URLs checks locally
+
+How to reproduce CRAN URL checks locally?
+
+You can use `devtools::check()` with a recent R version (and with [libcurl enabled](https://www.mail-archive.com/r-package-devel@r-project.org/msg00046.html)) and with the correct values for the `manual`, `incoming` and `remote` arguments.
+
+```r
+devtools::check(
+  manual = TRUE,
+  remote = TRUE,
+  incoming = TRUE
+  )
+```
+
+Or, for something faster, you can use the [`urlchecker` package](https://github.com/r-lib/urlchecker/). [^linkify]
+It is especially handy because it can also help you _fix_ URLs that are redirected, by replacing them with the thing they are re-directed to.
+
+[^linkify]: At the moment of writing, it might fail to warn you of invalid [plain URLs in vignettes](https://github.com/r-lib/urlchecker/issues/4).
 
 ## URL fixes or escaping?
 
 What if you can't fix an URL, what if there's a false positive?
 
-* You could try and have the provider of the resource fix the URL;
+* You could try and have the [provider of the resource fix the URL](https://twitter.com/krlmlr/status/1329042257404698625) (ok, not often a solution);
 * You could add a comment in cran-comments.md (but this will slow a release);
 * You could escape the URL by writing it as plain text (which won't work in vignettes since plain URLs are linkified, so put it as inline code?)
 

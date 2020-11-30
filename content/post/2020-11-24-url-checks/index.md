@@ -8,7 +8,7 @@ tags:
 - package development 
 - testing
 output: hugodown::hugo_document
-rmd_hash: b0be117d91aa7440
+rmd_hash: f166994185b80b03
 
 ---
 
@@ -65,17 +65,33 @@ At this point we have seen that there might be URLs in your package DESCRIPTION,
 -   Plain URLs in vignettes,
 -   Special formatting for DOIs and arXiv links.
 
-For these URLs to be of any use to users, they need to be "valid". Therefore, CRAN submission checks include a check of URLs.
+For these URLs to be of any use to users, they need to be "valid". Therefore, CRAN submission checks include a check of URLs. There is a whole official page dedicated to [CRAN URL checks](https://cran.r-project.org/web/packages/URL_checks.html), that is quite short. It states "The checks done are equivalent to using `curl -I -L`" and lists potential sources of headache (like websites behaving differently when called via curl vs via a browser).
+
+Even before an actual submission, you can obtain CRAN checks of the URLs in your package by using [WinBuilder](/2020/04/01/win-builder/).
 
 URLs checks locally
 -------------------
+
+How to reproduce CRAN URL checks locally?
+
+You can use [`devtools::check()`](https://devtools.r-lib.org//reference/check.html) with a recent R version (and with [libcurl enabled](https://www.mail-archive.com/r-package-devel@r-project.org/msg00046.html)) and with the correct values for the `manual`, `incoming` and `remote` arguments.
+
+``` r
+devtools::check(
+  manual = TRUE,
+  remote = TRUE,
+  incoming = TRUE
+  )
+```
+
+Or, for something faster, you can use the [`urlchecker` package](https://github.com/r-lib/urlchecker/). [^2] It is especially handy because it can also help you *fix* URLs that are redirected, by replacing them with the thing they are re-directed to.
 
 URL fixes or escaping?
 ----------------------
 
 What if you can't fix an URL, what if there's a false positive?
 
--   You could try and have the provider of the resource fix the URL;
+-   You could try and have the [provider of the resource fix the URL](https://twitter.com/krlmlr/status/1329042257404698625) (ok, not often a solution);
 -   You could add a comment in cran-comments.md (but this will slow a release);
 -   You could escape the URL by writing it as plain text (which won't work in vignettes since plain URLs are linkified, so put it as inline code?)
 
@@ -87,4 +103,6 @@ In this post we have summarized why, where and how URLs are stored in the docume
 A problem we can't solve regarding URLs is when you'd like to make a bug fix release very fast but there's some sort of false positive in URL checks and therefore a human might need to look at the submission, slowing down the release: do you remove the URL or escape it somehow?
 
 [^1]: Furthermore, the guidance (and therefore roxygen2 implementation) sometimes change, so it's good to know this could happen to you --- hopefully this won't scare you away for adding cross-references! <a href="https://www.mail-archive.com/r-package-devel@r-project.org/msg05504.html" class="uri">https://www.mail-archive.com/r-package-devel@r-project.org/msg05504.html</a>
+
+[^2]: At the moment of writing, it might fail to warn you of invalid [plain URLs in vignettes](https://github.com/r-lib/urlchecker/issues/4).
 
