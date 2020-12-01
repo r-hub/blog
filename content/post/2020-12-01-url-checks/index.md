@@ -9,7 +9,7 @@ tags:
 - documentation
 - description
 output: hugodown::hugo_document
-rmd_hash: 3ec757c54ef513bf
+rmd_hash: 49d0a5ea80e9bf55
 
 ---
 
@@ -156,7 +156,7 @@ Conclusion
 
 In this post we have summarized why, where and how URLs are stored in the documentation of R packages; how CRAN checks them and how you can reproduce such checks to fix URLs in time. We have also provided resources for dealing with another type of links in package docs: cross-references.
 
-To not have your submission unexpectedly slowed down by an URL invalidity, it is crucial to have CRAN URL checks run on your package before submission, either locally with `R CMD check` or the urlchecker package, or via using WinBuilder.
+To not have your submission unexpectedly slowed down by an URL invalidity, it is crucial to have CRAN URL checks run on your package before submission, either locally with the urlchecker package (or `R CMD check` with R-devel), or via using a R-hub R-devel platform, or WinBuilder.
 
 [^1]: And [parallel, faster](https://github.com/wch/r-source/commit/59db3e1a9204103f779af1f967feaf994003e0c1#diff-8318a1291232951b9164297f88235c18019d1c5a58a2660ee375c570122bf9bf) URL checks.
 

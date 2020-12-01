@@ -195,4 +195,4 @@ if you were using `rmarkdown::html_vignette()`.
 In this post we have summarized why, where and how URLs are stored in the documentation of R packages; how CRAN checks them and how you can reproduce such checks to fix URLs in time.
 We have also provided resources for dealing with another type of links in package docs: cross-references.
 
-To not have your submission unexpectedly slowed down by an URL invalidity, it is crucial to have CRAN URL checks run on your package before submission, either locally with `R CMD check` or the urlchecker package, or via using WinBuilder.
+To not have your submission unexpectedly slowed down by an URL invalidity, it is crucial to have CRAN URL checks run on your package before submission, either locally with the urlchecker package (or  `R CMD check` with R-devel), or via using a R-hub R-devel platform, or WinBuilder.
