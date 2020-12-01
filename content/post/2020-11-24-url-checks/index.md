@@ -9,7 +9,7 @@ tags:
 - documentation
 - description
 output: hugodown::hugo_document
-rmd_hash: f28eab70941a39f2
+rmd_hash: abd87a61f4f062df
 
 ---
 
@@ -51,7 +51,17 @@ The links to documentation topics are not *URLs* but they will be checked by [`r
 
 ### Links in vignettes
 
-When adding links in a vignette, use the format dictated by the vignette engine and format you are using. Note that in R Markdown vignettes, even plain URLs (e.g. `https://r-project.org`) will be "linkified" by Pandoc (to `<a href="https://r-project.org">https://r-project.org</a>`) so their validity will be checked.
+When adding links in a vignette, use the format dictated by the vignette engine and format you are using. Note that in R Markdown vignettes, even plain URLs (e.g. `https://r-project.org`) will be "autolinked" by Pandoc (to `<a href="https://r-project.org">https://r-project.org</a>`) so their validity will be checked. To prevent Pandoc to autolink plain URLs, use
+
+``` yaml
+output: 
+  rmarkdown::html_vignette:
+    md_extensions: [ 
+      "-autolink_bare_uris" 
+    ]
+```
+
+as output format.
 
 ### Links in pkgdown websites
 
@@ -68,10 +78,12 @@ At this point we have seen that there might be URLs in your package DESCRIPTION,
 
 For these URLs to be of any use to users, they need to be "valid". Therefore, CRAN submission checks include a check of URLs. There is a whole official page dedicated to [CRAN URL checks](https://cran.r-project.org/web/packages/URL_checks.html), that is quite short. It states "The checks done are equivalent to using `curl -I -L`" and lists potential sources of headache (like websites behaving differently when called via curl vs via a browser).
 
+Note that [checks of DOIs](https://github.com/wch/r-source/blob/trunk/src/library/tools/R/doitools.R) are a bit different than checks of URLs since one *expects* a redirect for a DOI, whereas for an URL, CRAN does not tolerate permanent redirections.
+
 Even before an actual submission, you can obtain CRAN checks of the URLs in your package by using [WinBuilder](/2020/04/01/win-builder/).
 
-URLs checks locally
--------------------
+URLs checks locally or on R-hub
+-------------------------------
 
 How to reproduce CRAN URL checks locally?
 
@@ -87,6 +99,26 @@ devtools::check(
 
 Or, for something faster, you can use the [`urlchecker` package](https://github.com/r-lib/urlchecker/). [^2] It is especially handy because it can also help you *fix* URLs that are redirected, by replacing them with the thing they are re-directed to.
 
+On R-hub package builder, the equivalent of
+
+``` r
+devtools::check(
+  manual = TRUE,
+  remote = TRUE,
+  incoming = TRUE
+  )
+```
+
+is
+
+``` r
+rhub::check(
+  env_vars = c(
+    "_R_CHECK_CRAN_INCOMING_REMOTE_" = "true", 
+    "_R_CHECK_CRAN_INCOMING_" = "true"
+)
+```
+
 URL fixes or escaping?
 ----------------------
 
@@ -94,7 +126,17 @@ What if you can't fix an URL, what if there's a false positive?
 
 -   You could try and have the [provider of the resource fix the URL](https://twitter.com/krlmlr/status/1329042257404698625) (ok, not often a solution);
 -   You could add a comment in cran-comments.md (but this will slow a release);
--   You could escape the URL by writing it as plain text (which won't work in vignettes since plain URLs are linkified, so put it as inline code?)
+-   You could escape the URL by writing it as plain text; in vignettes you will furthermore need to switch the output format to
+
+``` yaml
+output: 
+  rmarkdown::html_vignette:
+    md_extensions: [ 
+      "-autolink_bare_uris" 
+    ]
+```
+
+if you were using [`rmarkdown::html_vignette()`](https://rdrr.io/pkg/rmarkdown/man/html_vignette.html).
 
 Conclusion
 ----------
