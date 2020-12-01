@@ -9,7 +9,7 @@ tags:
 - documentation
 - description
 output: hugodown::hugo_document
-rmd_hash: 4722c8fd1405130e
+rmd_hash: 3ec757c54ef513bf
 
 ---
 
@@ -85,7 +85,7 @@ Even before an actual submission, you can obtain CRAN checks of the URLs in your
 URLs checks locally or on R-hub
 -------------------------------
 
-How to reproduce CRAN URL checks locally? For this you'd need to use R development version so using R-hub instead might be easier. :smile_cat:
+How to reproduce CRAN URL checks locally? For this you'd need to use R development version so using the urlchecker package, or R-hub instead might be easier. :smile_cat:
 
 You can use [`devtools::check()`](https://devtools.r-lib.org//reference/check.html) with a recent R version (and with [libcurl enabled](https://www.mail-archive.com/r-package-devel@r-project.org/msg00046.html)) and with the correct values for the `manual`, `incoming` and `remote` arguments.
 
@@ -97,7 +97,7 @@ devtools::check(
   )
 ```
 
-Or, for something faster, you can use the [`urlchecker` package](https://github.com/r-lib/urlchecker/). It is especially handy because it can also help you *fix* URLs that are redirected, by replacing them with the thing they are re-directed to.
+Or, for something faster **and not requiring R-devel**, you can use the [`urlchecker` package](https://github.com/r-lib/urlchecker/). It is especially handy because it can also help you *fix* URLs that are redirected, by replacing them with the thing they are re-directed to.
 
 On R-hub package builder, the equivalent of
 
