@@ -9,7 +9,7 @@ tags:
 - documentation
 - description
 output: hugodown::hugo_document
-rmd_hash: abd87a61f4f062df
+rmd_hash: 61727be1f2911903
 
 ---
 
@@ -116,6 +116,7 @@ rhub::check(
   env_vars = c(
     "_R_CHECK_CRAN_INCOMING_REMOTE_" = "true", 
     "_R_CHECK_CRAN_INCOMING_" = "true"
+    )
 )
 ```
 

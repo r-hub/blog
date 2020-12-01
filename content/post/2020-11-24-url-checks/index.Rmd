@@ -154,6 +154,7 @@ rhub::check(
   env_vars = c(
     "_R_CHECK_CRAN_INCOMING_REMOTE_" = "true", 
     "_R_CHECK_CRAN_INCOMING_" = "true"
+    )
 )
 ```
 
