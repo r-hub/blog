@@ -3,17 +3,17 @@ slug: url-checks
 title: "A NOTE on URL checks of your R package" 
 authors: 
 - Maëlle Salmon 
-date: "2020-11-24" 
+date: "2020-12-01" 
 tags: 
 - package development 
 - documentation
 - description
 output: hugodown::hugo_document
-rmd_hash: c3a4e3e7b7a1a706
+rmd_hash: 4722c8fd1405130e
 
 ---
 
-Have you ever tried submitting your R package to CRAN and gotten the NOTE `Found the following (possibly) invalid URLs:`? In this post, we shall explain where and how CRAN checks URLs validity, and we shall explain how to best prepare your package for this check. We shall start by a small overview of links, including cross-references, in the documentation of R packages.
+Have you ever tried submitting your R package to CRAN and gotten the NOTE `Found the following (possibly) invalid URLs:`? R devel recently got [more URL checks](https://github.com/wch/r-source/commits/trunk/src/library/tools/R/urltools.R).[^1] In this post, we shall explain where and how CRAN checks URLs validity, and we shall explain how to best prepare your package for this check. We shall start by a small overview of links, including cross-references, in the documentation of R packages.
 
 Links where and how?
 --------------------
@@ -41,7 +41,7 @@ The auto-linking (i.e. from `<doi:10.21105/joss.01857>` to `<a href="https://do
 
 ### Links in manual pages
 
-For adding links to manual pages, it is best to have [roxygen2 docs about linking](https://roxygen2.r-lib.org/articles/rd-formatting.html#links-2) in mind or open in a browser tab. Also refer to the [Writing R Extensions section about cross-references](https://cran.r-project.org/doc/manuals/R-exts.html#Cross_002dreferences).[^1]
+For adding links to manual pages, it is best to have [roxygen2 docs about linking](https://roxygen2.r-lib.org/articles/rd-formatting.html#links-2) in mind or open in a browser tab. Also refer to the [Writing R Extensions section about cross-references](https://cran.r-project.org/doc/manuals/R-exts.html#Cross_002dreferences).[^2]
 
 There are links you add yourself (i.e. actual URLs), but also generated links when you want to refer to another topic or function, typeset as code or not. The documentation features useful tables summarizing how to use the syntax `[thing]` and `[text][thing]` to produce the links and look you expect.
 
@@ -85,7 +85,7 @@ Even before an actual submission, you can obtain CRAN checks of the URLs in your
 URLs checks locally or on R-hub
 -------------------------------
 
-How to reproduce CRAN URL checks locally?
+How to reproduce CRAN URL checks locally? For this you'd need to use R development version so using R-hub instead might be easier. :smile_cat:
 
 You can use [`devtools::check()`](https://devtools.r-lib.org//reference/check.html) with a recent R version (and with [libcurl enabled](https://www.mail-archive.com/r-package-devel@r-project.org/msg00046.html)) and with the correct values for the `manual`, `incoming` and `remote` arguments.
 
@@ -120,6 +120,18 @@ rhub::check(
 )
 ```
 
+You'll need to choose a platform that uses R-devel, and if you hesitate, Windows is the fastest one.
+
+``` r
+rhub::check(
+  env_vars = c(
+    "_R_CHECK_CRAN_INCOMING_REMOTE_" = "true", 
+    "_R_CHECK_CRAN_INCOMING_" = "true"
+    ),
+  platform = "windows-x86_64-devel"
+)
+```
+
 URL fixes or escaping?
 ----------------------
 
@@ -146,5 +158,7 @@ In this post we have summarized why, where and how URLs are stored in the docume
 
 To not have your submission unexpectedly slowed down by an URL invalidity, it is crucial to have CRAN URL checks run on your package before submission, either locally with `R CMD check` or the urlchecker package, or via using WinBuilder.
 
-[^1]: Furthermore, the guidance (and therefore roxygen2 implementation) sometimes change, so it's good to know this could happen to you --- hopefully this won't scare you away for adding cross-references! <a href="https://www.mail-archive.com/r-package-devel@r-project.org/msg05504.html" class="uri">https://www.mail-archive.com/r-package-devel@r-project.org/msg05504.html</a>
+[^1]: And [parallel, faster](https://github.com/wch/r-source/commit/59db3e1a9204103f779af1f967feaf994003e0c1#diff-8318a1291232951b9164297f88235c18019d1c5a58a2660ee375c570122bf9bf) URL checks.
+
+[^2]: Furthermore, the guidance (and therefore roxygen2 implementation) sometimes change, so it's good to know this could happen to you --- hopefully this won't scare you away for adding cross-references! <a href="https://www.mail-archive.com/r-package-devel@r-project.org/msg05504.html" class="uri">https://www.mail-archive.com/r-package-devel@r-project.org/msg05504.html</a>
 
