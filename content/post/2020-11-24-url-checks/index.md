@@ -9,7 +9,7 @@ tags:
 - documentation
 - description
 output: hugodown::hugo_document
-rmd_hash: 61727be1f2911903
+rmd_hash: c3a4e3e7b7a1a706
 
 ---
 
@@ -97,7 +97,7 @@ devtools::check(
   )
 ```
 
-Or, for something faster, you can use the [`urlchecker` package](https://github.com/r-lib/urlchecker/). [^2] It is especially handy because it can also help you *fix* URLs that are redirected, by replacing them with the thing they are re-directed to.
+Or, for something faster, you can use the [`urlchecker` package](https://github.com/r-lib/urlchecker/). It is especially handy because it can also help you *fix* URLs that are redirected, by replacing them with the thing they are re-directed to.
 
 On R-hub package builder, the equivalent of
 
@@ -147,6 +147,4 @@ In this post we have summarized why, where and how URLs are stored in the docume
 To not have your submission unexpectedly slowed down by an URL invalidity, it is crucial to have CRAN URL checks run on your package before submission, either locally with `R CMD check` or the urlchecker package, or via using WinBuilder.
 
 [^1]: Furthermore, the guidance (and therefore roxygen2 implementation) sometimes change, so it's good to know this could happen to you --- hopefully this won't scare you away for adding cross-references! <a href="https://www.mail-archive.com/r-package-devel@r-project.org/msg05504.html" class="uri">https://www.mail-archive.com/r-package-devel@r-project.org/msg05504.html</a>
-
-[^2]: At the moment of writing, it might fail to warn you of invalid [plain URLs in vignettes](https://github.com/r-lib/urlchecker/issues/4).
 

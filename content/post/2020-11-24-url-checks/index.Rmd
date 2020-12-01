@@ -132,10 +132,8 @@ devtools::check(
   )
 ```
 
-Or, for something faster, you can use the [`urlchecker` package](https://github.com/r-lib/urlchecker/). [^linkify]
+Or, for something faster, you can use the [`urlchecker` package](https://github.com/r-lib/urlchecker/). 
 It is especially handy because it can also help you _fix_ URLs that are redirected, by replacing them with the thing they are re-directed to.
-
-[^linkify]: At the moment of writing, it might fail to warn you of invalid [plain URLs in vignettes](https://github.com/r-lib/urlchecker/issues/4).
 
 On R-hub package builder, the equivalent of
 
