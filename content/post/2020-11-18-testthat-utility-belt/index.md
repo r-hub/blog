@@ -8,7 +8,7 @@ tags:
 - package development 
 - testing
 output: hugodown::hugo_document
-rmd_hash: 583417d9b4628a12
+rmd_hash: 45b44bdc3dbdcdd9
 
 ---
 
@@ -21,7 +21,7 @@ Remember our post about [internal functions in R packages](/2019/12/12/internal-
 
 Where to put your code and function depends on where you'll want to use them.
 
--   It's best not to touch `tests/testthat.R`.
+-   You should never touch `tests/testthat.R`.
 -   R scripts under `tests/testthat/` whose name starts with `setup` are loaded before tests are run but not with [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html). This can be important: it means the code in test setup files is *not* available when you try debugging a test error (or developping a new test) by running [`devtools::load_all()`](https://devtools.r-lib.org//reference/load_all.html) then the code of your test.[^1] And yes, you'll be interactively debugging tests more often than you wish. :wink:
 
 <!-- -->

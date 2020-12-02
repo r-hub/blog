@@ -44,7 +44,7 @@ And code that needs to be run for tests?
 
 Where to put your code and function depends on where you'll want to use them.
 
-* It's best not to touch `tests/testthat.R`.
+* You should never touch `tests/testthat.R`.
 * R scripts under `tests/testthat/` whose name starts with `setup` are loaded before tests are run but not with `devtools::load_all()`. This can be important: it means the code in test setup files is _not_ available when you try debugging a test error (or developping a new test) by running `devtools::load_all()` then the code of your test.[^debug] And yes, you'll be interactively debugging tests more often than you wish. :wink:
 
 [^debug]: If you use something like `browser()`, `debug()` etc. somewhere in your code and run the tests, the setup file will have been loaded.
