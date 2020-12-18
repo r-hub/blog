@@ -50,19 +50,111 @@ It is safer than previous industry standards, see the video below.
 ```
 
 In practice, with OAuth 2.0 there is a _dance_ i.e. a series of requests and redirects between the server and the third-party app, launched by you when starting to install an app, and validating by you as one of the step is your clicking something like "Yes, I grant access to this and that right on my Twitter account, to the app Twitter Lite".
-Aaron Parecki (featured in the video above) has a great write-up on ][simplified OAuth 2.0](https://aaronparecki.com/oauth-2-simplified/).
+Aaron Parecki (featured in the video above) has a great write-up on [simplified OAuth 2.0](https://aaronparecki.com/oauth-2-simplified/).
 
-To use things on the server one needs an access token. The whole point of the OAuth 2.0 dance is to get an access token. Often you will also get a refresh token. The refresh token allows to get issued a new access token _without any interactivity i.e. no need for the user to click_. A common validity period for an access token would be 24 hours, for a refresh token one year, and often the refresh token is re-usable.
+To use things on the server one needs an **access token**. The whole point of the OAuth 2.0 dance is to get an access token. Often you will also get a **refresh token**. The refresh token allows to get issued a new access token _without any interactivity i.e. no need for the user to click_. A common validity period for an access token would be 24 hours, for a refresh token one year, and often the refresh token is re-usable.
 
 Now while this all makes perfect sense when you are developing an actual third-party app, for interactive usage... when all you want is an R package that can be used in scripts running on a server, it's much less clear.
 
-## How do you use OAuth 2.0?
+## How do you use OAuth 2.0 in R?
 
-When writing an R package wrapping an API using OAuth 2.0 you'll need the user to grant access to an "app", which will allow to create
+When writing an R package wrapping an API using OAuth 2.0 you'll need the user to grant access to an "app", which will allow to create an access token and a refresh token.
+The access token will then often be passed to the API in a header when making requests, whilst the refresh token would be posted in a query string when the access token needs to be renewed.
+
+Your problem is: how do I imitate a third-party app?
+Thankfully for you, in most cases the complexity is handled by the httr package, not you.
+For other cases, or if you want to e.g. only use curl, you will have to get creating. :wink:
+
+How does the OAuth dance happens with httr?
+
+* You create an OAuth endpoint (via `httr::oauth_endpoint()`) which is an object holding the URLs to which requests need to be made to request and refresh an access token. Or you use one of the built-in `httr::oauth_endpoints()` to popular APIs.
+
+* You create an OAuth app (via `httr::oauth_app()`) which is an object holding the name, secret and ID of your third-party app. What third-party app?! Say you are using rtweet. You need to register an app in your Twitter developer account e.g. "My Fictional App", you'll get a secret and ID in return. There is no actual app (pfiew!) but Twitter now thinks there is one. The app info will be used by httr when requesting a token, and the user (you) will grant access to their account to "My Fictional App".
+
+**In an R package if possible whilst respecting the API rules it is nice to have a built-in OAuth app for quick experiments by the users; and the way for users to specify their own app's information (Bring Your Own App).**
+
+* 
 
 ## What are your OAuth 2.0 secret credentials?
 
-## How to you test OAuth 2.0?
+Your secrets are
+
+* the access token;
+* the refresh token;
+* the file caching them on disk (`.httr-oauth` or another filename).
+
+### Secret OAuth 2.0 httr token file
+
+Often as you are not storing HTTP requests you will only need to worry about the file.
+
+If you need to use your OAuth 2.0 R package / script on a server, you will need a cached httr token file.
+If your server content (GitHub repo?) is public, you will have to encrypt the file and to store a text-version of the encryption key/passwords as e.g. GitHub repo secret if you use GitHub Actions. 
+Read the documentation of the continuous integration service your are using to find out how secrets are protected and how you can use them in your builds.
+
+See [gargle vignette about securely managing tokens](https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html). 
+gargle is directly useful if you are wrapping a Google API, but reading this vignette is useful no matter what API you are wrapping, for the clear explanations of challenges and solutions.
+
+The approach is:
+
+  * Create your OAuth token locally, either outside of your package/project folder, or inside of it if you really want to, but **gitignored and Rbuildignored**.
+  * Encrypt it using e.g. the [user-friendly cyphr package](https://docs.ropensci.org/cyphr/). Save the code for this and for the step before in a file e.g. inst/secrets.R for when you need to re-create a token as even refresh tokens expire.
+  * For encrypting you need some sort of password. You will want to save it securely as _text_ in your [user-level .Renviron](https://rstats.wtf/r-startup.html#renviron) and in your GitHub repo secrets (or equivalent secret place for other CI services). E.g. create a key via `sodium_key <- sodium::keygen()` and get its text equivalent via `sodium::bin2hex(sodium_key)`. E.g. the latter command might give you `e46b7faf296e3f0624e6240a6efafe3dfb17b92ae0089c7e51952934b60749f2` and you would save this in .Renviron
+  
+```
+MEETUPR_PWD="e46b7faf296e3f0624e6240a6efafe3dfb17b92ae0089c7e51952934b60749f2"
+```
+    
+Example of a script creating and encrypting an OAuth token (for the Meetup API).
+
+```r
+token_path <- testthat::test_path(".meetup_token.rds") # or just token_path <- ".meetup_token.rds"
+use_build_ignore(token_path)
+use_git_ignore(token_path)
+
+# the function below calls httr::oauth2.0_token()
+meetupr::meetup_auth(
+  token = NULL,
+  cache = TRUE,
+  set_renv = FALSE,
+  token_path = token_path
+)
+
+# sodium_key <- sodium::keygen()
+# create the environment variable "MEETUPR_PWD" and set it to sodium::bin2hex(sodium_key))
+
+# get key from environment variable
+key <- cyphr::key_sodium(sodium::hex2bin(Sys.getenv("MEETUPR_PWD")))
+cyphr::encrypt_file(
+  token_path,
+  key = key,
+  dest = testthat::test_path("secret.rds")
+)
+```
+
+* In your script using the token, you would have code like below.
+
+```r
+key <- cyphr::key_sodium(sodium::hex2bin(Sys.getenv("MEETUPR_PWD")))
+temptoken <- tempfile(fileext = ".rds")
+cyphr::decrypt_file(
+  testthat::test_path("secret.rds"),
+  key = key,
+  dest = temptoken
+)
+```
+
+### Secret access token, secret refresh token
+
+Now if you are storing your HTTP interactions to disk e.g. if using the vcr package for http testing, you will need to know how the secrets are used in HTTP request.
+Often,
+
+* access tokens are passed in the Authorization header;
+* refresh tokens are passed in a query string.
+
+Make sure you do not publish a file with unedited tokens! 
+E.g. for vcr read the [security docs](https://books.ropensci.org/http-testing/vcr-security.html).
+
+## How to you test OAuth 2.0 with R?
 
 ## Conclusion
 
