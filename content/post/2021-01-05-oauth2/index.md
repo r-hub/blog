@@ -9,7 +9,7 @@ tags:
 - security
 - testing 
 output: hugodown::hugo_document
-rmd_hash: 7fb72d3bf0190f8a
+rmd_hash: d58229d4c2fd1c48
 
 ---
 
@@ -51,7 +51,7 @@ How do you know what URLs to feed [`httr::oauth_endpoint()`](https://httr.r-lib.
 
 **In an R package if possible whilst respecting the API rules it is nice to have a built-in OAuth app for quick experiments by the users; and the way for users to specify their own app's information (Bring Your Own App).**
 
-In gargle docs there is a nice [discussion of the security risk of a built-in OAuth app](https://gargle.r-lib.org/articles/get-api-credentials.html#oauth-client-id-and-secret)
+In gargle docs there is a nice [discussion of the security risk of a built-in OAuth app](https://gargle.r-lib.org/articles/get-api-credentials.html#oauth-client-id-and-secret), by Jenny Bryan:
 
 > \"Package maintainers might want to build this app in as a fallback, possibly taking some measures to obfuscate the client ID and secret and limit its use to your package.
 >
@@ -63,7 +63,7 @@ In gargle docs there is a nice [discussion of the security risk of a built-in OA
 
 Intestingly there is still no app involved but httr starts a web server using httpuv. This way when the server sends the access token to `http://localhost:1410/`, httr is listening and gets it.
 
-Interactively, if no parameter / option is set for the `cache` argument of [`httr::oauth2.0_token()`](https://httr.r-lib.org/reference/oauth2.0_token.html), the user will be asked by httr whether they want to cache the token to a file. As a package developer, ideally you'd surface options in your function setting up authentication with these concerns in mind
+Interactively, if no parameter / option is set for the `cache` argument of [`httr::oauth2.0_token()`](https://httr.r-lib.org/reference/oauth2.0_token.html), the user will be asked by httr whether they want to cache the token to a file. As a package developer, ideally you'd surface options in your function setting up authentication with these concerns in mind:
 
 -   security (if the token is cached to the current project, is it gitignored?);
 -   user-friendliness (not caching the token means interactive authentication every time the package is used!);
@@ -146,7 +146,7 @@ All of this only works if your code automatically renews the access token, and i
 
 ### Secret access token, secret refresh token
 
-Now if you are storing your HTTP interactions to disk e.g. if using the vcr package for http testing, you will need to know how the secrets are used in HTTP request. Often,
+Now if you are storing your HTTP interactions to disk e.g. if using the [vcr package for HTTP testing](https://books.ropensci.org/http-testing/vcr.html), you will need to know how the secrets are used in HTTP request. Often,
 
 -   access tokens are passed in the Authorization header;
 -   refresh tokens are passed in a query string.
@@ -161,5 +161,5 @@ If you want to test how your package handles different OAuth 2.0 scenarios, you 
 Conclusion
 ----------
 
-In this post we offered a round-up around OAuth 2.0. We hope it helped clarify this tool that's not very natural for R developers. Please share any further tip below!
+In this post we offered a round-up around OAuth 2.0. We hope it helped clarify this tool that's not very natural for R developers. Please share any further tip or example you like in the comments below!
 
