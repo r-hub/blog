@@ -7,6 +7,7 @@ date: "2021-01-05"
 tags: 
 - package development 
 - security
+- testing 
 output: hugodown::hugo_document
 ---
 
@@ -52,7 +53,7 @@ It is safer than previous industry standards, see the video below.
 In practice, with OAuth 2.0 there is a _dance_ i.e. a series of requests and redirects between the server and the third-party app, launched by you when starting to install an app, and validating by you as one of the step is your clicking something like "Yes, I grant access to this and that right on my Twitter account, to the app Twitter Lite".
 Aaron Parecki (featured in the video above) has a great write-up on [simplified OAuth 2.0](https://aaronparecki.com/oauth-2-simplified/).
 
-To use things on the server one needs an **access token**. The whole point of the OAuth 2.0 dance is to get an access token. Often you will also get a **refresh token**. The refresh token allows to get issued a new access token _without any interactivity i.e. no need for the user to click_. A common validity period for an access token would be 24 hours, for a refresh token one year, and often the refresh token is re-usable.
+To use things on the server one needs an **access token** (a string, e.g. `e46b7faf296e3f0624e6240a6efafe3dfb17b92ae0089c7e51952934b60749f2 `). The whole point of the OAuth 2.0 dance is to get an access token. Often you will also get a **refresh token** (similarly a string, e.g. `e46b7faf296e3f0624e6240a6efafe3dfb17b92ae0089c7e51952934b60749f2 `). The refresh token allows to get issued a new access token _without any interactivity i.e. no need for the user to click_. A common validity period for an access token would be 24 hours, for a refresh token one year, and often the refresh token is re-usable.
 
 Now while this all makes perfect sense when you are developing an actual third-party app, for interactive usage... when all you want is an R package that can be used in scripts running on a server, it's much less clear.
 
