@@ -9,7 +9,7 @@ tags:
 - security
 - testing 
 output: hugodown::hugo_document
-rmd_hash: d58229d4c2fd1c48
+rmd_hash: 5cabc2f1ba0cc383
 
 ---
 
@@ -151,7 +151,7 @@ Now if you are storing your HTTP interactions to disk e.g. if using the [vcr pa
 -   access tokens are passed in the Authorization header;
 -   refresh tokens are passed in a query string.
 
-Make sure you do not publish a file with unedited tokens! E.g. for vcr read the [security docs](https://books.ropensci.org/http-testing/vcr-security.html).
+Make sure you never publish a file with unedited tokens! E.g. for vcr read the [security docs](https://books.ropensci.org/http-testing/vcr-security.html).
 
 How to you test OAuth 2.0 with R?
 ---------------------------------
