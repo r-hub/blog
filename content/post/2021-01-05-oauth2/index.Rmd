@@ -1,6 +1,6 @@
 --- 
 slug: oauth-2.0
-title: "How to deal with OAuth2.0 in R packages?" 
+title: "How to deal with OAuth2.0 in R?" 
 authors: 
 - Maëlle Salmon 
 date: "2021-01-05" 
@@ -67,13 +67,29 @@ For other cases, or if you want to e.g. only use curl, you will have to get crea
 
 How does the OAuth dance happens with httr?
 
+### OAuth endpoint
+
 * You create an OAuth endpoint (via `httr::oauth_endpoint()`) which is an object holding the URLs to which requests need to be made to request and refresh an access token. Or you use one of the built-in `httr::oauth_endpoints()` to popular APIs.
+
+How do you know what URLs to feed `httr::oauth_endpoint()`? 
+By reading the API docs and looking at examples. :grin:
+E.g. compare [ORCID API docs](https://info.orcid.org/faq/how-does-3-legged-oauth-work/) and [rorcid source code](https://github.com/ropensci/rorcid/blob/afa74daabf18499841e843a755b182c73ab545ea/R/auth.R#L106-L108).
+
+### OAuth app
 
 * You create an OAuth app (via `httr::oauth_app()`) which is an object holding the name, secret and ID of your third-party app. What third-party app?! Say you are using rtweet. You need to register an app in your Twitter developer account e.g. "My Fictional App", you'll get a secret and ID in return. There is no actual app (pfiew!) but Twitter now thinks there is one. The app info will be used by httr when requesting a token, and the user (you) will grant access to their account to "My Fictional App".
 
 **In an R package if possible whilst respecting the API rules it is nice to have a built-in OAuth app for quick experiments by the users; and the way for users to specify their own app's information (Bring Your Own App).**
 
-* 
+In gargle docs there is a nice [discussion of the security risk of a built-in OAuth app](https://gargle.r-lib.org/articles/get-api-credentials.html#oauth-client-id-and-secret)
+
+> "Package maintainers might want to build this app in as a fallback, possibly taking some measures to obfuscate the client ID and secret and limit its use to your package.
+> 
+> * Note that three-legged OAuth always requires the involvement of a user, so the word “secret” here can be somewhat confusing. It is not a secret in the same sense as a password or token. But you probably still want to store it in an opaque way, so that someone else cannot easily “borrow” it and present an OAuth consent screen that impersonates your package."
+
+### OAuth token creation and caching
+
+* Lastly, you'd call `httr::oauth2.0_token()` that will open a browser window where the user can grant access to the third-party app. This step therefore needs interactivity.
 
 ## What are your OAuth 2.0 secret credentials?
 
