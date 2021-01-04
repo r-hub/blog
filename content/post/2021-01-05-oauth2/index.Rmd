@@ -78,7 +78,7 @@ E.g. compare [ORCID API docs](https://info.orcid.org/faq/how-does-3-legged-oauth
 
 ### OAuth app
 
-* You create an OAuth app (via `httr::oauth_app()`) which is an object holding the name, secret and ID of your third-party app. What third-party app?! Say you are using rtweet. You need to register an app in your Twitter developer account e.g. "My Fictional App", you'll get a secret and ID in return. There is no actual app (pfiew!) but Twitter now thinks there is one. The app info will be used by httr when requesting a token, and the user (you) will grant access to their account to "My Fictional App".
+* You create an OAuth app (via `httr::oauth_app()`) which is an object holding the name, secret and ID of your third-party app. What third-party app?! Say you are using rtweet. You need to register an app in your Twitter developer account e.g. "My Fictional App", you'll get a secret and ID in return. There is no actual app (pfiew!) but Twitter now thinks there is one. The app info will be used by httr when requesting a token, and the user (you) will grant access to their account to "My Fictional App". The server e.g. Twitter will ask you for a callback URL which needs to be `http://localhost:1410/`, that as we'll see later httr will listen to to catch tokens produced by the server.
 
 **In an R package if possible whilst respecting the API rules it is nice to have a built-in OAuth app for quick experiments by the users; and the way for users to specify their own app's information (Bring Your Own App).**
 
