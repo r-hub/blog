@@ -9,7 +9,7 @@ tags:
 - security
 - testing 
 output: hugodown::hugo_document
-rmd_hash: 83f06ce88b049da5
+rmd_hash: 088f1198459d1ae0
 
 ---
 
@@ -146,7 +146,7 @@ All of this only works if your code automatically renews the access token, and i
 
 ### Secret access token, secret refresh token
 
-Now if you are storing your HTTP interactions to disk e.g. if using the [vcr package for HTTP testing](https://books.ropensci.org/http-testing/vcr.html), you will need to know how the secrets are used in HTTP request. Often,
+Now if you are storing your HTTP interactions to disk e.g. if using the [vcr package for HTTP testing](https://books.ropensci.org/http-testing/vcr.html), you will need to know how the secrets are used in HTTP requests. Often,
 
 -   access tokens are passed in the Authorization header;
 -   refresh tokens are passed in a query string.
