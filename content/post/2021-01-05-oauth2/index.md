@@ -9,7 +9,7 @@ tags:
 - security
 - testing 
 output: hugodown::hugo_document
-rmd_hash: 2b8f5eb7a36731ef
+rmd_hash: f6e38306bb54b3b4
 
 ---
 
@@ -49,7 +49,7 @@ How do you know what URLs to feed [`httr::oauth_endpoint()`](https://httr.r-lib.
 
 -   You create an OAuth app (via [`httr::oauth_app()`](https://httr.r-lib.org/reference/oauth_app.html)) which is an object holding the name, secret and ID of your third-party app. What third-party app?! Say you are using rtweet. You need to register an app in your Twitter developer account e.g. "My Fictional App", you'll get a secret and ID in return. There is no actual app (pfiew!) but Twitter now thinks there is one. The app info will be used by httr when requesting a token, and the user (you) will grant access to their account to "My Fictional App". The server e.g. Twitter will ask you for a callback URL which needs to be `http://localhost:1410/`, that as we'll see later httr will listen to to catch tokens produced by the server.
 
-**In an R package if possible whilst respecting the API rules it is nice to have a built-in OAuth app for quick experiments by the users; and the way for users to specify their own app's information (Bring Your Own App).**
+**In an R package if possible whilst respecting the API rules it is nice to have a built-in OAuth app for quick experiments by the users; and the way for users to specify their own app's information ([Bring Your Own App](https://googledrive.tidyverse.org/articles/articles/bring-your-own-app.html)).**
 
 In gargle docs there is a nice [discussion of the security risk of a built-in OAuth app](https://gargle.r-lib.org/articles/get-api-credentials.html#oauth-client-id-and-secret), by Jenny Bryan:
 
