@@ -9,7 +9,7 @@ tags:
 - security
 - testing 
 output: hugodown::hugo_document
-rmd_hash: f6e38306bb54b3b4
+rmd_hash: 83f06ce88b049da5
 
 ---
 
@@ -73,7 +73,7 @@ In rtweet the token is by default saved to the home directory and the path to it
 
 ### OAuth usage
 
--   With httr you can directly pass the token to [`httr::VERB()`](https://httr.r-lib.org/reference/VERB.html) via the `config` parameter. httr also automatically refreshed your access token if the token object contains a valid refresh token.
+-   With httr you can directly pass the token to [`httr::VERB()`](https://httr.r-lib.org/reference/VERB.html) via the `config` parameter. httr also automatically refreshes your access token if the token object contains a valid refresh token.
 -   If using another HTTP R client you will need to extract the access token and pass it as the header the API docs require.
 
 What are your OAuth 2.0 secret credentials?

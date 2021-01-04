@@ -107,7 +107,7 @@ More easily, you could save the token to an [app directory](/2020/03/12/user-pre
 
 ### OAuth usage
 
-* With httr you can directly pass the token to `httr::VERB()` via the `config` parameter. httr also automatically refreshed your access token if the token object contains a valid refresh token.
+* With httr you can directly pass the token to `httr::VERB()` via the `config` parameter. httr also automatically refreshes your access token if the token object contains a valid refresh token.
 * If using another HTTP R client you will need to extract the access token and pass it as the header the API docs require.
 
 ## What are your OAuth 2.0 secret credentials?
