@@ -192,7 +192,7 @@ Often,
 Make sure you never publish a file with unedited tokens! 
 E.g. for vcr read the [security docs](https://books.ropensci.org/http-testing/vcr-security.html).
 
-## How to you test OAuth 2.0 with R?
+## How do you test OAuth 2.0 with R?
 
 If you want to test how your package handles different OAuth 2.0 scenarios, you might be interested in the [OAuth 2.0 apps provided by the webfakes package](http://webfakes.r-lib.org/articles/oauth.html).
 

@@ -9,7 +9,7 @@ tags:
 - security
 - testing 
 output: hugodown::hugo_document
-rmd_hash: 088f1198459d1ae0
+rmd_hash: df178ee1048e1228
 
 ---
 
@@ -153,7 +153,7 @@ Now if you are storing your HTTP interactions to disk e.g. if using the [vcr pa
 
 Make sure you never publish a file with unedited tokens! E.g. for vcr read the [security docs](https://books.ropensci.org/http-testing/vcr-security.html).
 
-How to you test OAuth 2.0 with R?
+How do you test OAuth 2.0 with R?
 ---------------------------------
 
 If you want to test how your package handles different OAuth 2.0 scenarios, you might be interested in the [OAuth 2.0 apps provided by the webfakes package](http://webfakes.r-lib.org/articles/oauth.html).
