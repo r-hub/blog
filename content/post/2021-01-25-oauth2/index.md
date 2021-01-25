@@ -3,17 +3,17 @@ slug: oauth-2.0
 title: "How to deal with OAuth2.0 in R?" 
 authors: 
 - Maëlle Salmon 
-date: "2021-01-05" 
+date: "2021-01-25" 
 tags: 
 - package development 
 - security
 - testing 
 output: hugodown::hugo_document
-rmd_hash: 95db83929ac7c024
+rmd_hash: 888ee05cb5f1b115
 
 ---
 
-If you see the web API you want to wrap uses OAuth2.0 rather than a simple API key for authentication, are you happy or do you get nervous? If you get nervous, this post is for you! We shall demistify OAuth2.0 a bit so that you might know how to smoothly and securely use OAuth2.0 in your package, and we shall provide links to useful resources.
+If you see the web API you want to wrap uses OAuth2.0 rather than a simple API key for authentication, are you happy or do you get nervous? If you get nervous, this post is for you! We shall demystify OAuth2.0 a bit so that you might know how to smoothly and securely use OAuth2.0 in your package, and we shall provide links to useful resources.
 
 ## What is OAuth 2.0?
 
@@ -23,9 +23,9 @@ OAuth 2.0 is a way for a resource server (say, Twitter API) to grant access to (
 
 {{< youtube KT8ybowdyr0 >}}
 
-In practice, with OAuth 2.0 there is a *dance* i.e. a series of requests and redirects between the server and the third-party app, launched by you when starting to install an app, and validating by you as one of the step is your clicking something like "Yes, I grant access to this and that right on my Twitter account, to the app Twitter Lite". Aaron Parecki (featured in the video above) has a great write-up on [simplified OAuth 2.0](https://aaronparecki.com/oauth-2-simplified/).
+In practice, with OAuth 2.0 there is a *dance* i.e. a series of requests and redirects between the server and the third-party app, launched by you when starting to install an app, and validating by you as one of the steps is your clicking something like "Yes, I grant access to this and that right on my Twitter account, to the app Twitter Lite". Aaron Parecki (featured in the video above) has a great write-up on [simplified OAuth 2.0](https://aaronparecki.com/oauth-2-simplified/).
 
-To use things on the server one needs an **access token** (a string, e.g. `e46b7faf296e3f0624e6240a6efafe3dfb17b92ae0089c7e51952934b60749f2`). The whole point of the OAuth 2.0 dance is to get such an access token. Often you will also get a **refresh token** (similarly a string, e.g. `e46b7faf296e3f0624e6240a6efafe3dfb17b92ae0089c7e51952934b60749f2`). The refresh token allows to get issued a new access token *without any interactivity i.e. no need for the user to click*. A common validity period for an access token would be 24 hours, for a refresh token one year, and often the refresh token is re-usable.
+To use things on the server one needs an **access token** (a string, e.g. `e46b7faf296e3f0624e6240a6efafe3dfb17b92ae0089c7e51952934b60749f2`). The whole point of the OAuth 2.0 dance is to get such an access token. Often you will also get a **refresh token** (similarly a string, e.g. `3bdeb3bd19a3093674f4e7ba6e1be1706ab1f16af9ebf3b79a67a807c622b650`). The refresh token allows to get issued a new access token *without any interactivity i.e. no need for the user to click*. A common validity period for an access token would be 24 hours, for a refresh token one year, and often the refresh token is re-usable.
 
 Now while this all makes perfect sense when you are developing an actual third-party app, for interactive usage... when all you want is an R package that can be used in scripts running on a server, it's much less clear.
 
@@ -47,9 +47,9 @@ How do you know what URLs to feed [`httr::oauth_endpoint()`](https://httr.r-lib.
 
 -   You create an OAuth app (via [`httr::oauth_app()`](https://httr.r-lib.org/reference/oauth_app.html)) which is an object holding the name, secret and ID of your third-party app. What third-party app?! Say you are using rtweet. You need to register an app in your Twitter developer account e.g. "My Fictional App", you'll get a secret and ID in return. There is no actual app (pfiew!) but Twitter now thinks there is one. The app info will be used by httr when requesting a token, and the user (you) will grant access to their account to "My Fictional App". The server e.g. Twitter will ask you for a callback URL which needs to be `http://localhost:1410/`, that as we'll see later httr will listen to to catch tokens produced by the server.
 
-**In an R package if possible whilst respecting the API rules it is nice to have a built-in OAuth app for quick experiments by the users; and the way for users to specify their own app's information ([Bring Your Own App](https://googledrive.tidyverse.org/articles/articles/bring-your-own-app.html)).**
+**In an R package, if possible (depending on the API rules), it is nice to have a built-in OAuth app for quick experiments by the users; and the way for users to specify their own app's information ([Bring Your Own App](https://googledrive.tidyverse.org/articles/articles/bring-your-own-app.html)).**
 
-In gargle docs there is a nice [discussion of the security risk of a built-in OAuth app](https://gargle.r-lib.org/articles/get-api-credentials.html#oauth-client-id-and-secret), by Jenny Bryan:
+In the gargle docs there is a nice [discussion of the security risk of a built-in OAuth app](https://gargle.r-lib.org/articles/get-api-credentials.html#oauth-client-id-and-secret), by Jenny Bryan:
 
 > \"Package maintainers might want to build this app in as a fallback, possibly taking some measures to obfuscate the client ID and secret and limit its use to your package.
 >
