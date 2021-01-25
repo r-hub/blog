@@ -9,7 +9,7 @@ tags:
 - security
 - testing 
 output: hugodown::hugo_document
-rmd_hash: 52aaec0ce5f85528
+rmd_hash: 95db83929ac7c024
 
 ---
 
@@ -157,7 +157,7 @@ If you want to test how your package handles different OAuth 2.0 scenarios, you 
 
 ## Conclusion
 
-In this post we offered a round-up around OAuth 2.0. We hope it helped clarify this tool that's not very natural for R developers. Please share any further tips or examples you like in the comments below!
+In this post we offered a round-up around OAuth 2.0. Useful tools we mentioned are httr's OAuth2.0 functions, and the cyphr package for human-friendly encryption workflows. We hope it helped clarify this tool that's not very natural for R developers. Please share any further tips or examples you like in the comments below!
 
 *Many thanks to [Frie Preu](https://frie.codes/) for providing useful feedback on this post!*
 
