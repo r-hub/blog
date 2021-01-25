@@ -1,6 +1,6 @@
 --- 
 slug: oauth-2.0
-title: "How to deal with OAuth2.0 in R?" 
+title: "How to deal with OAuth2.0 in R packages?" 
 authors: 
 - Maëlle Salmon 
 date: "2021-01-25" 

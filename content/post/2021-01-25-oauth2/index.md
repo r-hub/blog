@@ -1,6 +1,6 @@
 ---
 slug: oauth-2.0
-title: "How to deal with OAuth2.0 in R?" 
+title: "How to deal with OAuth2.0 in R packages?" 
 authors: 
 - Maëlle Salmon 
 date: "2021-01-25" 
@@ -9,7 +9,7 @@ tags:
 - security
 - testing 
 output: hugodown::hugo_document
-rmd_hash: 888ee05cb5f1b115
+rmd_hash: ed22e2bfd2f1ac5d
 
 ---
 
