@@ -11,21 +11,19 @@ tags:
 - concurrency
 - parallel
 output: hugodown::hugo_document
-rmd_hash: 2ab8c9a03a4705f9
+rmd_hash: bd3c90188b6b5e4b
 
 ---
+
+[SQLite](https://www.sqlite.org/index.html) is a great, full featured SQL database engine. Most likely it is used more than [all other database engines combined](https://www.sqlite.org/mostdeployed.html). The [RSQLite](https://github.com/r-dbi/RSQLite) R package embeds SQLite, and lets you query and manipulate SQLite databases from R. It is used in Bioconductor data packages, many deployed Shiny apps, and several other packages and projects. In this post I show how to make it safer to use RSQLite concurrently, from multiple processes.
+
+Note that this is an oversimplified description of how SQLite works and I will not talk about different types of locks, WAL mode, etc. Please see the SQLite documentation for the details.
 
 ## TL;DR
 
 -   Always set the SQLite busy timeout.
 -   If you use Unix, update RSQLite to the version that will be released soon.
 -   Use `IMMEDIATE` write transactions.
-
-## Introduction
-
-[SQLite](https://www.sqlite.org/index.html) is a great, full featured SQL database engine. Most likely it is used more than [all other database engines combined](https://www.sqlite.org/mostdeployed.html). The [RSQLite](https://github.com/r-dbi/RSQLite) R package embeds SQLite, and lets you query and manipulate SQLite databases from R. It is used in Bioconductor data packages, many deployed Shiny apps, and several other packages and projects. In this post I show how to use RSQLite concurrently, from multiple processes.
-
-Note that this is an oversimplified description of how SQLite works and I will not talk about different types of locks, WAL mode, etc. Please see the SQLite documentation for the details.
 
 ## Concurrency in SQLite
 
