@@ -1,6 +1,6 @@
 ---
 slug: rsqlite-parallel
-title: "RSQLite concurrency issues -- solution included"
+title: "RSQLite concurrency issues — solution included"
 authors: 
 - Gábor Csárdi
 date: "2021-03-10" 
@@ -11,7 +11,7 @@ tags:
 - concurrency
 - parallel
 output: hugodown::hugo_document
-rmd_hash: f83e2a673e9123b0
+rmd_hash: 2ab8c9a03a4705f9
 
 ---
 
