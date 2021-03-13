@@ -11,18 +11,18 @@ tags:
 - concurrency
 - parallel
 output: hugodown::hugo_document
-rmd_hash: 8a05c15c1b4c841c
+rmd_hash: bc1a2cff4e774145
 
 ---
 
-[SQLite](https://www.sqlite.org/index.html) is a great, full featured SQL database engine. Most likely it is used more than [all other database engines combined](https://www.sqlite.org/mostdeployed.html). The [RSQLite](https://github.com/r-dbi/RSQLite) R package embeds SQLite, and lets you query and manipulate SQLite databases from R. It is used in Bioconductor data packages, many deployed Shiny apps, and several other packages and projects. In this post I show how to make it safer to use RSQLite concurrently, from multiple processes.
+[SQLite](https://www.sqlite.org/index.html) is a great, full featured SQL database engine. Most likely it is used more than [all other database engines combined](https://www.sqlite.org/mostdeployed.html). The `{RSQLite}` R package embeds SQLite, and lets you query and manipulate SQLite databases from R. It is used in Bioconductor data packages, many deployed Shiny apps, and several other packages and projects. In this post I show how to make it safer to use RSQLite concurrently, from multiple processes.
 
 Note that this is an oversimplified description of how SQLite works and I will not talk about different types of locks, WAL mode, etc. Please see the SQLite documentation for the details.
 
 ## TL;DR
 
 -   Always set the SQLite busy timeout.
--   If you use Unix, update RSQLite to the version that will be released soon.
+-   If you use Unix, update RSQLite to at least version 2.2.4.
 -   Use `IMMEDIATE` write transactions. (You can make use of the `dbWithWriteTransaction()` function at the end of this post.)
 
 ## Concurrency in SQLite
@@ -47,11 +47,11 @@ Note that SQLite currently does *not* schedule concurrent transactions fairly. M
 
 ## The `usleep()` issue
 
-Unfortunately previous versions of RSQLite had an issue that prevented good concurrent (write) database performance on Unix. When a connection waits on a lock, it uses the `usleep()` C library function on Unix, but only if SQLite was compiled with the `HAVE_USLEEP` compile-time option. Previous RSQLite versions did not set this option, so SQLite fell back to using the [`sleep()`](https://rdrr.io/r/datasets/sleep.html) C library function instead. [`sleep()`](https://rdrr.io/r/datasets/sleep.html) , however can only take an integer number of seconds. Sleeping at least one second between retries is obviously very bad for performance, and it also reduces the number of retries before a certain busy timeout expires, resulting in much more errors. (Or you had to set the timeout to a very large value.)
+Unfortunately RSQLite version before 2.2.4 had an issue that prevented good concurrent (write) database performance on Unix. When a connection waits on a lock, it uses the `usleep()` C library function on Unix, but only if SQLite was compiled with the `HAVE_USLEEP` compile-time option. Previous RSQLite versions did not set this option, so SQLite fell back to using the [`sleep()`](https://rdrr.io/r/datasets/sleep.html) C library function instead. [`sleep()`](https://rdrr.io/r/datasets/sleep.html) , however can only take an integer number of seconds. Sleeping at least one second between retries is obviously very bad for performance, and it also reduces the number of retries before a certain busy timeout expires, resulting in much more errors. (Or you had to set the timeout to a very large value.)
 
 Several people experienced this over the years, and we also ran into it in the [liteq package](https://github.com/r-lib/liteq/issues/28). Luckily, this time [Iñaki Ucar](https://github.com/Enchufa2) was persistent enough to track down the issue. The [solution](https://github.com/r-dbi/RSQLite/pull/345) is simple enough: turn on the `HAVE_USLEEP` option. (`usleep()` was not always available in the past, but nowadays it is, so we don't actually have to check for it.)
 
-If you have concurrency issues with RSQLite, please update to the version that will be released, very soon.
+If you have concurrency issues with RSQLite, please update to version 2.2.4 or later.
 
 ## Avoiding deadlocks
 
