@@ -13,7 +13,7 @@ tags:
 output: hugodown::hugo_document
 ---
 
-[SQLite](https://www.sqlite.org/index.html) is a great, full featured SQL database engine. Most likely it is used more than [all other database engines combined](https://www.sqlite.org/mostdeployed.html). The [RSQLite](https://github.com/r-dbi/RSQLite) R package embeds SQLite, and lets you query and manipulate SQLite databases from R. It is used in Bioconductor data packages, many deployed Shiny apps, and several other packages and projects. In this post I show how to make it safer to use RSQLite concurrently, from multiple processes.
+[SQLite](https://www.sqlite.org/index.html) is a great, full featured SQL database engine. Most likely it is used more than [all other database engines combined](https://www.sqlite.org/mostdeployed.html). The [RSQLite](https://rsqlite.r-dbi.org/) R package embeds SQLite, and lets you query and manipulate SQLite databases from R. It is used in Bioconductor data packages, many deployed Shiny apps, and several other packages and projects. In this post I show how to make it safer to use RSQLite concurrently, from multiple processes.
 
 Note that this is an oversimplified description of how SQLite works and I will not talk about different types of locks, WAL mode, etc. Please see the SQLite documentation for the details.
 
