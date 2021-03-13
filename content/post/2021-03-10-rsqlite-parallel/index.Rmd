@@ -21,7 +21,7 @@ Note that this is an oversimplified description of how SQLite works and I will n
 
 -   Always set the SQLite busy timeout.
 -   If you use Unix, update RSQLite to the version that will be released soon.
--   Use `IMMEDIATE` write transactions.
+-   Use `IMMEDIATE` write transactions. (You can make use of the `dbWithWriteTransaction()` function at the end of this post.)
 
 ## Concurrency in SQLite
 
@@ -58,6 +58,37 @@ Even after updating RSQLite and setting the busy timeout, you can still get `dat
 By default SQLite transactions are `DEFERRED`, which means that they don't actually start with the `BEGIN` statement, but only with the first operation. If a transaction starts out with a read operation, SQLite assumes that it is a read transaction. If it performs a write operation later, then SQLite tries to upgrade it to a write transaction. Consider two concurrent `DEFERRED` transactions that both start out as read transactions, and then they both upgrade to write transactions. One of them (say the first one) will be upgraded, but the second one will be denied with a busy error, as there can be only one write transactions at a time. We cannot keep the second transaction and retry it later, because the second connection already holds a read lock, and this would not lot the first transaction commit its write operations. Neither transactions can continue, unless the other is canceled, so SQLite will cancel the second and let the first one commit. When the second one is canceled, its busy timeout is simply ignored, as it does not make sense to retry it. (The first transaction can be re-tried, however, using the busy timeout.)
 
 One way to avoid deadlocks is to announce write transactions right when they start, with `BEGIN IMMEDIATE`. If all write-transactions are immediate transactions, then no deadlock can occur. (Well, at least not at this level.) Immediate transactions slightly reduce the the concurrency in your application, but often this is a good trade off to avoid deadlocks.
+
+As far as I can tell there is no way to use immediate transactions in RSQLite with `dbWithTransaction()`, but you can create a helper function for it. It could look something like this:
+
+``` r
+#' @importFrom DBI dbExecute
+
+dbWithWriteTransaction <- function(conn, code) {
+  dbExecute(conn, "BEGIN IMMEDIATE")
+  rollback <- function(e) {
+    call <- dbExecute(conn, "ROLLBACK")
+    if (identical(call, FALSE)) {
+      stop(paste(
+        "Failed to rollback transaction.",
+        "Tried to roll back because an error occurred:",
+        conditionMessage(e)
+      ), call. = FALSE)
+    }
+    if (inherits(e, "error")) stop(e)
+  }
+  tryCatch(
+    {
+      res <- force(code)
+      dbExecute(conn, "COMMIT")
+      res
+    },
+    db_abort = rollback,
+    error = rollback,
+    interrupt = rollback
+  )
+}
+```
 
 ## Links
 
