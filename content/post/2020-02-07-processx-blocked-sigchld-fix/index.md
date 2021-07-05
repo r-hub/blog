@@ -46,7 +46,7 @@ by [Will Landau](https://github.com/wlandau) has a nice, clean
 > )
 > tmp <- callr::r(fun, env = env, show = TRUE)
 > #> Error while shutting down parallel: unable to terminate some child processes
-```
+> ```
 
 ## A red herring
 
