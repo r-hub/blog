@@ -98,6 +98,38 @@ in one of your R scripts (thanks [Mark Padgham](https://mpadge.github.io/) for t
         Namespace in Imports field not imported from: ‘memoise’
          All declared Imports should be used.
 
+### DIY memoization
+
+Now what if you want simple memoization and no dependency on the memoise package?
+
+In the whoami package by Gábor Csárdi, there is an internal function `lookup_gh_username()` that calls the GitHub API. It is memoized without the memoise package.
+
+-   In [`.onLoad()`](https://github.com/r-lib/whoami/blob/40999c9945104f740d0fe13ed07288879aec14c6/R/whoami.R#L2) the memoization function is called
+
+``` r
+.onLoad <- function(libname, pkgname) {
+  lookup_gh_username <<- memoize_first(lookup_gh_username)
+}
+```
+
+-   What's the [memoization function](https://github.com/r-lib/whoami/blob/40999c9945104f740d0fe13ed07288879aec14c6/R/whoami.R#L10), you ask?
+
+``` r
+memoize_first <- function(fun) {
+  fun
+  cache <- list()
+  dec <- function(arg, ...) {
+    if (!is_string(arg)) return(fun(arg, ...))
+    if (is.null(cache[[arg]])) cache[[arg]] <<- fun(arg, ...)
+    cache[[arg]]
+  }
+  dec
+}
+```
+
+This function is a closure (a [function creating a function](https://adv-r.hadley.nz/function-factories.html?q=closure#function-factories)).
+It caches results in a list from where they are retrieved in the function gets called a second time with the same argument.
+
 ### Saving results in an environment
 
 This idea is more light-weight.

@@ -8,7 +8,7 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 0e8b1e5da984df7f
+rmd_hash: efc3eae949472276
 
 ---
 
@@ -45,10 +45,10 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. 
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.000       3.003 
+      0.001       0.001       3.002 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.035       0.000       0.035 </code></pre>
+      0.031       0.004       0.036 </code></pre>
 
 </div>
 
@@ -72,6 +72,37 @@ in one of your R scripts (thanks [Mark Padgham](https://mpadge.github.io/) for t
         Namespace in Imports field not imported from: ‘memoise’
          All declared Imports should be used.
 
+### DIY memoization
+
+Now what if you want simple memoization and no dependency on the memoise package?
+
+In the whoami package by Gábor Csárdi, there is an internal function `lookup_gh_username()` that calls the GitHub API. It is memoized without the memoise package.
+
+-   In [`.onLoad()`](https://github.com/r-lib/whoami/blob/40999c9945104f740d0fe13ed07288879aec14c6/R/whoami.R#L2) the memoization function is called
+
+``` r
+.onLoad <- function(libname, pkgname) {
+  lookup_gh_username <<- memoize_first(lookup_gh_username)
+}
+```
+
+-   What's the [memoization function](https://github.com/r-lib/whoami/blob/40999c9945104f740d0fe13ed07288879aec14c6/R/whoami.R#L10), you ask?
+
+``` r
+memoize_first <- function(fun) {
+  fun
+  cache <- list()
+  dec <- function(arg, ...) {
+    if (!is_string(arg)) return(fun(arg, ...))
+    if (is.null(cache[[arg]])) cache[[arg]] <<- fun(arg, ...)
+    cache[[arg]]
+  }
+  dec
+}
+```
+
+This function is a closure (a [function creating a function](https://adv-r.hadley.nz/function-factories.html?q=closure#function-factories)). It caches results in a list from where they are retrieved in the function gets called a second time with the same argument.
+
 ### Saving results in an environment
 
 This idea is more light-weight.
@@ -91,7 +122,7 @@ Using e.g. [`rlang::env_cache()`](https://rlang.r-lib.org/reference/env_cache.h
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.000       0.000       3.003 
+      0.001       0.000       3.003 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message2</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
           0           0           0 
