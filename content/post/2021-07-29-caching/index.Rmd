@@ -102,7 +102,7 @@ in one of your R scripts (thanks [Mark Padgham](https://mpadge.github.io/) for t
 
 This idea is more light-weight.
 
-Using e.g. `rlang::env_cache()` by Lionel Henry (in the development version of `{rlang}` at the time of writing).
+Using e.g. `rlang::env_cache()` by Lionel Henry (in the development version of [rlang](https://rlang.r-lib.org/) at the time of writing).
 
 ```{r rlang}
 # create an environment for storing results
