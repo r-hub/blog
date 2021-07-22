@@ -1,0 +1,48 @@
+---
+slug: cache
+title: "How to cache results in R code" 
+authors: 
+- Maëlle Salmon 
+- Christophe Dervieux
+date: "2021-07-29" 
+tags: 
+- package development 
+output: hugodown::hugo_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(fig.path = "", comment = "")
+# knitr hook to make images output use Hugo options
+knitr::knit_hooks$set(
+  plot = function(x, options) {
+    hugoopts <- options$hugoopts
+    paste0(
+      "{{<figure src=",
+      '"', x, '" ',
+      if (!is.null(hugoopts)) {
+        glue::glue_collapse(
+          glue::glue('{names(hugoopts)}="{hugoopts}"'),
+          sep = " "
+        )
+      },
+      ">}}\n"
+    )
+  }
+)
+
+```
+
+One principle of programming that's often encountered is "DRY", "Don't Repeat Yourself", that encourages e.g. the use of functions other duplicated (read: copy-pasted and slightly amended) code.
+You could also interpret it as don't let the machine repeat its calculations if useless.
+How about for a piece of code (function) with the same inputs, we only run it once per R session, and save the results for later?
+In this post, we shall go over ways to cache results in an R session, so that you don't need to burden machines.
+We will not cover [caching for R Markdown](https://bookdown.org/yihui/rmarkdown-cookbook/cache.html).
+
+## When not to cache in an R session
+
+Starting the post with this section might sound a bit sad but let's not put words of caution at the end.
+
+Here are two cases when it'd be bad to cache:
+
+-   *The results of a function with the same input might change*. E.g. the function you call gives you the current time. Or you call a web API whose data is updated very regularly (although in that case rather than not caching you might want to look into the duration of your)
