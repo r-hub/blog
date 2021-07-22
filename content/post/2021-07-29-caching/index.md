@@ -8,15 +8,17 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 752d4cb2d0765fa2
+rmd_hash: 5b67d94ca75486f2
 
 ---
 
 One principle of programming that's often encountered is "DRY", "Don't Repeat Yourself", that encourages e.g. the use of functions other duplicated (read: copy-pasted and slightly amended) code. You could also interpret it as don't let the machine repeat its calculations if useless. How about for a piece of code (function) with the same inputs, we only run it once per R session, and save the results for later? In this post, we shall go over ways to cache results in an R session, so that you don't need to burden machines. We will not cover [caching for R Markdown](https://bookdown.org/yihui/rmarkdown-cookbook/cache.html).
 
-## Why cache?
+## Caching: what is it and why use it?
 
-Why save the results of a function called with some inputs in an R session?
+Caching means that if you call a function several times with the exact same input, the function is only actually run the first time. The result is stored in a cache of some sort (more practical details later!). Every other time the function is called with the same input, the result is retrieved from the cache. You will often think of caching as something valid in only one R session, but we'll see it can last longer via storage on disk.
+
+Now, *why* use caching?
 
 -   It might help save *time*.
 
@@ -38,7 +40,13 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use a
 
 -   choose the duration of validity of the cache;
 
--   cache on disk -- on that topic see the R-hub blog post on
+-   cache on disk -- on that topic see the R-hub blog post on [persistent data and config for R packages](/2020/03/12/user-preferences/).
+
+### Stateful functions
+
+This is not caching per se, but good to know! The [Advanced R book](https://adv-r.hadley.nz/function-factories.html?q=closure#stateful-funs) by Hadley Wickham presents *stateful functions* that "allow you to maintain state across function invocations". It also has a warning on not abusing them.
+
+> "Stateful functions are best used in moderation. As soon as your function starts managing the state of multiple variables, it's better to switch to R6, the topic of Chapter 14."
 
 ## Caching best practice in packages
 
