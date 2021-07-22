@@ -8,7 +8,7 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: e9c856927d26f786
+rmd_hash: 885ace17772831f9
 
 ---
 
@@ -32,7 +32,7 @@ Here's a roundup of ways to cache code in R.
 
 ### The memoise package
 
-The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. Say I want to cache a function that only sleeps.
+The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. Say we want to cache a function that only sleeps.
 
 <div class="highlight">
 
@@ -45,10 +45,10 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. 
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.000       3.004 
+      0.001       0.000       3.002 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.037       0.000       0.038 </code></pre>
+       0.04        0.00        0.04 </code></pre>
 
 </div>
 
