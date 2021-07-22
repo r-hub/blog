@@ -148,7 +148,7 @@ Here are three cases when it'd be bad to cache:
 
 -   *The results of a function with the same input might change*.
     E.g. the function you call gives you the current time.
-    Or you call a web API whose data is updated very regularly (although in that case rather than not caching you might want to look into the duration of your).
+    Or you call a web API whose data is updated very regularly (although in that case rather than not caching you might want to look into the validity time of your cache).
 
 -   *The function should not be called several times to begin with*.
     I.e., do not use caching as a band-aid for bad code design.
