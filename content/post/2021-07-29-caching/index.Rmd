@@ -142,7 +142,7 @@ We can't end this post with a few words of caution.
 
 Here are three cases when it'd be bad to cache:
 
--   *The gains in time are not worth the increased complexity*.
+-   *The gains in time and other resources are not worth the increased complexity*.
     You decide what's worth it.
     Think of future collaborators, some of whom might encounter caching for the first time.
 

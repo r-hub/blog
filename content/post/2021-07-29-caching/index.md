@@ -8,7 +8,7 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: b7db486d05f3b36d
+rmd_hash: 319c2d19ab33bcef
 
 ---
 
@@ -45,10 +45,10 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. 
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.001       3.004 
+      0.001       0.000       3.005 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.039       0.000       0.039 </code></pre>
+      0.034       0.004       0.039 </code></pre>
 
 </div>
 
@@ -91,7 +91,7 @@ Using e.g. [`rlang::env_cache()`](https://rlang.r-lib.org/reference/env_cache.h
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.000       3.003 
+      0.001       0.000       3.004 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message2</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
           0           0           0 
@@ -122,7 +122,7 @@ We can't end this post with a few words of caution.
 
 Here are three cases when it'd be bad to cache:
 
--   *The gains in time are not worth the increased complexity*. You decide what's worth it. Think of future collaborators, some of whom might encounter caching for the first time.
+-   *The gains in time and other resources are not worth the increased complexity*. You decide what's worth it. Think of future collaborators, some of whom might encounter caching for the first time.
 
 -   *The results of a function with the same input might change*. E.g. the function you call gives you the current time. Or you call a web API whose data is updated very regularly (although in that case rather than not caching you might want to look into the duration of your).
 
