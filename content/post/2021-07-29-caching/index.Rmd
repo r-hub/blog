@@ -94,6 +94,10 @@ If you use the memoise package in a package, do not forget to add
 
 in one of your R scripts (thanks [Mark Padgham](https://mpadge.github.io/) for this tip!) otherwise you will get a R CMD Check NOTE.
 
+    Result: NOTE
+        Namespace in Imports field not imported from: ‘memoise’
+         All declared Imports should be used.
+
 ### Saving results in an environment
 
 This idea is more light-weight.

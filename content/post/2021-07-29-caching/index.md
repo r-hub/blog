@@ -8,7 +8,7 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 885ace17772831f9
+rmd_hash: 1d2c79a81514168e
 
 ---
 
@@ -45,10 +45,10 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. 
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.000       3.002 
+      0.001       0.000       3.003 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-       0.04        0.00        0.04 </code></pre>
+      0.039       0.000       0.039 </code></pre>
 
 </div>
 
@@ -67,6 +67,10 @@ If you use the memoise package in a package, do not forget to add
 ```
 
 in one of your R scripts (thanks [Mark Padgham](https://mpadge.github.io/) for this tip!) otherwise you will get a R CMD Check NOTE.
+
+    Result: NOTE
+        Namespace in Imports field not imported from: ‘memoise’
+         All declared Imports should be used.
 
 ### Saving results in an environment
 
@@ -87,10 +91,10 @@ Using e.g. [`rlang::env_cache()`](https://rlang.r-lib.org/reference/env_cache.h
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.000       3.003 
+      0.001       0.000       3.002 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message2</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-          0           0           0 
+      0.000       0.000       0.001 
 
 <span class='nv'>message</span>
 [1] "Rested now!"
