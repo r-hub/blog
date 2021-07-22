@@ -64,7 +64,7 @@ Here's a roundup of ways to cache code in R.
 ### The memoise package
 
 The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use.
-Say I want to cache a function that only sleeps.
+Say we want to cache a function that only sleeps.
 
 ```{r memoise}
 .sleep <- function() {
