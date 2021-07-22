@@ -8,7 +8,7 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 5b67d94ca75486f2
+rmd_hash: 2620cd2e163ee863
 
 ---
 
@@ -30,17 +30,74 @@ Now, *why* use caching?
 
 Here's a roundup of ways to cache code in R.
 
-### Saving results in an environment
-
-Using e.g. [`rlang::env_cache()`](https://rlang.r-lib.org/reference/env_cache.html) by Lionel Henry (in the development version of `{rlang}` at the time of writing).
-
 ### The memoise package
 
-The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use and lets you
+The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. Say I want to cache a function that only sleeps.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nv'>.sleep</span> <span class='o'>&lt;-</span> <span class='kr'>function</span><span class='o'>(</span><span class='o'>)</span> <span class='o'>&#123;</span>
+  <span class='nf'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span><span class='o'>(</span><span class='m'>3</span><span class='o'>)</span>
+  <span class='s'>"Rested now!"</span>
+<span class='o'>&#125;</span>
+
+<span class='nv'>sleep</span> <span class='o'>&lt;-</span> <span class='nf'>memoise</span><span class='nf'>::</span><span class='nf'><a href='https://memoise.r-lib.org/reference/memoise.html'>memoise</a></span><span class='o'>(</span><span class='nv'>.sleep</span><span class='o'>)</span>
+
+<span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
+utilisateur     système      écoulé 
+      0.000       0.000       3.003 
+<span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
+utilisateur     système      écoulé 
+      0.041       0.000       0.041 </code></pre>
+
+</div>
+
+The second call to [`sleep()`](https://rdrr.io/r/datasets/sleep.html) is much quicker because, well, it does not call the `.sleep()` function so there's no sleep.
+
+The memoise package also lets you
 
 -   choose the duration of validity of the cache;
 
 -   cache on disk -- on that topic see the R-hub blog post on [persistent data and config for R packages](/2020/03/12/user-preferences/).
+
+If you use the memoise package in a package, do not forget to add
+
+``` r
+@importFrom memoise memoise
+```
+
+in one of your R scripts (thanks [Mark Padgham](https://mpadge.github.io/) for this tip!) otherwise you will get a R CMD Check NOTE.
+
+### Saving results in an environment
+
+This idea is more light-weight.
+
+Using e.g. [`rlang::env_cache()`](https://rlang.r-lib.org/reference/env_cache.html) by Lionel Henry (in the development version of `{rlang}` at the time of writing).
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='c'># create an environment for storing results</span>
+<span class='nv'>cache_env</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env.html'>new_environment</a></span><span class='o'>(</span><span class='o'>)</span>
+
+<span class='c'># the sleep function again, not memoised</span>
+<span class='nv'>sleep</span> <span class='o'>&lt;-</span> <span class='kr'>function</span><span class='o'>(</span><span class='o'>)</span> <span class='o'>&#123;</span>
+  <span class='nf'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span><span class='o'>(</span><span class='m'>3</span><span class='o'>)</span>
+  <span class='s'>"Rested now!"</span>
+<span class='o'>&#125;</span>
+
+<span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
+utilisateur     système      écoulé 
+      0.000       0.000       3.003 
+<span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message2</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
+utilisateur     système      écoulé 
+          0           0           0 
+
+<span class='nv'>message</span>
+[1] "Rested now!"
+<span class='nv'>message2</span>
+[1] "Rested now!"</code></pre>
+
+</div>
 
 ### Stateful functions
 

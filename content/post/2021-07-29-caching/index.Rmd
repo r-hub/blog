@@ -61,17 +61,61 @@ Now, *why* use caching?
 
 Here's a roundup of ways to cache code in R.
 
-### Saving results in an environment
-
-Using e.g. `rlang::env_cache()` by Lionel Henry (in the development version of `{rlang}` at the time of writing).
-
 ### The memoise package
 
-The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use and lets you
+The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use.
+Say I want to cache a function that only sleeps.
+
+```{r memoise}
+.sleep <- function() {
+  Sys.sleep(3)
+  "Rested now!"
+}
+
+sleep <- memoise::memoise(.sleep)
+
+system.time(sleep())
+system.time(sleep())
+```
+
+The second call to `sleep()` is much quicker because, well, it does not call the `.sleep()` function so there's no sleep.
+
+The memoise package also lets you
 
 -   choose the duration of validity of the cache;
 
 -   cache on disk -- on that topic see the R-hub blog post on [persistent data and config for R packages](/2020/03/12/user-preferences/).
+
+If you use the memoise package in a package, do not forget to add
+
+``` r
+@importFrom memoise memoise
+```
+
+in one of your R scripts (thanks [Mark Padgham](https://mpadge.github.io/) for this tip!) otherwise you will get a R CMD Check NOTE.
+
+### Saving results in an environment
+
+This idea is more light-weight.
+
+Using e.g. `rlang::env_cache()` by Lionel Henry (in the development version of `{rlang}` at the time of writing).
+
+```{r rlang}
+# create an environment for storing results
+cache_env <- rlang::new_environment()
+
+# the sleep function again, not memoised
+sleep <- function() {
+  Sys.sleep(3)
+  "Rested now!"
+}
+
+system.time(message <- rlang::env_cache(cache_env, "message", sleep()))
+system.time(message2 <- rlang::env_cache(cache_env, "message", sleep()))
+
+message
+message2
+```
 
 ### Stateful functions
 
@@ -83,7 +127,10 @@ It also has a warning on not abusing them.
 
 ## Caching best practice in packages
 
-If your package use caching, document that, and also provide ways to clear the cache.
+If your package use caching,
+
+-   document that;
+-   and also provide ways to clear the cache (see e.g. [opencage docs](https://docs.ropensci.org/opencage/articles/opencage.html#caching-1)).
 
 ## When not to cache in an R session
 
