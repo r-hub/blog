@@ -172,7 +172,7 @@ Now, why do I think NEWS.md is the best format? _Of course you are free to disag
 
 There are two limitations to NEWS.md.
 
-* One caveat is the `util::news()` function. If the user uses that and doesn't have `commonmark`[^cm] and `xml2` installed, [it will fail](https://github.com/wch/r-source/blob/90976a511bc3739e6773ea8e3d88b944b85b9aee/src/library/tools/R/news.R#L68)[^commonmark] -- which is [documented](https://github.com/wch/r-source/blob/acd751d2a1902cf17434216cf2e9c941726678d3/src/library/utils/man/news.Rd#L49) but not especially pleasant.
+* One caveat is the `utils::news()` function. If the user uses that and doesn't have `commonmark`[^cm] and `xml2` installed, [it will fail](https://github.com/wch/r-source/blob/90976a511bc3739e6773ea8e3d88b944b85b9aee/src/library/tools/R/news.R#L68)[^commonmark] -- which is [documented](https://github.com/wch/r-source/blob/acd751d2a1902cf17434216cf2e9c941726678d3/src/library/utils/man/news.Rd#L49) but not especially pleasant.
 
 * Another caveat, more specific to GitHub, is that NEWS.md locally doesn't render links to issues magically, unlike GitHub releases (and unlike `pkgdown`). That is why [Yihui Xie uses a placeholder inst/NEWS.Rd in e.g. `knitr`](https://github.com/yihui/knitr/issues/1841#issuecomment-621247442). Maybe a good idea for a function would be one to convert from NEWS.md to an informative inst/NEWS.Rd as feature-rich as `pkgdown` changelog?
 
