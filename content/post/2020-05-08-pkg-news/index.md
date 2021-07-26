@@ -41,7 +41,7 @@ As regards contents, beside referring to the changelogs you like, [the NEWs chap
 
 ## Why write the changelog as NEWS.md?
 
-There are several possible formats for maintaining an R package changelog, according to the documentation of `util::news()`: inst/NEWS.Rd formatted like other Rd files, a Markdown NEWS.md, plain-text NEWS or inst/NEWS.
+There are several possible formats for maintaining an R package changelog, according to the documentation of `utils::news()`: inst/NEWS.Rd formatted like other Rd files, a Markdown NEWS.md, plain-text NEWS or inst/NEWS.
 In all cases, it means users can access the changelog 
 
 * From the package CRAN page (in the case of CRAN packages, of course). See [`commonmark` NEWS](https://cran.rstudio.com/web/packages/commonmark/NEWS), [`ouch` NEWS](https://cran.r-project.org/web/packages/ouch/news.html), [`rhub` NEWS](https://cran.r-project.org/web/packages/rhub/news/news.html). The differences in URL path, display, page title are due to differences in the way the different changelog formats are parsed and rendered.
