@@ -8,11 +8,11 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 68f048eec3c47273
+rmd_hash: b4ec7ab8c182d260
 
 ---
 
-One principle of programming that's often encountered is "DRY", "Don't Repeat Yourself", that encourages e.g. the use of functions over duplicated (read: copy-pasted and slightly amended) code. You could also interpret it as don't let the machine repeat its calculations if useless. How about for a function with the same inputs, we only run it once e.g. per R session, and save the results for later? In this post, we shall go over ways to cache results of R functions, so that you don't need to burden machines and humans.
+One principle of programming that's often encountered is "DRY", "Don't Repeat Yourself", that encourages e.g. the use of functions over duplicated (read: copy-pasted and slightly amended) code. You could also interpret it as don't let the machine repeat its calculations if useless. How about for a function with the same inputs (or with no argument!), we only run it once e.g. per R session, and save the results for later? In this post, we shall go over ways to cache results of R functions, so that you don't need to burden machines and humans.
 
 ## Caching: what is it and why use it?
 
@@ -47,10 +47,10 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. 
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.000       3.005 
+      0.001       0.000       3.003 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.037       0.000       0.037 </code></pre>
+      0.036       0.000       0.036 </code></pre>
 
 </div>
 
@@ -76,7 +76,28 @@ in one of your R scripts (thanks [Mark Padgham](https://mpadge.github.io/) for t
 
 ### DIY memoization
 
-Now what if you want simple memoization and no dependency on the memoise package?
+Now what if you want simple memoization and no dependency on the memoise package? In that case you might be interested in creating some sort of function factory. See the example below, with `who_am_i_impl()` the function factory. We use it to create the `who_am_i()` function whose results are then stored for the session.
+
+``` r
+who_am_i_impl <- function() {
+    name <- NULL
+    function() {
+        if (is.null(name)) {
+            name <<- readline("I don't know you. Can you tell me your name ? ")
+            message("Welcome ", name, "!")
+        } else {
+            message("I know you! You are ", name, ". Hello again!")
+        }
+        invisible(name)
+    }
+}
+who_am_i <- who_am_i_impl()
+who_am_i()
+#> I don't know you. Can you tell me your name ? cderv
+#> Welcome cderv!
+who_am_i()
+#> I know you! You are cderv. Hello again!
+```
 
 In the whoami package by Gábor Csárdi, there is an internal function `lookup_gh_username()` that calls the GitHub API. It is memoized without the memoise package.
 
@@ -124,7 +145,7 @@ Using e.g. [`rlang::env_cache()`](https://rlang.r-lib.org/reference/env_cache.h
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.000       0.000       3.003 
+          0           0           3 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message2</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
           0           0           0 
@@ -136,9 +157,7 @@ utilisateur     système      écoulé
 
 </div>
 
-### Stateful functions
-
-This is not caching per se, but good to know! The [Advanced R book](https://adv-r.hadley.nz/function-factories.html?q=closure#stateful-funs) by Hadley Wickham presents *stateful functions* that "allow you to maintain state across function invocations". It also has a warning on not abusing them.
+In the [Advanced R book](https://adv-r.hadley.nz/function-factories.html?q=closure#stateful-funs) by Hadley Wickham such function factories are called *stateful functions* that "allow you to maintain state across function invocations". It also has a warning on not abusing them.
 
 > "Stateful functions are best used in moderation. As soon as your function starts managing the state of multiple variables, it's better to switch to R6, the topic of Chapter 14."
 
