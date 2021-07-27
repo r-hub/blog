@@ -8,7 +8,7 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 6daa5e95215b11dc
+rmd_hash: d4933e94df985a73
 
 ---
 
@@ -47,10 +47,10 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. 
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.000       3.004 
+      0.002       0.000       3.004 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.037       0.000       0.037 </code></pre>
+      0.037       0.000       0.038 </code></pre>
 
 </div>
 
@@ -188,7 +188,7 @@ For persistent caching across R sessions you will need to store function results
 
 *How* to store results on disk? Text files are great for short string values. Writing compressed RDS files is also an option. In any case, cache storage should usually be small for internal use in the package (as opposed to the huge computation caching a package like [targets](https://books.ropensci.org/targets/) supports).
 
-## Caching documentation
+## Documenting caching
 
 If your package use caching,
 

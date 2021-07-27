@@ -227,7 +227,7 @@ Text files are great for short string values.
 Writing compressed RDS files is also an option.
 In any case, cache storage should usually be small for internal use in the package (as opposed to the huge computation caching a package like [targets](https://books.ropensci.org/targets/) supports).
 
-## Caching documentation
+## Documenting caching
 
 If your package use caching,
 
