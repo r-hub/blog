@@ -12,4 +12,4 @@ social:
   icon: fa-github
 ---
 
-(R)esearch Software Engineer.
+R(esearch) Software Engineer.
