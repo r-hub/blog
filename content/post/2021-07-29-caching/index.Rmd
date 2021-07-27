@@ -88,7 +88,7 @@ The memoise package also lets you
 
 -   choose the duration of validity of the cache;
 
--   cache on disk -- on that topic see the R-hub blog post on [persistent data and config for R packages](/2020/03/12/user-preferences/).
+-   [cache on disk](#storing-on-disk).
 
 If you use the memoise package in a package, do not forget to add
 
@@ -165,7 +165,21 @@ It also has a warning on not abusing them.
 
 > "Stateful functions are best used in moderation. As soon as your function starts managing the state of multiple variables, it's better to switch to R6, the topic of Chapter 14."
 
-## Caching best practice in packages
+## Storing on disk?
+
+For persistent caching across R sessions you will need to store function results on disk.
+On that topic see also the R-hub blog post on [persistent data and config for R packages](/2020/03/12/user-preferences/)
+
+*Where* to store results on disk?
+Best practice is to use user data dir via the rappdirs package or `tools::R_user_dir()` from R version 4.0.
+You might see some local caching e.g. what `httr::oauth2.0_token()` does, in that case with editing of the `.gitignore` file as the cached result is a secret!
+
+*How* to store results on disk?
+Text files are great for short string values.
+Writing compressed RDS files is also an option.
+In any case, cache storage should usually be small for internal use in the package (as opposed to the huge computation caching a package like [targets](https://books.ropensci.org/targets/) supports).
+
+## Caching documentation
 
 If your package use caching,
 

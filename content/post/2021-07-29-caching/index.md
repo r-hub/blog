@@ -1,6 +1,6 @@
 ---
 slug: cache
-title: "How to cache results in R code" 
+title: "Caching the results of functions of your R package" 
 authors: 
 - Maëlle Salmon 
 - Christophe Dervieux
@@ -8,15 +8,15 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: efc3eae949472276
+rmd_hash: 68f048eec3c47273
 
 ---
 
-One principle of programming that's often encountered is "DRY", "Don't Repeat Yourself", that encourages e.g. the use of functions other duplicated (read: copy-pasted and slightly amended) code. You could also interpret it as don't let the machine repeat its calculations if useless. How about for a piece of code (function) with the same inputs, we only run it once per R session, and save the results for later? In this post, we shall go over ways to cache results in an R session, so that you don't need to burden machines. We will not cover [caching for R Markdown](https://bookdown.org/yihui/rmarkdown-cookbook/cache.html).
+One principle of programming that's often encountered is "DRY", "Don't Repeat Yourself", that encourages e.g. the use of functions over duplicated (read: copy-pasted and slightly amended) code. You could also interpret it as don't let the machine repeat its calculations if useless. How about for a function with the same inputs, we only run it once e.g. per R session, and save the results for later? In this post, we shall go over ways to cache results of R functions, so that you don't need to burden machines and humans.
 
 ## Caching: what is it and why use it?
 
-Caching means that if you call a function several times with the exact same input, the function is only actually run the first time. The result is stored in a cache of some sort (more practical details later!). Every other time the function is called with the same input, the result is retrieved from the cache. You will often think of caching as something valid in only one R session, but we'll see it can last longer via storage on disk.
+Caching means that if you call a function several times with the exact same input, the function is only actually run the first time. The result is stored in a cache of some sort (more practical details later!). Every other time the function is called with the same input, the result is retrieved from the cache unless [invalidated](https://yihui.org/en/2018/06/cache-invalidation/). You will often think of caching as something valid in only one R session, but we'll see it can be persistent across sessions via storage on disk.
 
 Now, *why* use caching?
 
@@ -26,9 +26,11 @@ Now, *why* use caching?
 
 -   It might be *more polite*. That's similar to the second item but from the perspective of e.g. a web API you keep hitting when you could have saved the result. The [polite package](https://dmi3kno.github.io/polite/) for polite webscraping caches results.
 
-## Tools for caching in R
+-   Your function may asked some user inputs that won't change for the session and you don't want to ask everytime you need it. It could be per session caching but also persistent caching. As an example, **reticulate** will asked you once if you want to install miniconda by storing your answer locally if you say no and not ask again. (See internal [`miniconda_install_prompt()`](https://github.com/rstudio/reticulate/blob/edc22999925fd47e47c89e7196001446aec23806/R/miniconda.R#L284)\`
 
-Here's a roundup of ways to cache code in R.
+    ## Tools for caching in R
+
+Here's a roundup of some ways to cache results of functions in R.
 
 ### The memoise package
 
@@ -45,20 +47,20 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. 
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.001       3.002 
+      0.001       0.000       3.005 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.031       0.004       0.036 </code></pre>
+      0.037       0.000       0.037 </code></pre>
 
 </div>
 
-The second call to [`sleep()`](https://rdrr.io/r/datasets/sleep.html) is much quicker because, well, it does not call the `.sleep()` function so there's no sleep.
+The second call to `sleep()` is much quicker because, well, it does not call the `.sleep()` function so there's no sleep.
 
 The memoise package also lets you
 
 -   choose the duration of validity of the cache;
 
--   cache on disk -- on that topic see the R-hub blog post on [persistent data and config for R packages](/2020/03/12/user-preferences/).
+-   [cache on disk](#storing-on-disk).
 
 If you use the memoise package in a package, do not forget to add
 
@@ -66,7 +68,7 @@ If you use the memoise package in a package, do not forget to add
 @importFrom memoise memoise
 ```
 
-in one of your R scripts (thanks [Mark Padgham](https://mpadge.github.io/) for this tip!) otherwise you will get a R CMD Check NOTE.
+in one of your R scripts (thanks [Mark Padgham](https://mpadge.github.io/) for this tip!) otherwise you will get a R CMD Check NOTE. This is because R will look for package usage in function bodies, whereas the call to memoise is at the top-level.
 
     Result: NOTE
         Namespace in Imports field not imported from: ‘memoise’
@@ -122,7 +124,7 @@ Using e.g. [`rlang::env_cache()`](https://rlang.r-lib.org/reference/env_cache.h
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.000       3.003 
+      0.000       0.000       3.003 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message2</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
           0           0           0 
@@ -140,12 +142,20 @@ This is not caching per se, but good to know! The [Advanced R book](https://adv-
 
 > "Stateful functions are best used in moderation. As soon as your function starts managing the state of multiple variables, it's better to switch to R6, the topic of Chapter 14."
 
-## Caching best practice in packages
+## Storing on disk?
+
+For persistent caching across R sessions you will need to store function results on disk. On that topic see also the R-hub blog post on [persistent data and config for R packages](/2020/03/12/user-preferences/)
+
+*Where* to store results on disk? Best practice is to use user data dir via the rappdirs package or [`tools::R_user_dir()`](https://rdrr.io/r/tools/userdir.html) from R version 4.0. You might see some local caching e.g. what [`httr::oauth2.0_token()`](https://httr.r-lib.org/reference/oauth2.0_token.html) does, in that case with editing of the `.gitignore` file as the cached result is a secret!
+
+*How* to store results on disk? Text files are great for short string values. Writing compressed RDS files is also an option. In any case, cache storage should usually be small for internal use in the package (as opposed to the huge computation caching a package like [targets](https://books.ropensci.org/targets/) supports).
+
+## Caching documentation
 
 If your package use caching,
 
 -   document that;
--   and also provide ways to clear the cache (see e.g. [opencage docs](https://docs.ropensci.org/opencage/articles/opencage.html#caching-1)).
+-   and also provide ways to clear the cache (see e.g. [opencage docs](https://docs.ropensci.org/opencage/articles/opencage.html#caching-1)); this is especially crucial for persistent caching as it would be fine to simply say the user has to restart the R session.
 
 ## When not to cache in an R session
 
@@ -188,5 +198,9 @@ Note that as a package author, you do not know how the users will call a functio
 
 ## Conclusion
 
-In this post we summarized tools and tips on how to cache results in R code. Have you used caching in one of your packages or scripts? What tool did you use?
+In this post we summarized tools and tips on how to cache results in R code.
+
+We have not covered other types of caching relevant for R users: [caching for R Markdown](https://bookdown.org/yihui/rmarkdown-cookbook/cache.html), [caching for Shiny](https://shiny.rstudio.com/articles/caching.html), caching in projects via the use of [the targets package](https://books.ropensci.org/targets/) (or its superseded predecessor [drake](https://books.ropensci.org/drake/)). Lots to explore based on your use case! :wink:
+
+Have you used caching in one of your packages or scripts? What tool did you use?
 
