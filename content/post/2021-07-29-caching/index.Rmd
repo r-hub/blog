@@ -284,7 +284,7 @@ But because you know they won't necessarily do that, you can add caching!
 
 ## Conclusion
 
-In this post we summarized tools and tips on how to cache results in R code.
+In this post we summarized tools and tips on how to cache the results of functions of your R package.
 
 We have not covered other types of caching relevant for R users: [caching for R Markdown](https://bookdown.org/yihui/rmarkdown-cookbook/cache.html), [caching for Shiny](https://shiny.rstudio.com/articles/caching.html), caching in projects via the use of [the targets package](https://books.ropensci.org/targets/) (or its superseded predecessor [drake](https://books.ropensci.org/drake/)).
 Lots to explore based on your use case!

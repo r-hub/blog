@@ -8,7 +8,7 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 1e9cc2eab3421039
+rmd_hash: 5421682d2adce27f
 
 ---
 
@@ -47,10 +47,10 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. 
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.000       3.004 
+      0.001       0.000       3.003 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.038       0.000       0.038 </code></pre>
+       0.04        0.00        0.04 </code></pre>
 
 </div>
 
@@ -236,7 +236,7 @@ Note that as a package author, you do not know how the users will call a functio
 
 ## Conclusion
 
-In this post we summarized tools and tips on how to cache results in R code.
+In this post we summarized tools and tips on how to cache the results of functions of your R package.
 
 We have not covered other types of caching relevant for R users: [caching for R Markdown](https://bookdown.org/yihui/rmarkdown-cookbook/cache.html), [caching for Shiny](https://shiny.rstudio.com/articles/caching.html), caching in projects via the use of [the targets package](https://books.ropensci.org/targets/) (or its superseded predecessor [drake](https://books.ropensci.org/drake/)). Lots to explore based on your use case! :wink:
 
