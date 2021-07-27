@@ -8,7 +8,7 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: b4ec7ab8c182d260
+rmd_hash: da60b78d07bb4fec
 
 ---
 
@@ -50,7 +50,7 @@ utilisateur     système      écoulé
       0.001       0.000       3.003 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.036       0.000       0.036 </code></pre>
+      0.036       0.000       0.037 </code></pre>
 
 </div>
 
@@ -126,40 +126,59 @@ memoize_first <- function(fun) {
 
 This function is a closure (a [function creating a function](https://adv-r.hadley.nz/function-factories.html?q=closure#function-factories)). It caches results in a list from where they are retrieved in the function gets called a second time with the same argument.
 
-### Saving results in an environment
-
-This idea is more light-weight.
-
-Using e.g. [`rlang::env_cache()`](https://rlang.r-lib.org/reference/env_cache.html) by Lionel Henry (in the development version of [rlang](https://rlang.r-lib.org/) at the time of writing).
-
-<div class="highlight">
-
-<pre class='chroma'><code class='language-r' data-lang='r'><span class='c'># create an environment for storing results</span>
-<span class='nv'>cache_env</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env.html'>new_environment</a></span><span class='o'>(</span><span class='o'>)</span>
-
-<span class='c'># the sleep function again, not memoised</span>
-<span class='nv'>sleep</span> <span class='o'>&lt;-</span> <span class='kr'>function</span><span class='o'>(</span><span class='o'>)</span> <span class='o'>&#123;</span>
-  <span class='nf'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span><span class='o'>(</span><span class='m'>3</span><span class='o'>)</span>
-  <span class='s'>"Rested now!"</span>
-<span class='o'>&#125;</span>
-
-<span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
-utilisateur     système      écoulé 
-          0           0           3 
-<span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nv'>message2</span> <span class='o'>&lt;-</span> <span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/env_cache.html'>env_cache</a></span><span class='o'>(</span><span class='nv'>cache_env</span>, <span class='s'>"message"</span>, <span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span>
-utilisateur     système      écoulé 
-          0           0           0 
-
-<span class='nv'>message</span>
-[1] "Rested now!"
-<span class='nv'>message2</span>
-[1] "Rested now!"</code></pre>
-
-</div>
-
 In the [Advanced R book](https://adv-r.hadley.nz/function-factories.html?q=closure#stateful-funs) by Hadley Wickham such function factories are called *stateful functions* that "allow you to maintain state across function invocations". It also has a warning on not abusing them.
 
 > "Stateful functions are best used in moderation. As soon as your function starts managing the state of multiple variables, it's better to switch to R6, the topic of Chapter 14."
+
+### Saving results in an environment
+
+This is well suited for package development where
+
+-   You create an environment internal to your package where you store a value
+-   You can then store in it any computed value for the current R session where the package is loaded.
+
+Here's an example with only base R functions
+
+``` r
+cache_env <- new.env(parent = emptyenv())
+who_am_i <- function() {
+  if (is.null(cache_env$name)) {
+    cache_env$name <- readline("I don't know you. Can you tell me your name ? ")
+  }
+  message("Welcome ", cache_env$name, "!")
+  invisible(cache_env$name)
+}
+get_current_name <- function() {
+  cache_env$name
+}
+who_am_i()
+#> I don't know you. Can you tell me your name ? cderv
+#> Welcome cderv!
+who_am_i()
+#> Welcome cderv!
+```
+
+This example would be simpler if using [`rlang::env_cache()`](https://rlang.r-lib.org/reference/env_cache.html) by Lionel Henry (in the development version of [rlang](https://rlang.r-lib.org/) at the time of writing).
+
+``` r
+cache_env <- rlang::new_environment()
+who_am_i <- function() {
+  name <- rlang::env_cache(
+    env = cache_env, nm = "name", 
+    default = readline("I don't know you. Can you tell me your name ? ")
+  )
+  message("Welcome ", name, "!")
+  invisible(name)
+}
+get_current_name <- function() {
+  cache_env$name
+}
+who_am_i()
+#> I don't know you. Can you tell me your name ? cderv
+#> Welcome cderv!
+who_am_i()
+#> Welcome cderv!
+```
 
 ## Storing on disk?
 
