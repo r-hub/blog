@@ -8,7 +8,7 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: ae6b09d1ceb043ce
+rmd_hash: 6daa5e95215b11dc
 
 ---
 
@@ -47,10 +47,10 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. 
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.000       3.003 
+      0.001       0.000       3.004 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.036       0.001       0.036 </code></pre>
+      0.037       0.000       0.037 </code></pre>
 
 </div>
 
@@ -132,12 +132,12 @@ In the [Advanced R book](https://adv-r.hadley.nz/function-factories.html?q=closu
 
 ### Saving results in an environment
 
-This is well suited for package development where
+This is well suited for package development where:
 
--   You create an environment internal to your package where you store a value
+-   You create an environment internal to your package where you store a value;
 -   You can then store in it any computed value for the current R session where the package is loaded.
 
-Here's an example with only base R functions
+Here's an example with only base R functions:
 
 ``` r
 cache_env <- new.env(parent = emptyenv())
@@ -182,7 +182,7 @@ who_am_i()
 
 ### Storing on disk?
 
-For persistent caching across R sessions you will need to store function results on disk. On that topic see also the R-hub blog post on [persistent data and config for R packages](/2020/03/12/user-preferences/)
+For persistent caching across R sessions you will need to store function results on disk. On that topic see also the R-hub blog post on [persistent data and config for R packages](/2020/03/12/user-preferences/).
 
 *Where* to store results on disk? Best practice is to use user data dir via the rappdirs package or [`tools::R_user_dir()`](https://rdrr.io/r/tools/userdir.html) from R version 4.0. You might see some local caching e.g. what [`httr::oauth2.0_token()`](https://httr.r-lib.org/reference/oauth2.0_token.html) does, in that case with editing of the `.gitignore` file as the cached result is a secret!
 
