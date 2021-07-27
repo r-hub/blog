@@ -8,7 +8,7 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: d4933e94df985a73
+rmd_hash: 1e9cc2eab3421039
 
 ---
 
@@ -26,7 +26,7 @@ Now, *why* use caching?
 
 -   It might be *more polite*. That's similar to the second item but from the perspective of e.g. a web API you keep hitting when you could have saved the result. The [polite package](https://dmi3kno.github.io/polite/) for polite webscraping caches results.
 
-Caching can be about results of functions but also some user *inputs* that won't change for the session and you don't want to ask every time you need it (being *polite*!). It could be per session caching but also persistent caching. As an example, **reticulate** will ask you once if you want to install miniconda by storing your answer locally if you say no and not ask again. (See internal [`miniconda_install_prompt()`](https://github.com/rstudio/reticulate/blob/edc22999925fd47e47c89e7196001446aec23806/R/miniconda.R#L284)).
+Caching can be about results of functions but also some user *inputs* that won't change for the session and you don't want to ask every time you need it (being *polite*!). It could be per session caching but also persistent caching. As an example, [reticulate](https://rstudio.github.io/reticulate/) will ask you once if you want to install miniconda by storing your answer locally if you say no and not ask again. (See internal [`miniconda_install_prompt()`](https://github.com/rstudio/reticulate/blob/edc22999925fd47e47c89e7196001446aec23806/R/miniconda.R#L284)).
 
 ## Tools for caching in R
 
@@ -47,10 +47,10 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. 
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.002       0.000       3.004 
+      0.001       0.000       3.004 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.037       0.000       0.038 </code></pre>
+      0.038       0.000       0.038 </code></pre>
 
 </div>
 

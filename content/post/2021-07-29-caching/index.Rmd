@@ -58,7 +58,7 @@ Now, *why* use caching?
 
 Caching can be about results of functions but also some user *inputs* that won't change for the session and you don't want to ask every time you need it (being *polite*!).
 It could be per session caching but also persistent caching.
-As an example, **reticulate** will ask you once if you want to install miniconda by storing your answer locally if you say no and not ask again.
+As an example, [reticulate](https://rstudio.github.io/reticulate/) will ask you once if you want to install miniconda by storing your answer locally if you say no and not ask again.
 (See internal [`miniconda_install_prompt()`](https://github.com/rstudio/reticulate/blob/edc22999925fd47e47c89e7196001446aec23806/R/miniconda.R#L284)).
 
 ## Tools for caching in R
