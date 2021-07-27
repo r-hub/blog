@@ -33,7 +33,7 @@ knitr::knit_hooks$set(
 
 ```
 
-One principle of programming that's often encountered is "DRY", "Don't Repeat Yourself", that encourages e.g. the use of functions other duplicated (read: copy-pasted and slightly amended) code.
+One principle of programming that's often encountered is "DRY", "Don't Repeat Yourself", that encourages e.g. the use of functions over duplicated (read: copy-pasted and slightly amended) code.
 You could also interpret it as don't let the machine repeat its calculations if useless.
 How about for a piece of code (function) with the same inputs, we only run it once per R session, and save the results for later?
 In this post, we shall go over ways to cache results in an R session, so that you don't need to burden machines.
@@ -43,8 +43,8 @@ We will not cover [caching for R Markdown](https://bookdown.org/yihui/rmarkdown-
 
 Caching means that if you call a function several times with the exact same input, the function is only actually run the first time.
 The result is stored in a cache of some sort (more practical details later!).
-Every other time the function is called with the same input, the result is retrieved from the cache.
-You will often think of caching as something valid in only one R session, but we'll see it can last longer via storage on disk.
+Every other time the function is called with the same input, the result is retrieved from the cache unless invalidated.
+You will often think of caching as something valid in only one R session, but we'll see it can be persistent across sessions via storage on disk.
 
 Now, *why* use caching?
 
@@ -57,9 +57,10 @@ Now, *why* use caching?
     That's similar to the second item but from the perspective of e.g. a web API you keep hitting when you could have saved the result.
     The [polite package](https://dmi3kno.github.io/polite/) for polite webscraping caches results.
 
+- Your function may asked some user inputs that won't change for the session and you don't want to ask everytime you need it. It could be per session caching but also persistent caching. As an example, **reticulate** will asked you once if you want to install miniconda by storing your answer locally if you say no and not ask again. (See internal [`miniconda_install_prompt()`](https://github.com/rstudio/reticulate/blob/edc22999925fd47e47c89e7196001446aec23806/R/miniconda.R#L284)`
 ## Tools for caching in R
 
-Here's a roundup of ways to cache code in R.
+Here's a roundup of some ways to cache results of functions in R.
 
 ### The memoise package
 
