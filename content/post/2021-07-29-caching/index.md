@@ -8,7 +8,7 @@ date: "2021-07-29"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: da60b78d07bb4fec
+rmd_hash: ae6b09d1ceb043ce
 
 ---
 
@@ -26,9 +26,9 @@ Now, *why* use caching?
 
 -   It might be *more polite*. That's similar to the second item but from the perspective of e.g. a web API you keep hitting when you could have saved the result. The [polite package](https://dmi3kno.github.io/polite/) for polite webscraping caches results.
 
--   Your function may asked some user inputs that won't change for the session and you don't want to ask everytime you need it. It could be per session caching but also persistent caching. As an example, **reticulate** will asked you once if you want to install miniconda by storing your answer locally if you say no and not ask again. (See internal [`miniconda_install_prompt()`](https://github.com/rstudio/reticulate/blob/edc22999925fd47e47c89e7196001446aec23806/R/miniconda.R#L284)\`
+Caching can be about results of functions but also some user *inputs* that won't change for the session and you don't want to ask every time you need it (being *polite*!). It could be per session caching but also persistent caching. As an example, **reticulate** will ask you once if you want to install miniconda by storing your answer locally if you say no and not ask again. (See internal [`miniconda_install_prompt()`](https://github.com/rstudio/reticulate/blob/edc22999925fd47e47c89e7196001446aec23806/R/miniconda.R#L284)).
 
-    ## Tools for caching in R
+## Tools for caching in R
 
 Here's a roundup of some ways to cache results of functions in R.
 
@@ -50,11 +50,11 @@ utilisateur     système      écoulé
       0.001       0.000       3.003 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.036       0.000       0.037 </code></pre>
+      0.036       0.001       0.036 </code></pre>
 
 </div>
 
-The second call to `sleep()` is much quicker because, well, it does not call the `.sleep()` function so there's no sleep.
+The second call to [`sleep()`](https://rdrr.io/r/datasets/sleep.html) is much quicker because, well, it does not call the `.sleep()` function so there's no sleep.
 
 The memoise package also lets you
 
@@ -74,7 +74,7 @@ in one of your R scripts (thanks [Mark Padgham](https://mpadge.github.io/) for t
         Namespace in Imports field not imported from: ‘memoise’
          All declared Imports should be used.
 
-### DIY memoization
+### Function factory
 
 Now what if you want simple memoization and no dependency on the memoise package? In that case you might be interested in creating some sort of function factory. See the example below, with `who_am_i_impl()` the function factory. We use it to create the `who_am_i()` function whose results are then stored for the session.
 
@@ -180,7 +180,7 @@ who_am_i()
 #> Welcome cderv!
 ```
 
-## Storing on disk?
+### Storing on disk?
 
 For persistent caching across R sessions you will need to store function results on disk. On that topic see also the R-hub blog post on [persistent data and config for R packages](/2020/03/12/user-preferences/)
 
