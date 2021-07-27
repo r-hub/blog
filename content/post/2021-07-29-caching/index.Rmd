@@ -96,7 +96,7 @@ If you use the memoise package in a package, do not forget to add
 @importFrom memoise memoise
 ```
 
-in one of your R scripts (thanks [Mark Padgham](https://mpadge.github.io/) for this tip!) otherwise you will get a R CMD Check NOTE.
+in one of your R scripts (thanks [Mark Padgham](https://mpadge.github.io/) for this tip!) otherwise you will get a R CMD Check NOTE. This is because R will look for package usage in function bodies, whereas the call to memoise is at the top-level.
 
     Result: NOTE
         Namespace in Imports field not imported from: ‘memoise’
