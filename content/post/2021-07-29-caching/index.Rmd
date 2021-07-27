@@ -1,6 +1,6 @@
 ---
 slug: cache
-title: "How to cache results in R code" 
+title: "Caching the results of functions of your R package" 
 authors: 
 - Maëlle Salmon 
 - Christophe Dervieux
@@ -35,15 +35,14 @@ knitr::knit_hooks$set(
 
 One principle of programming that's often encountered is "DRY", "Don't Repeat Yourself", that encourages e.g. the use of functions over duplicated (read: copy-pasted and slightly amended) code.
 You could also interpret it as don't let the machine repeat its calculations if useless.
-How about for a piece of code (function) with the same inputs, we only run it once per R session, and save the results for later?
-In this post, we shall go over ways to cache results in an R session, so that you don't need to burden machines.
-We will not cover [caching for R Markdown](https://bookdown.org/yihui/rmarkdown-cookbook/cache.html).
+How about for a function with the same inputs, we only run it once e.g. per R session, and save the results for later?
+In this post, we shall go over ways to cache results of R functions, so that you don't need to burden machines and humans.
 
 ## Caching: what is it and why use it?
 
 Caching means that if you call a function several times with the exact same input, the function is only actually run the first time.
 The result is stored in a cache of some sort (more practical details later!).
-Every other time the function is called with the same input, the result is retrieved from the cache unless invalidated.
+Every other time the function is called with the same input, the result is retrieved from the cache unless [invalidated](https://yihui.org/en/2018/06/cache-invalidation/).
 You will often think of caching as something valid in only one R session, but we'll see it can be persistent across sessions via storage on disk.
 
 Now, *why* use caching?
@@ -57,8 +56,12 @@ Now, *why* use caching?
     That's similar to the second item but from the perspective of e.g. a web API you keep hitting when you could have saved the result.
     The [polite package](https://dmi3kno.github.io/polite/) for polite webscraping caches results.
 
-- Your function may asked some user inputs that won't change for the session and you don't want to ask everytime you need it. It could be per session caching but also persistent caching. As an example, **reticulate** will asked you once if you want to install miniconda by storing your answer locally if you say no and not ask again. (See internal [`miniconda_install_prompt()`](https://github.com/rstudio/reticulate/blob/edc22999925fd47e47c89e7196001446aec23806/R/miniconda.R#L284)`
-## Tools for caching in R
+-   Your function may asked some user inputs that won't change for the session and you don't want to ask everytime you need it.
+    It could be per session caching but also persistent caching.
+    As an example, **reticulate** will asked you once if you want to install miniconda by storing your answer locally if you say no and not ask again.
+    (See internal [`miniconda_install_prompt()`](https://github.com/rstudio/reticulate/blob/edc22999925fd47e47c89e7196001446aec23806/R/miniconda.R#L284)\`
+
+    ## Tools for caching in R
 
 Here's a roundup of some ways to cache results of functions in R.
 
@@ -220,5 +223,10 @@ But because you know they won't necessarily do that, you can add caching!
 ## Conclusion
 
 In this post we summarized tools and tips on how to cache results in R code.
+
+We have not covered other types of caching relevant for R users: [caching for R Markdown](https://bookdown.org/yihui/rmarkdown-cookbook/cache.html), [caching for Shiny](https://shiny.rstudio.com/articles/caching.html), caching in projects via the use of [the targets package](https://books.ropensci.org/targets/) (or its superseded predecessor [drake](https://books.ropensci.org/drake/)).
+Lots to explore based on your use case!
+:wink:
+
 Have you used caching in one of your packages or scripts?
 What tool did you use?
