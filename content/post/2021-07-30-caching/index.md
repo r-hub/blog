@@ -4,11 +4,11 @@ title: "Caching the results of functions of your R package"
 authors: 
 - Maëlle Salmon 
 - Christophe Dervieux
-date: "2021-07-29" 
+date: "2021-07-30" 
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 5421682d2adce27f
+rmd_hash: caced323f29cfcc2
 
 ---
 
@@ -47,10 +47,10 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. 
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.000       3.003 
+      0.002       0.000       3.004 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-       0.04        0.00        0.04 </code></pre>
+      0.038       0.000       0.038 </code></pre>
 
 </div>
 
@@ -101,7 +101,7 @@ who_am_i()
 
 In the whoami package by Gábor Csárdi, there is an internal function `lookup_gh_username()` that calls the GitHub API. It is memoized without the memoise package.
 
--   In [`.onLoad()`](https://github.com/r-lib/whoami/blob/40999c9945104f740d0fe13ed07288879aec14c6/R/whoami.R#L2) the memoization function is called
+-   In [`.onLoad()`](https://github.com/r-lib/whoami/blob/40999c9945104f740d0fe13ed07288879aec14c6/R/whoami.R#L2) the memoization function is called, overwriting `lookup_gh_username()` with its memoized version.
 
 ``` r
 .onLoad <- function(libname, pkgname) {
@@ -124,7 +124,7 @@ memoize_first <- function(fun) {
 }
 ```
 
-This function is a closure (a [function creating a function](https://adv-r.hadley.nz/function-factories.html?q=closure#function-factories)). It caches results in a list from where they are retrieved in the function gets called a second time with the same argument.
+This function is a closure (a [function creating a function](https://adv-r.hadley.nz/function-factories.html?q=closure#function-factories)). It will take any function and makes it cache its result in a list based on first argument value (here `arg`) when this is a string. If the memoized function is called again with the same first argument `arg`, then the result is retrieved from the list instead of the function being executed.
 
 In the [Advanced R book](https://adv-r.hadley.nz/function-factories.html?q=closure#stateful-funs) by Hadley Wickham such function factories are called *stateful functions* that "allow you to maintain state across function invocations". It also has a warning on not abusing them.
 
@@ -187,6 +187,16 @@ For persistent caching across R sessions you will need to store function results
 *Where* to store results on disk? Best practice is to use user data dir via the rappdirs package or [`tools::R_user_dir()`](https://rdrr.io/r/tools/userdir.html) from R version 4.0. You might see some local caching e.g. what [`httr::oauth2.0_token()`](https://httr.r-lib.org/reference/oauth2.0_token.html) does, in that case with editing of the `.gitignore` file as the cached result is a secret!
 
 *How* to store results on disk? Text files are great for short string values. Writing compressed RDS files is also an option. In any case, cache storage should usually be small for internal use in the package (as opposed to the huge computation caching a package like [targets](https://books.ropensci.org/targets/) supports).
+
+### Packages for caching
+
+For further tooling around caching beside the memoise package and base R functions, refer to these packages (and their reverse dependencies!):
+
+-   [storr](https://cran.r-project.org/web/packages/storr/index.html) by Rich FitzJohn. *Creates and manages simple key-value stores. These can use a variety of approaches for storing the data. This package implements the base methods and support for file system, in-memory and DBI-based database stores.*
+
+-   [R.cache](https://cran.r-project.org/web/packages/R.cache/) by Henrik Bengtsson. *Fast and Light-Weight Caching (Memoization) of Objects and Results to Speed Up Computations.*
+
+-   [cachem](https://cran.r-project.org/web/packages/cachem/) by Winston Chang. *Key-value stores with automatic pruning. Caches can limit either their total size or the age of the oldest object (or both), automatically pruning objects to maintain the constraints.*
 
 ## Documenting caching
 
