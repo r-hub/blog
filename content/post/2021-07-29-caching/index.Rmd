@@ -156,7 +156,7 @@ memoize_first <- function(fun) {
 ```
 
 This function is a closure (a [function creating a function](https://adv-r.hadley.nz/function-factories.html?q=closure#function-factories)).
-It caches results in a list from where they are retrieved in the function gets called a second time with the same argument.
+It will take any function and makes it cache its result in a list based on first argument value (here `arg`) when this is  a string. If the memoized function is called again with the same first argument `arg`, then the result is retrieved from the list instead of the function being executed. 
 
 In the [Advanced R book](https://adv-r.hadley.nz/function-factories.html?q=closure#stateful-funs) by Hadley Wickham such function factories are called *stateful functions* that "allow you to maintain state across function invocations".
 It also has a warning on not abusing them.
