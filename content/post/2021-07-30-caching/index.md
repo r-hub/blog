@@ -8,7 +8,7 @@ date: "2021-07-30"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 60e9bae9a9305a8a
+rmd_hash: d8570534d8a906cf
 
 ---
 
@@ -47,10 +47,10 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. 
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.001       0.001       3.004 
+      0.001       0.000       3.002 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.042       0.000       0.042 </code></pre>
+      0.037       0.000       0.037 </code></pre>
 
 </div>
 
@@ -203,7 +203,7 @@ If your package use caching,
 -   document that;
 -   and also provide ways to clear the cache (see e.g. [opencage docs](https://docs.ropensci.org/opencage/articles/opencage.html#caching-1)); this is especially crucial for persistent caching as it would be fine to simply say the user has to restart the R session.
 
-## When not to cache in an R session
+## When not to cache
 
 We can't end this post with a few words of caution.
 

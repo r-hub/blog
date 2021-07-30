@@ -245,7 +245,7 @@ If your package use caching,
 -   document that;
 -   and also provide ways to clear the cache (see e.g. [opencage docs](https://docs.ropensci.org/opencage/articles/opencage.html#caching-1)); this is especially crucial for persistent caching as it would be fine to simply say the user has to restart the R session.
 
-## When not to cache in an R session
+## When not to cache
 
 We can't end this post with a few words of caution.
 
