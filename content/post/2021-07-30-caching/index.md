@@ -8,7 +8,7 @@ date: "2021-07-30"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: caced323f29cfcc2
+rmd_hash: 60e9bae9a9305a8a
 
 ---
 
@@ -47,10 +47,10 @@ The [memoise package](https://memoise.r-lib.org/) by Jim Hester is easy to use. 
 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.002       0.000       3.004 
+      0.001       0.001       3.004 
 <span class='nf'><a href='https://rdrr.io/r/base/system.time.html'>system.time</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/datasets/sleep.html'>sleep</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span>
 utilisateur     système      écoulé 
-      0.038       0.000       0.038 </code></pre>
+      0.042       0.000       0.042 </code></pre>
 
 </div>
 
@@ -126,9 +126,7 @@ memoize_first <- function(fun) {
 
 This function is a closure (a [function creating a function](https://adv-r.hadley.nz/function-factories.html?q=closure#function-factories)). It will take any function and makes it cache its result in a list based on first argument value (here `arg`) when this is a string. If the memoized function is called again with the same first argument `arg`, then the result is retrieved from the list instead of the function being executed.
 
-In the [Advanced R book](https://adv-r.hadley.nz/function-factories.html?q=closure#stateful-funs) by Hadley Wickham such function factories are called *stateful functions* that "allow you to maintain state across function invocations". It also has a warning on not abusing them.
-
-> "Stateful functions are best used in moderation. As soon as your function starts managing the state of multiple variables, it's better to switch to R6, the topic of Chapter 14."
+In the [Advanced R book](https://adv-r.hadley.nz/function-factories.html?q=closure#stateful-funs) by Hadley Wickham such function factories are called *stateful functions* that "allow you to maintain state across function invocations".
 
 ### Saving results in an environment
 

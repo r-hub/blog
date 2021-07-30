@@ -160,9 +160,6 @@ It will take any function and makes it cache its result in a list based on first
 If the memoized function is called again with the same first argument `arg`, then the result is retrieved from the list instead of the function being executed.
 
 In the [Advanced R book](https://adv-r.hadley.nz/function-factories.html?q=closure#stateful-funs) by Hadley Wickham such function factories are called *stateful functions* that "allow you to maintain state across function invocations".
-It also has a warning on not abusing them.
-
-> "Stateful functions are best used in moderation. As soon as your function starts managing the state of multiple variables, it's better to switch to R6, the topic of Chapter 14."
 
 ### Saving results in an environment
 
