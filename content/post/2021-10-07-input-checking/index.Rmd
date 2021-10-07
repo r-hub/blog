@@ -1,0 +1,53 @@
+---
+slug: input-checking
+title: "Checking the inputs of your R functions" 
+authors: 
+- Sam Abbott
+- Hugo Gruson
+- Carl Pearson
+- Tim Taylor
+date: "2021-10-07" 
+tags: 
+- package development 
+- r-package
+output: hugodown::hugo_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(fig.path = "", comment = "")
+# knitr hook to make images output use Hugo options
+knitr::knit_hooks$set(
+  plot = function(x, options) {
+    hugoopts <- options$hugoopts
+    paste0(
+      "{{<figure src=",
+      '"', x, '" ',
+      if (!is.null(hugoopts)) {
+        glue::glue_collapse(
+          glue::glue('{names(hugoopts)}="{hugoopts}"'),
+          sep = " "
+        )
+      },
+      ">}}\n"
+    )
+  }
+)
+
+```
+
+## Intro
+
+## Motivating example
+
+## What
+
+## Why
+
+## How (base)
+
+## How (not base)
+
+## How (other options)
+
+## What about the future
