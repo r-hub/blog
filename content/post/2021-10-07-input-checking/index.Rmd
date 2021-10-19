@@ -46,8 +46,63 @@ knitr::knit_hooks$set(
 
 ## How (base)
 
+There is a built-in mechanism to check input values in base R: `stopifnot()`.
+You can see it [used](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/stats/R/approx.R#L78) [throughout](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/stats/R/cor.R#L36) [R](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/graphics/R/smoothScatter.R#L47) [source](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/base/R/srcfile.R#L23) [code](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/base/R/parse.R#L65).
+As its name suggests, it will *stop* the function execution *if* an object does *not* pass some tests.
+
+```{r, error = TRUE}
+say_hello <- function(name) {
+  stopifnot(is.character(name))
+  paste("Hello", name)
+}
+
+say_hello("Bob")
+say_hello(404)
+```
+
+However, as you can see in this example, the error message is not in plain English but contains some code instructions.
+This can hinder understanding of the issue.
+
+Because of this, there was an improvement to `stopifnot()` in R 4.0.0:
+
+> stopifnot() now allows customizing error messages via argument names, thanks to a patch proposal by Neal Fultz in PR\#17688.
+
+This means we can now provide a clearer error message directly in `stopifnot()` [^1]:
+
+[^1]: Read [the tidyverse style guide](https://style.tidyverse.org/error-messages.html) for more guidance on how to write good error messages.
+
+```{r, error = TRUE}
+say_hello <- function(name) {
+  stopifnot("`name` must be a character." = is.character(name))
+  paste("Hello", name)
+}
+
+say_hello(404)
+```
+
+But we can this from this example that we could create the error message programmatically based on the contents of the test.
+Each time we test if the object is of `class_X` and this is not true, we could throw an error saying something like "x must of a class_X".
+This way, you don't have to repeat yourself [^2].
+This becomes necessary when you start having many input checks in your function or in your package.
+
+[^2]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
+
 ## How (not base)
 
+But although some developers create [their own functions](https://github.com/djnavarro/bs4cards/blob/a021d731a307ec7af692a42364308b60e2bf9827/R/validators.R) to solve this problem, you can also rely on existing packages to make your life easier.
+One of these packages designed to help you in input checking is checkmate.
+
 ## How (other options)
+
+Because input checking is such an important point and so difficult to get right, it is not surprising that there are many packages other than checkmate to solve this issue.
+We will not get into the details for all of them here but it is worth mentioning:
+
+-   testthat
+-   assertthat
+-   check
+-   assertr
+-   assertive
+-   ensurer
+-   vctrs::vec_assert()
 
 ## What about the future
