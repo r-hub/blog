@@ -105,4 +105,10 @@ We will not get into the details for all of them here but it is worth mentioning
 -   ensurer
 -   vctrs::vec_assert()
 
-## What about the future
+## What about the future?
+
+In this post, we have seen many alternatives to check function inputs more easily, and generate more informative error messages.
+However, this always comes with a performance cost, even though it's often relatively limited.
+Zero-cost assertions would require some kind of typing system.
+It is interesting to note that many other languages followed this evolution (TypeScript as an extension of JavaScript, type annotations in Python).
+[Will R one day follow suit?](https://blog.q-lang.org/posts/2021-10-16-project/)
