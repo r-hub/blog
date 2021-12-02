@@ -36,15 +36,9 @@ knitr::knit_hooks$set(
 
 ```
 
-## Intro
+## Introduction: the dangers of not checking function inputs
 
-## Motivating example
-
-## What
-
-## Why
-
-## How (base)
+## Checking function inputs using base R
 
 There is a built-in mechanism to check input values in base R: `stopifnot()`.
 You can see it [used](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/stats/R/approx.R#L78) [throughout](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/stats/R/cor.R#L36) [R](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/graphics/R/smoothScatter.R#L47) [source](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/base/R/srcfile.R#L23) [code](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/base/R/parse.R#L65).
@@ -87,12 +81,14 @@ This becomes necessary when you start having many input checks in your function 
 
 [^2]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
 
-## How (not base)
+## Checking function inputs using R packages
+
+### The example of the checkmate package
 
 But although some developers create [their own functions](https://github.com/djnavarro/bs4cards/blob/a021d731a307ec7af692a42364308b60e2bf9827/R/validators.R) to solve this problem, you can also rely on existing packages to make your life easier.
-One of these packages designed to help you in input checking is checkmate.
+One of these packages designed to help you in input checking is [checkmate](https://mllg.github.io/checkmate/).
 
-## How (other options)
+### Other packages to check function inputs
 
 Because input checking is such an important point and so difficult to get right, it is not surprising that there are many packages other than checkmate to solve this issue.
 We will not get into the details for all of them here but it is worth mentioning:
@@ -103,7 +99,7 @@ We will not get into the details for all of them here but it is worth mentioning
 -   assertr
 -   assertive
 -   ensurer
--   vctrs::vec_assert()
+-   `vctrs::vec_assert()`
 
 ## What about the future?
 
