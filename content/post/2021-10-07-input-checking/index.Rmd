@@ -59,7 +59,7 @@ geometric_mean(2, 8)
 geometric_mean(4, 1, 1/32)
 ```
 
-But a different person using your function might expose it situations it was not prepared to handle, resulting in cryptic errors or undefined behaviour:
+But a different person using your function might expose it to situations it was not prepared to handle, resulting in cryptic errors or undefined behaviour:
 
 ```{r, error = TRUE}
 # Input with factors instead of numerics
@@ -100,7 +100,7 @@ say_hello(404)
 However, as you can see in this example, the error message is not in plain English but contains some code instructions.
 This can hinder understanding of the issue.
 
-Because of this, `stopifnot()` was improved R 4.0.0:
+Because of this, `stopifnot()` was improved in R 4.0.0:
 
 > stopifnot() now allows customizing error messages via argument names, thanks to a patch proposal by Neal Fultz in PR\#17688.
 
@@ -119,7 +119,7 @@ say_hello(404)
 
 This is clearly a really great improvement to the functionality of base R. However, we can see from this example that we could create the error message programmatically based on the contents of the test.
 Each time we test if the object is of `class_X` and this is not true, we could throw an error saying something like "x must of a class_X".
-This way, you don't have to repeat yourself [^2] which is generally a good aim.
+This way, you don't have to repeat yourself which is generally a good aim [^2].
 This becomes necessary when you start having many input checks in your function or in your package.
 
 [^2]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
