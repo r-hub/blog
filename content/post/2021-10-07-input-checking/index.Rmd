@@ -168,5 +168,6 @@ If interested in understanding the various approaches to input taking the docume
 In this post, we have discussed some methods to check function inputs, and to generate more informative error messages when doing so.
 However, this always comes with a performance cost, even though it's often relatively limited.
 Zero-cost assertions, as found in some other languages, would require some kind of typing system which R does not currently support.
-Interestingly several other languages have evolved to have typing systems as they have developed (TypeScript as an extension of JavaScript, type annotations in Python).
+Interestingly several other languages have evolved to havetyping systems as they have developed.
+Typescript developed as an extension of JavaScript, and type annotations are now possible in Python.
 [Will R one day follow suit?](https://blog.q-lang.org/posts/2021-10-16-project/)
