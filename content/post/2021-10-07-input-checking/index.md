@@ -11,7 +11,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: cec101d449fbd3fc
+rmd_hash: 778f602a1f74bd46
 
 ---
 
@@ -145,12 +145,12 @@ Error in say_hello(c("Bob", "Alice")): Assertion on 'name' failed: Must have len
 
 Because input checking is such an important point task and because it is so difficult to get right, it is not surprising that there are many packages other than checkmate to solve this issue. We will not get into the details of all of the available options here but below is a list of some of the them. If interested in understanding the various approaches to input taking the documentation for these package is a great place to start.
 
--   testthat
--   assertthat
--   check
--   assertr
--   assertive
--   ensurer
+-   [testthat](https://testthat.r-lib.org/)
+-   [assertthat](https://github.com/hadley/assertthat)
+-   [check](https://github.com/moodymudskipper/check)
+-   [assertr](https://docs.ropensci.org/assertr/)
+-   [assertive](https://bitbucket.org/richierocks/assertive)
+-   [ensurer](https://github.com/smbache/ensurer)
 -   [`vctrs::vec_assert()`](https://vctrs.r-lib.org/reference/vec_assert.html)
 
 ## What about the future?

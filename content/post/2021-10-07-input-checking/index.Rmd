@@ -38,10 +38,9 @@ knitr::knit_hooks$set(
 
 ## Introduction: the dangers of not checking function inputs
 
-R functions and R packages are a convenient way to share code with the rest of the world
-but it is generally not possible to know how, or with what precise aim in mind, others will
-use your code. For example, they might try to use it on objects that your function was not
-designed for. Let's imagine we have written a short function to compute the geometric mean:
+R functions and R packages are a convenient way to share code with the rest of the world but it is generally not possible to know how, or with what precise aim in mind, others will use your code.
+For example, they might try to use it on objects that your function was not designed for.
+Let's imagine we have written a short function to compute the geometric mean:
 
 ```{r}
 geometric_mean <- function(...) {
@@ -117,7 +116,8 @@ say_hello <- function(name) {
 say_hello(404)
 ```
 
-This is clearly a really great improvement to the functionality of base R. However, we can see from this example that we could create the error message programmatically based on the contents of the test.
+This is clearly a really great improvement to the functionality of base R.
+However, we can see from this example that we could create the error message programmatically based on the contents of the test.
 Each time we test if the object is of `class_X` and this is not true, we could throw an error saying something like "x must of a class_X".
 This way, you don't have to repeat yourself which is generally a good aim [^2].
 This becomes necessary when you start having many input checks in your function or in your package.
@@ -152,15 +152,15 @@ say_hello(c("Bob", "Alice"))
 ### Other packages to check function inputs
 
 Because input checking is such an important point task and because it is so difficult to get right, it is not surprising that there are many packages other than checkmate to solve this issue.
-We will not get into the details of all of the available options here but below is a list of some of the them. If interested in understanding the various approaches to input taking the documentation
-for these package is a great place to start.
+We will not get into the details of all of the available options here but below is a list of some of the them.
+If interested in understanding the various approaches to input taking the documentation for these package is a great place to start.
 
--   testthat
--   assertthat
--   check
--   assertr
--   assertive
--   ensurer
+-   [testthat](https://testthat.r-lib.org/)
+-   [assertthat](https://github.com/hadley/assertthat)
+-   [check](https://github.com/moodymudskipper/check)
+-   [assertr](https://docs.ropensci.org/assertr/)
+-   [assertive](https://bitbucket.org/richierocks/assertive)
+-   [ensurer](https://github.com/smbache/ensurer)
 -   `vctrs::vec_assert()`
 
 ## What about the future?
