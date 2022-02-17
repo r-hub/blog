@@ -11,7 +11,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: 778f602a1f74bd46
+rmd_hash: 0c5654a4144805c4
 
 ---
 
@@ -92,7 +92,7 @@ However, as you can see in this example, the error message is not in plain Engli
 
 Because of this, [`stopifnot()`](https://rdrr.io/r/base/stopifnot.html) was improved in R 4.0.0:
 
-> stopifnot() now allows customizing error messages via argument names, thanks to a patch proposal by Neal Fultz in PR\#17688.
+> stopifnot() now allows customizing error messages via argument names, thanks to a patch proposal by Neal Fultz in PR#17688.
 
 This means we can now provide a clearer error message directly in [`stopifnot()`](https://rdrr.io/r/base/stopifnot.html) [^1]:
 
@@ -143,19 +143,72 @@ Error in say_hello(c("Bob", "Alice")): Assertion on 'name' failed: Must have len
 
 ### Other packages to check function inputs
 
-Because input checking is such an important point task and because it is so difficult to get right, it is not surprising that there are many packages other than checkmate to solve this issue. We will not get into the details of all of the available options here but below is a list of some of the them. If interested in understanding the various approaches to input taking the documentation for these package is a great place to start.
+Because input checking is such an important point task and because it is so difficult to get right, it is not surprising that there are many packages other than checkmate to solve this issue. We will not get into the details of all of the available options here but below is a list of some of them, listed by decreasing number of reverse dependencies. If interested in understanding the various approaches to input taking the documentation for these package is a great place to start.
 
--   [testthat](https://testthat.r-lib.org/)
--   [assertthat](https://github.com/hadley/assertthat)
--   [check](https://github.com/moodymudskipper/check)
--   [assertr](https://docs.ropensci.org/assertr/)
--   [assertive](https://bitbucket.org/richierocks/assertive)
--   [ensurer](https://github.com/smbache/ensurer)
+-   [assertthat](https://github.com/hadley/assertthat) (11 reverse dependencies)
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'>assertthat</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/assertthat/man/assert_that.html'>assert_that</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/character.html'>is.character</a></span><span class='o'>(</span><span class='m'>1</span><span class='o'>)</span><span class='o'>)</span>
+Error: 1 is not a character vector</code></pre>
+
+</div>
+
+-   [assertr](https://docs.ropensci.org/assertr/) (0 reverse dependencies)
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='o'>)</span>
+
+<span class='nv'>mtcars</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='nf'>assertr</span><span class='nf'>::</span><span class='nf'><a href='https://docs.ropensci.org/assertr/reference/verify.html'>verify</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='o'>(</span><span class='nv'>.</span><span class='o'>)</span> <span class='o'>&lt;</span> <span class='m'>10</span><span class='o'>)</span>
+verification [nrow(.) < 10] failed! (1 failure)
+
+    verb redux_fn    predicate column index value
+1 verify       NA nrow(.) < 10     NA     1    NA
+Error: assertr stopped execution</code></pre>
+
+</div>
+
+-   [assertive](https://bitbucket.org/richierocks/assertive) (0 reverse dependencies)
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'>assertive</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/assertive/man/is_character.html'>assert_is_a_string</a></span><span class='o'>(</span><span class='m'>1</span><span class='o'>)</span>
+Error in eval(expr, envir, enclos): is_a_string : 1 is not of class 'character'; it has class 'numeric'.</code></pre>
+
+</div>
+
+-   [ensurer](https://github.com/smbache/ensurer) (0 reverse dependencies)
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nv'>ensure_square</span> <span class='o'>&lt;-</span> <span class='nf'>ensurer</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/ensurer/man/ensures_that.html'>ensures_that</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>NCOL</a></span><span class='o'>(</span><span class='nv'>.</span><span class='o'>)</span> <span class='o'>==</span> <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>NROW</a></span><span class='o'>(</span><span class='nv'>.</span><span class='o'>)</span><span class='o'>)</span>
+
+<span class='nf'>ensure_square</span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='o'>(</span><span class='m'>1</span><span class='o'>:</span><span class='m'>20</span>, <span class='m'>4</span>, <span class='m'>5</span><span class='o'>)</span><span class='o'>)</span>
+Error: conditions failed for call 'rmarkdown::render(" .. ecking/index.Rmd", ':
+     * NCOL(.) == NROW(.)</code></pre>
+
+</div>
+
 -   [`vctrs::vec_assert()`](https://vctrs.r-lib.org/reference/vec_assert.html)
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'>vctrs</span><span class='nf'>::</span><span class='nf'><a href='https://vctrs.r-lib.org/reference/vec_assert.html'>vec_assert</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='m'>1</span>, <span class='m'>2</span><span class='o'>)</span>, <span class='s'>"character"</span><span class='o'>)</span>
+[1m[33mError[39m in [1m[1m`vctrs::vec_assert()`:[22m
+[33m![39m `c(1, 2)` must be a vector with type <character>.
+Instead, it has type <double>.
+
+<span class='nf'>vctrs</span><span class='nf'>::</span><span class='nf'><a href='https://vctrs.r-lib.org/reference/vec_assert.html'>vec_assert</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='m'>1</span>, <span class='m'>2</span><span class='o'>)</span>, size <span class='o'>=</span> <span class='m'>3</span><span class='o'>)</span>
+[1m[33mError[39m in [1m[1m`stop_vctrs()`:[22m
+[33m![39m `c(1, 2)` must have size 3, not size 2.</code></pre>
+
+</div>
 
 ## What about the future?
 
-In this post, we have discussed some methods to check function inputs, and to generate more informative error messages when doing so. However, this always comes with a performance cost, even though it's often relatively limited. Zero-cost assertions, as found in some other languages, would require some kind of typing system which R does not currently support. Interestingly several other languages have evolved to have typing systems as they have developed (TypeScript as an extension of JavaScript, type annotations in Python). [Will R one day follow suit?](https://blog.q-lang.org/posts/2021-10-16-project/)
+In this post, we have discussed some methods to check function inputs, and to generate more informative error messages when doing so. However, this always comes with a performance cost, even though it's often relatively limited. Zero-cost assertions, as found in some other languages, would require some kind of typing system which R does not currently support. Interestingly several other languages have evolved to havetyping systems as they have developed. Typescript developed as an extension of JavaScript, and type annotations are now possible in Python. [Will R one day follow suit?](https://blog.q-lang.org/posts/2021-10-16-project/)
 
 [^1]: Read [the tidyverse style guide](https://style.tidyverse.org/error-messages.html) for more guidance on how to write good error messages.
 

@@ -101,7 +101,7 @@ This can hinder understanding of the issue.
 
 Because of this, `stopifnot()` was improved in R 4.0.0:
 
-> stopifnot() now allows customizing error messages via argument names, thanks to a patch proposal by Neal Fultz in PR\#17688.
+> stopifnot() now allows customizing error messages via argument names, thanks to a patch proposal by Neal Fultz in PR#17688.
 
 This means we can now provide a clearer error message directly in `stopifnot()` [^1]:
 
@@ -152,15 +152,45 @@ say_hello(c("Bob", "Alice"))
 ### Other packages to check function inputs
 
 Because input checking is such an important point task and because it is so difficult to get right, it is not surprising that there are many packages other than checkmate to solve this issue.
-We will not get into the details of all of the available options here but below is a list of some of the them.
+We will not get into the details of all of the available options here but below is a list of some of them, listed by decreasing number of reverse dependencies.
 If interested in understanding the various approaches to input taking the documentation for these package is a great place to start.
 
--   [assertthat](https://github.com/hadley/assertthat)
--   [check](https://github.com/moodymudskipper/check)
--   [assertr](https://docs.ropensci.org/assertr/)
--   [assertive](https://bitbucket.org/richierocks/assertive)
--   [ensurer](https://github.com/smbache/ensurer)
+-   [assertthat](https://github.com/hadley/assertthat) (`r length(tools::dependsOnPkgs("assertthat"))` reverse dependencies)
+
+```{r, error = TRUE}
+assertthat::assert_that(is.character(1))
+```
+
+-   [assertr](https://docs.ropensci.org/assertr/) (`r length(tools::dependsOnPkgs("assertr"))` reverse dependencies)
+
+```{r, error = TRUE}
+library(magrittr)
+
+mtcars %>%
+  assertr::verify(nrow(.) < 10)
+```
+
+-   [assertive](https://bitbucket.org/richierocks/assertive) (`r length(tools::dependsOnPkgs("assertive"))` reverse dependencies)
+
+```{r, error = TRUE}
+assertive::assert_is_a_string(1)
+```
+
+-   [ensurer](https://github.com/smbache/ensurer) (`r length(tools::dependsOnPkgs("ensurer"))` reverse dependencies)
+
+```{r, error = TRUE}
+ensure_square <- ensurer::ensures_that(NCOL(.) == NROW(.))
+
+ensure_square(matrix(1:20, 4, 5))
+```
+
 -   `vctrs::vec_assert()`
+
+```{r, error = TRUE}
+vctrs::vec_assert(c(1, 2), "character")
+
+vctrs::vec_assert(c(1, 2), size = 3)
+```
 
 ## What about the future?
 
