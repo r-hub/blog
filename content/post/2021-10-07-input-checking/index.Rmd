@@ -155,7 +155,6 @@ Because input checking is such an important point task and because it is so diff
 We will not get into the details of all of the available options here but below is a list of some of the them.
 If interested in understanding the various approaches to input taking the documentation for these package is a great place to start.
 
--   [testthat](https://testthat.r-lib.org/)
 -   [assertthat](https://github.com/hadley/assertthat)
 -   [check](https://github.com/moodymudskipper/check)
 -   [assertr](https://docs.ropensci.org/assertr/)
