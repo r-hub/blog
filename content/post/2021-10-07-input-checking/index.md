@@ -11,7 +11,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: 0c5654a4144805c4
+rmd_hash: f35d02901a9698ee
 
 ---
 
@@ -145,7 +145,7 @@ Error in say_hello(c("Bob", "Alice")): Assertion on 'name' failed: Must have len
 
 Because input checking is such an important point task and because it is so difficult to get right, it is not surprising that there are many packages other than checkmate to solve this issue. We will not get into the details of all of the available options here but below is a list of some of them, listed by decreasing number of reverse dependencies. If interested in understanding the various approaches to input taking the documentation for these package is a great place to start.
 
--   [assertthat](https://github.com/hadley/assertthat) (11 reverse dependencies)
+-   [assertthat](https://github.com/hadley/assertthat)
 
 <div class="highlight">
 
@@ -154,7 +154,7 @@ Error: 1 is not a character vector</code></pre>
 
 </div>
 
--   [assertr](https://docs.ropensci.org/assertr/) (0 reverse dependencies)
+-   [assertr](https://docs.ropensci.org/assertr/)
 
 <div class="highlight">
 
@@ -170,7 +170,7 @@ Error: assertr stopped execution</code></pre>
 
 </div>
 
--   [assertive](https://bitbucket.org/richierocks/assertive) (0 reverse dependencies)
+-   [assertive](https://bitbucket.org/richierocks/assertive)
 
 <div class="highlight">
 
@@ -179,7 +179,7 @@ Error in eval(expr, envir, enclos): is_a_string : 1 is not of class 'character';
 
 </div>
 
--   [ensurer](https://github.com/smbache/ensurer) (0 reverse dependencies)
+-   [ensurer](https://github.com/smbache/ensurer)
 
 <div class="highlight">
 

@@ -155,13 +155,13 @@ Because input checking is such an important point task and because it is so diff
 We will not get into the details of all of the available options here but below is a list of some of them, listed by decreasing number of reverse dependencies.
 If interested in understanding the various approaches to input taking the documentation for these package is a great place to start.
 
--   [assertthat](https://github.com/hadley/assertthat) (`r length(tools::dependsOnPkgs("assertthat"))` reverse dependencies)
+-   [assertthat](https://github.com/hadley/assertthat)
 
 ```{r, error = TRUE}
 assertthat::assert_that(is.character(1))
 ```
 
--   [assertr](https://docs.ropensci.org/assertr/) (`r length(tools::dependsOnPkgs("assertr"))` reverse dependencies)
+-   [assertr](https://docs.ropensci.org/assertr/)
 
 ```{r, error = TRUE}
 library(magrittr)
@@ -170,13 +170,13 @@ mtcars %>%
   assertr::verify(nrow(.) < 10)
 ```
 
--   [assertive](https://bitbucket.org/richierocks/assertive) (`r length(tools::dependsOnPkgs("assertive"))` reverse dependencies)
+-   [assertive](https://bitbucket.org/richierocks/assertive)
 
 ```{r, error = TRUE}
 assertive::assert_is_a_string(1)
 ```
 
--   [ensurer](https://github.com/smbache/ensurer) (`r length(tools::dependsOnPkgs("ensurer"))` reverse dependencies)
+-   [ensurer](https://github.com/smbache/ensurer)
 
 ```{r, error = TRUE}
 ensure_square <- ensurer::ensures_that(NCOL(.) == NROW(.))
