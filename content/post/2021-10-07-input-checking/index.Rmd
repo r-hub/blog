@@ -192,6 +192,8 @@ vctrs::vec_assert(c(1, 2), "character")
 vctrs::vec_assert(c(1, 2), size = 3)
 ```
 
+-   [check](https://github.com/moodymudskipper/check) is slightly different because it doesn't provide utilities that work out of the box, but rather tools to assist you in writing your own checking functions
+
 ## What about the future?
 
 In this post, we have discussed some methods to check function inputs, and to generate more informative error messages when doing so.
