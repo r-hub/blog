@@ -11,7 +11,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: f35d02901a9698ee
+rmd_hash: ee9db5872d16c5aa
 
 ---
 
@@ -206,9 +206,11 @@ Instead, it has type <double>.
 
 </div>
 
+-   [check](https://github.com/moodymudskipper/check) is slightly different because it doesn't provide utilities that work out of the box, but rather tools to assist you in writing your own checking functions
+
 ## What about the future?
 
-In this post, we have discussed some methods to check function inputs, and to generate more informative error messages when doing so. However, this always comes with a performance cost, even though it's often relatively limited. Zero-cost assertions, as found in some other languages, would require some kind of typing system which R does not currently support. Interestingly several other languages have evolved to havetyping systems as they have developed. Typescript developed as an extension of JavaScript, and type annotations are now possible in Python. [Will R one day follow suit?](https://blog.q-lang.org/posts/2021-10-16-project/)
+In this post, we have discussed some methods to check function inputs, and to generate more informative error messages when doing so. However, this always comes with a performance cost, even though it's often relatively limited. Zero-cost assertions, as found in some other languages, would require some kind of typing system which R does not currently support. Interestingly several other languages have evolved to have typing systems as they have developed. Typescript developed as an extension of JavaScript, and type annotations are now possible in Python. [Will R one day follow suit?](https://blog.q-lang.org/posts/2021-10-16-project/)
 
 [^1]: Read [the tidyverse style guide](https://style.tidyverse.org/error-messages.html) for more guidance on how to write good error messages.
 
