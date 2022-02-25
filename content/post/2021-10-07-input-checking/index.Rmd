@@ -50,7 +50,7 @@ geometric_mean <- function(...) {
 }
 ```
 
-When you tested the function yourself, anything seemed fine:
+When you tested the function yourself, everything seemed fine:
 
 ```{r}
 geometric_mean(2, 8)
@@ -149,7 +149,7 @@ This becomes necessary when you start having many input checks in your function 
 
 If the input can only take specific values, the base function `match.arg()` can also prove useful:
 
-```{r}
+```{r, error = TRUE}
 match.arg(arg = "R", choices = c("R", "python"))
 
 match.arg(arg = "javascript", choices = c("R", "python"))
