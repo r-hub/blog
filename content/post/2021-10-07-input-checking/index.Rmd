@@ -101,6 +101,8 @@ Adding any kind of argument checking in the absence of good documentation would 
 
 ## Checking function inputs using base R
 
+### `stopifnot()`
+
 There is a built-in mechanism to check input values in base R: `stopifnot()`.
 You can see it [used](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/stats/R/approx.R#L78) [throughout](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/stats/R/cor.R#L36) [R](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/graphics/R/smoothScatter.R#L47) [source](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/base/R/srcfile.R#L23) [code](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/base/R/parse.R#L65).
 As its name suggests, it will *stop* the function execution *if* an object does *not* pass some tests.
@@ -142,6 +144,33 @@ This way, you don't have to repeat yourself which is generally a good aim [^3].
 This becomes necessary when you start having many input checks in your function or in your package.
 
 [^3]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
+
+### `match.arg()`
+
+If the input can only take specific values, the base function `match.arg()` can also prove useful:
+
+```{r}
+match.arg(arg = "R", choices = c("R", "python"))
+
+match.arg(arg = "javascript", choices = c("R", "python"))
+```
+
+But the real power of the `match.arg()` function comes from the fact that `choices` can be automatically obtained in the context of a function:
+
+```{r, error = TRUE}
+choose_language <- function(language = c("R", "python")) {
+  
+  # Equivalent to `match.arg(language, c("R", "python"))
+  match.arg(language)
+  
+  paste("I love", language)
+  
+}
+
+choose_language("R")
+
+choose_language("julia")
+```
 
 ## Checking function inputs using R packages
 
