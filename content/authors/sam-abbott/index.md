@@ -11,4 +11,4 @@ social:
   icon: fa-github
 ---
 
-Infectious disease researcher interested in open source tool development. More on my research interests [here](https://samabbott.co.uk/research).
+Infectious disease researcher interested in open source tool development. More on my [research interests](https://samabbott.co.uk/research).
