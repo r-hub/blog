@@ -80,7 +80,7 @@ geometric_mean(c(2, 8))
 Because of this, you need to make sure you return clear errors whenever your functions receives input it was not designed for.
 In this blog post, we review a range of approaches to help you check your function inputs and discuss some potential future developments.
 
-## Pre-requisite: thouroughly document your argument types
+## Pre-requisite: thoroughly document your argument types
 
 You can notice from the simple example above that it's easy to pass invalid inputs to the `geometric_mean()` function because we didn't provide any documentation on what is or isn't a valid input.
 We won't go into details here but the [roxygen2](https://roxygen2.r-lib.org/) package provides a convenient way to generate documentation for R functions.
