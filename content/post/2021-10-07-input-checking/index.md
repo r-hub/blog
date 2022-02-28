@@ -11,7 +11,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: 79f5f9b5fa2c8da4
+rmd_hash: 7a27e6aa3faf87ad
 
 ---
 
@@ -70,7 +70,7 @@ Or worse, it could give an incorrect output:
 
 Because of this, you need to make sure you return clear errors whenever your functions receives input it was not designed for. In this blog post, we review a range of approaches to help you check your function inputs and discuss some potential future developments.
 
-## Pre-requisite: thouroughly document your argument types
+## Pre-requisite: thoroughly document your argument types
 
 You can notice from the simple example above that it's easy to pass invalid inputs to the `geometric_mean()` function because we didn't provide any documentation on what is or isn't a valid input. We won't go into details here but the [roxygen2](https://roxygen2.r-lib.org/) package provides a convenient way to generate documentation for R functions. Try to be as precise as possible when describing the required format for your inputs [^1].
 
@@ -167,7 +167,7 @@ This is clearly a really great improvement to the functionality of base R. Howev
 
 ### The example of the checkmate package
 
-Although some developers create [their own functions](https://github.com/djnavarro/bs4cards/blob/a021d731a307ec7af692a42364308b60e2bf9827/R/validators.R) to solve this problem, you can also rely on existing packages to make your life easier. One of these packages designed to help you in input checking is [checkmate](https://mllg.github.io/checkmate/). checkmate provides a large number of function to check that inputs respect a given set of properties, and returns clear error messages when that is not the case:
+Although some developers create [their own functions](https://github.com/djnavarro/bs4cards/blob/a021d731a307ec7af692a42364308b60e2bf9827/R/validators.R) to solve this problem, you can also rely on existing packages to make your life easier. One of these packages designed to help you in input checking is [checkmate](https://mllg.github.io/checkmate/). checkmate provides a large number of functions that check that inputs respect a given set of properties, and that return clear error messages when that is not the case:
 
 <div class="highlight">
 
@@ -260,6 +260,34 @@ Error in `stop_vctrs()`:
 </div>
 
 -   [check](https://github.com/moodymudskipper/check) is slightly different because it doesn't provide utilities that work out of the box, but rather tools to assist you in writing your own checking functions
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://github.com/moodymudskipper/check'>check</a></span><span class='o'>)</span>
+
+<span class='nf'>check</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/check/man/setup.html'>setup</a></span><span class='o'>(</span><span class='o'>)</span> 
+
+<span class='nf'><a href='https://rdrr.io/pkg/check/man/set_check_fun.html'>set_check_fun</a></span><span class='o'>(</span>
+  <span class='s'>"`&#123;var&#125;` must be a &#123;type&#125; vector of length &#123;length&#125;."</span> <span class='o'>=</span> <span class='o'>&#123;</span>
+      <span class='nv'>val</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/get.html'>get</a></span><span class='o'>(</span><span class='nv'>var</span>, <span class='nv'>env</span><span class='o'>)</span>
+      <span class='nf'><a href='https://rdrr.io/r/base/is.recursive.html'>is.atomic</a></span><span class='o'>(</span><span class='nv'>val</span><span class='o'>)</span> <span class='o'>&amp;&amp;</span> <span class='nf'>is</span><span class='o'>(</span><span class='nv'>val</span>, <span class='nv'>type</span><span class='o'>)</span> <span class='o'>&amp;&amp;</span> <span class='nf'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='o'>(</span><span class='nv'>val</span><span class='o'>)</span> <span class='o'>==</span> <span class='nv'>length</span>
+  <span class='o'>&#125;</span>
+<span class='o'>)</span>
+
+<span class='nv'>say_hello</span> <span class='o'>&lt;-</span> <span class='kr'>function</span><span class='o'>(</span><span class='nv'>name</span><span class='o'>)</span> <span class='o'>&#123;</span>
+  <span class='nf'><a href='https://rdrr.io/pkg/check/man/check.html'>check</a></span><span class='o'>(</span>
+    <span class='s'>"`name` must be a character vector of length 1."</span>
+    <span class='o'>)</span>
+  <span class='nf'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='o'>(</span><span class='s'>"hello"</span>, <span class='nv'>name</span><span class='o'>)</span>
+<span class='o'>&#125;</span>
+
+<span class='nf'>say_hello</span><span class='o'>(</span><span class='s'>"Maria"</span><span class='o'>)</span>
+[1] "hello Maria"
+
+<span class='nf'>say_hello</span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='s'>"Maria"</span>, <span class='s'>"Noelia"</span><span class='o'>)</span><span class='o'>)</span>
+Error: `name` must be a character vector of length 1.</code></pre>
+
+</div>
 
 ## What about the future?
 
