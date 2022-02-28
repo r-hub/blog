@@ -179,7 +179,7 @@ This becomes necessary when you start having many input checks in your function 
 
 Although some developers create [their own functions](https://github.com/djnavarro/bs4cards/blob/a021d731a307ec7af692a42364308b60e2bf9827/R/validators.R) to solve this problem, you can also rely on existing packages to make your life easier.
 One of these packages designed to help you in input checking is [checkmate](https://mllg.github.io/checkmate/).
-checkmate provides a large number of function to check that inputs respect a given set of properties, and returns clear error messages when that is not the case:
+checkmate provides a large number of functions that check that inputs respect a given set of properties, and that return clear error messages when that is not the case:
 
 ```{r}
 say_hello <- function(name) {
