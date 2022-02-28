@@ -33,6 +33,7 @@ knitr::knit_hooks$set(
     )
   }
 )
+options(crayon.enabled = FALSE)
 
 ```
 

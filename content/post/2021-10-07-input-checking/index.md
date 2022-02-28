@@ -11,7 +11,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: f2bfaa06b74f2ff1
+rmd_hash: 79f5f9b5fa2c8da4
 
 ---
 
@@ -249,13 +249,13 @@ Error: conditions failed for call 'rmarkdown::render(" .. ecking/index.Rmd", ':
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span class='nf'>vctrs</span><span class='nf'>::</span><span class='nf'><a href='https://vctrs.r-lib.org/reference/vec_assert.html'>vec_assert</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='m'>1</span>, <span class='m'>2</span><span class='o'>)</span>, <span class='s'>"character"</span><span class='o'>)</span>
-[1m[33mError[39m in [1m[1m`vctrs::vec_assert()`:[22m
-[33m![39m `c(1, 2)` must be a vector with type <character>.
+Error in `vctrs::vec_assert()`:
+! `c(1, 2)` must be a vector with type <character>.
 Instead, it has type <double>.
 
 <span class='nf'>vctrs</span><span class='nf'>::</span><span class='nf'><a href='https://vctrs.r-lib.org/reference/vec_assert.html'>vec_assert</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='m'>1</span>, <span class='m'>2</span><span class='o'>)</span>, size <span class='o'>=</span> <span class='m'>3</span><span class='o'>)</span>
-[1m[33mError[39m in [1m[1m`stop_vctrs()`:[22m
-[33m![39m `c(1, 2)` must have size 3, not size 2.</code></pre>
+Error in `stop_vctrs()`:
+! `c(1, 2)` must have size 3, not size 2.</code></pre>
 
 </div>
 
