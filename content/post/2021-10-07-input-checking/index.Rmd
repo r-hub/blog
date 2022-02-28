@@ -243,6 +243,30 @@ vctrs::vec_assert(c(1, 2), size = 3)
 
 -   [check](https://github.com/moodymudskipper/check) is slightly different because it doesn't provide utilities that work out of the box, but rather tools to assist you in writing your own checking functions
 
+```{r, error = TRUE}
+library(check)
+
+check::setup() 
+
+set_check_fun(
+  "`{var}` must be a {type} vector of length {length}." = {
+      val <- get(var, env)
+      is.atomic(val) && is(val, type) && length(val) == length
+  }
+)
+
+say_hello <- function(name) {
+  check(
+    "`name` must be a character vector of length 1."
+    )
+  paste("hello", name)
+}
+
+say_hello("Maria")
+
+say_hello(c("Maria", "Noelia"))
+```
+
 ## What about the future?
 
 In this post, we have discussed some methods to check function inputs, and to generate more informative error messages when doing so.
