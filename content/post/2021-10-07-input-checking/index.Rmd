@@ -100,7 +100,10 @@ say_hello <- function(name) {
 
 Adding any kind of argument checking in the absence of good documentation would be vain and very frustrating for your users as they would have to figure out what is or isn't valid by trial and error.
 
-## Checking function inputs using base R
+## Checking function inputs using base R [^2]
+
+[^2]: Note that these base functions have equivalent in the tidyverse with a more consistent design and coloured output.
+    `match.arg()`'s equivalent is `rlang::arg_match()` and `stopifnot()`'s
 
 ### `match.arg()`
 
@@ -152,9 +155,9 @@ Because of this, `stopifnot()` was improved in R 4.0.0:
 
 > stopifnot() now allows customizing error messages via argument names, thanks to a patch proposal by Neal Fultz in PR#17688.
 
-This means we can now provide a clearer error message directly in `stopifnot()` [^2]:
+This means we can now provide a clearer error message directly in `stopifnot()` [^3]:
 
-[^2]: Read [the tidyverse style guide](https://style.tidyverse.org/error-messages.html) for more guidance on how to write good error messages.
+[^3]: Read [the tidyverse style guide](https://style.tidyverse.org/error-messages.html) for more guidance on how to write good error messages.
 
 ```{r, error = TRUE}
 say_hello <- function(name) {
@@ -168,10 +171,10 @@ say_hello(404)
 This is clearly a really great improvement to the functionality of base R.
 However, we can see from this example that we could create the error message programmatically based on the contents of the test.
 Each time we test if the object is of `class_X` and this is not true, we could throw an error saying something like "x must of a class_X".
-This way, you don't have to repeat yourself which is generally a good aim [^3].
+This way, you don't have to repeat yourself which is generally a good aim [^4].
 This becomes necessary when you start having many input checks in your function or in your package.
 
-[^3]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
+[^4]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
 
 ## Checking function inputs using R packages
 

@@ -11,7 +11,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: 7a27e6aa3faf87ad
+rmd_hash: 95b73fa760508f30
 
 ---
 
@@ -86,7 +86,7 @@ You can notice from the simple example above that it's easy to pass invalid inpu
 
 Adding any kind of argument checking in the absence of good documentation would be vain and very frustrating for your users as they would have to figure out what is or isn't valid by trial and error.
 
-## Checking function inputs using base R
+## Checking function inputs using base R [^2]
 
 ### `match.arg()`
 
@@ -147,7 +147,7 @@ Because of this, [`stopifnot()`](https://rdrr.io/r/base/stopifnot.html) was impr
 
 > stopifnot() now allows customizing error messages via argument names, thanks to a patch proposal by Neal Fultz in PR#17688.
 
-This means we can now provide a clearer error message directly in [`stopifnot()`](https://rdrr.io/r/base/stopifnot.html) [^2]:
+This means we can now provide a clearer error message directly in [`stopifnot()`](https://rdrr.io/r/base/stopifnot.html) [^3]:
 
 <div class="highlight">
 
@@ -161,7 +161,7 @@ Error in say_hello(404): `name` must be a character.</code></pre>
 
 </div>
 
-This is clearly a really great improvement to the functionality of base R. However, we can see from this example that we could create the error message programmatically based on the contents of the test. Each time we test if the object is of `class_X` and this is not true, we could throw an error saying something like "x must of a class_X". This way, you don't have to repeat yourself which is generally a good aim [^3]. This becomes necessary when you start having many input checks in your function or in your package.
+This is clearly a really great improvement to the functionality of base R. However, we can see from this example that we could create the error message programmatically based on the contents of the test. Each time we test if the object is of `class_X` and this is not true, we could throw an error saying something like "x must of a class_X". This way, you don't have to repeat yourself which is generally a good aim [^4]. This becomes necessary when you start having many input checks in your function or in your package.
 
 ## Checking function inputs using R packages
 
@@ -295,7 +295,9 @@ In this post, we have discussed some methods to check function inputs, and to ge
 
 [^1]: [Some package developers even developed their own standardized way to document argument types and length](https://github.com/r-lib/withr/commit/42e503092046705f30032cb3a321d64b0e9383d4). But there is currently no standard shared across the R community.
 
-[^2]: Read [the tidyverse style guide](https://style.tidyverse.org/error-messages.html) for more guidance on how to write good error messages.
+[^2]: Note that these base functions have equivalent in the tidyverse with a more consistent design and coloured output. `match.arg`'s equivalent is [`rlang::arg_match()`](https://rlang.r-lib.org/reference/arg_match.html) and [`stopifnot()`](https://rdrr.io/r/base/stopifnot.html)'s
 
-[^3]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
+[^3]: Read [the tidyverse style guide](https://style.tidyverse.org/error-messages.html) for more guidance on how to write good error messages.
+
+[^4]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
 
