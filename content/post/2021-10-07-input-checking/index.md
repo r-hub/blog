@@ -10,9 +10,11 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: abf2aec8c3e2d01d
+rmd_hash: a922f2a17e9ef593
 
 ---
+
+Are you, like we were, tired of filling your functions with argument checking code that sometimes ends up being longer that the core of the function itself? Are you trying to find what is the most efficient approach to check inputs easily and without forgetting any edge cases? Read about our exploration into the various ways to check your function inputs in R in this blog post. And please share your own tips and discoveries in the comment section below!
 
 ## Introduction: the dangers of not checking function inputs
 
