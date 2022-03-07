@@ -5,13 +5,12 @@ authors:
 - Sam Abbott
 - Hugo Gruson
 - Carl Pearson
-- Tim Taylor
 date: "2021-10-07" 
 tags: 
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: 69ab95ec35a8fe1e
+rmd_hash: 4bab1cca23234a4d
 
 ---
 

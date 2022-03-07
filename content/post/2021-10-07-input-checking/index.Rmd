@@ -5,7 +5,6 @@ authors:
 - Sam Abbott
 - Hugo Gruson
 - Carl Pearson
-- Tim Taylor
 date: "2021-10-07" 
 tags: 
 - package development 
