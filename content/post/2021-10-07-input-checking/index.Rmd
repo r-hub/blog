@@ -272,6 +272,21 @@ say_hello("Maria")
 say_hello(c("Maria", "Noelia"))
 ```
 
+## There is no 'one-size-fits-all'
+
+We have presented here different approaches but it is up to you, the developer, to decide which approach suits your needs best.
+We do not believe that one choice is intrinsically better than the others.
+All the workflows presented here can achieve the same result.
+Your choice may be influenced by several factors we cannot take into consideration here: who is your target audience?
+Will they be okay with somewhat technical terminology in the error messages?
+Do you have reasons to try and limit the number of dependencies [^6]?
+Which framework are you the more comfortable with and will facilitate maintenance in the future?
+And ultimately, what is your personal preference?
+
+[^6]: This is a complex discussion often caricatured, but that has already been treated on some occasions such as [this blog post from Jim Hester](https://www.tidyverse.org/blog/2019/05/itdepends/).
+
+If you would like to hear various point of views and a more in-depth discussion about this, please refer to the [pull request related to this post](https://github.com/r-hub/blog/pull/150).
+
 ## What about the future?
 
 In this post, we have discussed some methods to check function inputs, and to generate more informative error messages when doing so.

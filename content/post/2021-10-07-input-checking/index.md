@@ -11,7 +11,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: e9cce993a641d19e
+rmd_hash: 69ab95ec35a8fe1e
 
 ---
 
@@ -289,6 +289,12 @@ Error: `name` must be a character vector of length 1.</code></pre>
 
 </div>
 
+## There is no 'one-size-fits-all'
+
+We have presented here different approaches but it is up to you, the developer, to decide which approach suits your needs best. We do not believe that one choice is intrinsically better than the others. All the workflows presented here can achieve the same result. Your choice may be influenced by several factors we cannot take into consideration here: who is your target audience? Will they be okay with somewhat technical terminology in the error messages? Do you have reasons to try and limit the number of dependencies [^6]? Which framework are you the more comfortable with and will facilitate maintenance in the future? And ultimately, what is your personal preference?
+
+If you would like to hear various point of views and a more in-depth discussion about this, please refer to the [pull request related to this post](https://github.com/r-hub/blog/pull/150).
+
 ## What about the future?
 
 In this post, we have discussed some methods to check function inputs, and to generate more informative error messages when doing so. However, this always comes with a performance cost, even though it's often relatively limited. Zero-cost assertions, as found in some other languages, would require some kind of typing system which R does not currently support. Interestingly several other languages have evolved to have typing systems as they have developed. Typescript developed as an extension of JavaScript, and type annotations are now possible in Python. [Will R one day follow suit?](https://blog.q-lang.org/posts/2021-10-16-project/)
@@ -302,4 +308,6 @@ In this post, we have discussed some methods to check function inputs, and to ge
 [^4]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
 
 [^5]: See [this earlier blog post](https://blog.r-hub.io/2019/12/12/internal-functions/) for more information about why and who you would go with writing internal functions.
+
+[^6]: This is a complex discussion often caricatured, but that has already been treated on some occasions such as [this blog post from Jim Hester](https://www.tidyverse.org/blog/2019/05/itdepends/).
 
