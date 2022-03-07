@@ -11,7 +11,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: 95b73fa760508f30
+rmd_hash: e9cce993a641d19e
 
 ---
 
@@ -167,7 +167,7 @@ This is clearly a really great improvement to the functionality of base R. Howev
 
 ### The example of the checkmate package
 
-Although some developers create [their own functions](https://github.com/djnavarro/bs4cards/blob/a021d731a307ec7af692a42364308b60e2bf9827/R/validators.R) to solve this problem, you can also rely on existing packages to make your life easier. One of these packages designed to help you in input checking is [checkmate](https://mllg.github.io/checkmate/). checkmate provides a large number of functions that check that inputs respect a given set of properties, and that return clear error messages when that is not the case:
+Although some developers create [their own functions](https://github.com/djnavarro/bs4cards/blob/a021d731a307ec7af692a42364308b60e2bf9827/R/validators.R) to solve this problem [^5], you can also rely on existing packages to make your life easier. One of these packages designed to help you in input checking is [checkmate](https://mllg.github.io/checkmate/). checkmate provides a large number of functions that check that inputs respect a given set of properties, and that return clear error messages when that is not the case:
 
 <div class="highlight">
 
@@ -295,9 +295,11 @@ In this post, we have discussed some methods to check function inputs, and to ge
 
 [^1]: [Some package developers even developed their own standardized way to document argument types and length](https://github.com/r-lib/withr/commit/42e503092046705f30032cb3a321d64b0e9383d4). But there is currently no standard shared across the R community.
 
-[^2]: Note that these base functions have equivalent in the tidyverse with a more consistent design and coloured output. `match.arg`'s equivalent is [`rlang::arg_match()`](https://rlang.r-lib.org/reference/arg_match.html) and [`stopifnot()`](https://rdrr.io/r/base/stopifnot.html)'s
+[^2]: Note that these base functions have equivalent in the tidyverse with a more consistent design and coloured output. [`match.arg()`](https://rdrr.io/r/base/match.arg.html)'s equivalent is [`rlang::arg_match()`](https://rlang.r-lib.org/reference/arg_match.html) and [`stopifnot()`](https://rdrr.io/r/base/stopifnot.html)'s
 
 [^3]: Read [the tidyverse style guide](https://style.tidyverse.org/error-messages.html) for more guidance on how to write good error messages.
 
 [^4]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
+
+[^5]: See [this earlier blog post](https://blog.r-hub.io/2019/12/12/internal-functions/) for more information about why and who you would go with writing internal functions.
 
