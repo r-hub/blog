@@ -178,7 +178,7 @@ Each time we test if the object is of `class_X` and this is not true, we could t
 This way, you don't have to repeat yourself which is generally a good aim [^4].
 This becomes necessary when you start having many input checks in your function or in your package.
 
-[^4]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
+[^4]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](/2021/07/30/cache/)
 
 ## Checking function inputs using R packages
 
