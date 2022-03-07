@@ -2,15 +2,15 @@
 slug: input-checking
 title: "Checking the inputs of your R functions" 
 authors: 
-- Sam Abbott
 - Hugo Gruson
+- Sam Abbott
 - Carl Pearson
 date: "2021-10-07" 
 tags: 
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: 4bab1cca23234a4d
+rmd_hash: abf2aec8c3e2d01d
 
 ---
 
