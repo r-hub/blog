@@ -10,7 +10,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: a922f2a17e9ef593
+rmd_hash: 9db4c63dcef34c70
 
 ---
 
@@ -103,20 +103,23 @@ Error in match.arg(arg = "javascript", choices = c("R", "python")): 'arg' should
 
 </div>
 
-But the real power of the [`match.arg()`](https://rdrr.io/r/base/match.arg.html) function comes from the fact that `choices` can be automatically obtained in the context of a function:
+But the real power of the [`match.arg()`](https://rdrr.io/r/base/match.arg.html) function comes from the fact that `choices` can be automatically obtained in the context of a function. The default choice is then always the first element:
 
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span class='nv'>choose_language</span> <span class='o'>&lt;-</span> <span class='kr'>function</span><span class='o'>(</span><span class='nv'>language</span> <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span><span class='s'>"R"</span>, <span class='s'>"python"</span><span class='o'>)</span><span class='o'>)</span> <span class='o'>&#123;</span>
   
   <span class='c'># Equivalent to `match.arg(language, c("R", "python"))</span>
-  <span class='nf'><a href='https://rdrr.io/r/base/match.arg.html'>match.arg</a></span><span class='o'>(</span><span class='nv'>language</span><span class='o'>)</span>
+  <span class='nv'>language</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/match.arg.html'>match.arg</a></span><span class='o'>(</span><span class='nv'>language</span><span class='o'>)</span>
   
   <span class='nf'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='o'>(</span><span class='s'>"I love"</span>, <span class='nv'>language</span><span class='o'>)</span>
   
 <span class='o'>&#125;</span>
 
 <span class='nf'>choose_language</span><span class='o'>(</span><span class='s'>"R"</span><span class='o'>)</span>
+[1] "I love R"
+
+<span class='nf'>choose_language</span><span class='o'>(</span><span class='o'>)</span>
 [1] "I love R"
 
 <span class='nf'>choose_language</span><span class='o'>(</span><span class='s'>"julia"</span><span class='o'>)</span>

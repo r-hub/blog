@@ -119,19 +119,22 @@ match.arg(arg = "R", choices = c("R", "python"))
 match.arg(arg = "javascript", choices = c("R", "python"))
 ```
 
-But the real power of the `match.arg()` function comes from the fact that `choices` can be automatically obtained in the context of a function:
+But the real power of the `match.arg()` function comes from the fact that `choices` can be automatically obtained in the context of a function.
+The default choice is then always the first element:
 
 ```{r, error = TRUE}
 choose_language <- function(language = c("R", "python")) {
   
   # Equivalent to `match.arg(language, c("R", "python"))
-  match.arg(language)
+  language <- match.arg(language)
   
   paste("I love", language)
   
 }
 
 choose_language("R")
+
+choose_language()
 
 choose_language("julia")
 ```
