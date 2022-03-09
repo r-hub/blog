@@ -5,16 +5,16 @@ authors:
 - Hugo Gruson
 - Sam Abbott
 - Carl Pearson
-date: "2021-10-07" 
+date: "2022-03-10" 
 tags: 
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: d0b4522ddb48a500
+rmd_hash: 35d296a521792ef8
 
 ---
 
-Are you, like we were, tired of filling your functions with argument checking code that sometimes ends up being longer that the core of the function itself? Are you trying to find what is the most efficient approach to check inputs easily and without forgetting any edge cases? Read about our exploration into the various ways to check your function inputs in R in this blog post. And please share your own tips and discoveries in the comment section below!
+Are you, like we were, tired of filling your functions with argument checking code that sometimes ends up being longer that the core of the function itself? Are you trying to find what is the most efficient approach to check inputs easily and without forgetting any edge cases? Read about our exploration into the various ways to check your function inputs in R in this blog post. And please share your own tips and discoveries in the comment section!
 
 ## Introduction: the dangers of not checking function inputs
 
@@ -326,9 +326,9 @@ In this post, we have discussed some methods to check function inputs, and to ge
 
 [^2]: Read [the tidyverse style guide](https://style.tidyverse.org/error-messages.html) for more guidance on how to write good error messages.
 
-[^3]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
+[^3]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](/2021/07/30/cache/)
 
-[^4]: See [this earlier blog post](https://blog.r-hub.io/2019/12/12/internal-functions/) for more information about why and who you would go with writing internal functions.
+[^4]: See [this earlier blog post](/2019/12/12/internal-functions/) for more information about why and who you would go with writing internal functions.
 
 [^5]: This is a complex discussion often caricatured, but that has already been treated on some occasions such as [this blog post from Jim Hester](https://www.tidyverse.org/blog/2019/05/itdepends/).
 
