@@ -104,10 +104,7 @@ say_hello <- function(name) {
 
 Adding any kind of argument checking in the absence of good documentation would be vain and very frustrating for your users as they would have to figure out what is or isn't valid by trial and error.
 
-## Checking function inputs using base R [^2]
-
-[^2]: Note that these base functions have equivalent in the tidyverse with a more consistent design and coloured output.
-    `match.arg()`'s equivalent is `rlang::arg_match()` and `stopifnot()`'s
+## Checking function inputs using base R
 
 ### `match.arg()`
 
@@ -139,6 +136,8 @@ choose_language()
 choose_language("julia")
 ```
 
+We are getting out of the realm of base R but it is worth mentioning that `match.arg()` has an equivalent in the tidyverse with a more consistent design and coloured output: `rlang::arg_match()`.
+
 ### `stopifnot()`
 
 There is a another, more general, built-in mechanism to check input values in base R: `stopifnot()`.
@@ -162,9 +161,9 @@ Because of this, `stopifnot()` was improved in R 4.0.0:
 
 > stopifnot() now allows customizing error messages via argument names, thanks to a patch proposal by Neal Fultz in PR#17688.
 
-This means we can now provide a clearer error message directly in `stopifnot()` [^3]:
+This means we can now provide a clearer error message directly in `stopifnot()` [^2]:
 
-[^3]: Read [the tidyverse style guide](https://style.tidyverse.org/error-messages.html) for more guidance on how to write good error messages.
+[^2]: Read [the tidyverse style guide](https://style.tidyverse.org/error-messages.html) for more guidance on how to write good error messages.
 
 ```{r, error = TRUE}
 say_hello <- function(name) {
@@ -178,20 +177,20 @@ say_hello(404)
 This is clearly a really great improvement to the functionality of base R.
 However, we can see from this example that we could create the error message programmatically based on the contents of the test.
 Each time we test if the object is of `class_X` and this is not true, we could throw an error saying something like "x must of a class_X".
-This way, you don't have to repeat yourself which is generally a good aim [^4].
+This way, you don't have to repeat yourself which is generally a good aim [^3].
 This becomes necessary when you start having many input checks in your function or in your package.
 
-[^4]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](/2021/07/30/cache/)
+[^3]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](/2021/07/30/cache/)
 
 ## Checking function inputs using R packages
 
 ### The example of the checkmate package
 
-Although some developers create [their own functions](https://github.com/djnavarro/bs4cards/blob/a021d731a307ec7af692a42364308b60e2bf9827/R/validators.R) to solve this problem [^5], you can also rely on existing packages to make your life easier.
+Although some developers create [their own functions](https://github.com/djnavarro/bs4cards/blob/a021d731a307ec7af692a42364308b60e2bf9827/R/validators.R) to solve this problem [^4], you can also rely on existing packages to make your life easier.
 One of these packages designed to help you in input checking is [checkmate](https://mllg.github.io/checkmate/).
 checkmate provides a large number of functions that check that inputs respect a given set of properties, and that return clear error messages when that is not the case:
 
-[^5]: See [this earlier blog post](/2019/12/12/internal-functions/) for more information about why and who you would go with writing internal functions.
+[^4]: See [this earlier blog post](/2019/12/12/internal-functions/) for more information about why and who you would go with writing internal functions.
 
 ```{r}
 say_hello <- function(name) {
@@ -286,11 +285,11 @@ We do not believe that one choice is intrinsically better than the others.
 All the workflows presented here can achieve the same result.
 Your choice may be influenced by several factors we cannot take into consideration here: who is your target audience?
 Will they be okay with somewhat technical terminology in the error messages?
-Do you have reasons to try and limit the number of dependencies [^6]?
+Do you have reasons to try and limit the number of dependencies [^5]?
 Which framework are you the more comfortable with and will facilitate maintenance in the future?
 And ultimately, what is your personal preference?
 
-[^6]: This is a complex discussion often caricatured, but that has already been treated on some occasions such as [this blog post from Jim Hester](https://www.tidyverse.org/blog/2019/05/itdepends/).
+[^5]: This is a complex discussion often caricatured, but that has already been treated on some occasions such as [this blog post from Jim Hester](https://www.tidyverse.org/blog/2019/05/itdepends/).
 
 If you would like to hear various point of views and a more in-depth discussion about this, please refer to the [pull request related to this post](https://github.com/r-hub/blog/pull/150).
 

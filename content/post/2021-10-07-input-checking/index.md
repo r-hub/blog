@@ -10,7 +10,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: 9db4c63dcef34c70
+rmd_hash: 2e7a2c0e610572b2
 
 ---
 
@@ -87,7 +87,7 @@ You can notice from the simple example above that it's easy to pass invalid inpu
 
 Adding any kind of argument checking in the absence of good documentation would be vain and very frustrating for your users as they would have to figure out what is or isn't valid by trial and error.
 
-## Checking function inputs using base R [^2]
+## Checking function inputs using base R
 
 ### `match.arg()`
 
@@ -127,6 +127,8 @@ Error in match.arg(language): 'arg' should be one of "R", "python"</code></pre>
 
 </div>
 
+We are getting out of the realm of base R but it is worth mentioning that [`match.arg()`](https://rdrr.io/r/base/match.arg.html) has an equivalent in the tidyverse with a more consistent design and coloured output: [`rlang::arg_match()`](https://rlang.r-lib.org/reference/arg_match.html).
+
 ### `stopifnot()`
 
 There is a another, more general, built-in mechanism to check input values in base R: [`stopifnot()`](https://rdrr.io/r/base/stopifnot.html). You can see it [used](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/stats/R/approx.R#L78) [throughout](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/stats/R/cor.R#L36) [R](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/graphics/R/smoothScatter.R#L47) [source](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/base/R/srcfile.R#L23) [code](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/base/R/parse.R#L65). As its name suggests, it will *stop* the function execution *if* an object does *not* pass some tests.
@@ -151,7 +153,7 @@ Because of this, [`stopifnot()`](https://rdrr.io/r/base/stopifnot.html) was impr
 
 > stopifnot() now allows customizing error messages via argument names, thanks to a patch proposal by Neal Fultz in PR#17688.
 
-This means we can now provide a clearer error message directly in [`stopifnot()`](https://rdrr.io/r/base/stopifnot.html) [^3]:
+This means we can now provide a clearer error message directly in [`stopifnot()`](https://rdrr.io/r/base/stopifnot.html) [^2]:
 
 <div class="highlight">
 
@@ -165,13 +167,13 @@ Error in say_hello(404): `name` must be a character.</code></pre>
 
 </div>
 
-This is clearly a really great improvement to the functionality of base R. However, we can see from this example that we could create the error message programmatically based on the contents of the test. Each time we test if the object is of `class_X` and this is not true, we could throw an error saying something like "x must of a class_X". This way, you don't have to repeat yourself which is generally a good aim [^4]. This becomes necessary when you start having many input checks in your function or in your package.
+This is clearly a really great improvement to the functionality of base R. However, we can see from this example that we could create the error message programmatically based on the contents of the test. Each time we test if the object is of `class_X` and this is not true, we could throw an error saying something like "x must of a class_X". This way, you don't have to repeat yourself which is generally a good aim [^3]. This becomes necessary when you start having many input checks in your function or in your package.
 
 ## Checking function inputs using R packages
 
 ### The example of the checkmate package
 
-Although some developers create [their own functions](https://github.com/djnavarro/bs4cards/blob/a021d731a307ec7af692a42364308b60e2bf9827/R/validators.R) to solve this problem [^5], you can also rely on existing packages to make your life easier. One of these packages designed to help you in input checking is [checkmate](https://mllg.github.io/checkmate/). checkmate provides a large number of functions that check that inputs respect a given set of properties, and that return clear error messages when that is not the case:
+Although some developers create [their own functions](https://github.com/djnavarro/bs4cards/blob/a021d731a307ec7af692a42364308b60e2bf9827/R/validators.R) to solve this problem [^4], you can also rely on existing packages to make your life easier. One of these packages designed to help you in input checking is [checkmate](https://mllg.github.io/checkmate/). checkmate provides a large number of functions that check that inputs respect a given set of properties, and that return clear error messages when that is not the case:
 
 <div class="highlight">
 
@@ -295,7 +297,7 @@ Error: `name` must be a character vector of length 1.</code></pre>
 
 ## There is no 'one-size-fits-all'
 
-We have presented here different approaches but it is up to you, the developer, to decide which approach suits your needs best. We do not believe that one choice is intrinsically better than the others. All the workflows presented here can achieve the same result. Your choice may be influenced by several factors we cannot take into consideration here: who is your target audience? Will they be okay with somewhat technical terminology in the error messages? Do you have reasons to try and limit the number of dependencies [^6]? Which framework are you the more comfortable with and will facilitate maintenance in the future? And ultimately, what is your personal preference?
+We have presented here different approaches but it is up to you, the developer, to decide which approach suits your needs best. We do not believe that one choice is intrinsically better than the others. All the workflows presented here can achieve the same result. Your choice may be influenced by several factors we cannot take into consideration here: who is your target audience? Will they be okay with somewhat technical terminology in the error messages? Do you have reasons to try and limit the number of dependencies [^5]? Which framework are you the more comfortable with and will facilitate maintenance in the future? And ultimately, what is your personal preference?
 
 If you would like to hear various point of views and a more in-depth discussion about this, please refer to the [pull request related to this post](https://github.com/r-hub/blog/pull/150).
 
@@ -305,13 +307,11 @@ In this post, we have discussed some methods to check function inputs, and to ge
 
 [^1]: [Some package developers even developed their own standardized way to document argument types and length](https://github.com/r-lib/withr/commit/42e503092046705f30032cb3a321d64b0e9383d4). But there is currently no standard shared across the R community.
 
-[^2]: Note that these base functions have equivalent in the tidyverse with a more consistent design and coloured output. [`match.arg()`](https://rdrr.io/r/base/match.arg.html)'s equivalent is [`rlang::arg_match()`](https://rlang.r-lib.org/reference/arg_match.html) and [`stopifnot()`](https://rdrr.io/r/base/stopifnot.html)'s
+[^2]: Read [the tidyverse style guide](https://style.tidyverse.org/error-messages.html) for more guidance on how to write good error messages.
 
-[^3]: Read [the tidyverse style guide](https://style.tidyverse.org/error-messages.html) for more guidance on how to write good error messages.
+[^3]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
 
-[^4]: The [Don't Repeat Yourself (DRY) principle of software development](https://en.wikipedia.org/wiki/Don't_repeat_yourself), also mentioned in this post on [caching](https://blog.r-hub.io/2021/07/30/cache/)
+[^4]: See [this earlier blog post](https://blog.r-hub.io/2019/12/12/internal-functions/) for more information about why and who you would go with writing internal functions.
 
-[^5]: See [this earlier blog post](https://blog.r-hub.io/2019/12/12/internal-functions/) for more information about why and who you would go with writing internal functions.
-
-[^6]: This is a complex discussion often caricatured, but that has already been treated on some occasions such as [this blog post from Jim Hester](https://www.tidyverse.org/blog/2019/05/itdepends/).
+[^5]: This is a complex discussion often caricatured, but that has already been treated on some occasions such as [this blog post from Jim Hester](https://www.tidyverse.org/blog/2019/05/itdepends/).
 
