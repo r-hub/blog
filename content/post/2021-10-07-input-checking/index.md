@@ -10,7 +10,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: 25e9608409d594fd
+rmd_hash: b73f799175d0e95a
 
 ---
 
@@ -213,6 +213,23 @@ Error: 1 is not a character vector</code></pre>
 
 </div>
 
+-   [vetr](https://github.com/brodieG/vetr)
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span class='nv'>template</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='o'>(</span><span class='m'>1L</span><span class='o'>)</span>
+
+<span class='nf'>vetr</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/vetr/man/vet.html'>vet</a></span><span class='o'>(</span><span class='nv'>template</span>, <span class='m'>42</span><span class='o'>)</span>
+[1] TRUE
+
+<span class='nf'>vetr</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/vetr/man/vet.html'>vet</a></span><span class='o'>(</span><span class='nv'>template</span>, <span class='m'>1</span><span class='o'>:</span><span class='m'>3</span><span class='o'>)</span>
+[1] "`length(1:3)` should be 1 (is 3)"
+
+<span class='nf'>vetr</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/vetr/man/vet.html'>vet</a></span><span class='o'>(</span><span class='nv'>template</span>, <span class='s'>"hello"</span><span class='o'>)</span>
+[1] "`\"hello\"` should be type \"numeric\" (is \"character\")"</code></pre>
+
+</div>
+
 -   [assertr](https://docs.ropensci.org/assertr/)
 
 <div class="highlight">
@@ -247,23 +264,6 @@ Error in eval(expr, envir, enclos): is_a_string : 1 is not of class 'character';
 <span class='nf'>ensure_square</span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='o'>(</span><span class='m'>1</span><span class='o'>:</span><span class='m'>20</span>, <span class='m'>4</span>, <span class='m'>5</span><span class='o'>)</span><span class='o'>)</span>
 Error: conditions failed for call 'rmarkdown::render(" .. ecking/index.Rmd", ':
      * NCOL(.) == NROW(.)</code></pre>
-
-</div>
-
--   [vetr](https://github.com/brodieG/vetr)
-
-<div class="highlight">
-
-<pre class='chroma'><code class='language-r' data-lang='r'><span class='nv'>template</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='o'>(</span><span class='m'>1L</span><span class='o'>)</span>
-
-<span class='nf'>vetr</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/vetr/man/vet.html'>vet</a></span><span class='o'>(</span><span class='nv'>template</span>, <span class='m'>42</span><span class='o'>)</span>
-[1] TRUE
-
-<span class='nf'>vetr</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/vetr/man/vet.html'>vet</a></span><span class='o'>(</span><span class='nv'>template</span>, <span class='m'>1</span><span class='o'>:</span><span class='m'>3</span><span class='o'>)</span>
-[1] "`length(1:3)` should be 1 (is 3)"
-
-<span class='nf'>vetr</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/vetr/man/vet.html'>vet</a></span><span class='o'>(</span><span class='nv'>template</span>, <span class='s'>"hello"</span><span class='o'>)</span>
-[1] "`\"hello\"` should be type \"numeric\" (is \"character\")"</code></pre>
 
 </div>
 
