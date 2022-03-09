@@ -10,7 +10,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: 5ea789cb694eedce
+rmd_hash: 25e9608409d594fd
 
 ---
 
@@ -202,7 +202,7 @@ Error in say_hello(c("Bob", "Alice")): Assertion on 'name' failed: Must have len
 
 ### Other packages to check function inputs
 
-Because input checking is such an important point task and because it is so difficult to get right, it is not surprising that there are many packages other than checkmate to solve this issue. We will not get into the details of all of the available options here but below is a list of some of them, listed by decreasing number of reverse dependencies. If interested in understanding the various approaches to input taking the documentation for these package is a great place to start.
+Because input checking is such an important point task and because it is so difficult to get right, it is not surprising that there are many packages other than checkmate to solve this issue. We will not get into the details of all of the available options here but below is a list of some of them, listed by decreasing number of reverse dependencies. If you're interested in understanding the various approaches to input checking, the documentation for these package is a great place to start.
 
 -   [assertthat](https://github.com/hadley/assertthat)
 
