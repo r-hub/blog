@@ -244,6 +244,18 @@ ensure_square <- ensurer::ensures_that(NCOL(.) == NROW(.))
 ensure_square(matrix(1:20, 4, 5))
 ```
 
+-   [vetr](https://github.com/brodieG/vetr)
+
+```{r, error = TRUE}
+template <- numeric(1L)
+
+vetr::vet(template, 42)
+
+vetr::vet(template, 1:3)
+
+vetr::vet(template, "hello")
+```
+
 -   `vctrs::vec_assert()`
 
 ```{r, error = TRUE}
