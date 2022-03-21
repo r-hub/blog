@@ -8,7 +8,7 @@ date: "2022-02-21"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 65c1e586c30371a9
+rmd_hash: 3dcc4cb29710837a
 
 ---
 
@@ -34,6 +34,7 @@ Some variations on it include
 -   [Roger Peng's 8-space indentations](https://simplystatistics.org/posts/2018-07-27-why-i-indent-my-code-8-spaces/);
 -   Yihui Xie's preference for equal sign assignments (as presented in this [issue comment](https://github.com/Robinlovelace/geocompr/issues/319#issuecomment-427376764));
 -   [Google R Style guide](https://google.github.io/styleguide/Rguide.html) with e.g. a preference for BigCamelCase for function names.
+-   [The style guide of the mlr organziation (for machine learning in R)](https://github.com/mlr-org/mlr3/wiki/Style-Guide).
 -   Your own preferences? Yes it's fine to have some as long as your team agrees. :wink: Feel free to mention your preferences in the comments. This is a non-judgmental space (or indent :grin:).
 
 Another excellent resource is [Jenny Bryan's useR! 2018 keynote *"Code Smells and Feels"*](https://github.com/jennybc/code-smells-and-feels). It's more focused on code structure and commenting.
@@ -49,12 +50,6 @@ The resources listed below are books without a free version online. Hopefully li
 -   [Refactoring by Martin Fowler](https://www.goodreads.com/book/show/44936.Refactoring) is an inspiration for the aforementioned keynote talk by Jenny Bryan. It defines code smells and refactoring techniques. See also the blogpost ["Explaining Variable" by Pete Hodgson](https://blog.thepete.net/blog/2021/06/24/explaining-variable/) (heard of via [Jenny Bryan](https://twitter.com/JennyBryan/status/1412140590842597385)).
 
 -   [The Programmer's Brain by Felienne Hermans](https://www.goodreads.com/book/show/57196550-the-programmer-s-brain) gives a perspective on e.g. how code smells or bad naming influence cognitive load. It is full of practical tips.
-
-### A special note on Markdown styling
-
-A bit meta and less R specific but when writing this post in Markdown we hit return after each sentence or even more regularly. This does not influence how the resulting post looks like but it makes reviewing easier as GitHub PR comments and change suggestions are by line! See more [rationale about this](https://cirosantilli.com/markdown-style-guide/#line-wrapping).
-
-The new [Visual Editor in RStudio](https://rstudio.github.io/visual-markdown-editing/) is a way to enforce a common style in Markdown file. It can be configured, e.g. regarding one line per sentence, so the the IDE automatically modifies source files which insure in collaboration than everyone will write the same.
 
 ## Tools
 
@@ -72,7 +67,9 @@ To use lintr in testthat see [`expect_lint()`](https://rdrr.io/cran/lintr/man/ex
 
 -   In RStudio selecting code and hitting `Ctrl + I` will re-indent code for you!
 
--   The [styler R package](https://styler.r-lib.org) automatically reformats code. Its documentation includes a handy vignette on [customizing styler](https://styler.r-lib.org/articles/customizing_styler.html), for when preferences differ from the default. Examples:
+-   the [formatr R package](https://yihui.org/formatr/) formats R code automatically.
+
+-   The [styler R package](https://styler.r-lib.org) also automatically reformats code. Its documentation includes a handy vignette on [customizing styler](https://styler.r-lib.org/articles/customizing_styler.html), for when preferences differ from the default. Examples:
 
     -   the [tiny spaceout R package](https://github.com/ropensci-review-tools/spaceout) that adds spaces between code references.
     -   the [grkstyle R package](https://github.com/gadenbuie/grkstyle) holding Garrick Aden-Buie's personal preferences.
@@ -82,11 +79,19 @@ To use lintr in testthat see [`expect_lint()`](https://rdrr.io/cran/lintr/man/ex
 
 For more tools helping with code improvements, refer to the [R-hub blog post "Workflow automation tools for package developers"](/2020/04/29/maintenance/) including tips on *when* to use such tools.
 
+## A special note on ( R ) Markdown styling
+
+A bit meta and less R specific but when writing this post in Markdown we hit return after each sentence or even more regularly. This does not influence how the resulting post looks like but it makes reviewing easier as GitHub PR comments and change suggestions are by line! See more [rationale about this](https://cirosantilli.com/markdown-style-guide/#line-wrapping).
+
+The new [Visual Editor in RStudio](https://rstudio.github.io/visual-markdown-editing/) is a way to enforce a common style in Markdown file. It can be configured, e.g. regarding one line per sentence, so the the IDE automatically modifies source files which insure in collaboration than everyone will write the same.
+
+The tools for styling in R can be used in R Markdown document thanks to [**knitr** `format` option which support **formatR** and **styler**](https://bookdown.org/yihui/rmarkdown-cookbook/opts-tidy.html).
+
 ## Etiquette
 
 If you are a contributor to a codebase, you'll probably have to adapt your style to the maintainer's or maintainers' preferences. These preferences might be implicit (seen by reading existing code) or explicit (in a contributing guide). Now, depending on your relation to the maintainers (e.g. is it your first contribution), you might start a discussion about changing some of the conventions, perhaps changing their mind or reaching a compromise (assigning with `=`, but with spaces before and after each equal sign).
 
-If you are the maintainer of a codebase, you'll need to be forgiving when stating your preferences and explaining how to implement them; or you might even want to take matters in your own hands and do some [restyling yourself](https://github.com/rstudio/blogdown/pull/432#pullrequestreview-368391904).
+If you are the maintainer of a codebase, you'll need to be forgiving when stating your preferences and explaining how to implement them; or you might even want to take matters in your own hands and do some [restyling yourself](https://yihui.org/en/2018/11/cosmetic-changes/).
 
 ## Conclusion
 
