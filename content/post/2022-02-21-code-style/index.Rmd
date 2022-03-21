@@ -54,7 +54,7 @@ Major Tech Companies have style guides, e.g.
 
 [^1]: Note that the Google R style guide inspired the tidyverse styleguide but Google now refers to the tidyverse style guide as R style guide.
 
-However there is no "right" coding style as the "correct" choice depends on personal preferences, and the[constraints at hand](https://www.heltweg.org/posts/who-wrote-this-shit/).
+However there is no "right" coding style as the "correct" choice depends on personal preferences, and the [constraints at hand](https://www.heltweg.org/posts/who-wrote-this-shit/).
 
 ## Resources
 

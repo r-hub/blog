@@ -8,7 +8,7 @@ date: "2022-02-21"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: f608a97f89f79344
+rmd_hash: 7be80a30d1a2704b
 
 ---
 
@@ -22,7 +22,7 @@ Sometimes somes rules are enforced by the language (indentation in python), some
 
 Coding style has an universal goal: making your code easier to understand and maintain, for you later and for your code collaborator. Having a team/company style guide is common practice. Major Tech Companies have style guides, e.g. [Google](https://google.github.io/styleguide/)[^1].
 
-However there is no "right" coding style as the "correct" choice depends on personal preferences, and the[constraints at hand](https://www.heltweg.org/posts/who-wrote-this-shit/).
+However there is no "right" coding style as the "correct" choice depends on personal preferences, and the [constraints at hand](https://www.heltweg.org/posts/who-wrote-this-shit/).
 
 ## Resources
 
