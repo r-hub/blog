@@ -4,7 +4,7 @@ title: "Coding style, coding etiquette"
 authors: 
 - Maëlle Salmon 
 - Christophe Dervieux
-date: "2022-02-21" 
+date: "2022-03-21" 
 tags: 
 - package development 
 output: hugodown::hugo_document
@@ -115,13 +115,26 @@ To set up lintr with your code editor refer to [its docs](https://github.com/r-l
 Unless you have RStudio IDE and linting is the one included already in the IDE (for errors mainly only, not style preference).
 If you use VSCODE, [vscode-R](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.r) extension includes diagnostic tool - see <https://github.com/REditorSupport/vscode-R/wiki/R-Language-Service#diagnostics>.
 
-Some teams likes to run diagnostic tools as part of their Continuous Integration (CI) workflow. lintr can be used in this context as part of tests suits with testthat - see [`expect_lint()`](https://rdrr.io/cran/lintr/man/expect_lint.html)
+Some teams likes to run diagnostic tools as part of their Continuous Integration (CI) workflow.
+lintr can be used in this context as part of tests suits with testthat - see [`expect_lint()`](https://rdrr.io/cran/lintr/man/expect_lint.html)
 
 #### pkgcheck
 
 One of the aspects checked by rOpenSci Mark Padgham's [pkgcheck package](https://docs.ropensci.org/pkgcheck/index.html) is *"Left-assign operators must be used consistently throughout all code (so either all = or all \<-, but not a mixture of both)."*.
 
 ### Fixing tools
+
+:::{.alert .alert-primary}
+
+With fixing tools, your original source code will be modified.
+It is really advised to use version control with your project.
+If you're nervous about getting started refer to
+
+-   ["Excuse me, do you have a moment to talk about version control?" by Jenny Bryan](https://peerj.com/preprints/3159/);
+-   ["Reflections on 4 months of GitHub: my advice to beginners " by Suzan Baert](https://suzan.rbind.io/2018/03/reflections-4-months-of-github/);
+-   ["Happy Git and GitHub for the useR"](https://happygitwithr.com/) by Jenny Bryan, the STAT 545 TAs, Jim Hester.
+
+:::
 
 #### RStudio IDE shortcut for code indentation
 

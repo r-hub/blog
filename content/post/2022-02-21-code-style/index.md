@@ -4,11 +4,11 @@ title: "Coding style, coding etiquette"
 authors: 
 - Maëlle Salmon 
 - Christophe Dervieux
-date: "2022-02-21" 
+date: "2022-03-21" 
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 0245ba4631723983
+rmd_hash: 382a33c879222360
 
 ---
 
@@ -32,12 +32,12 @@ One way to develop a sense of coding style is to read a lot of code, but where t
 
 The most popular, or at least most documented style guide out there is the [tidyverse style guide](https://style.tidyverse.org).
 
-Some variations on it include
+Some other style preferences include
 
 -   [Mark Padgham's spacing preferences](https://docs.ropensci.org/pkgcheck/CONTRIBUTING.html#development-guidelines);
 -   [Roger Peng's 8-space indentations](https://simplystatistics.org/posts/2018-07-27-why-i-indent-my-code-8-spaces/);
 -   Yihui Xie's preference for equal sign assignments (as presented in this [issue comment](https://github.com/Robinlovelace/geocompr/issues/319#issuecomment-427376764));
--   [Google R Style guide](https://google.github.io/styleguide/Rguide.html) with e.g. a preference for BigCamelCase for function names.
+-   [Google R Style guide](https://google.github.io/styleguide/Rguide.html), a fork of Tidyverse style guide but with variations e.g. a preference for BigCamelCase for function names.
 -   [The style guide of the mlr organziation (for machine learning in R)](https://github.com/mlr-org/mlr3/wiki/Style-Guide).
 -   Your own preferences? Yes it's fine to have some as long as your team agrees. :wink: Feel free to mention your preferences in the comments. This is a non-judgmental space (or indent :grin:).
 
@@ -72,15 +72,25 @@ Linting tools will indicate errors and potentially style preference violations.
 
 The [lintr R package by Jim Hester](https://github.com/r-lib/lintr) has a lot of useful linters such as whether code is commented, whether lines are too long etc.
 
-It is pretty common to find *linting tools* in all editors (VSCODE and others) and for most languages. To set up lintr with your code editor refer to [its docs](https://github.com/r-lib/lintr#editors-setup). Unless you have RStudio IDE and linting is the one included already in the IDE (for errors mainly only, not style preference). If you use VSCODE see <https://github.com/REditorSupport/vscode-R/wiki/R-Language-Service#formatting>.
+It is pretty common to find *linting tools* in all editors (VSCODE and others) and for most languages. To set up lintr with your code editor refer to [its docs](https://github.com/r-lib/lintr#editors-setup). Unless you have RStudio IDE and linting is the one included already in the IDE (for errors mainly only, not style preference). If you use VSCODE, [vscode-R](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.r) extension includes diagnostic tool - see <https://github.com/REditorSupport/vscode-R/wiki/R-Language-Service#diagnostics>.
 
-To use lintr in testthat see [`expect_lint()`](https://rdrr.io/cran/lintr/man/expect_lint.html).
+Some teams likes to run diagnostic tools as part of their Continuous Integration (CI) workflow. lintr can be used in this context as part of tests suits with testthat - see [`expect_lint()`](https://rdrr.io/cran/lintr/man/expect_lint.html)
 
 #### pkgcheck
 
 One of the aspects checked by rOpenSci Mark Padgham's [pkgcheck package](https://docs.ropensci.org/pkgcheck/index.html) is *"Left-assign operators must be used consistently throughout all code (so either all = or all \<-, but not a mixture of both)."*.
 
 ### Fixing tools
+
+<div class="alert alert-primary">
+
+With fixing tools, your original source code will be modified. It is really advised to use version control with your project. If you're nervous about getting started refer to
+
+-   ["Excuse me, do you have a moment to talk about version control?" by Jenny Bryan](https://peerj.com/preprints/3159/);
+-   ["Reflections on 4 months of GitHub: my advice to beginners" by Suzan Baert](https://suzan.rbind.io/2018/03/reflections-4-months-of-github/);
+-   ["Happy Git and GitHub for the useR"](https://happygitwithr.com/) by Jenny Bryan, the STAT 545 TAs, Jim Hester.
+
+</div>
 
 #### RStudio IDE shortcut for code indentation
 
@@ -98,7 +108,7 @@ The styler package documents some [third-part integration](https://styler.r-lib.
 
 #### formatr R package
 
-The [formatr R package](https://yihui.org/formatr/) formats R code automatically too, but in a more opinionated way.
+The [formatr R package](https://yihui.org/formatr/) formats R code automatically too, but with less customization possibilities.
 
 For more tools helping with code improvements, refer to the [R-hub blog post "Workflow automation tools for package developers"](/2020/04/29/maintenance/) including tips on *when* to use such tools.
 
