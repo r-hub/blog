@@ -545,3 +545,9 @@ border-left: 4px solid #2854a0;
 padding-left: 1rem;
 font-style: italic;
 }
+
+.alert-primary {
+  color: black;
+  background-color: none;
+  border-color: #2854a0;
+}
