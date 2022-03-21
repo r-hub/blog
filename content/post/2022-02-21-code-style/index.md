@@ -8,7 +8,7 @@ date: "2022-02-21"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 3dcc4cb29710837a
+rmd_hash: f608a97f89f79344
 
 ---
 
@@ -16,9 +16,13 @@ Do you indent your code with [one tab, two spaces](https://www.youtube.com/watch
 
 ## What *is* coding style?
 
-Coding style is a set of rules about well, aesthetics (aligning and code spacing) but also naming (of variables, functions, etc.), commenting, structuring (e.g. avoiding complex logic), etc. Despite coding style having an universal goal: making it easy to understand, there is no right coding style as the "correct" choice depends on personal preferences, and the[constraints at hand](https://www.heltweg.org/posts/who-wrote-this-shit/).
+Coding style is a set of rules about well, aesthetics (aligning and code spacing) but also naming (of variables, functions, etc.), commenting, structuring (e.g. avoiding complex logic), etc. These rules help with better code clarity and collaboration.
 
-What *is* a standard good approach is having a team/company style guide.Major Tech Companies have style guides, e.g. [Google](https://google.github.io/styleguide/)[^1].
+Sometimes somes rules are enforced by the language (indentation in python), sometimes the language is quite loose, like... R where you can add a lot of spaces, and so in that case more style guides exist.
+
+Coding style has an universal goal: making your code easier to understand and maintain, for you later and for your code collaborator. Having a team/company style guide is common practice. Major Tech Companies have style guides, e.g. [Google](https://google.github.io/styleguide/)[^1].
+
+However there is no "right" coding style as the "correct" choice depends on personal preferences, and the[constraints at hand](https://www.heltweg.org/posts/who-wrote-this-shit/).
 
 ## Resources
 
@@ -36,6 +40,11 @@ Some variations on it include
 -   [Google R Style guide](https://google.github.io/styleguide/Rguide.html) with e.g. a preference for BigCamelCase for function names.
 -   [The style guide of the mlr organziation (for machine learning in R)](https://github.com/mlr-org/mlr3/wiki/Style-Guide).
 -   Your own preferences? Yes it's fine to have some as long as your team agrees. :wink: Feel free to mention your preferences in the comments. This is a non-judgmental space (or indent :grin:).
+
+Most style guides will have some preferences regarding code spacing, or "breathing".
+
+{{< tweet 1504499938302046214 >}}
+{{< tweet 1486396341542481922 >}}
 
 Another excellent resource is [Jenny Bryan's useR! 2018 keynote *"Code Smells and Feels"*](https://github.com/jennybc/code-smells-and-feels). It's more focused on code structure and commenting.
 
@@ -55,33 +64,45 @@ The resources listed below are books without a free version online. Hopefully li
 
 ### Diagnostic tools
 
+#### lintr
+
+Linting tools will indicate errors and potentially style preference violations.
+
 The [lintr R package by Jim Hester](https://github.com/r-lib/lintr) has a lot of useful linters such as whether code is commented, whether lines are too long etc.
 
-It is pretty common to find *linting tools* all editor (VSCODE and others) and for most languages. Linting tools will indicate errors and potentially style preference violations.
-
-To set up lintr with your code editor refer to [its docs](https://github.com/r-lib/lintr#editors-setup). Unless you have RStudio IDE and linting is the one included already in the IDE (for errors mainly only, not style preference). If you use VSCODE see <https://github.com/REditorSupport/vscode-R/wiki/R-Language-Service#formatting>.
+It is pretty common to find *linting tools* in all editors (VSCODE and others) and for most languages. To set up lintr with your code editor refer to [its docs](https://github.com/r-lib/lintr#editors-setup). Unless you have RStudio IDE and linting is the one included already in the IDE (for errors mainly only, not style preference). If you use VSCODE see <https://github.com/REditorSupport/vscode-R/wiki/R-Language-Service#formatting>.
 
 To use lintr in testthat see [`expect_lint()`](https://rdrr.io/cran/lintr/man/expect_lint.html).
 
+#### pkgcheck
+
+One of the aspects checked by rOpenSci Mark Padgham's [pkgcheck package](https://docs.ropensci.org/pkgcheck/index.html) is *"Left-assign operators must be used consistently throughout all code (so either all = or all \<-, but not a mixture of both)."*.
+
 ### Fixing tools
 
--   In RStudio selecting code and hitting `Ctrl + I` will re-indent code for you!
+#### RStudio IDE shortcut for code indentation
 
--   the [formatr R package](https://yihui.org/formatr/) formats R code automatically.
+In RStudio IDE selecting code and hitting `Ctrl + I` will re-indent code for you!
 
--   The [styler R package](https://styler.r-lib.org) also automatically reformats code. Its documentation includes a handy vignette on [customizing styler](https://styler.r-lib.org/articles/customizing_styler.html), for when preferences differ from the default. Examples:
+#### styler
 
-    -   the [tiny spaceout R package](https://github.com/ropensci-review-tools/spaceout) that adds spaces between code references.
-    -   the [grkstyle R package](https://github.com/gadenbuie/grkstyle) holding Garrick Aden-Buie's personal preferences.
-    -   the [styler.mlr R package](https://github.com/mlr-org/styler.mlr) implementing the mlr style guide. The styler package documents some [third-part integration](https://styler.r-lib.org/articles/third-party-integrations.html): you don't have to remember to run styler manually. In particular, to use styler on its own CI workflow on GitHub Actions: <https://github.com/r-lib/actions/tree/v2-branch/examples#style-package>
+The [styler R package](https://styler.r-lib.org) automatically reformats code. Its documentation includes a handy vignette on [customizing styler](https://styler.r-lib.org/articles/customizing_styler.html), for when preferences differ from the default. Examples:
 
--   One of the aspects checked by rOpenSci Mark Padgham's [pkgcheck package](https://docs.ropensci.org/pkgcheck/index.html) is *"Left-assign operators must be used consistently throughout all code (so either all = or all \<-, but not a mixture of both)."*.
+-   the [tiny spaceout R package](https://github.com/ropensci-review-tools/spaceout) that adds spaces between code references.
+-   the [grkstyle R package](https://github.com/gadenbuie/grkstyle) holding Garrick Aden-Buie's personal preferences.
+-   the [styler.mlr R package](https://github.com/mlr-org/styler.mlr) implementing the mlr style guide.
+
+The styler package documents some [third-part integration](https://styler.r-lib.org/articles/third-party-integrations.html): you don't have to remember to run styler manually. In particular, to use styler on its own CI workflow on GitHub Actions: <https://github.com/r-lib/actions/tree/v2-branch/examples#style-package>
+
+#### formatr R package
+
+The [formatr R package](https://yihui.org/formatr/) formats R code automatically too, but in a more opinionated way.
 
 For more tools helping with code improvements, refer to the [R-hub blog post "Workflow automation tools for package developers"](/2020/04/29/maintenance/) including tips on *when* to use such tools.
 
 ## A special note on ( R ) Markdown styling
 
-A bit meta and less R specific but when writing this post in Markdown we hit return after each sentence or even more regularly. This does not influence how the resulting post looks like but it makes reviewing easier as GitHub PR comments and change suggestions are by line! See more [rationale about this](https://cirosantilli.com/markdown-style-guide/#line-wrapping).
+When writing this post in Markdown we hit return after each sentence or even more regularly. This does not influence how the resulting post looks like but it makes reviewing easier as GitHub PR comments and change suggestions are by line! See more [rationale about this](https://cirosantilli.com/markdown-style-guide/#line-wrapping).
 
 The new [Visual Editor in RStudio](https://rstudio.github.io/visual-markdown-editing/) is a way to enforce a common style in Markdown file. It can be configured, e.g. regarding one line per sentence, so the the IDE automatically modifies source files which insure in collaboration than everyone will write the same.
 
