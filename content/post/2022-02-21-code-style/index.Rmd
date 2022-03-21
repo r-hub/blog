@@ -45,7 +45,7 @@ In this post, we shall share some resources about coding style, useful tools, an
 Coding style is a set of rules about well, aesthetics (aligning and code spacing) but also naming (of variables, functions, etc.), commenting, structuring (e.g. avoiding complex logic), etc.
 These rules help with better code clarity and collaboration.
 
-Sometimes somes rules are enforced by the language (indentation in python), sometimes the language is quite loose, like... R where you can add a lot of spaces, and so in that case more style guides exist.
+Sometimes somes rules are enforced by the language (indentation in Python), sometimes the language is quite loose, like... R where you can add a lot of spaces, and so in that case more style guides exist.
 
 Coding style has an universal goal: making your code easier to understand and maintain, for you later and for your code collaborator.
 Having a team/company style guide is common practice.

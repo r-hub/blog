@@ -8,7 +8,7 @@ date: "2022-03-21"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 075070453b28bada
+rmd_hash: 2efd2327c1d143a0
 
 ---
 
@@ -18,7 +18,7 @@ Do you indent your code with [one tab, two spaces](https://www.youtube.com/watch
 
 Coding style is a set of rules about well, aesthetics (aligning and code spacing) but also naming (of variables, functions, etc.), commenting, structuring (e.g. avoiding complex logic), etc. These rules help with better code clarity and collaboration.
 
-Sometimes somes rules are enforced by the language (indentation in python), sometimes the language is quite loose, like... R where you can add a lot of spaces, and so in that case more style guides exist.
+Sometimes somes rules are enforced by the language (indentation in Python), sometimes the language is quite loose, like... R where you can add a lot of spaces, and so in that case more style guides exist.
 
 Coding style has an universal goal: making your code easier to understand and maintain, for you later and for your code collaborator. Having a team/company style guide is common practice. Major Tech Companies have style guides, e.g. [Google](https://google.github.io/styleguide/)[^1].
 
