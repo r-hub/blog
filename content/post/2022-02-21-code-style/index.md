@@ -8,7 +8,7 @@ date: "2022-03-21"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 382a33c879222360
+rmd_hash: 075070453b28bada
 
 ---
 
@@ -111,6 +111,10 @@ The styler package documents some [third-part integration](https://styler.r-lib.
 The [formatr R package](https://yihui.org/formatr/) formats R code automatically too, but with less customization possibilities.
 
 For more tools helping with code improvements, refer to the [R-hub blog post "Workflow automation tools for package developers"](/2020/04/29/maintenance/) including tips on *when* to use such tools.
+
+#### Other languages
+
+For Python there's [black](https://pypi.org/project/black/).
 
 ## A special note on ( R ) Markdown styling
 

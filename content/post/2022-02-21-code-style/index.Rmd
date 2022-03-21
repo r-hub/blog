@@ -159,6 +159,10 @@ The [formatr R package](https://yihui.org/formatr/) formats R code automatically
 
 For more tools helping with code improvements, refer to the [R-hub blog post "Workflow automation tools for package developers"](/2020/04/29/maintenance/) including tips on *when* to use such tools.
 
+#### Other languages
+
+For Python there's [black](https://pypi.org/project/black/).
+
 ## A special note on ( R ) Markdown styling
 
 When writing this post in Markdown we hit return after each sentence or even more regularly.
