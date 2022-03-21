@@ -8,7 +8,7 @@ date: "2022-03-21"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 2efd2327c1d143a0
+rmd_hash: ff191905b7d04f06
 
 ---
 
@@ -18,7 +18,7 @@ Do you indent your code with [one tab, two spaces](https://www.youtube.com/watch
 
 Coding style is a set of rules about well, aesthetics (aligning and code spacing) but also naming (of variables, functions, etc.), commenting, structuring (e.g. avoiding complex logic), etc. These rules help with better code clarity and collaboration.
 
-Sometimes somes rules are enforced by the language (indentation in Python), sometimes the language is quite loose, like... R where you can add a lot of spaces, and so in that case more style guides exist.
+Sometimes some rules are enforced by the language (indentation in Python), sometimes the language is quite loose, like... R where you can add a lot of spaces, and so in that case more style guides exist.
 
 Coding style has an universal goal: making your code easier to understand and maintain, for you later and for your code collaborator. Having a team/company style guide is common practice. Major Tech Companies have style guides, e.g. [Google](https://google.github.io/styleguide/)[^1].
 
@@ -38,7 +38,7 @@ Some other style preferences include
 -   [Roger Peng's 8-space indentations](https://simplystatistics.org/posts/2018-07-27-why-i-indent-my-code-8-spaces/);
 -   Yihui Xie's preference for equal sign assignments (as presented in this [issue comment](https://github.com/Robinlovelace/geocompr/issues/319#issuecomment-427376764));
 -   [Google R Style guide](https://google.github.io/styleguide/Rguide.html), a fork of Tidyverse style guide but with variations e.g. a preference for BigCamelCase for function names.
--   [The style guide of the mlr organziation (for machine learning in R)](https://github.com/mlr-org/mlr3/wiki/Style-Guide).
+-   [The style guide of the mlr organization (for machine learning in R)](https://github.com/mlr-org/mlr3/wiki/Style-Guide).
 -   Your own preferences? Yes it's fine to have some as long as your team agrees. :wink: Feel free to mention your preferences in the comments. This is a non-judgmental space (or indent :grin:).
 
 Most style guides will have some preferences regarding code spacing, or "breathing".
@@ -56,7 +56,7 @@ The resources listed below are books without a free version online. Hopefully li
 
 -   [The Art of Readable Code by Dustin Boswell, Trevor Foucher](https://www.goodreads.com/book/show/8677004-the-art-of-readable-code) can be (even for those who do not view it as a beach read :cocktail:), a short, light and actionable read.
 
--   [Refactoring by Martin Fowler](https://www.goodreads.com/book/show/44936.Refactoring) is an inspiration for the aforementioned keynote talk by Jenny Bryan. It defines code smells and refactoring techniques. See also the blogpost ["Explaining Variable" by Pete Hodgson](https://blog.thepete.net/blog/2021/06/24/explaining-variable/) (heard of via [Jenny Bryan](https://twitter.com/JennyBryan/status/1412140590842597385)).
+-   [Refactoring by Martin Fowler](https://www.goodreads.com/book/show/44936.Refactoring) is an inspiration for the aforementioned keynote talk by Jenny Bryan. It defines code smells and refactoring techniques. See also the blog post ["Explaining Variable" by Pete Hodgson](https://blog.thepete.net/blog/2021/06/24/explaining-variable/) (heard of via [Jenny Bryan](https://twitter.com/JennyBryan/status/1412140590842597385)).
 
 -   [The Programmer's Brain by Felienne Hermans](https://www.goodreads.com/book/show/57196550-the-programmer-s-brain) gives a perspective on e.g. how code smells or bad naming influence cognitive load. It is full of practical tips.
 
@@ -98,7 +98,7 @@ In RStudio IDE selecting code and hitting `Ctrl + I` will re-indent code for you
 
 #### styler
 
-The [styler R package](https://styler.r-lib.org) automatically reformats code. Its documentation includes a handy vignette on [customizing styler](https://styler.r-lib.org/articles/customizing_styler.html), for when preferences differ from the default. Examples:
+The [styler R package](https://styler.r-lib.org) automatically re-formats code. Its documentation includes a handy vignette on [customizing styler](https://styler.r-lib.org/articles/customizing_styler.html), for when preferences differ from the default. Examples:
 
 -   the [tiny spaceout R package](https://github.com/ropensci-review-tools/spaceout) that adds spaces between code references.
 -   the [grkstyle R package](https://github.com/gadenbuie/grkstyle) holding Garrick Aden-Buie's personal preferences.
@@ -134,5 +134,5 @@ If you are the maintainer of a codebase, you'll need to be forgiving when statin
 
 In this post we shared documentation of and tooling for coding style. We hope it can help you write or advocate for more readable code. Practice makes perfect, so go forth and participate in code production and reviews. :wink:
 
-[^1]: Note that the Google R style guide inspired the tidyverse styleguide but Google now refers to the tidyverse style guide as R style guide.
+[^1]: Note that the Google R style guide inspired the tidyverse style guide but Google now refers to the tidyverse style guide as R style guide.
 
