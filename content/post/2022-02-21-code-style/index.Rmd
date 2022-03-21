@@ -100,6 +100,8 @@ Hopefully libraries and used book stores can help.
 
 ## Tools
 
+To begin with the most important, or basic, tool here is probably to use an IDE, integrated development environment, like RStudio IDE or VSCODE, as IDEs come with, or easily support, code diagnostic tools.
+
 ### Diagnostic tools
 
 #### lintr

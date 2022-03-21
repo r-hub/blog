@@ -8,7 +8,7 @@ date: "2022-02-21"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 7be80a30d1a2704b
+rmd_hash: 0245ba4631723983
 
 ---
 
@@ -61,6 +61,8 @@ The resources listed below are books without a free version online. Hopefully li
 -   [The Programmer's Brain by Felienne Hermans](https://www.goodreads.com/book/show/57196550-the-programmer-s-brain) gives a perspective on e.g. how code smells or bad naming influence cognitive load. It is full of practical tips.
 
 ## Tools
+
+To begin with the most important, or basic, tool here is probably to use an IDE, integrated development environment, like RStudio IDE or VSCODE, as IDEs come with, or easily support, code diagnostic tools.
 
 ### Diagnostic tools
 
