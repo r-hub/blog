@@ -134,5 +134,5 @@ If you are the maintainer of a codebase, you'll need to be forgiving when statin
 
 In this post we shared documentation of and tooling for coding style. We hope it can help you write or advocate for more readable code. Practice makes perfect, so go forth and participate in code production and reviews. :wink:
 
-[^1]: Note that the Google R style guide first inspired the tidyverse styleguide but now Google R style guide is derived from the tidyverse style guide. 
+[^1]: Note that the Google R style guide inspired the tidyverse styleguide but Google now refers to the tidyverse style guide as R style guide.
 
