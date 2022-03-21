@@ -8,7 +8,7 @@ date: "2022-02-21"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: cadacb19d054aabd
+rmd_hash: 65c1e586c30371a9
 
 ---
 
@@ -16,7 +16,9 @@ Do you indent your code with [one tab, two spaces](https://www.youtube.com/watch
 
 ## What *is* coding style?
 
-Coding style is a set of rules about well, aesthetics (aligning and code spacing) but also naming (of variables, functions, etc.), commenting, structuring (e.g. avoiding complex logic), etc. Despite coding style having an universal goal: making it easy to understand, there is no right coding style as the "correct" choice depends on personal preferences, and the [constraints at hand](https://www.heltweg.org/posts/who-wrote-this-shit/).
+Coding style is a set of rules about well, aesthetics (aligning and code spacing) but also naming (of variables, functions, etc.), commenting, structuring (e.g. avoiding complex logic), etc. Despite coding style having an universal goal: making it easy to understand, there is no right coding style as the "correct" choice depends on personal preferences, and the[constraints at hand](https://www.heltweg.org/posts/who-wrote-this-shit/).
+
+What *is* a standard good approach is having a team/company style guide.Major Tech Companies have style guides, e.g. [Google](https://google.github.io/styleguide/)[^1].
 
 ## Resources
 
@@ -30,8 +32,9 @@ Some variations on it include
 
 -   [Mark Padgham's spacing preferences](https://docs.ropensci.org/pkgcheck/CONTRIBUTING.html#development-guidelines);
 -   [Roger Peng's 8-space indentations](https://simplystatistics.org/posts/2018-07-27-why-i-indent-my-code-8-spaces/);
--   Yihui Xie's preference for equal sign assignments (cf e.g. [knitr](https://github.com/yihui/knitr/blob/master/R/highlight.R));
--   Your own preferences? Feel free to mention them in the comments. This is a non-judgmental space (or indent :grin:).
+-   Yihui Xie's preference for equal sign assignments (as presented in this [issue comment](https://github.com/Robinlovelace/geocompr/issues/319#issuecomment-427376764));
+-   [Google R Style guide](https://google.github.io/styleguide/Rguide.html) with e.g. a preference for BigCamelCase for function names.
+-   Your own preferences? Yes it's fine to have some as long as your team agrees. :wink: Feel free to mention your preferences in the comments. This is a non-judgmental space (or indent :grin:).
 
 Another excellent resource is [Jenny Bryan's useR! 2018 keynote *"Code Smells and Feels"*](https://github.com/jennybc/code-smells-and-feels). It's more focused on code structure and commenting.
 
@@ -51,13 +54,29 @@ The resources listed below are books without a free version online. Hopefully li
 
 A bit meta and less R specific but when writing this post in Markdown we hit return after each sentence or even more regularly. This does not influence how the resulting post looks like but it makes reviewing easier as GitHub PR comments and change suggestions are by line! See more [rationale about this](https://cirosantilli.com/markdown-style-guide/#line-wrapping).
 
+The new [Visual Editor in RStudio](https://rstudio.github.io/visual-markdown-editing/) is a way to enforce a common style in Markdown file. It can be configured, e.g. regarding one line per sentence, so the the IDE automatically modifies source files which insure in collaboration than everyone will write the same.
+
 ## Tools
+
+### Diagnostic tools
+
+The [lintr R package by Jim Hester](https://github.com/r-lib/lintr) has a lot of useful linters such as whether code is commented, whether lines are too long etc.
+
+It is pretty common to find *linting tools* all editor (VSCODE and others) and for most languages. Linting tools will indicate errors and potentially style preference violations.
+
+To set up lintr with your code editor refer to [its docs](https://github.com/r-lib/lintr#editors-setup). Unless you have RStudio IDE and linting is the one included already in the IDE (for errors mainly only, not style preference). If you use VSCODE see <https://github.com/REditorSupport/vscode-R/wiki/R-Language-Service#formatting>.
+
+To use lintr in testthat see [`expect_lint()`](https://rdrr.io/cran/lintr/man/expect_lint.html).
+
+### Fixing tools
 
 -   In RStudio selecting code and hitting `Ctrl + I` will re-indent code for you!
 
--   The [lintr R package by Jim Hester](https://github.com/r-lib/lintr) has a lot of useful linters such as whether code is commented, whether lines are too long etc.
+-   The [styler R package](https://styler.r-lib.org) automatically reformats code. Its documentation includes a handy vignette on [customizing styler](https://styler.r-lib.org/articles/customizing_styler.html), for when preferences differ from the default. Examples:
 
--   The [styler R package](https://styler.r-lib.org) automatically reformats code. Its documentation includes a handy vignette on [customizing styler](https://styler.r-lib.org/articles/customizing_styler.html), for when preferences differ from the default. An example of application is the [tiny spaceout R package](https://github.com/ropensci-review-tools/spaceout) that adds spaces between code references.
+    -   the [tiny spaceout R package](https://github.com/ropensci-review-tools/spaceout) that adds spaces between code references.
+    -   the [grkstyle R package](https://github.com/gadenbuie/grkstyle) holding Garrick Aden-Buie's personal preferences.
+    -   the [styler.mlr R package](https://github.com/mlr-org/styler.mlr) implementing the mlr style guide. The styler package documents some [third-part integration](https://styler.r-lib.org/articles/third-party-integrations.html): you don't have to remember to run styler manually. In particular, to use styler on its own CI workflow on GitHub Actions: <https://github.com/r-lib/actions/tree/v2-branch/examples#style-package>
 
 -   One of the aspects checked by rOpenSci Mark Padgham's [pkgcheck package](https://docs.ropensci.org/pkgcheck/index.html) is *"Left-assign operators must be used consistently throughout all code (so either all = or all \<-, but not a mixture of both)."*.
 
@@ -72,4 +91,6 @@ If you are the maintainer of a codebase, you'll need to be forgiving when statin
 ## Conclusion
 
 In this post we shared documentation of and tooling for coding style. We hope it can help you write or advocate for more readable code. Practice makes perfect, so go forth and participate in code production and reviews. :wink:
+
+[^1]: Note that the Google R style guide inspired the tidyverse styleguide but Google now refers to the tidyverse style guide as R style guide.
 
