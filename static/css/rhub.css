@@ -548,6 +548,6 @@ font-style: italic;
 
 .alert-primary {
   color: black;
-  background-color: inherits;
+  background-color: none;
   border-color: #2854a0;
 }
