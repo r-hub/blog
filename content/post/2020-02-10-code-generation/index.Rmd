@@ -35,7 +35,7 @@ Some of us deal with less tidy web APIs. :wink:
 ### Scope of this post 
 
 In this post, we'll look into _scaffolding_ code (when your output is some sort of skeleton that's still need some human action before being integrated in a package) and _generating_ code (you hit a button and end up with more functions and docs in the package for its users to find). 
-We won't look into packages exporting [function factories](adv-r.hadley.nz/function-factories.html).
+We won't look into packages exporting [function factories](https://adv-r.hadley.nz/function-factories.html).
 
 ## Scaffolding code
 
