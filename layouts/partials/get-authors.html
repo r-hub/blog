@@ -1,7 +1,7 @@
 <!-- List authors with proper list formatting -->
 <a href="/authors" title="Authors" alt="/authors"><i class="fa fa-user mr-2"></i></a>
 {{ range $index, $value := .Params.authors }}
-    {{ if $index }}, {{ end }}
+    {{ if $index }},&thinsp;{{ end }}
     <a href='{{ "/authors/" | relLangURL }}{{ . | urlize }}'>{{ title ($value | humanize) }}</a>
 {{ end }}
 <!---->
