@@ -1,0 +1,223 @@
+---
+slug: r-dependency
+title: "Checking the inputs of your R functions" 
+authors: 
+- Hugo Gruson
+- Maëlle Salmon
+date: "2022-09-01" 
+tags: 
+- package development 
+- r-package
+output: hugodown::hugo_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(fig.path = "", comment = "")
+# knitr hook to make images output use Hugo options
+knitr::knit_hooks$set(
+  plot = function(x, options) {
+    hugoopts <- options$hugoopts
+    paste0(
+      "{{<figure src=",
+      '"', x, '" ',
+      if (!is.null(hugoopts)) {
+        glue::glue_collapse(
+          glue::glue('{names(hugoopts)}="{hugoopts}"'),
+          sep = " "
+        )
+      },
+      ">}}\n"
+    )
+  }
+)
+options(crayon.enabled = FALSE)
+
+```
+
+There have been much talk and many blog posts about R package dependencies.
+Yet, one special dependency is more rarely mentioned, even though all packages include it: the dependency on R itself.
+The same way you can specify a dependency on a package, and optionally on a specific version, you can add a dependency to a minimum R version in the `DESCRIPTION` file of your package.
+In this blog post, we will explain:
+
+-   How to declare a dependency to a minimum R version and why you may need to do so?
+-   How to choose on which version you should depend?
+-   How to avoid depending on a new version?
+-   How to test you depend on the correct version?
+
+# How & why to declare a dependency to a minimum R version?
+
+Although the R project is in a stable state, and prides itself in its solid backward compatibility, it is far from being a dead project.
+Many exciting new features keep being regularly added to R or some of its base libraries.
+As a package developer, you may want to use one of these newly added features.
+
+In this situation, you should inform users ([as well as automated checks from CRAN](https://www.mail-archive.com/r-package-devel@r-project.org/msg06331.html)) that your package only works for R versions more recent than a given number [^1].
+
+[^1]: Note that there is no mechanism to make your package compatible only with older R versions, and not with the more recent ones.
+    Packages are supposed to work with the latest R versions.
+
+To do so, you should add the required version number to your `DESCRIPTION` file [^2]:
+
+[^2]: In theory, it is not strictly required to use `>=`.
+    You could use a strict inequality (`>`) but as we will see later, this is a very uncommon option so we recommend you use the *de facto* community standard and stick to `>=`.
+
+``` yaml
+  Depends:
+    R (>= 3.5.0)
+```
+
+# How to choose on which version you should depend?
+
+There are different strategies to choose on which R version your package should depend:
+
+## Conservative approaches
+
+Some projects prefer to limit the minimum R version by design, rather than by necessity.
+This means that their packages *might* work with older R versions, but because they don't or can't test it, they'd rather not take the risk and limit themselves to versions for which they are sure the package is working:
+
+-   this used to be the policy of usethis (and therefore, of all packages built this usethis).
+    In the past, usethis added by default a dependency to the R version used by the developer at the time they created the package.
+
+-   this is the strategy used by the tidyverse, which explicitly decided to guarantee compatibility with the 5 latest R minor releases, but no further
+
+## 'Wide net' approaches
+
+On the opposite, other projects consider that packages are by default compatible with all R versions, until they explicitly add a feature associated with a new R version, or until tests prove it otherwise:
+
+-   this is the new policy of usethis (and therefore, of all packages built this usethis). By default, new packages don't have any constraints on the R version. It is the responsibility of the developer to add a minimum required version if necessary.
+
+## Which approach should you choose?
+
+There is no intrinsically better choice between these two approaches.
+It is more a matter of world-view and relation of the project with the users.
+However, whichever your choice, here are some points that you should consider:
+
+-   
+
+## Minimum R dependencies in CRAN packages
+
+Whenever you are unsure about a completely subjective choice for a R package, or any project in general, it is often good practice to look at what is done in your community.
+
+Let's start by grabbing a snapshot of the current CRAN archive:
+
+```{r, cache = TRUE}
+db <- tools::CRAN_package_db()
+```
+
+We can then isolate the R version dependency declaration:
+
+```{r}
+r_deps <- db |> 
+  dplyr::pull(Depends) |> 
+  strsplit(split = ",") |> 
+  purrr::map(~ grep("^R ", .x, value = TRUE)) |> 
+  unlist()
+tail(r_deps)
+```
+
+As mentioned earlier, the minimum required version can be specified with a loose or strict inequality:
+
+```{r}
+(r_deps_strict <- sum(grepl("^R \\(>\\s(.+)\\)", r_deps)))
+(r_deps_loose  <- sum(grepl("^R \\(>=\\s(.+)\\)", r_deps)))
+```
+
+You can see that using a strict inequality is indeed very uncommon (`r sprintf("%.2f%%", r_deps_strict / (r_deps_strict + r_deps_loose) * 100)` of the cases).
+
+We can now continue our analysis and extract the version number itself:
+
+```{r}
+r_deps_ver <- trimws(gsub("^R \\(>=?\\s(.+)\\)", "\\1", r_deps))
+
+r_deps_ver |> 
+  table()
+```
+
+Interestingly, you can notice that some of these version numbers don't match any actual R release.
+To confirm this, we can use the [rversions package, from R-hub](https://cran.r-project.org/package=rversions):
+
+```{r}
+setdiff(unique(r_deps_ver), rversions::r_versions()$version)
+```
+
+We can infer the reason for the mismatch for some examples in this list:
+
+-   missing `.` between version components (e.g., `2.01`, `2.50`, `3.00`, `3.60`, `4.00`)
+-   `.` replaced by `-` in the patch version number (e.g., `3.0-0`, `3.0-2`, `3.1-0`, `3.5-0`, `4.1-0`) [^3].
+-   missing patch version number (e.g., `2.0`, `2.2`, `4.3`)
+-   extra patch version number (e.g., `1.4.0`)
+-   recommended packages depend on a yet-to-be-released R version (`4.3`)
+
+[^3]: However, it is interesting to note that `package_version("3.5-0") == package_version("3.5.0")`.
+    The use of `-` instead of `.` is purely stylistic.
+
+Note that this values are not syntactically wrong, and it might in some cases be intended by the author.
+They can be read and understood by the relevant function in base R (in particular, `install.packages()`), but it is possible they do not correspond to what the package author was expecting, or trying to communicate.
+For example, in the case of `R (=> 3.60)`: even if the author really intended to depend on `R 3.6.0` as we assume here, the package cannot be installed in versions earlier than 4.0.0.
+
+To visualise the actual minimum R version corresponding to the declared R dependency, we can do the following:
+
+```{r}
+r_vers <- package_version(rversions::r_versions()$version)
+
+normalised_r_deps <- vapply(r_deps_ver, function(ver) {
+  
+  ver <- package_version(ver)
+  
+  # Here, we rely on a somewhat uncommon use of `match()`. When `match()`ing
+  # `TRUE` to something, the index of the first `TRUE` value will be returned.
+  # In other words here, we return the first R version that it superior or equal
+  # to the stated R version dependency
+  min_r_ver <- r_vers[match(TRUE, ver <= r_vers)]
+  
+  return(min_r_ver)
+  
+}, package_version("0.0.0"))
+```
+
+```{r}
+library(ggplot2)
+
+do.call(rbind, normalised_r_deps) |> 
+  as.data.frame() |> 
+  dplyr::rename(
+    major = V1,
+    minor = V2,
+    patch = V3
+  ) |> 
+  dplyr::mutate(majorminor = paste(major, minor, sep = ".")) |> 
+  ggplot(aes(y = majorminor)) +
+    geom_bar()
+```
+
+# How to avoid depending on a new version?
+
+For the various reasons presented above, it might not always be desirable to depend on a very recent R version.
+In this kind of situation, you may want to use the backports package.
+It reimplements many of the new features from the more recent R version.
+This way, instead of having to depend on a newer R version, you can simply add a dependency to backports, which is easier to install than a newer R version for users in highly controlled environments.
+
+Backports is not a silver bullet though, as some new features are impossible to reimplement in a package.
+Notably, this is the case of the native R pipe (`|>`), introduced in R 4.1.0.
+Roughly speaking, this is because it is not simply a new function, but rather an entire new way to read R code.
+
+# How to test you depend on the correct version?
+
+It is easy to make a mistake when specifying a minimum R version, and to forget to you use one recent R feature.
+For this reason, you should always try to verify that your minimum R version claim is accurate.
+
+The most complete approach is to run your tests, or at least verify that the package can be built without errors, on all older R versions you claim to support.
+For this, you could use rig, which allows you to install multiple R version on your computer and switch between them with a single command.
+But a convenient way to do so if to rely on continuous integration platforms, where existing workflows are already set up to run on multiple R versions.
+For example, if you choose to replicate the tidyverse policy of supporting the 5 latest minor releases of R, your best bet is probably to copy the `R-CMD-check.yaml` GitHub Actions workflow from any of their repository.
+
+But this extensive test may prove challenging in some cases.
+In particular, the actions provided by [`r-lib.actions`](https://github.com/r-lib/actions) use [rcmdcheck](https://r-lib.github.io/rcmdcheck/), which itself depends on R 3.3 (via digest).
+This means that you'll have to write your own workflows if you wish to run `R CMD check` on older R versions.
+Some packages that place a high value in being compatible with older R versions, such as data.table, have taken this route and developed their own continuous integration scripts.
+
+A more lightweight approach (although a little more prone to false-negatives) is to use the [`backport_linter()` function provided by the lintr package](https://lintr.r-lib.org/reference/backport_linter.html).
+It works by matching your code against a list of functions introduced in more recent R versions.
+Note that this approach might also produce false-positive is you use functions with the same name as recent base R functions.
+
+# Conclusion
