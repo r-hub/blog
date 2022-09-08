@@ -179,7 +179,7 @@ normalised_r_deps <- vapply(r_deps_ver, function(ver) {
 }, package_version("0.0.0"))
 ```
 
-```{r}
+```{r cran-r-version-plot}
 library(ggplot2)
 
 do.call(rbind, normalised_r_deps) |> 
