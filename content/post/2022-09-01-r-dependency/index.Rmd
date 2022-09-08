@@ -262,7 +262,7 @@ Roughly speaking, this is because it is not simply a new function, but rather an
 
 # How to test you depend on the correct version?
 
-It is easy to make a mistake when specifying a minimum R version, and to forget to you use one recent R feature.
+[It is easy to make a mistake when specifying a minimum R version, and to forget to you use one recent R feature](https://stat.ethz.ch/pipermail/r-package-devel/2021q1/006508.html).
 For this reason, you should always try to verify that your minimum R version claim is accurate.
 
 The most complete approach is to run your tests, or at least verify that the package can be built without errors, on all older R versions you claim to support.
