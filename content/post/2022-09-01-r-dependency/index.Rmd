@@ -38,12 +38,6 @@ options(crayon.enabled = FALSE)
 There have been much talk and many blog posts about R package dependencies.
 Yet, one special dependency is more rarely mentioned, even though all packages include it: the dependency on R itself.
 The same way you can specify a dependency on a package, and optionally on a specific version, you can add a dependency to a minimum R version in the `DESCRIPTION` file of your package.
-In this blog post, we will explain:
-
--   How to declare a dependency to a minimum R version and why you may need to do so?
--   How to choose on which version you should depend?
--   How to avoid depending on a new version?
--   How to test you depend on the correct version?
 
 # How & why to declare a dependency to a minimum R version?
 
