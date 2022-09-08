@@ -49,7 +49,7 @@ In this blog post, we will explain:
 
 Although the R project is in a stable state, and prides itself in its solid backward compatibility, it is far from being a dead project.
 Many exciting new features keep being regularly added to R or some of its base libraries.
-As a package developer, you may want to use one of these newly added features.
+As a package developer, [you may want to use one of these newly added features](https://github.com/yihui/knitr/issues/2100).
 
 In this situation, you should inform users ([as well as automated checks from CRAN](https://www.mail-archive.com/r-package-devel@r-project.org/msg06331.html)) that your package only works for R versions more recent than a given number [^1].
 
