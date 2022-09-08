@@ -137,9 +137,8 @@ It is important that the minimum R version you state in your package reflects th
 There is no intrinsically better choice between these approaches.
 It is more a matter of world-view and relation of the project with the users.
 
-However, you should always keep in mind that it may be difficult for users to update their R version and you should not for
-
--   
+However, you should always keep in mind that [it may be difficult for users to install or update any piece of software](https://twitter.com/jimhester_/status/1350424047893557253) and you should not force them to upgrade to very recent R versions.
+A good philosophy is to consider that users cannot upgrade their R version and that you should bump the required R version only when you are sure that all active users are already using this R version or a newer one.
 
 ## Minimum R dependencies in CRAN packages
 
