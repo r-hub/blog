@@ -79,6 +79,7 @@ This means that their packages *might* work with older R versions, but because t
     In the past, usethis added by default a dependency to the R version used by the developer at the time they created the package.
 
 -   this is the strategy used by the tidyverse, which explicitly decided to guarantee compatibility with the 5 latest R minor releases, but no further.
+    With the current R release cycle, this corresponds to compatibility with R versions up to 5 years old.
 
 ## 'Wide net' approaches
 
