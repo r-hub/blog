@@ -218,7 +218,7 @@ For example, if you choose to replicate the tidyverse policy of supporting the 5
 But this extensive test may prove challenging in some cases.
 In particular, the actions provided by [`r-lib.actions`](https://github.com/r-lib/actions) use [rcmdcheck](https://r-lib.github.io/rcmdcheck/), which itself depends on R 3.3 (via digest).
 This means that you'll have to write your own workflows if you wish to run `R CMD check` on older R versions.
-Some packages that place a high value in being compatible with older R versions, such as data.table, have taken this route and developed their own continuous integration scripts.
+Some packages that place a high value in being compatible with older R versions, such as data.table, have taken this route and developed [their own continuous integration scripts](https://github.com/Rdatatable/data.table/tree/71c7e6d/.ci).
 
 A more lightweight approach (although a little more prone to false-negatives) is to use the [`backport_linter()` function provided by the lintr package](https://lintr.r-lib.org/reference/backport_linter.html).
 It works by matching your code against a list of functions introduced in more recent R versions.
