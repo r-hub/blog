@@ -13,7 +13,7 @@ output: hugodown::hugo_document
 
 ```{r setup, include=FALSE}
 
-knitr::opts_chunk$set(fig.path = "", comment = "")
+knitr::opts_chunk$set(fig.path = "", comment = "", warning = FALSE)
 # knitr hook to make images output use Hugo options
 knitr::knit_hooks$set(
   plot = function(x, options) {
