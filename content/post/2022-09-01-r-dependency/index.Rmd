@@ -191,7 +191,13 @@ do.call(rbind, normalised_r_deps) |>
   ) |> 
   dplyr::mutate(majorminor = paste(major, minor, sep = ".")) |> 
   ggplot(aes(y = majorminor)) +
-    geom_bar()
+    geom_bar() +
+    labs(
+      x = "Number of CRAN packages",
+      y = "Minimum required R version",
+      title = "Minimum required R version in CRAN packages"
+    ) +
+    theme_minimal()
 ```
 
 The peak at R 2.10 might be related to the fact that [it is automatically added when developers embed data in their packages with `usethis::use_date()`](https://github.com/r-lib/usethis/issues/631).
