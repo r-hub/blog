@@ -1,6 +1,6 @@
 ---
 slug: r-dependency
-title: "Checking the inputs of your R functions" 
+title: "Minimum R version dependency in R packages" 
 authors: 
 - Hugo Gruson
 - Maëlle Salmon
