@@ -280,3 +280,10 @@ It works by matching your code against a list of functions introduced in more re
 Note that this approach might also produce false-positive is you use functions with the same name as recent base R functions.
 
 # Conclusion
+
+As you've seen, there are quite a lot of strategies and subtleties in setting a minimum R dependency for your package.
+But the tips we presented here are specific cases of more software development tips:
+
+-   use automated tools to assist you in your work
+-   try to empathize with your users and minimize the friction to use your tool
+-   look at what other developers in the community are doing
