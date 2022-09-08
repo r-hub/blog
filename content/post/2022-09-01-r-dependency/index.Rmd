@@ -70,7 +70,7 @@ To do so, you should add the required version number to your `DESCRIPTION` file 
 
 There are different strategies to choose on which R version your package should depend:
 
-## Conservative approaches
+## Conservative approach
 
 Some projects prefer to limit the minimum R version by design, rather than by necessity.
 This means that their packages *might* work with older R versions, but because they don't or can't test it, they'd rather not take the risk and limit themselves to versions for which they are sure the package is working:
@@ -81,17 +81,63 @@ This means that their packages *might* work with older R versions, but because t
 -   this is the strategy used by the tidyverse, which explicitly decided to guarantee compatibility with the 5 latest R minor releases, but no further.
     With the current R release cycle, this corresponds to compatibility with R versions up to 5 years old.
 
-## 'Wide net' approaches
+## 'Wide net' approach
 
 On the opposite, other projects consider that packages are by default compatible with all R versions, until they explicitly add a feature associated with a new R version, or until tests prove it otherwise:
 
 -   this is the new policy of usethis (and therefore, of all packages built this usethis). By default, new packages don't have any constraints on the R version. It is the responsibility of the developer to add a minimum required version if necessary.
 
+## Transitive approach
+
+Another approach is to look at your dependency.
+If indirectly, via one of your recursive dependencies, you already depend on a recent R version, there is no point in going the extra mile to keep working with older versions.
+So, a strategy could be to compute your transitive minimum R version with the following function and decide that you can use base R features up to this version:
+
+```{r}
+find_transitive_minR <- function(package) {
+  
+  db <- tools::CRAN_package_db()
+  
+  recursive_deps <- tools::package_dependencies(
+    package, 
+    recursive = TRUE, 
+    db = db
+  )[[1]]
+  
+  # These code chunks are detailed below in the 'Minimum R dependencies in CRAN 
+  # packages' section
+  r_deps <- db |> 
+    dplyr::filter(Package %in% recursive_deps) |> 
+    # We exclude recommended pkgs as they're always shown as depending on R-devel
+    dplyr::filter(is.na(Priority) | Priority != "recommended") |>  
+    dplyr::pull(Depends) |> 
+    strsplit(split = ",") |> 
+    purrr::map(~ grep("^R ", .x, value = TRUE)) |> 
+    unlist()
+  
+  r_vers <- trimws(gsub("^R \\(>=?\\s(.+)\\)", "\\1", r_deps))
+  
+  return(max(package_version(r_vers)))
+}
+```
+
+Let's try this on ggplot2, which depends on R \>= 3.3
+
+```{r}
+find_transitive_minR("ggplot2")
+```
+
+This means that ggplot2 developers could, at no cost, start using features from R 3.4.
+
+However, you should take this as a guideline but not add a transitive minimum R version as the minimum R version of your package unless you add a feature specific to this version.
+It is important that the minimum R version you state in your package reflects the version required for the code in your package, not in one of its dependencies.
+
 ## Which approach should you choose?
 
-There is no intrinsically better choice between these two approaches.
+There is no intrinsically better choice between these approaches.
 It is more a matter of world-view and relation of the project with the users.
-However, whichever your choice, here are some points that you should consider:
+
+However, you should always keep in mind that it may be difficult for users to update their R version and you should not for
 
 -   
 
@@ -109,6 +155,8 @@ We can then isolate the R version dependency declaration:
 
 ```{r}
 r_deps <- db |> 
+  # We exclude recommended pkgs as they're always shown as depending on R-devel
+  dplyr::filter(is.na(Priority) | Priority != "recommended") |> 
   dplyr::pull(Depends) |> 
   strsplit(split = ",") |> 
   purrr::map(~ grep("^R ", .x, value = TRUE)) |> 
