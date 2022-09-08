@@ -113,8 +113,11 @@ r_deps <- db |>
   strsplit(split = ",") |> 
   purrr::map(~ grep("^R ", .x, value = TRUE)) |> 
   unlist()
+length(r_deps)
 tail(r_deps)
 ```
+
+A first result of our analysis if that `r sprintf("%.0f%%", length(r_deps) / nrow(db) * 100)` of CRAN packages specify a minimum R version.
 
 As mentioned earlier, the minimum required version can be specified with a loose or strict inequality:
 
