@@ -1,6 +1,6 @@
 ---
 slug: r-dependency
-title: "Checking the inputs of your R functions" 
+title: "Minimum R version dependency in R packages" 
 authors: 
 - Hugo Gruson
 - Maëlle Salmon
@@ -9,20 +9,15 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: 78f2b0bc5d4074a6
+rmd_hash: 2e9c8c5a6e5e39b8
 
 ---
 
-There have been much talk and many blog posts about R package dependencies. Yet, one special dependency is more rarely mentioned, even though all packages include it: the dependency on R itself. The same way you can specify a dependency on a package, and optionally on a specific version, you can add a dependency to a minimum R version in the `DESCRIPTION` file of your package. In this blog post, we will explain:
-
--   How to declare a dependency to a minimum R version and why you may need to do so?
--   How to choose on which version you should depend?
--   How to avoid depending on a new version?
--   How to test you depend on the correct version?
+There have been much talk and many blog posts about R package dependencies. Yet, one special dependency is more rarely mentioned, even though all packages include it: the dependency on R itself. The same way you can specify a dependency on a package, and optionally on a specific version, you can add a dependency to a minimum R version in the `DESCRIPTION` file of your package.
 
 # How & why to declare a dependency to a minimum R version?
 
-Although the R project is in a stable state, and prides itself in its solid backward compatibility, it is far from being a dead project. Many exciting new features keep being regularly added to R or some of its base libraries. As a package developer, you may want to use one of these newly added features.
+Although the R project is in a stable state, and prides itself in its solid backward compatibility, it is far from being a dead project. Many exciting new features keep being regularly added to R or some of its base libraries. As a package developer, [you may want to use one of these newly added features](https://github.com/yihui/knitr/issues/2100).
 
 In this situation, you should inform users ([as well as automated checks from CRAN](https://www.mail-archive.com/r-package-devel@r-project.org/msg06331.html)) that your package only works for R versions more recent than a given number [^1].
 
@@ -37,25 +32,69 @@ To do so, you should add the required version number to your `DESCRIPTION` file 
 
 There are different strategies to choose on which R version your package should depend:
 
-## Conservative approaches
+## Conservative approach
 
 Some projects prefer to limit the minimum R version by design, rather than by necessity. This means that their packages *might* work with older R versions, but because they don't or can't test it, they'd rather not take the risk and limit themselves to versions for which they are sure the package is working:
 
--   this used to be the policy of usethis (and therefore, of all packages built this usethis). In the past, usethis added by default a dependency to the R version used by the developer at the time they created the package.
+-   this used to be the policy of usethis before 2017 (and therefore, of all packages built with usethis at that time). [In the past, usethis added by default a dependency to the R version used by the developer at the time they created the package](https://github.com/r-lib/usethis/commit/7937594cb4a6adc9f1783839c4ccdd2cdcffaaae).
 
--   this is the strategy used by the tidyverse, which explicitly decided to guarantee compatibility with the 5 latest R minor releases, but no further
+-   this is the strategy used by the tidyverse, which explicitly decided to guarantee compatibility with the 5 latest R minor releases, but no further. With the current R release cycle, this corresponds to compatibility with R versions up to 5 years old.
 
-## 'Wide net' approaches
+## 'Wide net' approach
 
-On the opposite, other projects consider that packages are by default compatible with all R versions, until they explicitly add a feature associated with a new R version, or until tests prove it otherwise:
+On the opposite, other projects consider that packages are by default compatible with all R versions, until they explicitly add a feature associated with a new R version, or until tests prove it otherwise. This is the new policy of usethis (and therefore, of all packages built this usethis). By default, new packages don't have any constraints on the R version. It is the responsibility of the developer to add a minimum required version if necessary.
 
--   this is the new policy of usethis (and therefore, of all packages built this usethis). By default, new packages don't have any constraints on the R version. It is the responsibility of the developer to add a minimum required version if necessary.
+## Transitive approach
+
+Another approach is to look at your dependency. If indirectly, via one of your recursive dependencies, you already depend on a recent R version, there is no point in going the extra mile to keep working with older versions. So, a strategy could be to compute your transitive minimum R version with the following function and decide that you can use base R features up to this version:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>find_transitive_minR</span> <span class='o'>&lt;-</span> <span class='kr'>function</span><span class='o'>(</span><span class='nv'>package</span><span class='o'>)</span> <span class='o'>&#123;</span></span>
+<span>  </span>
+<span>  <span class='nv'>db</span> <span class='o'>&lt;-</span> <span class='nf'>tools</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/r/tools/CRANtools.html'>CRAN_package_db</a></span><span class='o'>(</span><span class='o'>)</span></span>
+<span>  </span>
+<span>  <span class='nv'>recursive_deps</span> <span class='o'>&lt;-</span> <span class='nf'>tools</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/r/tools/package_dependencies.html'>package_dependencies</a></span><span class='o'>(</span></span>
+<span>    <span class='nv'>package</span>, </span>
+<span>    recursive <span class='o'>=</span> <span class='kc'>TRUE</span>, </span>
+<span>    db <span class='o'>=</span> <span class='nv'>db</span></span>
+<span>  <span class='o'>)</span><span class='o'>[[</span><span class='m'>1</span><span class='o'>]</span><span class='o'>]</span></span>
+<span>  </span>
+<span>  <span class='c'># These code chunks are detailed below in the 'Minimum R dependencies in CRAN </span></span>
+<span>  <span class='c'># packages' section</span></span>
+<span>  <span class='nv'>r_deps</span> <span class='o'>&lt;-</span> <span class='nv'>db</span> <span class='o'>|&gt;</span> </span>
+<span>    <span class='nf'>dplyr</span><span class='nf'>::</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='o'>(</span><span class='nv'>Package</span> <span class='o'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='nv'>recursive_deps</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
+<span>    <span class='c'># We exclude recommended pkgs as they're always shown as depending on R-devel</span></span>
+<span>    <span class='nf'>dplyr</span><span class='nf'>::</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='o'>(</span><span class='nv'>Priority</span><span class='o'>)</span> <span class='o'>|</span> <span class='nv'>Priority</span> <span class='o'>!=</span> <span class='s'>"recommended"</span><span class='o'>)</span> <span class='o'>|&gt;</span>  </span>
+<span>    <span class='nf'>dplyr</span><span class='nf'>::</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span><span class='o'>(</span><span class='nv'>Depends</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
+<span>    <span class='nf'><a href='https://rdrr.io/r/base/strsplit.html'>strsplit</a></span><span class='o'>(</span>split <span class='o'>=</span> <span class='s'>","</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
+<span>    <span class='nf'>purrr</span><span class='nf'>::</span><span class='nf'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='o'>(</span><span class='o'>~</span> <span class='nf'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span><span class='o'>(</span><span class='s'>"^R "</span>, <span class='nv'>.x</span>, value <span class='o'>=</span> <span class='kc'>TRUE</span><span class='o'>)</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
+<span>    <span class='nf'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='o'>(</span><span class='o'>)</span></span>
+<span>  </span>
+<span>  <span class='nv'>r_vers</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/trimws.html'>trimws</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/grep.html'>gsub</a></span><span class='o'>(</span><span class='s'>"^R \\(&gt;=?\\s(.+)\\)"</span>, <span class='s'>"\\1"</span>, <span class='nv'>r_deps</span><span class='o'>)</span><span class='o'>)</span></span>
+<span>  </span>
+<span>  <span class='kr'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/numeric_version.html'>package_version</a></span><span class='o'>(</span><span class='nv'>r_vers</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>
+<span><span class='o'>&#125;</span></span></code></pre>
+
+</div>
+
+Let's try this on ggplot2, which depends on R \>= 3.3
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'>find_transitive_minR</span><span class='o'>(</span><span class='s'>"ggplot2"</span><span class='o'>)</span></span>[1] '3.4'</code></pre>
+
+</div>
+
+This means that ggplot2 developers could, at no cost, start using features from R 3.4.
+
+However, you should take this as a guideline but not add a transitive minimum R version as the minimum R version of your package unless you add a feature specific to this version. It is important that the minimum R version you state in your package reflects the version required for the code in your package, not in one of its dependencies.
 
 ## Which approach should you choose?
 
-There is no intrinsically better choice between these two approaches. It is more a matter of world-view and relation of the project with the users. However, whichever your choice, here are some points that you should consider:
+There is no intrinsically better choice between these approaches. It is more a matter of world-view and relation of the project with the users.
 
--   
+However, you should always keep in mind that [it may be difficult for users to install or update any piece of software](https://twitter.com/jimhester_/status/1350424047893557253) and you should not force them to upgrade to very recent R versions. A good philosophy is to consider that users cannot upgrade their R version and that you should bump the required R version only when you are sure that all active users are already using this R version or a newer one.
 
 ## Minimum R dependencies in CRAN packages
 
@@ -74,21 +113,26 @@ We can then isolate the R version dependency declaration:
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>r_deps</span> <span class='o'>&lt;-</span> <span class='nv'>db</span> <span class='o'>|&gt;</span> </span>
+<span>  <span class='c'># We exclude recommended pkgs as they're always shown as depending on R-devel</span></span>
+<span>  <span class='nf'>dplyr</span><span class='nf'>::</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='o'>(</span><span class='nv'>Priority</span><span class='o'>)</span> <span class='o'>|</span> <span class='nv'>Priority</span> <span class='o'>!=</span> <span class='s'>"recommended"</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
 <span>  <span class='nf'>dplyr</span><span class='nf'>::</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span><span class='o'>(</span><span class='nv'>Depends</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
 <span>  <span class='nf'><a href='https://rdrr.io/r/base/strsplit.html'>strsplit</a></span><span class='o'>(</span>split <span class='o'>=</span> <span class='s'>","</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
 <span>  <span class='nf'>purrr</span><span class='nf'>::</span><span class='nf'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='o'>(</span><span class='o'>~</span> <span class='nf'><a href='https://rdrr.io/r/base/grep.html'>grep</a></span><span class='o'>(</span><span class='s'>"^R "</span>, <span class='nv'>.x</span>, value <span class='o'>=</span> <span class='kc'>TRUE</span><span class='o'>)</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
 <span>  <span class='nf'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='o'>(</span><span class='o'>)</span></span>
-<span><span class='nf'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='o'>(</span><span class='nv'>r_deps</span><span class='o'>)</span></span>[1] "R (>= 4.3)"    "R (>= 4.3)"    "R (>= 4.3)"    "R (>= 4.3)"   
+<span><span class='nf'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='o'>(</span><span class='nv'>r_deps</span><span class='o'>)</span></span>[1] 11542
+<span><span class='nf'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='o'>(</span><span class='nv'>r_deps</span><span class='o'>)</span></span>[1] "R (>= 3.5)"    "R (>= 3.1.0)"  "R (>= 2.4.0)"  "R (>= 3.2)"   
 [5] "R (>= 3.0.0)"  "R (>= 2.13.0)"</code></pre>
 
 </div>
+
+A first result of our analysis if that 62% of CRAN packages specify a minimum R version.
 
 As mentioned earlier, the minimum required version can be specified with a loose or strict inequality:
 
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='o'>(</span><span class='nv'>r_deps_strict</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='o'>(</span><span class='s'>"^R \\(&gt;\\s(.+)\\)"</span>, <span class='nv'>r_deps</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>[1] 10
-<span><span class='o'>(</span><span class='nv'>r_deps_loose</span>  <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='o'>(</span><span class='s'>"^R \\(&gt;=\\s(.+)\\)"</span>, <span class='nv'>r_deps</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>[1] 11533</code></pre>
+<span><span class='o'>(</span><span class='nv'>r_deps_loose</span>  <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/grep.html'>grepl</a></span><span class='o'>(</span><span class='s'>"^R \\(&gt;=\\s(.+)\\)"</span>, <span class='nv'>r_deps</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>[1] 11532</code></pre>
 
 </div>
 
@@ -109,49 +153,49 @@ We can now continue our analysis and extract the version number itself:
       1.7.0       1.8.0       1.9.0       1.9.1         2.0       2.0.0 
           3          31          11           1          18          59 
       2.0.1        2.01         2.1       2.1.0       2.1.1      2.1.14 
-         13           8           3          16           4           1 
+         13           9           2          16           4           1 
       2.1.4       2.1.5        2.10      2.10.0      2.10.1        2.11 
-          1           1        1574         137          22           1 
+          1           1        1578         136          22           1 
      2.11.0      2.11.1        2.12      2.12.0      2.12.1        2.13 
-         14          10           6          44           1           8 
+         13          10           6          45           1           8 
      2.13.0      2.13.1      2.13.2        2.14      2.14.0      2.14.1 
-         36           4           1          38         105          22 
+         37           4           1          38         105          22 
      2.14.2        2.15      2.15.0      2.15.1      2.15.2      2.15.3 
-         13          47          88          60           9           9 
+         13          47          87          60           9           9 
        2.16         2.2       2.2.0       2.2.1       2.2.4        2.20 
           1           2          23           9           1           1 
         2.3       2.3.0       2.3.1      2.3.12       2.3.2         2.4 
           2          13           3           1           1           4 
       2.4.0       2.4.1         2.5       2.5.0       2.5.1       2.5.3 
-         24           2           3          31           1           1 
+         24           2           3          30           1           1 
        2.50         2.6       2.6.0       2.6.1       2.6.2         2.7 
           2           9          40           3           2           5 
       2.7.0       2.7.2         2.8       2.8.0       2.8.1         2.9 
          27           1           1          23           2           2 
       2.9.0       2.9.1       2.9.2         3.0       3.0-0       3.0-2 
-         28           4           3         237           4           1 
+         28           4           3         236           4           1 
       3.0.0       3.0.1       3.0.2       3.0.3       3.0.4        3.00 
-        756          93         231          33           1          19 
+        750          94         231          33           1          19 
      3.00.0         3.1       3.1-0       3.1.0       3.1.1       3.1.2 
-          1         183           2         583          97         144 
+          1         182           2         583          97         144 
       3.1.3        3.10      3.10.0         3.2       3.2.0       3.2.1 
-         33           2           1         133         398          50 
+         33           2           1         134         397          50 
       3.2.2       3.2.3       3.2.4       3.2.5       3.2.6         3.3 
-         94         110          27          29           1         142 
+         95         110          27          29           1         141 
       3.3.0       3.3.1       3.3.2       3.3.3         3.4       3.4.0 
-        461          63          39          23         178         570 
+        461          63          39          23         181         566 
       3.4.1       3.4.2       3.4.3       3.4.4         3.5       3.5-0 
-         12           5           2          10         338           1 
+         12           5           2           9         339           1 
       3.5.0 3.5.0-4.0.2      3.5.00       3.5.1     3.5.1.0       3.5.2 
-       2199           1           1           5           1           2 
+       2207           1           1           5           1           2 
       3.5.3        3.50         3.6       3.6.0       3.6.2       3.6.3 
-          3           6         189         483           3           3 
+          3           7         191         485           3           3 
        3.60       3.7.0         4.0       4.0.0       4.0.3       4.0.4 
-          1           1         192         378           1           1 
-       4.00         4.1       4.1-0       4.1.0         4.2       4.2.0 
-          3          53           1         136           8          31 
-        4.3 
-         15 </code></pre>
+          1           1         194         375           1           1 
+      4.0.5        4.00         4.1       4.1-0       4.1.0         4.2 
+          1           3          54           1         142           8 
+      4.2.0 
+         31 </code></pre>
 
 </div>
 
@@ -160,17 +204,17 @@ Interestingly, you can notice that some of these version numbers don't match any
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'><a href='https://rdrr.io/r/base/sets.html'>setdiff</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='o'>(</span><span class='nv'>r_deps_ver</span><span class='o'>)</span>, <span class='nf'>rversions</span><span class='nf'>::</span><span class='nf'><a href='https://r-hub.github.io/rversions/reference/r_versions.html'>r_versions</a></span><span class='o'>(</span><span class='o'>)</span><span class='o'>$</span><span class='nv'>version</span><span class='o'>)</span></span> [1] "2.10"        "3.0"         "3.6"         "3.5"         "3.4"        
- [6] "3.00"        "4.1"         "3.2"         "2.14"        "3.1"        
+ [6] "3.2"         "3.00"        "4.1"         "2.14"        "3.1"        
 [11] "4.0"         "3.3"         "2.13"        "2.3.2"       "3.1-0"      
 [16] "2.0"         "2.5"         "2.15"        "4.00"        "3.0-0"      
 [21] "1.7"         "2.7"         "2.01"        "2.6"         "2.20"       
-[26] "2.2"         "2.2.4"       "2.1"         "3.50"        "4.2"        
-[31] "3.10.0"      "2.11"        "2.9"         "3.7.0"       "3.10"       
-[36] "2.3"         "1.4.0"       "2.5.3"       "3.60"        "2.50"       
-[41] "2.1.4"       "2.4"         "3.0.4"       "2.12"        "3.5.0-4.0.2"
+[26] "2.2"         "2.2.4"       "3.50"        "4.2"         "3.10.0"     
+[31] "2.11"        "2.9"         "3.7.0"       "3.10"        "2.3"        
+[36] "1.4.0"       "2.5.3"       "3.60"        "2.50"        "2.1.4"      
+[41] "2.4"         "3.0.4"       "2.1"         "2.12"        "3.5.0-4.0.2"
 [46] "3.5.1.0"     "2.8"         "3.00.0"      "2.3.12"      "4.1-0"      
 [51] "2.16"        "1.14.0"      "2.1.14"      "3.5-0"       "3.5.00"     
-[56] "3.0-2"       "2.1.5"       "3.2.6"       "4.3"        </code></pre>
+[56] "3.0-2"       "2.1.5"       "3.2.6"      </code></pre>
 
 </div>
 
@@ -219,10 +263,17 @@ To visualise the actual minimum R version corresponding to the declared R depend
 <span>  <span class='o'>)</span> <span class='o'>|&gt;</span> </span>
 <span>  <span class='nf'>dplyr</span><span class='nf'>::</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>majorminor <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='o'>(</span><span class='nv'>major</span>, <span class='nv'>minor</span>, sep <span class='o'>=</span> <span class='s'>"."</span><span class='o'>)</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
 <span>  <span class='nf'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='o'>(</span><span class='nf'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='o'>(</span>y <span class='o'>=</span> <span class='nv'>majorminor</span><span class='o'>)</span><span class='o'>)</span> <span class='o'>+</span></span>
-<span>    <span class='nf'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='o'>(</span><span class='o'>)</span></span>Warning in (function (..., deparse.level = 1) : number of columns of result is not a multiple of vector length (arg 397)
-{{<figure src="unnamed-chunk-7-1.png" >}}</code></pre>
+<span>    <span class='nf'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='o'>(</span><span class='o'>)</span> <span class='o'>+</span></span>
+<span>    <span class='nf'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='o'>(</span></span>
+<span>      x <span class='o'>=</span> <span class='s'>"Number of CRAN packages"</span>,</span>
+<span>      y <span class='o'>=</span> <span class='s'>"Minimum required R version"</span>,</span>
+<span>      title <span class='o'>=</span> <span class='s'>"Minimum required R version in CRAN packages"</span></span>
+<span>    <span class='o'>)</span> <span class='o'>+</span></span>
+<span>    <span class='nf'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='o'>(</span><span class='o'>)</span></span>{{<figure src="cran-r-version-plot-1.png" >}}</code></pre>
 
 </div>
+
+The peak at R 2.10 might be related to the fact that [it is automatically added when developers embed data in their packages with `usethis::use_date()`](https://github.com/r-lib/usethis/issues/631).
 
 # How to avoid depending on a new version?
 
@@ -232,15 +283,21 @@ Backports is not a silver bullet though, as some new features are impossible to 
 
 # How to test you depend on the correct version?
 
-It is easy to make a mistake when specifying a minimum R version, and to forget to you use one recent R feature. For this reason, you should always try to verify that your minimum R version claim is accurate.
+[It is easy to make a mistake when specifying a minimum R version, and to forget to you use one recent R feature](https://stat.ethz.ch/pipermail/r-package-devel/2021q1/006508.html). For this reason, you should always try to verify that your minimum R version claim is accurate.
 
 The most complete approach is to run your tests, or at least verify that the package can be built without errors, on all older R versions you claim to support. For this, you could use rig, which allows you to install multiple R version on your computer and switch between them with a single command. But a convenient way to do so if to rely on continuous integration platforms, where existing workflows are already set up to run on multiple R versions. For example, if you choose to replicate the tidyverse policy of supporting the 5 latest minor releases of R, your best bet is probably to copy the `R-CMD-check.yaml` GitHub Actions workflow from any of their repository.
 
-But this extensive test may prove challenging in some cases. In particular, the actions provided by [`r-lib.actions`](https://github.com/r-lib/actions) use [rcmdcheck](https://r-lib.github.io/rcmdcheck/), which itself depends on R 3.3 (via digest). This means that you'll have to write your own workflows if you wish to run `R CMD check` on older R versions. Some packages that place a high value in being compatible with older R versions, such as data.table, have taken this route and developed their own continuous integration scripts.
+But this extensive test may prove challenging in some cases. In particular, the actions provided by [`r-lib.actions`](https://github.com/r-lib/actions) use [rcmdcheck](https://r-lib.github.io/rcmdcheck/), which itself depends on R 3.3 (via digest). This means that you'll have to write your own workflows if you wish to run `R CMD check` on older R versions. Some packages that place a high value in being compatible with older R versions, such as data.table, have taken this route and developed [their own continuous integration scripts](https://github.com/Rdatatable/data.table/tree/71c7e6d/.ci).
 
 A more lightweight approach (although a little more prone to false-negatives) is to use the [`backport_linter()` function provided by the lintr package](https://lintr.r-lib.org/reference/backport_linter.html). It works by matching your code against a list of functions introduced in more recent R versions. Note that this approach might also produce false-positive is you use functions with the same name as recent base R functions.
 
 # Conclusion
+
+As you've seen, there are quite a lot of strategies and subtleties in setting a minimum R dependency for your package. But the tips we presented here are specific cases of more software development tips:
+
+-   use automated tools to assist you in your work
+-   try to empathize with your users and minimize the friction to use your tool
+-   look at what other developers in the community are doing
 
 [^1]: Note that there is no mechanism to make your package compatible only with older R versions, and not with the more recent ones. Packages are supposed to work with the latest R versions.
 
