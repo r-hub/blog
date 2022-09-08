@@ -75,8 +75,8 @@ There are different strategies to choose on which R version your package should 
 Some projects prefer to limit the minimum R version by design, rather than by necessity.
 This means that their packages *might* work with older R versions, but because they don't or can't test it, they'd rather not take the risk and limit themselves to versions for which they are sure the package is working:
 
--   this used to be the policy of usethis (and therefore, of all packages built this usethis).
-    In the past, usethis added by default a dependency to the R version used by the developer at the time they created the package.
+-   this used to be the policy of usethis before 2017 (and therefore, of all packages built with usethis at that time).
+    [In the past, usethis added by default a dependency to the R version used by the developer at the time they created the package](https://github.com/r-lib/usethis/commit/7937594cb4a6adc9f1783839c4ccdd2cdcffaaae).
 
 -   this is the strategy used by the tidyverse, which explicitly decided to guarantee compatibility with the 5 latest R minor releases, but no further.
     With the current R release cycle, this corresponds to compatibility with R versions up to 5 years old.
