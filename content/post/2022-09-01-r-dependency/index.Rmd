@@ -78,7 +78,7 @@ This means that their packages *might* work with older R versions, but because t
 -   this used to be the policy of usethis (and therefore, of all packages built this usethis).
     In the past, usethis added by default a dependency to the R version used by the developer at the time they created the package.
 
--   this is the strategy used by the tidyverse, which explicitly decided to guarantee compatibility with the 5 latest R minor releases, but no further
+-   this is the strategy used by the tidyverse, which explicitly decided to guarantee compatibility with the 5 latest R minor releases, but no further.
 
 ## 'Wide net' approaches
 
@@ -134,7 +134,7 @@ r_deps_ver |>
 ```
 
 Interestingly, you can notice that some of these version numbers don't match any actual R release.
-To confirm this, we can use the [rversions package, from R-hub](https://cran.r-project.org/package=rversions):
+To confirm this, we can use the [rversions package, from R-hub](/2019/04/15/rversions-1-1-0/):
 
 ```{r}
 setdiff(unique(r_deps_ver), rversions::r_versions()$version)
