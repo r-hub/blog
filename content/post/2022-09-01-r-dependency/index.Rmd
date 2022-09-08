@@ -77,9 +77,10 @@ This means that their packages *might* work with older R versions, but because t
 
 ## 'Wide net' approach
 
-On the opposite, other projects consider that packages are by default compatible with all R versions, until they explicitly add a feature associated with a new R version, or until tests prove it otherwise:
-
--   this is the new policy of usethis (and therefore, of all packages built this usethis). By default, new packages don't have any constraints on the R version. It is the responsibility of the developer to add a minimum required version if necessary.
+On the opposite, other projects consider that packages are by default compatible with all R versions, until they explicitly add a feature associated with a new R version, or until tests prove it otherwise.
+This is the new policy of usethis (and therefore, of all packages built this usethis).
+By default, new packages don't have any constraints on the R version.
+It is the responsibility of the developer to add a minimum required version if necessary.
 
 ## Transitive approach
 
