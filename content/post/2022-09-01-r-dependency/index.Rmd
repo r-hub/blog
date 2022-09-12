@@ -61,7 +61,7 @@ To do so, you should add the required version number to your `DESCRIPTION` file 
     R (>= 3.5.0)
 ```
 
-# Which minimum R version your package should depend?
+# Which minimum R version your package should depend on?
 
 There are different strategies to choose on which R version your package should depend:
 
