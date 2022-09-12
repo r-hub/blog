@@ -247,7 +247,7 @@ The peak at R 2.10 might be related to the fact that [it is automatically added 
 You can also notice at peak at R 3.5.0.
 It is possible that this is linked to [the change in the serialization format used by R](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/doc/NEWS.3#L1540-L1550).
 Data objects embedded in packages developed with R \>= 3.5.0 are by default only compatible with R \>= 3.5.0.
-However, these are nothing more than informed guesses and only a proper, in-depth, analysis could confirm what made developers switch to a newer R version.
+However, these are nothing more than educated guesses and only a proper, in-depth, analysis could confirm what made developers switch to a newer R version.
 This analysis could look at diffs between package versions and see what new R feature packages are using when they bump the R version dependency.
 
 # How to avoid depending on a new version?
