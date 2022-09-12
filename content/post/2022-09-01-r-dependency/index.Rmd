@@ -277,8 +277,9 @@ Note that this approach might also produce false positives is you use functions 
 
 # Conclusion
 
-As you've seen, there are quite a lot of strategies and subtleties in setting a minimum R dependency for your package.
-But the tips we presented here are specific cases of more software development tips:
+As you've seen, there are quite a lot of strategies and subtleties in setting a minimum R dependency for your package: you could adopt the tidyverse approach of supporting the five last R versions, or choose to keep compatibility with older R versions and using backports if necessary.
+In all cases, you should try to verify that your declared minimum R version is correct: by using the dedicated linter from the lintr package, or by actually running your tests on older R versions.
+Whatever you end up doing and even if this topic may seem complex, we believe the tips we presented here are specific cases of more software development tips:
 
 -   use automated tools to assist you in your work;
 -   try to empathize with your users and minimize the friction necessary to install and use your tool;
