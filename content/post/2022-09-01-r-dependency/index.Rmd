@@ -38,6 +38,7 @@ options(crayon.enabled = FALSE)
 There have been much talk and many blog posts about R package dependencies.
 Yet, one special dependency is more rarely mentioned, even though all packages include it: the dependency on R itself.
 The same way you can specify a dependency on a package, and optionally on a specific version, you can add a dependency to a minimum R version in the `DESCRIPTION` file of your package.
+In this post we shall explain why and how.
 
 # How & why to declare a dependency to a minimum R version?
 
@@ -60,7 +61,7 @@ To do so, you should add the required version number to your `DESCRIPTION` file 
     R (>= 3.5.0)
 ```
 
-# How to choose on which version you should depend?
+# Which minimum R version your package should depend?
 
 There are different strategies to choose on which R version your package should depend:
 
@@ -72,7 +73,7 @@ This means that their packages *might* work with older R versions, but because t
 -   this used to be the policy of usethis before 2017 (and therefore, of all packages built with usethis at that time).
     [In the past, usethis added by default a dependency to the R version used by the developer at the time they created the package](https://github.com/r-lib/usethis/commit/7937594cb4a6adc9f1783839c4ccdd2cdcffaaae).
 
--   this is the strategy used by the tidyverse, which explicitly decided to guarantee compatibility with the 5 latest R minor releases, but no further.
+-   this is the [strategy used by the tidyverse](https://www.tidyverse.org/blog/2019/04/r-version-support/), which explicitly decided to guarantee compatibility with the 5 latest R minor releases, but no further.
     With the current R release cycle, this corresponds to compatibility with R versions up to 5 years old.
 
 ## 'Wide net' approach
@@ -84,7 +85,7 @@ It is the responsibility of the developer to add a minimum required version if n
 
 ## Transitive approach
 
-Another approach is to look at your dependency.
+Another approach is to look at your package's dependencies.
 If indirectly, via one of your recursive dependencies, you already depend on a recent R version, there is no point in going the extra mile to keep working with older versions.
 So, a strategy could be to compute your transitive minimum R version with the following function and decide that you can use base R features up to this version:
 
@@ -247,7 +248,7 @@ The peak at R 2.10 might be related to the fact that [it is automatically added 
 # How to avoid depending on a new version?
 
 For the various reasons presented above, it might not always be desirable to depend on a very recent R version.
-In this kind of situation, you may want to use the backports package.
+In this kind of situation, you may want to use the [backports package](https://github.com/r-lib/backports).
 It reimplements many of the new features from the more recent R version.
 This way, instead of having to depend on a newer R version, you can simply add a dependency to backports, which is easier to install than a newer R version for users in highly controlled environments.
 
@@ -261,7 +262,7 @@ Roughly speaking, this is because it is not simply a new function, but rather an
 For this reason, you should always try to verify that your minimum R version claim is accurate.
 
 The most complete approach is to run your tests, or at least verify that the package can be built without errors, on all older R versions you claim to support.
-For this, you could use rig, which allows you to install multiple R version on your computer and switch between them with a single command.
+For this, locally, you could use [rig](https://github.com/r-lib/rig), which allows you to install multiple R version on your computer and switch between them with a single command.
 But a convenient way to do so if to rely on continuous integration platforms, where existing workflows are already set up to run on multiple R versions.
 For example, if you choose to replicate the tidyverse policy of supporting the 5 latest minor releases of R, your best bet is probably to copy the `R-CMD-check.yaml` GitHub Actions workflow from any of their repository.
 
@@ -272,13 +273,13 @@ Some packages that place a high value in being compatible with older R versions,
 
 A more lightweight approach (although a little more prone to false-negatives) is to use the [`backport_linter()` function provided by the lintr package](https://lintr.r-lib.org/reference/backport_linter.html).
 It works by matching your code against a list of functions introduced in more recent R versions.
-Note that this approach might also produce false-positive is you use functions with the same name as recent base R functions.
+Note that this approach might also produce false positives is you use functions with the same name as recent base R functions.
 
 # Conclusion
 
 As you've seen, there are quite a lot of strategies and subtleties in setting a minimum R dependency for your package.
 But the tips we presented here are specific cases of more software development tips:
 
--   use automated tools to assist you in your work
--   try to empathize with your users and minimize the friction to use your tool
--   look at what other developers in the community are doing
+-   use automated tools to assist you in your work;
+-   try to empathize with your users and minimize the friction necessary to install and use your tool;
+-   look at what other developers in the community are doing.
