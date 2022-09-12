@@ -189,10 +189,10 @@ setdiff(unique(r_deps_ver), rversions::r_versions()$version)
 
 We can infer the reason for the mismatch for some examples in this list:
 
--   missing `.` between version components (e.g., `2.01`, `2.50`, `3.00`, `3.60`, `4.00`)
--   `.` replaced by `-` in the patch version number (e.g., `3.0-0`, `3.0-2`, `3.1-0`, `3.5-0`, `4.1-0`) [^3].
--   missing patch version number (e.g., `2.0`, `2.2`, `4.3`)
--   extra patch version number (e.g., `1.4.0`)
+-   missing `.` between version components (for instance `2.01`, `2.50`, `3.00`, `3.60`, `4.00`)
+-   `.` replaced by `-` in the patch version number (for instance `3.0-0`, `3.0-2`, `3.1-0`, `3.5-0`, `4.1-0`) [^3].
+-   missing patch version number (for instance `2.0`, `2.2`, `4.3`)
+-   extra patch version number (for instance `1.4.0`)
 -   recommended packages depend on a yet-to-be-released R version (`4.3`)
 
 [^3]: However, it is interesting to note that `package_version("3.5-0") == package_version("3.5.0")`.
