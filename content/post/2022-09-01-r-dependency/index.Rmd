@@ -85,7 +85,7 @@ It is the responsibility of the developer to add a minimum required version if n
 
 ## Transitive approach
 
-Another approach is to look at your package's dependencies.
+Another approach is to look at your package dependencies.
 If indirectly, via one of your recursive dependencies, you already depend on a recent R version, there is no point in going the extra mile to keep working with older versions.
 So, a strategy could be to compute your transitive minimum R version with the following function and decide that you can use base R features up to this version:
 
