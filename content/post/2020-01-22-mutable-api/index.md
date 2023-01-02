@@ -363,4 +363,4 @@ In this post we have shown different reasons and ways to provide a mutable _API_
 
 We recommend consulting the [Advanced R book](https://adv-r.hadley.nz) for further learning. Don't hesitate to add some cases of objects that feel or are mutable in the comments below!
 
-Thanks to [Peter Meissner](https://petermeissner.de/) whose remark ["In #rstats nearly everything is immutable by default, it's the default and makes a lot of stuff very simple."](https://twitter.com/peterlovesdata/status/1198629883766857728) inspired this post.
+Thanks to [Peter Meissner](https://petermeissner.de/) whose remark on Twitter _"In #rstats nearly everything is immutable by default, it's the default and makes a lot of stuff very simple."_ inspired this post.
