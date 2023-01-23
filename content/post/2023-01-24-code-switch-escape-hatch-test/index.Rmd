@@ -46,7 +46,7 @@ I will use it from my code.
 
 ``` r
 is_internet_down <- function() {
-  curl::has_internet()
+  !curl::has_internet()
 }
 
 my_complicated_code <- function() {
