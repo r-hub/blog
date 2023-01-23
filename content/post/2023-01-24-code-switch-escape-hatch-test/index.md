@@ -7,7 +7,7 @@ date: "2023-01-24"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 9d4e284cace612d2
+rmd_hash: 43f8ee04e071a4cd
 
 ---
 
@@ -94,12 +94,12 @@ For our previous example we would use:
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'>mockery</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/mockery/man/stub.html'>stub</a></span><span class='o'>(</span></span>
-<span>  where <span class='o'>=</span> <span class='nv'>is_internet_down</span>,</span>
-<span>  what <span class='o'>=</span> <span class='s'>"my_complicated_code"</span>, </span>
+<span>  where <span class='o'>=</span> <span class='nv'>my_complicated_code</span>,</span>
+<span>  what <span class='o'>=</span> <span class='s'>"is_internet_down"</span>, </span>
 <span>  how <span class='o'>=</span> <span class='kc'>TRUE</span></span>
 <span><span class='o'>)</span></span>
 <span><span class='nf'>is_internet_down</span><span class='o'>(</span><span class='o'>)</span></span>[1] FALSE
-<span><span class='nf'>my_complicated_code</span><span class='o'>(</span><span class='o'>)</span></span></code></pre>
+<span><span class='nf'>my_complicated_code</span><span class='o'>(</span><span class='o'>)</span></span>No internet! Le sigh</code></pre>
 
 </div>
 

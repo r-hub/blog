@@ -121,8 +121,8 @@ For our previous example we would use:
 
 ```{r}
 mockery::stub(
-  where = is_internet_down,
-  what = "my_complicated_code", 
+  where = my_complicated_code,
+  what = "is_internet_down", 
   how = TRUE
 )
 is_internet_down()
