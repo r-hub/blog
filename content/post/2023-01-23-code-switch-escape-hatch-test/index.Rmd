@@ -115,7 +115,7 @@ You could also use it as a complement or alternative to the `transform` argument
 
 ## What about mocking instead?
 
-Mocking consists in modifying the behavior of a function *from outside*, replacing it with a mock (`how` in `mockery::stub()`) for a given context (`where` `mockery::stub()`).
+Mocking consists in modifying the behavior of a function *from outside*, replacing it with a mock (`how` in `mockery::stub()`) for a given context (`where` in `mockery::stub()`).
 
 For our previous example we would use:
 

@@ -7,7 +7,7 @@ date: "2023-01-23"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: b369dc2da323b0f0
+rmd_hash: 7ba721dc6b757802
 
 ---
 
@@ -93,7 +93,7 @@ You could also use it as a complement or alternative to the `transform` argument
 
 ## What about mocking instead?
 
-Mocking consists in modifying the behavior of a function *from outside*, replacing it with a mock (`how` in [`mockery::stub()`](https://rdrr.io/pkg/mockery/man/stub.html)) for a given context (`where` [`mockery::stub()`](https://rdrr.io/pkg/mockery/man/stub.html)).
+Mocking consists in modifying the behavior of a function *from outside*, replacing it with a mock (`how` in [`mockery::stub()`](https://rdrr.io/pkg/mockery/man/stub.html)) for a given context (`where` in [`mockery::stub()`](https://rdrr.io/pkg/mockery/man/stub.html)).
 
 For our previous example we would use:
 
