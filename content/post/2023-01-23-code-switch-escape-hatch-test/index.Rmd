@@ -46,7 +46,7 @@ First, I create a function called `is_internet_down()`.
 It could simply call `curl::has_internet()`.
 I will use it from my code.
 
-``` r
+```{r, eval=FALSE}
 is_internet_down <- function() {
   !curl::has_internet()
 }
@@ -61,7 +61,7 @@ my_complicated_code <- function() {
 
 Now in tests, I can't catch the message if there is internet.
 
-``` r
+```{r, eval=FALSE}
 test_that("my_complicated_code() notes the absence of internet", {
   expect_message(my_complicated_code(), "No internet")
 })
@@ -95,7 +95,7 @@ In the tests, I add a call to withr[^1] to set that environment variable for the
 [^1]: You can choose to use either the `withr::with_` or `withr::local_` functions.
     Note that the `withr::with_` functions will take up more space and add more nesting, though.
 
-``` r
+```{r, eval=FALSE}
 test_that("my_complicated_code() notes the absence of internet", {
   withr::local_envvar("TESTPKG.NOINTERNET" = "blop")
   expect_message(my_complicated_code(), "No internet")

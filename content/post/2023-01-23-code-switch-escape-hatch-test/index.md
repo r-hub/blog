@@ -7,7 +7,7 @@ date: "2023-01-23"
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 4a562b6dcbb71a97
+rmd_hash: b369dc2da323b0f0
 
 ---
 
@@ -21,26 +21,30 @@ Say my package code displays a message "No internet! Le sigh" when there's no in
 
 First, I create a function called `is_internet_down()`. It could simply call [`curl::has_internet()`](https://rdrr.io/pkg/curl/man/nslookup.html). I will use it from my code.
 
-``` r
-is_internet_down <- function() {
-  !curl::has_internet()
-}
+<div class="highlight">
 
-my_complicated_code <- function() {
-  if (is_internet_down()) {
-    message("No internet! Le sigh")
-  }
-  # blablablabla
-}
-```
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>is_internet_down</span> <span class='o'>&lt;-</span> <span class='kr'>function</span><span class='o'>(</span><span class='o'>)</span> <span class='o'>&#123;</span></span>
+<span>  <span class='o'>!</span><span class='nf'>curl</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/pkg/curl/man/nslookup.html'>has_internet</a></span><span class='o'>(</span><span class='o'>)</span></span>
+<span><span class='o'>&#125;</span></span>
+<span></span>
+<span><span class='nv'>my_complicated_code</span> <span class='o'>&lt;-</span> <span class='kr'>function</span><span class='o'>(</span><span class='o'>)</span> <span class='o'>&#123;</span></span>
+<span>  <span class='kr'>if</span> <span class='o'>(</span><span class='nf'>is_internet_down</span><span class='o'>(</span><span class='o'>)</span><span class='o'>)</span> <span class='o'>&#123;</span></span>
+<span>    <span class='nf'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='o'>(</span><span class='s'>"No internet! Le sigh"</span><span class='o'>)</span></span>
+<span>  <span class='o'>&#125;</span></span>
+<span>  <span class='c'># blablablabla</span></span>
+<span><span class='o'>&#125;</span></span></code></pre>
+
+</div>
 
 Now in tests, I can't catch the message if there is internet.
 
-``` r
-test_that("my_complicated_code() notes the absence of internet", {
-  expect_message(my_complicated_code(), "No internet")
-})
-```
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'>test_that</span><span class='o'>(</span><span class='s'>"my_complicated_code() notes the absence of internet"</span>, <span class='o'>&#123;</span></span>
+<span>  <span class='nf'>expect_message</span><span class='o'>(</span><span class='nf'>my_complicated_code</span><span class='o'>(</span><span class='o'>)</span>, <span class='s'>"No internet"</span><span class='o'>)</span></span>
+<span><span class='o'>&#125;</span><span class='o'>)</span></span></code></pre>
+
+</div>
 
 This is where I add a switch to my code!
 
@@ -68,12 +72,14 @@ Now, when the environment variable "TESTPKG.NOINTERNET" is set to something, any
 
 In the tests, I add a call to withr[^1] to set that environment variable for the test only.
 
-``` r
-test_that("my_complicated_code() notes the absence of internet", {
-  withr::local_envvar("TESTPKG.NOINTERNET" = "blop")
-  expect_message(my_complicated_code(), "No internet")
-})
-```
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'>test_that</span><span class='o'>(</span><span class='s'>"my_complicated_code() notes the absence of internet"</span>, <span class='o'>&#123;</span></span>
+<span>  <span class='nf'>withr</span><span class='nf'>::</span><span class='nf'><a href='https://withr.r-lib.org/reference/with_envvar.html'>local_envvar</a></span><span class='o'>(</span><span class='s'>"TESTPKG.NOINTERNET"</span> <span class='o'>=</span> <span class='s'>"blop"</span><span class='o'>)</span></span>
+<span>  <span class='nf'>expect_message</span><span class='o'>(</span><span class='nf'>my_complicated_code</span><span class='o'>(</span><span class='o'>)</span>, <span class='s'>"No internet"</span><span class='o'>)</span></span>
+<span><span class='o'>&#125;</span><span class='o'>)</span></span></code></pre>
+
+</div>
 
 That's all there is to the pattern. You could use an option and [`withr::local_options()`](https://withr.r-lib.org/reference/with_options.html) instead.
 
