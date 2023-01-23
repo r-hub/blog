@@ -3,17 +3,17 @@ slug: code-switch-escape-hatch-test
 title: "A testing pattern: adding switches to your code" 
 authors: 
 - Maëlle Salmon 
-date: "2023-01-24" 
+date: "2023-01-23" 
 tags: 
 - package development 
 output: hugodown::hugo_document
-rmd_hash: 43f8ee04e071a4cd
+rmd_hash: 4a562b6dcbb71a97
 
 ---
 
 Sometimes, testing [gets hard](https://r-pkgs.org/testing-advanced.html#when-testing-gets-hard). For instance, you'd like to test for the behavior of your function in the absence of an internet connection, or in an interactive session, without actually cutting off the internet, or from the safety of a definitely non interactive R session for tests. In this post we shall present a not too involved pattern to avoid very complicated infrastructure, as a complement to [mocking](/2019/10/29/mocking/) in your toolbelt.
 
-*Many thanks to [Hugo Gruson](/authors/hugo-gruson/) for very useful feedback on this post!*
+*Many thanks to [Hugo Gruson](/authors/hugo-gruson/) for very useful feedback on this post, and to [Mark Padgham](https://mpadge.github.io/) for his words of encouragement!*
 
 ## The pattern
 
