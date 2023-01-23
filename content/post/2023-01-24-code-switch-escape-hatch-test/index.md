@@ -1,0 +1,87 @@
+---
+slug: code-switch-escape-hatch-test
+title: "A testing pattern: adding switches to your code" 
+authors: 
+- Maëlle Salmon 
+date: "2023-01-24" 
+tags: 
+- package development 
+output: hugodown::hugo_document
+rmd_hash: 5b0523c7c38be28a
+
+---
+
+Sometimes, testing [gets hard](https://r-pkgs.org/testing-advanced.html#when-testing-gets-hard). For instance, you'd like to test for the behavior of your function in the absence of an internet connection, or in an interactive session, without actually cutting off the internet, or from the safety of a definitely non interactive R session for tests. In this post we shall present a not too involved pattern to avoid very complicated infrastructure, as a complement to [mocking](/2019/10/29/mocking/) in your toolbelt.
+
+## The pattern
+
+Say my package code displays a message "No internet! Le sigh" when there's no internet, and I want to test for that message.
+
+First, I create a function called `is_internet_down()`. It could simply call [`curl::has_internet()`](https://rdrr.io/pkg/curl/man/nslookup.html). I will use it from my code.
+
+``` r
+is_internet_down <- function() {
+  curl::has_internet()
+}
+
+my_complicated_code <- function() {
+  if (is_internet_down()) {
+    message("No internet! Le sigh")
+  }
+  # blablablabla
+}
+```
+
+Now in tests, I can't catch the message if there is internet.
+
+``` r
+test_that("my_complicated_code() notes the absence of internet", {
+  expect_message(my_complicated_code(), "No internet")
+})
+```
+
+This is where I add a switch to my code!
+
+``` r
+is_internet_down <- function() {
+
+  if (nzchar(Sys.getenv("TESTPKG.NOINTERNET"))) {
+    return(TRUE)
+  }
+
+  curl::has_internet()
+}
+
+my_complicated_code <- function() {
+  if (is_internet_down()) {
+    message("No internet! Le sigh")
+  }
+  # blablablabla
+}
+```
+
+Now, when the environment variable "TESTPKG.NOINTERNET" is set to something, anything, my function `is_internet_down()` will return `TRUE` and my code will show the message. Note that I tried to name the code switch to something readable.
+
+In the tests, I add a call to withr to set that environment variable for the test only.
+
+``` r
+test_that("my_complicated_code() notes the absence of internet", {
+  withr::local_envvar("TESTPKG.NOINTERNET" = "blop")
+  expect_message(my_complicated_code(), "No internet")
+})
+```
+
+That's all there is to the pattern. You could use an option and [`withr::local_options()`](https://withr.r-lib.org/reference/with_options.html) instead.
+
+## Use of the pattern in the wild
+
+A popular example of a function with an [escape hatch](https://twitter.com/JennyBryan/status/1613976157501927424) is [`rlang::is_interactive()`](https://rlang.r-lib.org/reference/is_interactive.html).
+
+Interactivity/internet connection are two obvious use cases, but you could use the pattern to "mock" many other things.
+
+You could also use it as a complement to the `transform` argument of [`testthat::expect_snapshot()`](https://testthat.r-lib.org/reference/expect_snapshot.html), for instance tweaking your code to never show something random when run inside testthat.
+
+## Conclusion
+
+In this post we presented a solution where, to simplify testing, you add an escape hatch to your code. It might feel a bit like cheating but can sometimes be useful! Do you use this pattern? Do you have other testing "tricks" to report?
+
