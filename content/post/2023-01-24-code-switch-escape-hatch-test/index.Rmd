@@ -36,6 +36,8 @@ Sometimes, testing [gets hard](https://r-pkgs.org/testing-advanced.html#when-tes
 For instance, you'd like to test for the behavior of your function in the absence of an internet connection, or in an interactive session, without actually cutting off the internet, or from the safety of a definitely non interactive R session for tests.
 In this post we shall present a not too involved pattern to avoid very complicated infrastructure, as a complement to [mocking](/2019/10/29/mocking/) in your toolbelt.
 
+*Many thanks to [Hugo Gruson](/authors/hugo-gruson/) for very useful feedback on this post!*
+
 ## The pattern
 
 Say my package code displays a message "No internet! Le sigh" when there's no internet, and I want to test for that message.
@@ -67,7 +69,7 @@ test_that("my_complicated_code() notes the absence of internet", {
 
 This is where I add a switch to my code!
 
-``` r
+```{r}
 is_internet_down <- function() {
 
   if (nzchar(Sys.getenv("TESTPKG.NOINTERNET"))) {
@@ -88,7 +90,10 @@ my_complicated_code <- function() {
 Now, when the environment variable "TESTPKG.NOINTERNET" is set to something, anything, my function `is_internet_down()` will return `TRUE` and my code will show the message.
 Note that I tried to name the code switch to something readable.
 
-In the tests, I add a call to withr to set that environment variable for the test only.
+In the tests, I add a call to withr[^1] to set that environment variable for the test only.
+
+[^1]: You can choose to use either the `withr::with_` or `withr::local_` functions.
+    Note that the `withr::with_` functions will take up more space and add more nesting, though.
 
 ``` r
 test_that("my_complicated_code() notes the absence of internet", {
@@ -106,7 +111,29 @@ A popular example of a function with an [escape hatch](https://twitter.com/Jenny
 
 Interactivity/internet connection are two obvious use cases, but you could use the pattern to "mock" many other things.
 
-You could also use it as a complement to the `transform` argument of `testthat::expect_snapshot()`, for instance tweaking your code to never show something random when run inside testthat.
+You could also use it as a complement or alternative to the `transform` argument of `testthat::expect_snapshot()`, for instance tweaking your code to never show something random when run inside testthat.
+
+## What about mocking instead?
+
+Mocking consists in modifying the behavior of a function *from outside*, replacing it with a mock (`how` in `mockery::stub()`) for a given context (`where` `mockery::stub()`).
+
+For our previous example we would use:
+
+```{r}
+mockery::stub(
+  where = is_internet_down,
+  what = "my_complicated_code", 
+  how = TRUE
+)
+is_internet_down()
+my_complicated_code()
+```
+
+How to choose between escape hatches and mocking?
+On the one hand, mocking feels tidier as the code does not need to be modified for the tests.
+On the other hand, mocking can very quickly get cumbersome and hard to reason about (what function has been replaced? where?) -- for you now, for you in a few days, for external collaborators; that could make your codebase harder to work with.
+
+In summary, you can pick whichever strategy you want, but don't be afraid to choose the simpler pattern.
 
 ## Conclusion
 
