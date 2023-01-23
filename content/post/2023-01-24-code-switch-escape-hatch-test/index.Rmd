@@ -74,7 +74,7 @@ is_internet_down <- function() {
     return(TRUE)
   }
 
-  curl::has_internet()
+  !curl::has_internet()
 }
 
 my_complicated_code <- function() {
