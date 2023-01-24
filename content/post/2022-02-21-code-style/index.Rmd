@@ -7,6 +7,7 @@ authors:
 date: "2022-03-21" 
 tags: 
 - package development 
+- code style
 output: hugodown::hugo_document
 ---
 
@@ -131,7 +132,7 @@ It is really advised to use version control with your project.
 If you're nervous about getting started refer to
 
 -   ["Excuse me, do you have a moment to talk about version control?" by Jenny Bryan](https://peerj.com/preprints/3159/);
--   ["Reflections on 4 months of GitHub: my advice to beginners " by Suzan Baert](https://suzan.rbind.io/2018/03/reflections-4-months-of-github/);
+-   ["Reflections on 4 months of GitHub: my advice to beginners" by Suzan Baert](https://suzan.rbind.io/2018/03/reflections-4-months-of-github/);
 -   ["Happy Git and GitHub for the useR"](https://happygitwithr.com/) by Jenny Bryan, the STAT 545 TAs, Jim Hester.
 
 :::

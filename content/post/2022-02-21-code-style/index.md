@@ -6,7 +6,8 @@ authors:
 - Christophe Dervieux
 date: "2022-03-21" 
 tags: 
-- package development 
+- package development
+- code style
 output: hugodown::hugo_document
 rmd_hash: ff191905b7d04f06
 ---
