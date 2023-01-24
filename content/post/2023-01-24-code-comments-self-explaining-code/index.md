@@ -8,7 +8,7 @@ tags:
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: 1dcbceec59e1742a
+rmd_hash: 1191dbe432b32f29
 
 ---
 
@@ -93,6 +93,14 @@ In my own experience, aspects I want to add in a line comment on a GitHub Pull R
 ### Have someone review your code
 
 As much as you try to think about what a collaborator (or future you) would like to know when reading the code, it's handy to have an actual collaborator tell you where a comment might be warranted. The collaborator might not ask for a comment, but they might ask a question whose answer should be tracked in the code.
+
+### Spare no effort on roxygen2 comments
+
+*Thanks to [Mark Padgham](https://mpadge.github.io/) for insisting on this subsection!*
+
+Some comments are special: the [roxygen2](https://roxygen2.r-lib.org/) comments that create documentation! Documentation is good!
+
+Even internal functions can be documented using the same syntax, although you'll want to add the `#' @NoRd` tag for making sure no manual page is created. This convention is encouraged in the [rOpenSci packaging guide](https://devguide.ropensci.org/building.html#roxygen2-use) and in the [Tidyverse style guide](https://style.tidyverse.org/documentation.html#internal-functions). That is, unless the internal function is very clear.
 
 ### Use comments for the script table of contents
 
