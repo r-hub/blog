@@ -8,7 +8,7 @@ tags:
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: 6003081d41597e1b
+rmd_hash: 1dcbceec59e1742a
 
 ---
 
@@ -93,6 +93,20 @@ In my own experience, aspects I want to add in a line comment on a GitHub Pull R
 ### Have someone review your code
 
 As much as you try to think about what a collaborator (or future you) would like to know when reading the code, it's handy to have an actual collaborator tell you where a comment might be warranted. The collaborator might not ask for a comment, but they might ask a question whose answer should be tracked in the code.
+
+### Use comments for the script table of contents
+
+In RStudio IDE at least, there's an outline on the right of the script that you can expand to navigate the code. Functions are used for organization, but you can also add comments like
+
+``` r
+# header level 1 ----
+bla
+
+## header level 2 ----
+blop
+```
+
+to have "header level 1" and "header level 2" appear in the outline.
 
 ## Conclusion
 
