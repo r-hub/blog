@@ -5,9 +5,10 @@ authors:
 - Maëlle Salmon 
 date: "2023-01-23" 
 tags: 
-- package development 
+- package development
+- testing
 output: hugodown::hugo_document
-rmd_hash: 7ba721dc6b757802
+rmd_hash: 949b09bd7b0729fe
 
 ---
 

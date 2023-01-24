@@ -5,7 +5,8 @@ authors:
 - Maëlle Salmon 
 date: "2023-01-23" 
 tags: 
-- package development 
+- package development
+- testing
 output: hugodown::hugo_document
 ---
 
