@@ -8,7 +8,7 @@ tags:
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: ce1ab70e91c2db1a
+rmd_hash: 6003081d41597e1b
 
 ---
 
@@ -69,6 +69,22 @@ the idea is to write something like
 </div>
 
 where `is_non_empty_string()` could even be defined in a separate R script (called `utils-blabla.R` or so).
+
+### Wrap external functions with a nicer interface
+
+This is very related to the previous tip. Say you want to use a function with an unclear name. Do not hesitate to wrap it in a function with a better name if you think it'll improve readability. (You can also use this technique to switch the argument order.)
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'># in utils.R</span></span>
+<span><span class='nv'>remove_extension</span> <span class='o'>&lt;-</span> <span class='kr'>function</span><span class='o'>(</span><span class='nv'>path</span><span class='o'>)</span> <span class='o'>&#123;</span></span>
+<span>  <span class='nf'>tools</span><span class='nf'>::</span><span class='nf'><a href='https://rdrr.io/r/tools/fileutils.html'>file_path_sans_ext</a></span><span class='o'>(</span><span class='nv'>path</span><span class='o'>)</span></span>
+<span><span class='o'>&#125;</span></span>
+<span></span>
+<span><span class='c'># in other files</span></span>
+<span><span class='nf'>remove_extension</span><span class='o'>(</span><span class='nv'>path</span><span class='o'>)</span></span></code></pre>
+
+</div>
 
 ### Think twice before adding a comment on your own PR
 

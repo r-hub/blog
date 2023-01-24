@@ -104,6 +104,23 @@ if (is_non_empty_string(x)) {
 
 where `is_non_empty_string()` could even be defined in a separate R script (called `utils-blabla.R` or so).
 
+### Wrap external functions with a nicer interface
+
+This is very related to the previous tip.
+Say you want to use a function with an unclear name.
+Do not hesitate to wrap it in a function with a better name if you think it'll improve readability.
+(You can also use this technique to switch the argument order.)
+
+```{r, eval=FALSE}
+# in utils.R
+remove_extension <- function(path) {
+  tools::file_path_sans_ext(path)
+}
+
+# in other files
+remove_extension(path)
+```
+
 ### Think twice before adding a comment on your own PR
 
 In my own experience, aspects I want to add in a line comment on a GitHub Pull Request are often prime content for actual code comments (or a reason for refactoring my code!).
