@@ -140,7 +140,6 @@ Documentation is good!
 
 Even internal functions can be documented using the same syntax, although you'll want to add the `#' @NoRd` tag for making sure no manual page is created.
 This convention is encouraged in the [rOpenSci packaging guide](https://devguide.ropensci.org/building.html#roxygen2-use) and in the [Tidyverse style guide](https://style.tidyverse.org/documentation.html#internal-functions).
-That is, unless the internal function is very clear.
 
 ### Use comments for the script table of contents
 
