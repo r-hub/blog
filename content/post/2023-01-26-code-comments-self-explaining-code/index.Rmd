@@ -145,9 +145,9 @@ Documentation is good!
 Even internal functions can be documented using the same syntax, although you'll want to add the `#' @NoRd` tag for making sure no manual page is created.
 This convention is encouraged in the [rOpenSci packaging guide](https://devguide.ropensci.org/building.html#roxygen2-use) and in the [Tidyverse style guide](https://style.tidyverse.org/documentation.html#internal-functions).
 
-### Use comments for the script table of contents
+### Use comments for the script's outline
 
-In RStudio IDE at least, there's an outline on the right of the script that you can expand to navigate the code.
+In RStudio IDE at least, there's an outline (table of contents) on the right of the script that you can expand to navigate the code.
 Functions are used for organization, but you can also add comments like
 
 ``` r

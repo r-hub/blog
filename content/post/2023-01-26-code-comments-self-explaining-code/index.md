@@ -8,7 +8,7 @@ tags:
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: 7e3813f1fa1bacf5
+rmd_hash: 2ab027d6bf59cf83
 
 ---
 
@@ -106,9 +106,9 @@ Some comments are special: the [roxygen2](https://roxygen2.r-lib.org/) comments 
 
 Even internal functions can be documented using the same syntax, although you'll want to add the `#' @NoRd` tag for making sure no manual page is created. This convention is encouraged in the [rOpenSci packaging guide](https://devguide.ropensci.org/building.html#roxygen2-use) and in the [Tidyverse style guide](https://style.tidyverse.org/documentation.html#internal-functions).
 
-### Use comments for the script table of contents
+### Use comments for the script's outline
 
-In RStudio IDE at least, there's an outline on the right of the script that you can expand to navigate the code. Functions are used for organization, but you can also add comments like
+In RStudio IDE at least, there's an outline (table of contents) on the right of the script that you can expand to navigate the code. Functions are used for organization, but you can also add comments like
 
 ``` r
 # header level 1 ----
