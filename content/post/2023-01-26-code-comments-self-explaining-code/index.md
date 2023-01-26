@@ -8,7 +8,7 @@ tags:
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: df62472a743c23c3
+rmd_hash: 7e3813f1fa1bacf5
 
 ---
 
@@ -118,7 +118,7 @@ bla
 blop
 ```
 
-to have "header level 1" and "header level 2" appear in the outline. Having a clear structure can help code readers.
+to have "header level 1" and "header level 2" appear in the outline. Having an explicit structure can help code readers.
 
 ## Conclusion
 

@@ -159,7 +159,7 @@ blop
 ```
 
 to have "header level 1" and "header level 2" appear in the outline.
-Having a clear structure can help code readers.
+Having an explicit structure can help code readers.
 
 ## Conclusion
 
