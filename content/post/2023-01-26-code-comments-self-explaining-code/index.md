@@ -3,12 +3,12 @@ slug: code-comments-self-explaining-code
 title: "Why comment your code as little (and as well) as possible" 
 authors: 
 - Maëlle Salmon 
-date: "2023-01-24" 
+date: "2023-01-26" 
 tags: 
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: c8433a81ba544e58
+rmd_hash: df62472a743c23c3
 
 ---
 
@@ -25,6 +25,10 @@ The tidyverse style guide states ["use comments to explain the"why" not the "wha
 In ["The Art of Readable Code"](https://www.goodreads.com/book/show/8677004-the-art-of-readable-code) by Dustin Boswell and Trevor Foucher, the chapter on knowing what to comment starts with the key idea "The purpose of commenting is to help the reader know as much as the writer did".
 
 Code comments should be viewed as little flags, little alerts. There should be as few of them as possible. Otherwise, your reader will get used to ignoring them. Furthermore, you'll get extremely bored writing them. :zzz:
+
+Example of a recently encountered useful comment:
+
+    # This query can not be done via GraphQL, so have to use v3 REST API
 
 Code comments should not be used as a band-aid for bad code design. If it's very difficult to explain a piece of code, possibly more time should be spent on said code. Or, you could add a comment... "#TODO fix code debt". :innocent:
 
@@ -114,7 +118,7 @@ bla
 blop
 ```
 
-to have "header level 1" and "header level 2" appear in the outline.
+to have "header level 1" and "header level 2" appear in the outline. Having a clear structure can help code readers.
 
 ## Conclusion
 
