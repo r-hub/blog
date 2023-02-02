@@ -16,6 +16,8 @@ Sometimes, testing [gets hard](https://r-pkgs.org/testing-advanced.html#when-tes
 
 *Many thanks to [Hugo Gruson](/authors/hugo-gruson/) for very useful feedback on this post, and to [Mark Padgham](https://mpadge.github.io/) for his words of encouragement!*
 
+*This post was featured in the [R Weekly Highlights podcast](https://share.fireside.fm/episode/87RSVeFz+3PrNeHd_?t=86).*
+
 ## The pattern
 
 Say my package code displays a message "No internet! Le sigh" when there's no internet, and I want to test for that message.
