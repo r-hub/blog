@@ -54,8 +54,6 @@ Some other style preferences include
 
 Most style guides will have some preferences regarding code spacing, or "breathing".
 
-{{< tweet 1486396341542481922 >}}
-
 Another excellent resource is [Jenny Bryan's useR! 2018 keynote *"Code Smells and Feels"*](https://github.com/jennybc/code-smells-and-feels).
 It's more focused on code structure and commenting.
 
@@ -64,9 +62,7 @@ It's more focused on code structure and commenting.
 The resources listed below are books without a free version online.
 Hopefully libraries and used book stores can help.
 
-{{< tweet 951152160435310592 >}}
-
--   [The Art of Readable Code by Dustin Boswell, Trevor Foucher](https://www.goodreads.com/book/show/8677004-the-art-of-readable-code) can be (even for those who do not view it as a beach read :cocktail:), a short, light and actionable read.
+-   [The Art of Readable Code by Dustin Boswell, Trevor Foucher](https://www.goodreads.com/book/show/8677004-the-art-of-readable-code) can be a short, light and actionable read.
 
 -   [Refactoring by Martin Fowler](https://www.goodreads.com/book/show/44936.Refactoring) is an inspiration for the aforementioned keynote talk by Jenny Bryan.
     It defines code smells and refactoring techniques.
