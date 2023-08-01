@@ -140,7 +140,7 @@ So, when are system dependencies installed?
 And how the workflow does even know which dependencies to install since the `SystemRequirements` is free text that may not correspond to the exact name of a library?
 
 The magic happens in the `r-lib/actions/setup-r-dependencies` step.
-If you want to learn about it, you can read the source code of this step.
+If you want to learn about it, you can read the [source code of this step](https://github.com/r-lib/actions/blob/756399d909bf9c180bbdafe8025f794f51f2da02/setup-r-dependencies/action.yaml).
 It is mostly written in R but it contains a lot of bells and whistles to handle messaging within the GitHub Actions context and as such, it would be too long to go through it line by line in this post.
 However, at a glance, you can notice many mentions of the [pak R package](https://pak.r-lib.org/).
 
