@@ -36,8 +36,8 @@ options(crayon.enabled = FALSE)
 
 ```
 
-In a previous post, we discussed about a package dependency that goes slightly beyond the normal R package ecosystem dependency: R itself.
-Today, we step even further and discuss about dependencies that have nothing to do with R: system dependencies.
+In a [previous post](/2022/09/12/r-dependency/), we discussed about a package dependency that goes slightly beyond the normal R package ecosystem dependency: R itself.
+Today, we step even further and discuss dependencies outside of R: system dependencies.
 In particular, we are going to talk about system dependencies in the context of automated testing: is there anything extra to do when setting continuous integration for your package with system dependencies?
 How does it work behind the scenes?
 And how to work with edge cases?
@@ -45,9 +45,8 @@ And how to work with edge cases?
 ## Introduction: specifying system dependencies in R packages
 
 Before jumping right into the topic of continuous integration, let's take a moment to introduce, or remind you, how system dependencies are specified in R packages.
-You can directly jump to the next session if this concept is fresh in your memory.
 
-Let's imagine we have a package depending on The official 'Writing R Extensions' guide states [^1]:
+The official 'Writing R Extensions' guide states [^1]:
 
 [^1]: For R history fans, this has been the case [since R 1.7.0](https://github.com/r-devel/r-svn/blob/9c46956fd784c6985867aca069b926d774602928/doc/NEWS.1#L2348-L2350).
 
@@ -150,7 +149,7 @@ It is packed with many very powerful feature.
 The specific feature we're interested in here is the automatic install of system dependencies via [`pak::pkg_sysreqs()`](https://pak.r-lib.org/reference/local_system_requirements.html), which in turn uses `pkgdepends::sysreqs_install_plan()`.
 
 We now understand more precisely where the magic happens but it still doesn't explain how pak is able to know which precise piece of software to install from the free text `SystemRequirements` field.
-As often when you want to increase your understanding, it is helpful to [read the source](https://blog.r-hub.io/2019/05/14/read-the-source/).
+As often when you want to increase your understanding, it is helpful to [read the source](/2019/05/14/read-the-source/).
 While browsing pkgdepends source code, we see a call to <https://github.com/r-hub/r-system-requirements>.
 
 This repository contains a set of [rules](https://github.com/rstudio/r-system-requirements/tree/main/rules) as json files which match unformatted software name via regular expressions to the exact libraries for each major operating system.
@@ -203,7 +202,7 @@ Depending on the case, the best course of action might be to:
 
 Note however that the first option is likely always the simplest as it doesn't impact all the rest of the ecosystem (which is why `r-system-requirements` maintainers might be reluctant to relax a regular expression) and it is often something directly in your control, rather than a third-party.
 
-### Install system dependencies manually
+### Install system dependencies "manually"
 
 However, you might be in a case where the system dependency to install is not provided by package managers at all.
 Typically, if you had to compile or install it manually on your local computer, you're very likely to have to do the same operation in GitHub Actions.
@@ -251,7 +250,7 @@ If you use a `DOCKERFILE`, you can follow [the answers to this stackoverflow que
 
 ## Conclusion
 
-In this post, we have quickly reviewed how to specify system requirements for R package, how this seemingly innocent task requires a very complex infrastructure so that it can be understood by automated tools and that your dependencies are smoothly installed in a single command.
+In this post, we have provided an overview of how to specify system requirements for R package, how this seemingly innocent task requires a very complex infrastructure so that it can be understood by automated tools and that your dependencies are smoothly installed in a single command.
 We also gave some pointers on what to do if you're in one of the rare cases where the automated tools don't or can't work.
 
 One final note on this topic is that there might be a move from CRAN to start requiring more standardization in the `SystemRequirements` field.
