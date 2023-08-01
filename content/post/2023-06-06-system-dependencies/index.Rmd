@@ -54,7 +54,7 @@ The official 'Writing R Extensions' guide states [^1]:
 
 This was initially purely designed for humans.
 No system within R itself makes use of it.
-One important thing to note is that this field contains free text.
+One important thing to note is that this field contains free text :scream:.
 As such, to refer to the same piece of software, you could write either one of the following in the package `DESCRIPTION`:
 
 ``` yaml
