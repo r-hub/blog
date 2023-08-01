@@ -148,7 +148,7 @@ It is mostly written in R but it contains a lot of bells and whistles to handle 
 However, at a glance, you can notice many mentions of the [pak R package](https://pak.r-lib.org/).
 
 If it's the first time you're hearing about the pak package, we strongly recommend we go through the [list of the most important pak features](https://pak.r-lib.org/reference/features.html).
-It is ~~paked~~ packed with many very powerful feature.
+It is ~~paked~~ packed with many very powerful features.
 The specific feature we're interested in here is the automatic install of system dependencies via [`pak::pkg_sysreqs()`](https://pak.r-lib.org/reference/local_system_requirements.html), which in turn uses `pkgdepends::sysreqs_install_plan()`.
 
 We now understand more precisely where the magic happens but it still doesn't explain how pak is able to know which precise piece of software to install from the free text `SystemRequirements` field.
