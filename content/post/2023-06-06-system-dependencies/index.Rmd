@@ -144,7 +144,7 @@ If you want to learn about it, you can read the [source code of this step](https
 It is mostly written in R but it contains a lot of bells and whistles to handle messaging within the GitHub Actions context and as such, it would be too long to go through it line by line in this post.
 However, at a glance, you can notice many mentions of the [pak R package](https://pak.r-lib.org/).
 
-If it's the first you're hearing about the pak package, we strongly recommend we go through the [list of the most important pak features](https://pak.r-lib.org/reference/features.html).
+If it's the first time you're hearing about the pak package, we strongly recommend we go through the [list of the most important pak features](https://pak.r-lib.org/reference/features.html).
 It is packed with many very powerful feature.
 The specific feature we're interested in here is the automatic install of system dependencies via [`pak::pkg_sysreqs()`](https://pak.r-lib.org/reference/local_system_requirements.html), which in turn uses `pkgdepends::sysreqs_install_plan()`.
 
