@@ -48,7 +48,7 @@ Before jumping right into the topic of continuous integration, let's take a mome
 
 The official 'Writing R Extensions' guide states [^1]:
 
-[^1]: For R history fans, this has been the case [since R 1.7.0](https://github.com/r-devel/r-svn/blob/9c46956fd784c6985867aca069b926d774602928/doc/NEWS.1#L2348-L2350).
+[^1]: For R history fans, this has been the case [since R 1.7.0](https://github.com/r-devel/r-svn/blob/9c46956fd784c6985867aca069b926d774602928/doc/NEWS.1#L2348-L2350), released in April 2003.
 
 > Dependencies external to the R system should be listed in the 'SystemRequirements' field, possibly amplified in a separate README file.
 
