@@ -248,7 +248,7 @@ jobs:
 
 Alternatively, you can do the manual installation in a Docker image and use this image in your GitHub Actions workflow.
 This is a particularly good solution if there is already a public Docker image or you already wrote a `DOCKERFILE` for your own local development purposes.
-If you use a public image, you can follow the steps in the official documentation to integrate it to your workflow.
+If you use a public image, you can follow [the steps in the official documentation](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-running-a-job-within-a-container) to integrate it to your GitHub Actions job.
 If you use a `DOCKERFILE`, you can follow [the answers to this stackoverflow question](https://stackoverflow.com/q/61154750/4439357) (in a nutshell, use `docker compose` in your job or publish the image first and then follow the official documentation).
 
 ## Conclusion
