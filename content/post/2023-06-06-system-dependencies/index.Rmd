@@ -74,7 +74,7 @@ In the very large majority of cases, setting up continuous integration in an R p
 
 Using, as often, the supercharged usethis package, you can automatically create the relevant GitHub Actions workflow file in your project [^2]:
 
-[^2]: Alternatively, if you're not using usethis, you can manually copy-paste the relevant GitHub Actions workflow file from the `examples` of the `r-lib/actions` project.
+[^2]: Alternatively, if you're not using usethis, you can manually copy-paste the relevant GitHub Actions workflow file from the [`examples` of the `r-lib/actions` project](https://github.com/r-lib/actions/tree/HEAD/examples).
 
 ```{r, eval = FALSE}
 usethis::use_github_action("check-standard")
