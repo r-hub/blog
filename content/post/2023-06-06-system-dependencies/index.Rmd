@@ -249,6 +249,8 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
 ```
 
+You can see [an real-life example in the rbi R package](https://github.com/sbfnk/rbi/blob/9b05a24ce42f7b1b53481370f3bde3dcd86bca02/.github/workflows/R-CMD-check.yaml).
+
 #### Using a Docker image in GitHub Actions
 
 Alternatively, you can do the manual installation in a Docker image and use this image in your GitHub Actions workflow.
