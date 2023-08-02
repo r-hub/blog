@@ -202,7 +202,7 @@ This test confirms that the `SystemRequirements` field contents are not recogniz
 Depending on the case, the best course of action might be to:
 
 -   either edit the contents of `SystemRequirements` so that it's picked up by the regular expression
--   or submit a pull request to `r-hub/r-system-requirements` if you believe the regular expression is too restrictive and should be updated
+-   or submit a pull request to `r-hub/r-system-requirements` if you believe the regular expression is too restrictive and should be updated ([example](https://github.com/rstudio/r-system-requirements/pull/93))
 
 Note however that the first option is likely always the simplest as it doesn't impact all the rest of the ecosystem (which is why `r-system-requirements` maintainers might be reluctant to relax a regular expression) and it is often something directly in your control, rather than a third-party who might not immediately be available to review your PR.
 
