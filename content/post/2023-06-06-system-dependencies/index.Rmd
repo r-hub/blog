@@ -71,6 +71,8 @@ SystemRequirements: ExternalSoftware 0.1
 SystemRequirements: lib-externalsoftware
 ```
 
+However, it is probably good practice check what other R packages with similar system dependencies are writing in `SystemRequirements`, to facilitate the automated identification process we describe below.
+
 ## The general case: everything works automagically
 
 If while reading the previous section, you could already sense the problems linked to the fact `SystemRequirements` is a free-text field, fret not!
@@ -261,4 +263,3 @@ We also gave some pointers on what to do if you're in one of the rare cases wher
 
 One final note on this topic is that there might be a move from CRAN to start requiring more standardization in the `SystemRequirements` field.
 One R package developer has reported being asked to change "Java (\>= 8)" to "Java JRE 8 or higher".
-In all cases, it is probably good practice to do this on your own and check what other R packages with similar system dependencies are writing in `SystemRequirements`.
