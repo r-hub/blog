@@ -8,7 +8,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: af07af3b7ab6522d
+rmd_hash: 50ff8977603c7106
 
 ---
 
@@ -37,6 +37,8 @@ SystemRequirements: ExternalSoftware 0.1
 ``` yaml
 SystemRequirements: lib-externalsoftware
 ```
+
+However, it is probably good practice check what other R packages with similar system dependencies are writing in `SystemRequirements`, to facilitate the automated identification process we describe below.
 
 ## The general case: everything works automagically
 
@@ -133,6 +135,8 @@ This repository contains a set of [rules](https://github.com/rstudio/r-system-re
 
 The regular expression tells that each time a package lists something as `SystemRequirements` with the word "nvcc" or "cuda", the corresponding Ubuntu library to install is `nvidia-cuda-dev`.
 
+This interaction between `r-system-requirements` and pak is also documented in pak's dev version, with extra information about how the `SystemRequirements` field is extracted in different situations: <https://pak.r-lib.org/dev/reference/sysreqs.html#how-it-works>
+
 ## When it's not working out-of-the-box
 
 We are now realizing that this automagical setup we didn't pay so much attention to until now actually requires a very heavy machinery under the hood. And it happens, very rarely, that this complex machinery is not able to handle your specific use case. But it doesn't mean that you cannot use continuous integration in your package. It means that some extra steps might be required to do so. Let's review these possible solutions together in order of complexity.
@@ -158,7 +162,7 @@ If we re-use the cuda example from the previous section and we are wondering why
 This test confirms that the `SystemRequirements` field contents are not recognized by the regular expression. Depending on the case, the best course of action might be to:
 
 -   either edit the contents of `SystemRequirements` so that it's picked up by the regular expression
--   or submit a pull request to `r-hub/r-system-requirements` if you believe the regular expression is too restrictive and should be updated
+-   or submit a pull request to `rstudio/r-system-requirements` if you believe the regular expression is too restrictive and should be updated ([example](https://github.com/rstudio/r-system-requirements/pull/93))
 
 Note however that the first option is likely always the simplest as it doesn't impact all the rest of the ecosystem (which is why `r-system-requirements` maintainers might be reluctant to relax a regular expression) and it is often something directly in your control, rather than a third-party who might not immediately be available to review your PR.
 
@@ -198,6 +202,8 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
 ```
 
+You can see [an real-life example in the rbi R package](https://github.com/sbfnk/rbi/blob/9b05a24ce42f7b1b53481370f3bde3dcd86bca02/.github/workflows/R-CMD-check.yaml).
+
 #### Using a Docker image in GitHub Actions
 
 Alternatively, you can do the manual installation in a Docker image and use this image in your GitHub Actions workflow. This is a particularly good solution if there is already a public Docker image or you already wrote a `DOCKERFILE` for your own local development purposes. If you use a public image, you can follow [the steps in the official documentation](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-running-a-job-within-a-container) to integrate it to your GitHub Actions job. If you use a `DOCKERFILE`, you can follow [the answers to this stackoverflow question](https://stackoverflow.com/q/61154750/4439357) (in a nutshell, use `docker compose` in your job or publish the image first and then follow the official documentation).
@@ -206,7 +212,7 @@ Alternatively, you can do the manual installation in a Docker image and use this
 
 In this post, we have provided an overview of how to specify system requirements for R package, how this seemingly innocent task requires a very complex infrastructure so that it can be understood by automated tools and that your dependencies are smoothly installed in a single command. We also gave some pointers on what to do if you're in one of the rare cases where the automated tools don't or can't work.
 
-One final note on this topic is that there might be a move from CRAN to start requiring more standardization in the `SystemRequirements` field. One R package developer has reported being asked to change "Java (\>= 8)" to "Java JRE 8 or higher". In all cases, it is probably good practice to do this on your own and check what other R packages with similar system dependencies are writing in `SystemRequirements`.
+One final note on this topic is that there might be a move from CRAN to start requiring more standardization in the `SystemRequirements` field. One R package developer has reported being asked to change "Java (\>= 8)" to "Java JRE 8 or higher".
 
 [^1]: For R history fans, this has been the case [since R 1.7.0](https://github.com/r-devel/r-svn/blob/9c46956fd784c6985867aca069b926d774602928/doc/NEWS.1#L2348-L2350), released in April 2003.
 
