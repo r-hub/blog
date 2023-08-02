@@ -178,6 +178,8 @@ Let's walk through an example together:
 
 The regular expression tells that each time a package lists something as `SystemRequirements` with the word "nvcc" or "cuda", the corresponding Ubuntu library to install is `nvidia-cuda-dev`.
 
+This interaction between `r-system-requirements` and pak is also documented in pak's dev version, with extra information about how the `SystemRequirements` field is extracted in different situations: <https://pak.r-lib.org/dev/reference/sysreqs.html#how-it-works>
+
 ## When it's not working out-of-the-box
 
 We are now realizing that this automagical setup we didn't pay so much attention to until now actually requires a very heavy machinery under the hood.
