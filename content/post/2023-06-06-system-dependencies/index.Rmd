@@ -212,7 +212,8 @@ Note however that the first option is likely always the simplest as it doesn't i
 
 ### Install system dependencies "manually"
 
-However, you might be in a case where the system dependency to install is not provided by package managers at all.
+However, you might be in a case where you cannot rely on the automated approach.
+For example, maybe the system dependency to install is not provided by package managers at all.
 Typically, if you had to compile or install it manually on your local computer, you're very likely to have to do the same operation in GitHub Actions.
 There two different, but somewhat equivalent, ways to do so, as detailed below.
 
