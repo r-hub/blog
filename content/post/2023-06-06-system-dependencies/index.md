@@ -8,13 +8,13 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: 50ff8977603c7106
+rmd_hash: 00de3f949f379aa9
 
 ---
 
 <!-- FIXME: Use this image for social media: https://pixabay.com/fr/photos/alice-anglais-pays-des-merveilles-2902560/ -->
 
-In a [previous post](/2022/09/12/r-dependency/), we discussed about a package dependency that goes slightly beyond the normal R package ecosystem dependency: R itself. Today, we step even further and discuss dependencies outside of R: system dependencies. This happens when packages rely on external software, such as how [R packages integrating CUDA GPU computation in R](https://github.com/search?q=org%3Acran+cuda+path%3ADESCRIPTION&type=code) require the [CUDA library](https://en.wikipedia.org/wiki/CUDA). In particular, we are going to talk about system dependencies in the context of automated testing: is there anything extra to do when setting continuous integration for your package with system dependencies? In particular, we will focus with the integration with [GitHub Actions](https://resources.github.com/devops/tools/automation/actions/). How does it work behind the scenes? And how to work with edge cases?
+In a [previous post](/2022/09/12/r-dependency/), we discussed a package dependency that goes slightly beyond the normal R package ecosystem dependency: R itself. Today, we step even further and discuss dependencies outside of R: system dependencies. This happens when packages rely on external software, such as how [R packages integrating CUDA GPU computation in R](https://github.com/search?q=org%3Acran+cuda+path%3ADESCRIPTION&type=code) require the [CUDA library](https://en.wikipedia.org/wiki/CUDA). In particular, we are going to talk about system dependencies in the context of automated testing: is there anything extra to do when setting continuous integration for your package with system dependencies? In particular, we will focus with the integration with [GitHub Actions](https://beamilz.com/posts/series-gha/2022-series-gha-1-what-is/en/). How does it work behind the scenes? And how to work with edge cases?
 
 ## Introduction: specifying system dependencies in R packages
 
@@ -168,7 +168,7 @@ Note however that the first option is likely always the simplest as it doesn't i
 
 ### Install system dependencies "manually"
 
-However, you might be in a case where the system dependency to install is not provided by package managers at all. Typically, if you had to compile or install it manually on your local computer, you're very likely to have to do the same operation in GitHub Actions. There two different, but somewhat equivalent, ways to do so, as detailed below.
+However, you might be in a case where you cannot rely on the automated approach. For example, maybe the system dependency to install is not provided by package managers at all. Typically, if you had to compile or install it manually on your local computer, you're very likely to have to do the same operation in GitHub Actions. There two different, but somewhat equivalent, ways to do so, as detailed below.
 
 #### Directly in the GitHub Actions workflow
 
@@ -202,11 +202,36 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
 ```
 
-You can see [an real-life example in the rbi R package](https://github.com/sbfnk/rbi/blob/9b05a24ce42f7b1b53481370f3bde3dcd86bca02/.github/workflows/R-CMD-check.yaml).
+You can see [a real-life example in the rbi R package](https://github.com/sbfnk/rbi/blob/9b05a24ce42f7b1b53481370f3bde3dcd86bca02/.github/workflows/R-CMD-check.yaml).
 
 #### Using a Docker image in GitHub Actions
 
 Alternatively, you can do the manual installation in a Docker image and use this image in your GitHub Actions workflow. This is a particularly good solution if there is already a public Docker image or you already wrote a `DOCKERFILE` for your own local development purposes. If you use a public image, you can follow [the steps in the official documentation](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-running-a-job-within-a-container) to integrate it to your GitHub Actions job. If you use a `DOCKERFILE`, you can follow [the answers to this stackoverflow question](https://stackoverflow.com/q/61154750/4439357) (in a nutshell, use `docker compose` in your job or publish the image first and then follow the official documentation).
+
+``` diff
+jobs:
+  R-CMD-check:
+    runs-on: ubuntu-latest
++    container: ghcr.io/org/repo:main
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@v2
+```
+
+You can again see [a real-life example in the rbi R package](https://github.com/sbfnk/rbi/pull/46/files).
 
 ## Conclusion
 
