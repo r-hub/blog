@@ -8,7 +8,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: 00de3f949f379aa9
+rmd_hash: f13779348c0a7fcd
 
 ---
 
@@ -238,6 +238,8 @@ You can again see [a real-life example in the rbi R package](https://github.com/
 In this post, we have provided an overview of how to specify system requirements for R package, how this seemingly innocent task requires a very complex infrastructure so that it can be understood by automated tools and that your dependencies are smoothly installed in a single command. We also gave some pointers on what to do if you're in one of the rare cases where the automated tools don't or can't work.
 
 One final note on this topic is that there might be a move from CRAN to start requiring more standardization in the `SystemRequirements` field. One R package developer has reported being asked to change "Java (\>= 8)" to "Java JRE 8 or higher".
+
+*Many thanks to Maëlle Salmon & Gábor Csárdi for their insights into this topic and their valuable feedback on this post.*
 
 [^1]: For R history fans, this has been the case [since R 1.7.0](https://github.com/r-devel/r-svn/blob/9c46956fd784c6985867aca069b926d774602928/doc/NEWS.1#L2348-L2350), released in April 2003.
 

@@ -291,3 +291,5 @@ We also gave some pointers on what to do if you're in one of the rare cases wher
 
 One final note on this topic is that there might be a move from CRAN to start requiring more standardization in the `SystemRequirements` field.
 One R package developer has reported being asked to change "Java (\>= 8)" to "Java JRE 8 or higher".
+
+*Many thanks to Maëlle Salmon & Gábor Csárdi for their insights into this topic and their valuable feedback on this post.*
