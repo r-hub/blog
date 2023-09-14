@@ -40,7 +40,7 @@ In a [previous post](/2022/09/12/r-dependency/), we discussed a package dependen
 Today, we step even further and discuss dependencies outside of R: system dependencies.
 This happens when packages rely on external software, such as how [R packages integrating CUDA GPU computation in R](https://github.com/search?q=org%3Acran+cuda+path%3ADESCRIPTION&type=code) require the [CUDA library](https://en.wikipedia.org/wiki/CUDA).
 In particular, we are going to talk about system dependencies in the context of automated testing: is there anything extra to do when setting continuous integration for your package with system dependencies?
-In particular, we will focus with the integration with [GitHub Actions](https://resources.github.com/devops/tools/automation/actions/).
+In particular, we will focus with the integration with [GitHub Actions](https://beamilz.com/posts/series-gha/2022-series-gha-1-what-is/en/).
 How does it work behind the scenes?
 And how to work with edge cases?
 
