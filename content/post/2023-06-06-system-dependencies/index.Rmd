@@ -3,7 +3,7 @@ slug: system-dependency
 title: "System Dependencies in R Packages & Automatic Testing" 
 authors: 
 - Hugo Gruson
-date: "2023-06-06" 
+date: "2023-09-26" 
 tags: 
 - package development 
 - r-package

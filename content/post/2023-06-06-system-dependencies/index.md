@@ -3,16 +3,17 @@ slug: system-dependency
 title: "System Dependencies in R Packages & Automatic Testing" 
 authors: 
 - Hugo Gruson
-date: "2023-06-06" 
+date: "2023-09-26" 
 tags: 
 - package development 
 - r-package
+- continuous integration
 output: hugodown::hugo_document
-rmd_hash: 152813338f2816a4
+rmd_hash: cb7c54eeb66d1821
 
 ---
 
-<!-- FIXME: Use this image for social media: https://pixabay.com/fr/photos/alice-anglais-pays-des-merveilles-2902560/ -->
+*This post has been [cross-posted on the Epiverse-TRACE blog](https://epiverse-trace.github.io/posts/system-dependencies/).*
 
 In a [previous post](/2022/09/12/r-dependency/), we discussed a package dependency that goes slightly beyond the normal R package ecosystem dependency: R itself. Today, we step even further and discuss dependencies outside of R: system dependencies. This happens when packages rely on external software, such as how [R packages integrating CUDA GPU computation in R](https://github.com/search?q=org%3Acran+cuda+path%3ADESCRIPTION&type=code) require the [CUDA library](https://en.wikipedia.org/wiki/CUDA). In particular, we are going to talk about system dependencies in the context of automated testing: is there anything extra to do when setting continuous integration for your package with system dependencies? In particular, we will focus with the integration with [GitHub Actions](https://beamilz.com/posts/series-gha/2022-series-gha-1-what-is/en/). How does it work behind the scenes? And how to work with edge cases?
 
@@ -77,9 +78,9 @@ jobs:
         config:
           - {os: macos-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel-1'}
+          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest,  r: 'release'}
+          - {os: ubuntu-latest,  r: 'oldrel-1'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -145,7 +146,7 @@ We are now realizing that this automagical setup we didn't pay so much attention
 
 One first option might be that the regular expression used by `r-system-requirements` to convert the free text in `SystemRequirements` to a library distributed by your operating system does not recognize what is in `SystemRequirements`.
 
-To identify if this is the case, you need to find the file containing the specific rule for the system dependency of interest in `r-hub/r-system-requirements`, and test the regular expression on the contents of `SystemRequirements`.
+To identify if this is the case, you need to find the file containing the specific rule for the system dependency of interest in `r-system-requirements`, and test the regular expression on the contents of `SystemRequirements`.
 
 If we re-use the cuda example from the previous section and we are wondering why it is not automatically installed for a package specifying "cudaa":
 
