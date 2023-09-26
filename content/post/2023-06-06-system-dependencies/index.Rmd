@@ -192,9 +192,9 @@ Let's review these possible solutions together in order of complexity.
 
 ### Fix it for everybody by submitting a pull request
 
-One first option might be that the regular expression used by `r-hub/r-system-requirements` to convert the free text in `SystemRequirements` to a library distributed by your operating system does not recognize what is in `SystemRequirements`.
+One first option might be that the regular expression used by `r-system-requirements` to convert the free text in `SystemRequirements` to a library distributed by your operating system does not recognize what is in `SystemRequirements`.
 
-To identify if this is the case, you need to find the file containing the specific rule for the system dependency of interest in `r-hub/r-system-requirements`, and test the regular expression on the contents of `SystemRequirements`.
+To identify if this is the case, you need to find the file containing the specific rule for the system dependency of interest in `r-system-requirements`, and test the regular expression on the contents of `SystemRequirements`.
 
 If we re-use the cuda example from the previous section and we are wondering why it is not automatically installed for a package specifying "cudaa":
 
@@ -206,7 +206,9 @@ This test confirms that the `SystemRequirements` field contents are not recogniz
 Depending on the case, the best course of action might be to:
 
 -   either edit the contents of `SystemRequirements` so that it's picked up by the regular expression
--   or submit a pull request to `rstudio/r-system-requirements` if you believe the regular expression is too restrictive and should be updated ([example](https://github.com/rstudio/r-system-requirements/pull/93))
+-   or submit a pull request to [`rstudio/r-system-requirements`](https://github.com/rstudio/r-system-requirements) [^3] if you believe the regular expression is too restrictive and should be updated ([example](https://github.com/rstudio/r-system-requirements/pull/93))
+
+[^3]: If you are wondering why we are saying to submit PR to `rstudio/r-system-requirements` when we were previously talking about `r-hub/r-system-requirements`, you can check out [this comment thread](https://github.com/r-hub/blog/pull/165#discussion_r1280644182).
 
 Note however that the first option is likely always the simplest as it doesn't impact all the rest of the ecosystem (which is why `r-system-requirements` maintainers might be reluctant to relax a regular expression) and it is often something directly in your control, rather than a third-party who might not immediately be available to review your PR.
 
