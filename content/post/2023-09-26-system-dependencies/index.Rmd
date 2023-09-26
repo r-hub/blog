@@ -1,0 +1,298 @@
+---
+slug: system-dependency
+title: "System Dependencies in R Packages & Automatic Testing" 
+authors: 
+- Hugo Gruson
+date: "2023-09-26" 
+tags: 
+- package development 
+- r-package
+- continuous integration
+output: hugodown::hugo_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(fig.path = "", comment = "", warning = FALSE)
+# knitr hook to make images output use Hugo options
+knitr::knit_hooks$set(
+  plot = function(x, options) {
+    hugoopts <- options$hugoopts
+    paste0(
+      "{{<figure src=",
+      '"', x, '" ',
+      if (!is.null(hugoopts)) {
+        glue::glue_collapse(
+          glue::glue('{names(hugoopts)}="{hugoopts}"'),
+          sep = " "
+        )
+      },
+      ">}}\n"
+    )
+  }
+)
+options(crayon.enabled = FALSE)
+
+```
+
+*This post has been [cross-posted on the Epiverse-TRACE blog](https://epiverse-trace.github.io/posts/system-dependencies/).*
+
+In a [previous post](/2022/09/12/r-dependency/), we discussed a package dependency that goes slightly beyond the normal R package ecosystem dependency: R itself.
+Today, we step even further and discuss dependencies outside of R: system dependencies.
+This happens when packages rely on external software, such as how [R packages integrating CUDA GPU computation in R](https://github.com/search?q=org%3Acran+cuda+path%3ADESCRIPTION&type=code) require the [CUDA library](https://en.wikipedia.org/wiki/CUDA).
+In particular, we are going to talk about system dependencies in the context of automated testing: is there anything extra to do when setting continuous integration for your package with system dependencies?
+In particular, we will focus with the integration with [GitHub Actions](https://beamilz.com/posts/series-gha/2022-series-gha-1-what-is/en/).
+How does it work behind the scenes?
+And how to work with edge cases?
+
+## Introduction: specifying system dependencies in R packages
+
+Before jumping right into the topic of continuous integration, let's take a moment to introduce, or remind you, how system dependencies are specified in R packages.
+
+The official 'Writing R Extensions' guide states [^1]:
+
+[^1]: For R history fans, this has been the case [since R 1.7.0](https://github.com/r-devel/r-svn/blob/9c46956fd784c6985867aca069b926d774602928/doc/NEWS.1#L2348-L2350), released in April 2003.
+
+> Dependencies external to the R system should be listed in the 'SystemRequirements' field, possibly amplified in a separate README file.
+
+This was initially purely designed for humans.
+No system within R itself makes use of it.
+One important thing to note is that this field contains free text :scream:.
+As such, to refer to the same piece of software, you could write either one of the following in the package `DESCRIPTION`:
+
+``` yaml
+SystemRequirements: ExternalSoftware
+```
+
+``` yaml
+SystemRequirements: ExternalSoftware 0.1
+```
+
+``` yaml
+SystemRequirements: lib-externalsoftware
+```
+
+However, it is probably good practice check what other R packages with similar system dependencies are writing in `SystemRequirements`, to facilitate the automated identification process we describe below.
+
+## The general case: everything works automagically
+
+If while reading the previous section, you could already sense the problems linked to the fact `SystemRequirements` is a free-text field, fret not!
+In the very large majority of cases, setting up continuous integration in an R package with system dependencies is exactly the same as with any other R package.
+
+Using, as often, the supercharged usethis package, you can automatically create the relevant GitHub Actions workflow file in your project [^2]:
+
+[^2]: Alternatively, if you're not using usethis, you can manually copy-paste the relevant GitHub Actions workflow file from the [`examples` of the `r-lib/actions` project](https://github.com/r-lib/actions/tree/HEAD/examples).
+
+```{r, eval = FALSE}
+usethis::use_github_action("check-standard")
+```
+
+The result is:
+
+``` yaml
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+name: R-CMD-check
+
+jobs:
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: macos-latest,   r: 'release'}
+          - {os: windows-latest, r: 'release'}
+          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest,  r: 'release'}
+          - {os: ubuntu-latest,  r: 'oldrel-1'}
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: true
+```
+
+You may notice there is no explicit mention of system dependencies in this file.
+Yet, if we use this workflow in an R package with system dependencies, everything will work out-of-the-box in most cases.
+So, when are system dependencies installed?
+And how the workflow does even know which dependencies to install since the `SystemRequirements` is free text that may not correspond to the exact name of a library?
+
+The magic happens in the `r-lib/actions/setup-r-dependencies` step.
+If you want to learn about it, you can read the [source code of this step](https://github.com/r-lib/actions/blob/756399d909bf9c180bbdafe8025f794f51f2da02/setup-r-dependencies/action.yaml).
+It is mostly written in R but it contains a lot of bells and whistles to handle messaging within the GitHub Actions context and as such, it would be too long to go through it line by line in this post.
+However, at a glance, you can notice many mentions of the [pak R package](https://pak.r-lib.org/).
+
+If it's the first time you're hearing about the pak package, we strongly recommend we go through the [list of the most important pak features](https://pak.r-lib.org/reference/features.html).
+It is ~~paked~~ packed with many very powerful features.
+The specific feature we're interested in here is the automatic install of system dependencies via [`pak::pkg_sysreqs()`](https://pak.r-lib.org/reference/local_system_requirements.html), which in turn uses `pkgdepends::sysreqs_install_plan()`.
+
+We now understand more precisely where the magic happens but it still doesn't explain how pak is able to know which precise piece of software to install from the free text `SystemRequirements` field.
+As often when you want to increase your understanding, it is helpful to [read the source](/2019/05/14/read-the-source/).
+While browsing pkgdepends source code, we see a call to <https://github.com/r-hub/r-system-requirements>.
+
+This repository contains a set of [rules](https://github.com/rstudio/r-system-requirements/tree/main/rules) as json files which match unformatted software name via regular expressions to the exact libraries for each major operating system.
+Let's walk through an example together:
+
+``` json
+{
+  "patterns": ["\\bnvcc\\b", "\\bcuda\\b"],
+  "dependencies": [
+    {
+      "packages": ["nvidia-cuda-dev"],
+      "constraints": [
+        {
+          "os": "linux",
+          "distribution": "ubuntu"
+        }
+      ]
+    }
+  ]
+}
+```
+
+The regular expression tells that each time a package lists something as `SystemRequirements` with the word "nvcc" or "cuda", the corresponding Ubuntu library to install is `nvidia-cuda-dev`.
+
+This interaction between `r-system-requirements` and pak is also documented in pak's dev version, with extra information about how the `SystemRequirements` field is extracted in different situations: <https://pak.r-lib.org/dev/reference/sysreqs.html#how-it-works>
+
+## When it's not working out-of-the-box
+
+We are now realizing that this automagical setup we didn't pay so much attention to until now actually requires a very heavy machinery under the hood.
+And it happens, very rarely, that this complex machinery is not able to handle your specific use case.
+But it doesn't mean that you cannot use continuous integration in your package.
+It means that some extra steps might be required to do so.
+Let's review these possible solutions together in order of complexity.
+
+### Fix it for everybody by submitting a pull request
+
+One first option might be that the regular expression used by `r-system-requirements` to convert the free text in `SystemRequirements` to a library distributed by your operating system does not recognize what is in `SystemRequirements`.
+
+To identify if this is the case, you need to find the file containing the specific rule for the system dependency of interest in `r-system-requirements`, and test the regular expression on the contents of `SystemRequirements`.
+
+If we re-use the cuda example from the previous section and we are wondering why it is not automatically installed for a package specifying "cudaa":
+
+```{r}
+stringr::str_match("cudaa", c("\\bnvcc\\b", "\\bcuda\\b"))
+```
+
+This test confirms that the `SystemRequirements` field contents are not recognized by the regular expression.
+Depending on the case, the best course of action might be to:
+
+-   either edit the contents of `SystemRequirements` so that it's picked up by the regular expression
+-   or submit a pull request to [`rstudio/r-system-requirements`](https://github.com/rstudio/r-system-requirements) [^3] if you believe the regular expression is too restrictive and should be updated ([example](https://github.com/rstudio/r-system-requirements/pull/93))
+
+[^3]: If you are wondering why we are saying to submit PR to `rstudio/r-system-requirements` when we were previously talking about `r-hub/r-system-requirements`, you can check out [this comment thread](https://github.com/r-hub/blog/pull/165#discussion_r1280644182).
+
+Note however that the first option is likely always the simplest as it doesn't impact all the rest of the ecosystem (which is why `r-system-requirements` maintainers might be reluctant to relax a regular expression) and it is often something directly in your control, rather than a third-party who might not immediately be available to review your PR.
+
+### Install system dependencies "manually"
+
+However, you might be in a case where you cannot rely on the automated approach.
+For example, maybe the system dependency to install is not provided by package managers at all.
+Typically, if you had to compile or install it manually on your local computer, you're very likely to have to do the same operation in GitHub Actions.
+There two different, but somewhat equivalent, ways to do so, as detailed below.
+
+#### Directly in the GitHub Actions workflow
+
+You can insert the installation steps you used locally in the GitHub Actions workflow file.
+So, instead of having the usual structure, you have an extra step "Install extra system dependencies manually" that may look something like this:
+
+``` diff
+jobs:
+  R-CMD-check:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
++      - name: Install extra system dependencies manually
++        run:
++          wget ...
++          make
++          sudo make install
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@v2
+```
+
+You can see [a real-life example in the rbi R package](https://github.com/sbfnk/rbi/blob/9b05a24ce42f7b1b53481370f3bde3dcd86bca02/.github/workflows/R-CMD-check.yaml).
+
+#### Using a Docker image in GitHub Actions
+
+Alternatively, you can do the manual installation in a Docker image and use this image in your GitHub Actions workflow.
+This is a particularly good solution if there is already a public Docker image or you already wrote a `DOCKERFILE` for your own local development purposes.
+If you use a public image, you can follow [the steps in the official documentation](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-running-a-job-within-a-container) to integrate it to your GitHub Actions job.
+If you use a `DOCKERFILE`, you can follow [the answers to this stackoverflow question](https://stackoverflow.com/q/61154750/4439357) (in a nutshell, use `docker compose` in your job or publish the image first and then follow the official documentation).
+
+``` diff
+jobs:
+  R-CMD-check:
+    runs-on: ubuntu-latest
++    container: ghcr.io/org/repo:main
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@v2
+```
+
+You can again see [a real-life example in the rbi R package](https://github.com/sbfnk/rbi/pull/46/files).
+
+## Conclusion
+
+In this post, we have provided an overview of how to specify system requirements for R package, how this seemingly innocent task requires a very complex infrastructure so that it can be understood by automated tools and that your dependencies are smoothly installed in a single command.
+We also gave some pointers on what to do if you're in one of the rare cases where the automated tools don't or can't work.
+
+One final note on this topic is that there might be a move from CRAN to start requiring more standardization in the `SystemRequirements` field.
+One R package developer has reported being asked to change "Java JRE 8 or higher" to "Java (\>= 8)".
+
+*Many thanks to Maëlle Salmon & Gábor Csárdi for their insights into this topic and their valuable feedback on this post.*
