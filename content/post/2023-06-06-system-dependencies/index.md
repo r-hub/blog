@@ -8,7 +8,7 @@ tags:
 - package development 
 - r-package
 output: hugodown::hugo_document
-rmd_hash: f13779348c0a7fcd
+rmd_hash: 152813338f2816a4
 
 ---
 
@@ -143,7 +143,7 @@ We are now realizing that this automagical setup we didn't pay so much attention
 
 ### Fix it for everybody by submitting a pull request
 
-One first option might be that the regular expression used by `r-hub/r-system-requirements` to convert the free text in `SystemRequirements` to a library distributed by your operating system does not recognize what is in `SystemRequirements`.
+One first option might be that the regular expression used by `r-system-requirements` to convert the free text in `SystemRequirements` to a library distributed by your operating system does not recognize what is in `SystemRequirements`.
 
 To identify if this is the case, you need to find the file containing the specific rule for the system dependency of interest in `r-hub/r-system-requirements`, and test the regular expression on the contents of `SystemRequirements`.
 
@@ -162,7 +162,7 @@ If we re-use the cuda example from the previous section and we are wondering why
 This test confirms that the `SystemRequirements` field contents are not recognized by the regular expression. Depending on the case, the best course of action might be to:
 
 -   either edit the contents of `SystemRequirements` so that it's picked up by the regular expression
--   or submit a pull request to `rstudio/r-system-requirements` if you believe the regular expression is too restrictive and should be updated ([example](https://github.com/rstudio/r-system-requirements/pull/93))
+-   or submit a pull request to [`rstudio/r-system-requirements`](https://github.com/rstudio/r-system-requirements) [^3] if you believe the regular expression is too restrictive and should be updated ([example](https://github.com/rstudio/r-system-requirements/pull/93))
 
 Note however that the first option is likely always the simplest as it doesn't impact all the rest of the ecosystem (which is why `r-system-requirements` maintainers might be reluctant to relax a regular expression) and it is often something directly in your control, rather than a third-party who might not immediately be available to review your PR.
 
@@ -237,11 +237,13 @@ You can again see [a real-life example in the rbi R package](https://github.com/
 
 In this post, we have provided an overview of how to specify system requirements for R package, how this seemingly innocent task requires a very complex infrastructure so that it can be understood by automated tools and that your dependencies are smoothly installed in a single command. We also gave some pointers on what to do if you're in one of the rare cases where the automated tools don't or can't work.
 
-One final note on this topic is that there might be a move from CRAN to start requiring more standardization in the `SystemRequirements` field. One R package developer has reported being asked to change "Java (\>= 8)" to "Java JRE 8 or higher".
+One final note on this topic is that there might be a move from CRAN to start requiring more standardization in the `SystemRequirements` field. One R package developer has reported being asked to change "Java JRE 8 or higher" to "Java (\>= 8)".
 
 *Many thanks to Maëlle Salmon & Gábor Csárdi for their insights into this topic and their valuable feedback on this post.*
 
 [^1]: For R history fans, this has been the case [since R 1.7.0](https://github.com/r-devel/r-svn/blob/9c46956fd784c6985867aca069b926d774602928/doc/NEWS.1#L2348-L2350), released in April 2003.
 
 [^2]: Alternatively, if you're not using usethis, you can manually copy-paste the relevant GitHub Actions workflow file from the [`examples` of the `r-lib/actions` project](https://github.com/r-lib/actions/tree/HEAD/examples).
+
+[^3]: If you are wondering why we are saying to submit PR to `rstudio/r-system-requirements` when we were previously talking about `r-hub/r-system-requirements`, you can check out [this comment thread](https://github.com/r-hub/blog/pull/165#discussion_r1280644182).
 
