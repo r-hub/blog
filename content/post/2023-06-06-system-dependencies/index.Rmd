@@ -290,6 +290,6 @@ In this post, we have provided an overview of how to specify system requirements
 We also gave some pointers on what to do if you're in one of the rare cases where the automated tools don't or can't work.
 
 One final note on this topic is that there might be a move from CRAN to start requiring more standardization in the `SystemRequirements` field.
-One R package developer has reported being asked to change "Java (\>= 8)" to "Java JRE 8 or higher".
+One R package developer has reported being asked to change "Java JRE 8 or higher" to "Java (\>= 8)".
 
 *Many thanks to Maëlle Salmon & Gábor Csárdi for their insights into this topic and their valuable feedback on this post.*
