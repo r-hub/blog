@@ -7,10 +7,9 @@ date: "2023-06-06"
 tags: 
 - package development 
 - r-package
+- continuous integration
 output: hugodown::hugo_document
 ---
-
-<!-- FIXME: Use this image for social media: https://pixabay.com/fr/photos/alice-anglais-pays-des-merveilles-2902560/ -->
 
 ```{r setup, include=FALSE}
 
@@ -35,6 +34,8 @@ knitr::knit_hooks$set(
 options(crayon.enabled = FALSE)
 
 ```
+
+*This post has been [cross-posted on the Epiverse-TRACE blog](https://epiverse-trace.github.io/posts/system-dependencies/).*
 
 In a [previous post](/2022/09/12/r-dependency/), we discussed a package dependency that goes slightly beyond the normal R package ecosystem dependency: R itself.
 Today, we step even further and discuss dependencies outside of R: system dependencies.
@@ -111,9 +112,9 @@ jobs:
         config:
           - {os: macos-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel-1'}
+          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest,  r: 'release'}
+          - {os: ubuntu-latest,  r: 'oldrel-1'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
