@@ -9,7 +9,7 @@ tags:
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: f4fd9a6c0fec9d62
+rmd_hash: 7d3d112de8bcb874
 
 ---
 
@@ -22,8 +22,6 @@ We've both coincidentally dipped our toes in the wonderful world of pretty messa
 </div>
 
 In this post, we transform the hurdles we encountered in a series of tips so that your own journey might be slightly smoother, and also to encourage you to try out cli in your package!
-
-Note that blogging about an interface-building tool is a bit lame because the output is pretty... in a console, not in a Markdown file! So don't hesitate to open an R console to see it for yourself.
 
 ## cli is the thing for package interfaces now!
 
@@ -49,8 +47,8 @@ cli has a glue-like syntax: if there's an object called say `thing` and you want
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>thing</span> <span class='o'>&lt;-</span> <span class='s'>"a string"</span></span>
 <span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/cli_li.html'>cli_li</a></span><span class='o'>(</span><span class='s'>"Hey you provided this text: &#123;thing&#125;!"</span><span class='o'>)</span></span>
-• Hey you provided this text: a string!
-</code></pre>
+<span><span class='c'>#&gt; • Hey you provided this text: a string!</span></span>
+<span></span></code></pre>
 
 </div>
 
@@ -60,8 +58,8 @@ Then, you can use classes in messages. Classes, like classes in CSS, help format
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>thing</span> <span class='o'>&lt;-</span> <span class='s'>"a string"</span></span>
 <span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/cli_li.html'>cli_li</a></span><span class='o'>(</span><span class='s'>"Hey you provided this text: &#123;.var &#123;thing&#125;&#125;!"</span><span class='o'>)</span></span>
-• Hey you provided this text: `a string`!
-</code></pre>
+<span><span class='c'>#&gt; • Hey you provided this text: `a string`!</span></span>
+<span></span></code></pre>
 
 </div>
 
@@ -168,9 +166,8 @@ Let's try an example.
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/cli_li.html'>cli_li</a></span><span class='o'>(</span><span class='s'>"hello"</span><span class='o'>)</span></span>
-• hello
-
-<span><span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/local_options.html'>local_options</a></span><span class='o'>(</span>cli.default_handler <span class='o'>=</span> <span class='kr'>function</span><span class='o'>(</span><span class='nv'>msg</span><span class='o'>)</span> <span class='nf'><a href='https://rdrr.io/r/base/invisible.html'>invisible</a></span><span class='o'>(</span><span class='kc'>NULL</span><span class='o'>)</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; • hello</span></span>
+<span></span><span><span class='nf'>rlang</span><span class='nf'>::</span><span class='nf'><a href='https://rlang.r-lib.org/reference/local_options.html'>local_options</a></span><span class='o'>(</span>cli.default_handler <span class='o'>=</span> <span class='kr'>function</span><span class='o'>(</span><span class='nv'>msg</span><span class='o'>)</span> <span class='nf'><a href='https://rdrr.io/r/base/invisible.html'>invisible</a></span><span class='o'>(</span><span class='kc'>NULL</span><span class='o'>)</span><span class='o'>)</span></span>
 <span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/cli_li.html'>cli_li</a></span><span class='o'>(</span><span class='s'>"hello"</span><span class='o'>)</span></span></code></pre>
 
 </div>

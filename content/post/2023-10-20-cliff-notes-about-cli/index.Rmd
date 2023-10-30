@@ -34,6 +34,23 @@ knitr::knit_hooks$set(
 
 ```
 
+```{r, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  out.width = "100%",
+  asciicast_theme = if (Sys.getenv("IN_PKGDOWN") == "true") "pkgdown" else "readme"
+)
+Sys.setenv(CLI_TICK_TIME = "100")
+asciicast::init_knitr_engine(
+  startup = quote({
+    library(cli)
+    set.seed(1) }),
+  echo = TRUE,
+  echo_input = FALSE
+)
+```
+
 We've both coincidentally dipped our toes in the wonderful world of pretty messaging with [cli](https://cli.r-lib.org/).
 
 ```{r, eval=FALSE}
@@ -41,9 +58,6 @@ cli::cli_li("marvellous package adopted!")
 ```
 
 In this post, we transform the hurdles we encountered in a series of tips so that your own journey might be slightly smoother, and also to encourage you to try out cli in your package!
-
-Note that blogging about an interface-building tool is a bit lame because the output is pretty... in a console, not in a Markdown file!
-So don't hesitate to open an R console to see it for yourself.
 
 ## cli is the thing for package interfaces now!
 
