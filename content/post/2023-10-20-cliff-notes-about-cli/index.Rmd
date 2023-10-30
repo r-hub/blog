@@ -165,7 +165,7 @@ Not only does cli support progress bars, it [documents how to create them in two
 #### How does it look in logfiles?
 
 It's likely not what you are after for a logfile, as each new update will create another line.
-The cli output in non-interactive sessions or to file is discussed in the [article about advanced progress bar topics](https://cli.r-lib.org/articles/progress-advanced.html#non-interactive-r-sessions)
+The cli output in non-interactive sessions or to file is discussed in the [article about advanced progress bar topics](https://cli.r-lib.org/articles/progress-advanced.html#non-interactive-r-sessions).
 
 ### Error messages
 
