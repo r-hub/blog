@@ -9,7 +9,7 @@ tags:
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: a7d02108f8251f98
+rmd_hash: 001e359f687da9b5
 
 ---
 
@@ -59,8 +59,19 @@ Then, you can use classes in messages. Classes, like classes in CSS, help format
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>thing</span> <span class='o'>&lt;-</span> <span class='s'>"a string"</span></span>
-<span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/cli_li.html'>cli_li</a></span><span class='o'>(</span><span class='s'>"Hey you provided this text: &#123;.var &#123;thing&#125;&#125;!"</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt; • Hey you provided this text: `a string`!</span></span>
+<span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/cli_li.html'>cli_li</a></span><span class='o'>(</span><span class='s'>"Hey you provided this text: &#123;thing&#125; (&#123;.var thing&#125;)!"</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; • Hey you provided this text: a string (`thing`)!</span></span>
+<span></span></code></pre>
+
+</div>
+
+Curly braces can be nested if you are using a class and glue-like syntax at the same time:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>variable_name</span> <span class='o'>&lt;-</span> <span class='s'>"blop"</span></span>
+<span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/cli_li.html'>cli_li</a></span><span class='o'>(</span><span class='s'>"Hey you entered &#123;.var &#123;variable_name&#125;&#125;!"</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; • Hey you entered `blop`!</span></span>
 <span></span></code></pre>
 
 </div>
@@ -106,10 +117,10 @@ One of the things the `usethis::` function do so well, it be very verbose of tha
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>pkg_dir</span> <span class='o'>&lt;-</span> <span class='nf'>withr</span><span class='nf'>::</span><span class='nf'><a href='https://withr.r-lib.org/reference/with_tempfile.html'>local_tempdir</a></span><span class='o'>(</span><span class='o'>)</span></span>
 <span><span class='nf'>usethis</span><span class='nf'>::</span><span class='nf'><a href='https://usethis.r-lib.org/reference/create_package.html'>create_package</a></span><span class='o'>(</span><span class='nv'>pkg_dir</span>, open <span class='o'>=</span> <span class='kc'>FALSE</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'/tmp/RtmpF9haAy/file8494289fa8fb'</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'/tmp/RtmpKkOnw9/file860e24c8c63c'</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Creating <span style='color: #0000BB;'>'R/'</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Writing <span style='color: #0000BB;'>'DESCRIPTION'</span></span></span>
-<span></span><span><span class='c'>#&gt; <span style='color: #0000BB;'>Package</span>: file8494289fa8fb</span></span>
+<span></span><span><span class='c'>#&gt; <span style='color: #0000BB;'>Package</span>: file860e24c8c63c</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Title</span>: What the Package Does (One Line, Title Case)</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Version</span>: 0.0.0.9000</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Authors@R</span> (parsed):</span></span>

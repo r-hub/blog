@@ -95,7 +95,14 @@ For instance if `thing` is a variable, we write:
 
 ```{r}
 thing <- "a string"
-cli::cli_li("Hey you provided this text: {.var {thing}}!")
+cli::cli_li("Hey you provided this text: {thing} ({.var thing})!")
+```
+
+Curly braces can be nested if you are using a class and glue-like syntax at the same time:
+
+```{r}
+variable_name <- "blop"
+cli::cli_li("Hey you entered {.var {variable_name}}!")
 ```
 
 See the [full list of classes](https://cli.r-lib.org/reference/inline-markup.html#classes) in cli docs.
