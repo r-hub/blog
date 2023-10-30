@@ -9,7 +9,7 @@ tags:
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: 32dba468344edf4d
+rmd_hash: a7d02108f8251f98
 
 ---
 
@@ -37,7 +37,7 @@ cli is part of the [tidyverse capsule wardrobe](https://github.com/r-lib/usethis
 
 ### What if you were making pretty interfaces with usethis?
 
-Is your package using `usethis::ui_` functions? If you have time for a bit of upkeep, you can do the switch from that to cli by reading and following the [cli article on the topic](https://cli.r-lib.org/articles/usethis-ui.html). Do not discover this article *well after* starting a transition, cough (that's what happened to Maëlle).
+Is your package using `usethis::ui_` functions? If you have time for a bit of [upkeep](https://www.tidyverse.org/blog/2023/06/spring-cleaning-2023/), you can do the switch from that to cli by reading and following the [cli article on the topic](https://cli.r-lib.org/articles/usethis-ui.html). Do not discover this article *well after* starting a transition, cough (that's what happened to Maëlle).
 
 ## cli formatting: all the curly braces
 
@@ -106,10 +106,10 @@ One of the things the `usethis::` function do so well, it be very verbose of tha
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>pkg_dir</span> <span class='o'>&lt;-</span> <span class='nf'>withr</span><span class='nf'>::</span><span class='nf'><a href='https://withr.r-lib.org/reference/with_tempfile.html'>local_tempdir</a></span><span class='o'>(</span><span class='o'>)</span></span>
 <span><span class='nf'>usethis</span><span class='nf'>::</span><span class='nf'><a href='https://usethis.r-lib.org/reference/create_package.html'>create_package</a></span><span class='o'>(</span><span class='nv'>pkg_dir</span>, open <span class='o'>=</span> <span class='kc'>FALSE</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'/tmp/Rtmpl9qfEN/file82d553f18e15'</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'/tmp/RtmpF9haAy/file8494289fa8fb'</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Creating <span style='color: #0000BB;'>'R/'</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Writing <span style='color: #0000BB;'>'DESCRIPTION'</span></span></span>
-<span></span><span><span class='c'>#&gt; <span style='color: #0000BB;'>Package</span>: file82d553f18e15</span></span>
+<span></span><span><span class='c'>#&gt; <span style='color: #0000BB;'>Package</span>: file8494289fa8fb</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Title</span>: What the Package Does (One Line, Title Case)</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Version</span>: 0.0.0.9000</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Authors@R</span> (parsed):</span></span>

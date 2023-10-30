@@ -74,7 +74,7 @@ cli is part of the [tidyverse capsule wardrobe](https://github.com/r-lib/usethis
 ### What if you were making pretty interfaces with usethis?
 
 Is your package using `usethis::ui_` functions?
-If you have time for a bit of upkeep, you can do the switch from that to cli by reading and following the [cli article on the topic](https://cli.r-lib.org/articles/usethis-ui.html).
+If you have time for a bit of [upkeep](https://www.tidyverse.org/blog/2023/06/spring-cleaning-2023/), you can do the switch from that to cli by reading and following the [cli article on the topic](https://cli.r-lib.org/articles/usethis-ui.html).
 Do not discover this article *well after* starting a transition, cough (that's what happened to Maëlle).
 
 ## cli formatting: all the curly braces
