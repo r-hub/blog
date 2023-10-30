@@ -141,19 +141,9 @@ cli respects the [nocolor standard](https://cli.r-lib.org/articles/cli-config-us
 
 One of the things the `usethis::` function do so well, it be very verbose of that they are doing.
 
-```{r eval=FALSE}
-usethis::create_package("mypackage", open = FALSE)
-```
-
-``` r
-#> ✔ Creating 'mypackage'
-#> ✔ Setting active project to 'mypackage'
-#> ✔ Creating 'R/'
-#> ✔ Writing 'DESCRIPTION'
-#> ✔ Writing 'NAMESPACE'
-#> ✔ Writing 'mypackage.Rproj'
-#> ✔ Adding '.Rproj.user' to '.gitignore'
-#> ✔ Adding '^mypackage\\.Rproj$', '^\\.Rproj\\.user$' to '.Rbuildignore'
+```{r eval=TRUE}
+pkg_dir <- withr::local_tempdir()
+usethis::create_package(pkg_dir, open = FALSE)
 ```
 
 This is great information so the user can build an understanding of what a function they ran actually does.
@@ -177,7 +167,7 @@ Note that using this function necessitates your package importing rlang.
 A neat thing about this (and companions `cli::cli_alert()` and `cli::cli_warn()`), is that you can construct very complex messages through syntax seen throughout the cli package.
 For instance, providing a vector of text will create multi-line messages, and giving the elements specific names can turn them into list types.
 
-```{r eval=FALSE}
+```{r error=TRUE}
 cli::cli_abort(
   c(
     "This is a complex error message.",
@@ -187,16 +177,6 @@ cli::cli_abort(
     "To learn more about these see the {.url www.online.docs}"
   )
 )
-```
-
-``` r
-Error:
-! This is a complex error message.
-The input is missing important things:
-• important thing 1
-• important thing2
-To learn more about these see the <www.online.docs>
-Run `rlang::last_trace()` to see where the error occurred.
 ```
 
 ## How to make cli quiet or not

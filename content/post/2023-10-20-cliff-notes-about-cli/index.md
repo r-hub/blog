@@ -9,7 +9,7 @@ tags:
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: ec86c8ad885215e3
+rmd_hash: 32dba468344edf4d
 
 ---
 
@@ -104,20 +104,26 @@ One of the things the `usethis::` function do so well, it be very verbose of tha
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'>usethis</span><span class='nf'>::</span><span class='nf'><a href='https://usethis.r-lib.org/reference/create_package.html'>create_package</a></span><span class='o'>(</span><span class='s'>"mypackage"</span>, open <span class='o'>=</span> <span class='kc'>FALSE</span><span class='o'>)</span></span></code></pre>
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>pkg_dir</span> <span class='o'>&lt;-</span> <span class='nf'>withr</span><span class='nf'>::</span><span class='nf'><a href='https://withr.r-lib.org/reference/with_tempfile.html'>local_tempdir</a></span><span class='o'>(</span><span class='o'>)</span></span>
+<span><span class='nf'>usethis</span><span class='nf'>::</span><span class='nf'><a href='https://usethis.r-lib.org/reference/create_package.html'>create_package</a></span><span class='o'>(</span><span class='nv'>pkg_dir</span>, open <span class='o'>=</span> <span class='kc'>FALSE</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'/tmp/Rtmpl9qfEN/file82d553f18e15'</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Creating <span style='color: #0000BB;'>'R/'</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Writing <span style='color: #0000BB;'>'DESCRIPTION'</span></span></span>
+<span></span><span><span class='c'>#&gt; <span style='color: #0000BB;'>Package</span>: file82d553f18e15</span></span>
+<span><span class='c'>#&gt; <span style='color: #0000BB;'>Title</span>: What the Package Does (One Line, Title Case)</span></span>
+<span><span class='c'>#&gt; <span style='color: #0000BB;'>Version</span>: 0.0.0.9000</span></span>
+<span><span class='c'>#&gt; <span style='color: #0000BB;'>Authors@R</span> (parsed):</span></span>
+<span><span class='c'>#&gt;     * Maëlle Salmon &lt;msmaellesalmon@gmail.com&gt; [cre, aut] (&lt;https://orcid.org/0000-0002-2815-0399&gt;)</span></span>
+<span><span class='c'>#&gt; <span style='color: #0000BB;'>Description</span>: What the package does (one paragraph).</span></span>
+<span><span class='c'>#&gt; <span style='color: #0000BB;'>License</span>: MIT + file LICENSE</span></span>
+<span><span class='c'>#&gt; <span style='color: #0000BB;'>Encoding</span>: UTF-8</span></span>
+<span><span class='c'>#&gt; <span style='color: #0000BB;'>Roxygen</span>: list(markdown = TRUE)</span></span>
+<span><span class='c'>#&gt; <span style='color: #0000BB;'>RoxygenNote</span>: 7.2.3</span></span>
+<span></span><span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Writing <span style='color: #0000BB;'>'NAMESPACE'</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'&lt;no active project&gt;'</span></span></span>
+<span></span></code></pre>
 
 </div>
-
-``` r
-#> ✔ Creating 'mypackage'
-#> ✔ Setting active project to 'mypackage'
-#> ✔ Creating 'R/'
-#> ✔ Writing 'DESCRIPTION'
-#> ✔ Writing 'NAMESPACE'
-#> ✔ Writing 'mypackage.Rproj'
-#> ✔ Adding '.Rproj.user' to '.gitignore'
-#> ✔ Adding '^mypackage\\.Rproj$', '^\\.Rproj\\.user$' to '.Rbuildignore'
-```
 
 This is great information so the user can build an understanding of what a function they ran actually does. This is particularly important for functions that do something with a users settings or file system in some persistent way, as it makes it possible to back-track what has been done and alter it at need. See the the [tidy design guide](https://design.tidyverse.org/spooky-action.html?q=cli#advertise-the-side-effects) for more information on this subject.
 
@@ -143,19 +149,16 @@ You can use [`cli::cli_abort()`](https://cli.r-lib.org/reference/cli_abort.html)
 <span>    <span class='s'>"*"</span> <span class='o'>=</span> <span class='s'>"important thing 2"</span>, <span class='c'># bullet point</span></span>
 <span>    <span class='s'>"To learn more about these see the &#123;.url www.online.docs&#125;"</span></span>
 <span>  <span class='o'>)</span></span>
-<span><span class='o'>)</span></span></code></pre>
+<span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; <span style='color: #BBBB00; font-weight: bold;'>Error</span><span style='font-weight: bold;'>:</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #BBBB00;'>!</span> This is a complex error message.</span></span>
+<span><span class='c'>#&gt; The input is missing important things:</span></span>
+<span><span class='c'>#&gt; <span style='color: #00BBBB;'>•</span> important thing 1</span></span>
+<span><span class='c'>#&gt; <span style='color: #00BBBB;'>•</span> important thing 2</span></span>
+<span><span class='c'>#&gt; To learn more about these see the <span style='color: #0000BB; font-style: italic;'>&lt;www.online.docs&gt;</span></span></span>
+<span></span></code></pre>
 
 </div>
-
-``` r
-Error:
-! This is a complex error message.
-The input is missing important things:
-• important thing 1
-• important thing2
-To learn more about these see the <www.online.docs>
-Run [`rlang::last_trace()`](https://rlang.r-lib.org/reference/last_error.html) to see where the error occurred.
-```
 
 ## How to make cli quiet or not
 
