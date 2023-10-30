@@ -9,7 +9,7 @@ tags:
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: 7d3d112de8bcb874
+rmd_hash: ec86c8ad885215e3
 
 ---
 
@@ -17,7 +17,9 @@ We've both coincidentally dipped our toes in the wonderful world of pretty messa
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/cli_li.html'>cli_li</a></span><span class='o'>(</span><span class='s'>"marvellous package adopted!"</span><span class='o'>)</span></span></code></pre>
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/cli_alert.html'>cli_alert_success</a></span><span class='o'>(</span><span class='s'>"marvellous package adopted!"</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> marvellous package adopted!</span></span>
+<span></span></code></pre>
 
 </div>
 
