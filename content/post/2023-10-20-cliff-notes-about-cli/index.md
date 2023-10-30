@@ -9,7 +9,7 @@ tags:
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: 7b194483295e83c9
+rmd_hash: f6391357963f2b0b
 
 ---
 
@@ -111,16 +111,16 @@ cli respects the [nocolor standard](https://cli.r-lib.org/articles/cli-config-us
 
 ### Advertise side effects
 
-One of the things the `usethis::` function do so well, it be very verbose of that they are doing.
+One of the things the `usethis::` functions do so well, it be very verbose of that they are doing.
 
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>pkg_dir</span> <span class='o'>&lt;-</span> <span class='nf'>withr</span><span class='nf'>::</span><span class='nf'><a href='https://withr.r-lib.org/reference/with_tempfile.html'>local_tempdir</a></span><span class='o'>(</span><span class='o'>)</span></span>
 <span><span class='nf'>usethis</span><span class='nf'>::</span><span class='nf'><a href='https://usethis.r-lib.org/reference/create_package.html'>create_package</a></span><span class='o'>(</span><span class='nv'>pkg_dir</span>, open <span class='o'>=</span> <span class='kc'>FALSE</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'/tmp/RtmpAhxSDP/file87894c3656da'</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'/tmp/Rtmp98bhYL/file88ab3fdc3c5b'</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Creating <span style='color: #0000BB;'>'R/'</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Writing <span style='color: #0000BB;'>'DESCRIPTION'</span></span></span>
-<span></span><span><span class='c'>#&gt; <span style='color: #0000BB;'>Package</span>: file87894c3656da</span></span>
+<span></span><span><span class='c'>#&gt; <span style='color: #0000BB;'>Package</span>: file88ab3fdc3c5b</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Title</span>: What the Package Does (One Line, Title Case)</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Version</span>: 0.0.0.9000</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Authors@R</span> (parsed):</span></span>

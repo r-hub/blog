@@ -146,7 +146,7 @@ cli respects the [nocolor standard](https://cli.r-lib.org/articles/cli-config-us
 
 ### Advertise side effects
 
-One of the things the `usethis::` function do so well, it be very verbose of that they are doing.
+One of the things the `usethis::` functions do so well, it be very verbose of that they are doing.
 
 ```{r eval=TRUE}
 pkg_dir <- withr::local_tempdir()
