@@ -50,6 +50,7 @@ So don't hesitate to open an R console to see it for yourself.
 You can view cli as a domain-specific language (DSL) for command-line interfaces (CLI): Just like tidyverse makes your data pipelines easier to construct and more readable, cli makes your communication producing code simpler to write!
 
 cli, well its author Gábor Csárdi, deals with pesky details and we package developers only need to use the high-level interface.
+Mo has previously got lost in the rabbit hole of making prettier outputs, and thinks noone else should ever have to do that!
 As an example, text is automatically wrapped to the terminal width!
 
 cli is truly feature-rich, for instance allowing you to make URLs in messages clickable and code in messages runnable at a click!
@@ -88,7 +89,7 @@ To mention only a few of them (you might notice clickability is a star here...if
 
 -   `.run` means that the code in the message will be clickable! Best code hints ever!
 -   `.help` will have a clickable link to a help topic.
--   `.file` will have a clikable link to a file.
+-   `.file` will have a clickable link to a file.
 -   `.obj_type_friendly`, for instance `{.obj_type_friendly {mtcars}}`, prints an object in, well, a friendly way (thanks to Jon Harmon for reminding us about this one).
 
 It's well worth going through the list of classes at least once.
@@ -99,16 +100,22 @@ If you want to actually communicate something with curly braces, you'll need to 
 
 ### What about plural?
 
-cli has support for [pluralization](https://cli.r-lib.org/reference/pluralization.html) (presumedly only for 0/1/more than one, not for more complex forms of pluralization).
+cli has support for [pluralization](https://cli.r-lib.org/reference/pluralization.html) (presumably only for 0/1/more than one, not for more complex forms of pluralization).
 
 ### How to add a custom class / theme
 
-How to define a custom class or theme seems to be a bit underdocumented at the moment, which is unsurprising as it's an advanced topic.
+How to define a custom class or theme seems to be a bit under-documented at the moment, which is unsurprising as it's an advanced topic.
 Jenny Bryan [assumes](https://mastodon.social/@jennybryan@fosstodon.org/110675320334403080) adding a custom class needs to happen as part of a theme, which she does in [googlesheets4](https://github.com/tidyverse/googlesheets4/blob/fdb187643b324cd607f71cefa133bf49924f6e49/R/utils-ui.R#L1-L16).
 Michael McCarthy [recommends](https://mastodon.social/@mccarthymg@fosstodon.org/110673498809652527) looking at what cli itself does.
 
+### What about dark themes?
+
+Together, we cover both sides of having dark (Mo) and light (Maëlle) themes in RStudio.
+It would be easy to assume that this all would not work well on dark theme, but Mo can tell you that it all works seamlessly.
+The output colors change to be dark friendly!
+For that reason, user-overrides of colors can be a tricky thing, as you are no longer relying on the excellent tooling of cli to make sure this works in both light and dark mode.
+
 Open questions remain: How to let an user override it with their own?
-What about dark themes?
 
 ### How to turn off colors
 
@@ -118,7 +125,26 @@ cli respects the [nocolor standard](https://cli.r-lib.org/articles/cli-config-us
 
 ### Advertise side effects
 
-See the the [tidy design guide](https://design.tidyverse.org/spooky-action.html?q=cli#advertise-the-side-effects).
+One of the things the `usethis::` function do so well, it be very verbose of that they are doing.
+
+```{r eval=FALSE}
+usethis::create_package("mypackage", open = FALSE)
+```
+
+``` r
+#> ✔ Creating 'mypackage'
+#> ✔ Setting active project to 'mypackage'
+#> ✔ Creating 'R/'
+#> ✔ Writing 'DESCRIPTION'
+#> ✔ Writing 'NAMESPACE'
+#> ✔ Writing 'mypackage.Rproj'
+#> ✔ Adding '.Rproj.user' to '.gitignore'
+#> ✔ Adding '^mypackage\\.Rproj$', '^\\.Rproj\\.user$' to '.Rbuildignore'
+```
+
+This is great information so the user can build an understanding of what a function they ran actually does.
+This is particularly important for functions that do something with a users settings or file system in some persistent way, as it makes it possible to back-track what has been done and alter it at need.
+See the the [tidy design guide](https://design.tidyverse.org/spooky-action.html?q=cli#advertise-the-side-effects) for more information on this subject.
 
 ### Progress
 
@@ -127,18 +153,43 @@ Not only does cli support progress bars, it [documents how to create them in two
 
 #### How does it look in logfiles?
 
-The cli output in non-interactive sessions is discussed in the [article about advanced progress bar topics](https://cli.r-lib.org/articles/progress-advanced.html#non-interactive-r-sessions)
+It's likely not what you are after for a logfile, as each new update will create another line.
+The cli output in non-interactive sessions or to file is discussed in the [article about advanced progress bar topics](https://cli.r-lib.org/articles/progress-advanced.html#non-interactive-r-sessions)
 
 ### Error messages
 
 You can use `cli::cli_abort()` instead of `stop()` for errors, as recommended by the [tidyverse style guide](https://style.tidyverse.org/error-messages.html).
-Notes that using this function necessitates your package importing rlang.
+Note that using this function necessitates your package importing rlang.
+A neat thing about this (and companions `cli::cli_alert()` and `cli::cli_warn()`), is that you can construct very complex messages through syntax seen throughout the cli package.
+For instance, providing a vector of text will create multi-line messages, and giving the elements specific names can turn them into list types.
+
+```{r eval=FALSE}
+cli::cli_abort(
+  c(
+    "This is a complex error message.",
+    "The input is missing important things:",
+    "*" = "important thing 1", # bullet point
+    "*" = "important thing 2", # bullet point
+    "To learn more about these see the {.url www.online.docs}"
+  )
+)
+```
+
+``` r
+Error:
+! This is a complex error message.
+The input is missing important things:
+• important thing 1
+• important thing2
+To learn more about these see the <www.online.docs>
+Run `rlang::last_trace()` to see where the error occurred.
+```
 
 ## How to make cli quiet or not
 
 You can choose to silence/shush/muffle cli messages!
 
-For cli functions whose name starts with `ci_`, see the [docs](https://cli.r-lib.org/articles/semantic-cli.html#cli-messages).
+For cli functions whose name starts with `cli_`, see the [docs](https://cli.r-lib.org/articles/semantic-cli.html#cli-messages).
 
 Let's try an example.
 

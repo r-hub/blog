@@ -9,7 +9,7 @@ tags:
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: be04f8c4c688542b
+rmd_hash: f4fd9a6c0fec9d62
 
 ---
 
@@ -29,7 +29,7 @@ Note that blogging about an interface-building tool is a bit lame because the ou
 
 You can view cli as a domain-specific language (DSL) for command-line interfaces (CLI): Just like tidyverse makes your data pipelines easier to construct and more readable, cli makes your communication producing code simpler to write!
 
-cli, well its author Gábor Csárdi, deals with pesky details and we package developers only need to use the high-level interface. As an example, text is automatically wrapped to the terminal width!
+cli, well its author Gábor Csárdi, deals with pesky details and we package developers only need to use the high-level interface. Mo has previously got lost in the rabbit hole of making prettier outputs, and thinks noone else should ever have to do that! As an example, text is automatically wrapped to the terminal width!
 
 cli is truly feature-rich, for instance allowing you to make URLs in messages clickable and code in messages runnable at a click!
 
@@ -69,7 +69,7 @@ See the [full list of classes](https://cli.r-lib.org/reference/inline-markup.htm
 
 -   `.run` means that the code in the message will be clickable! Best code hints ever!
 -   `.help` will have a clickable link to a help topic.
--   `.file` will have a clikable link to a file.
+-   `.file` will have a clickable link to a file.
 -   `.obj_type_friendly`, for instance `{.obj_type_friendly {mtcars}}`, prints an object in, well, a friendly way (thanks to Jon Harmon for reminding us about this one).
 
 It's well worth going through the list of classes at least once.
@@ -80,13 +80,17 @@ If you want to actually communicate something with curly braces, you'll need to 
 
 ### What about plural?
 
-cli has support for [pluralization](https://cli.r-lib.org/reference/pluralization.html) (presumedly only for 0/1/more than one, not for more complex forms of pluralization).
+cli has support for [pluralization](https://cli.r-lib.org/reference/pluralization.html) (presumably only for 0/1/more than one, not for more complex forms of pluralization).
 
 ### How to add a custom class / theme
 
-How to define a custom class or theme seems to be a bit underdocumented at the moment, which is unsurprising as it's an advanced topic. Jenny Bryan [assumes](https://mastodon.social/@jennybryan@fosstodon.org/110675320334403080) adding a custom class needs to happen as part of a theme, which she does in [googlesheets4](https://github.com/tidyverse/googlesheets4/blob/fdb187643b324cd607f71cefa133bf49924f6e49/R/utils-ui.R#L1-L16). Michael McCarthy [recommends](https://mastodon.social/@mccarthymg@fosstodon.org/110673498809652527) looking at what cli itself does.
+How to define a custom class or theme seems to be a bit under-documented at the moment, which is unsurprising as it's an advanced topic. Jenny Bryan [assumes](https://mastodon.social/@jennybryan@fosstodon.org/110675320334403080) adding a custom class needs to happen as part of a theme, which she does in [googlesheets4](https://github.com/tidyverse/googlesheets4/blob/fdb187643b324cd607f71cefa133bf49924f6e49/R/utils-ui.R#L1-L16). Michael McCarthy [recommends](https://mastodon.social/@mccarthymg@fosstodon.org/110673498809652527) looking at what cli itself does.
 
-Open questions remain: How to let an user override it with their own? What about dark themes?
+### What about dark themes?
+
+Together, we cover both sides of having dark (Mo) and light (Maëlle) themes in RStudio. It would be easy to assume that this all would not work well on dark theme, but Mo can tell you that it all works seamlessly. The output colors change to be dark friendly! For that reason, user-overrides of colors can be a tricky thing, as you are no longer relying on the excellent tooling of cli to make sure this works in both light and dark mode.
+
+Open questions remain: How to let an user override it with their own?
 
 ### How to turn off colors
 
@@ -96,7 +100,26 @@ cli respects the [nocolor standard](https://cli.r-lib.org/articles/cli-config-us
 
 ### Advertise side effects
 
-See the the [tidy design guide](https://design.tidyverse.org/spooky-action.html?q=cli#advertise-the-side-effects).
+One of the things the `usethis::` function do so well, it be very verbose of that they are doing.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'>usethis</span><span class='nf'>::</span><span class='nf'><a href='https://usethis.r-lib.org/reference/create_package.html'>create_package</a></span><span class='o'>(</span><span class='s'>"mypackage"</span>, open <span class='o'>=</span> <span class='kc'>FALSE</span><span class='o'>)</span></span></code></pre>
+
+</div>
+
+``` r
+#> ✔ Creating 'mypackage'
+#> ✔ Setting active project to 'mypackage'
+#> ✔ Creating 'R/'
+#> ✔ Writing 'DESCRIPTION'
+#> ✔ Writing 'NAMESPACE'
+#> ✔ Writing 'mypackage.Rproj'
+#> ✔ Adding '.Rproj.user' to '.gitignore'
+#> ✔ Adding '^mypackage\\.Rproj$', '^\\.Rproj\\.user$' to '.Rbuildignore'
+```
+
+This is great information so the user can build an understanding of what a function they ran actually does. This is particularly important for functions that do something with a users settings or file system in some persistent way, as it makes it possible to back-track what has been done and alter it at need. See the the [tidy design guide](https://design.tidyverse.org/spooky-action.html?q=cli#advertise-the-side-effects) for more information on this subject.
 
 ### Progress
 
@@ -104,17 +127,41 @@ As seen when installing packages with [pak](https://pak.r-lib.org/)! Not only do
 
 #### How does it look in logfiles?
 
-The cli output in non-interactive sessions is discussed in the [article about advanced progress bar topics](https://cli.r-lib.org/articles/progress-advanced.html#non-interactive-r-sessions)
+It's likely not what you are after for a logfile, as each new update will create another line. The cli output in non-interactive sessions or to file is discussed in the [article about advanced progress bar topics](https://cli.r-lib.org/articles/progress-advanced.html#non-interactive-r-sessions)
 
 ### Error messages
 
-You can use [`cli::cli_abort()`](https://cli.r-lib.org/reference/cli_abort.html) instead of [`stop()`](https://rdrr.io/r/base/stop.html) for errors, as recommended by the [tidyverse style guide](https://style.tidyverse.org/error-messages.html). Notes that using this function necessitates your package importing rlang.
+You can use [`cli::cli_abort()`](https://cli.r-lib.org/reference/cli_abort.html) instead of [`stop()`](https://rdrr.io/r/base/stop.html) for errors, as recommended by the [tidyverse style guide](https://style.tidyverse.org/error-messages.html). Note that using this function necessitates your package importing rlang. A neat thing about this (and companions [`cli::cli_alert()`](https://cli.r-lib.org/reference/cli_alert.html) and [`cli::cli_warn()`](https://cli.r-lib.org/reference/cli_abort.html)), is that you can construct very complex messages through syntax seen throughout the cli package. For instance, providing a vector of text will create multi-line messages, and giving the elements specific names can turn them into list types.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/cli_abort.html'>cli_abort</a></span><span class='o'>(</span></span>
+<span>  <span class='nf'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='o'>(</span></span>
+<span>    <span class='s'>"This is a complex error message."</span>,</span>
+<span>    <span class='s'>"The input is missing important things:"</span>,</span>
+<span>    <span class='s'>"*"</span> <span class='o'>=</span> <span class='s'>"important thing 1"</span>, <span class='c'># bullet point</span></span>
+<span>    <span class='s'>"*"</span> <span class='o'>=</span> <span class='s'>"important thing 2"</span>, <span class='c'># bullet point</span></span>
+<span>    <span class='s'>"To learn more about these see the &#123;.url www.online.docs&#125;"</span></span>
+<span>  <span class='o'>)</span></span>
+<span><span class='o'>)</span></span></code></pre>
+
+</div>
+
+``` r
+Error:
+! This is a complex error message.
+The input is missing important things:
+• important thing 1
+• important thing2
+To learn more about these see the <www.online.docs>
+Run [`rlang::last_trace()`](https://rlang.r-lib.org/reference/last_error.html) to see where the error occurred.
+```
 
 ## How to make cli quiet or not
 
 You can choose to silence/shush/muffle cli messages!
 
-For cli functions whose name starts with `ci_`, see the [docs](https://cli.r-lib.org/articles/semantic-cli.html#cli-messages).
+For cli functions whose name starts with `cli_`, see the [docs](https://cli.r-lib.org/articles/semantic-cli.html#cli-messages).
 
 Let's try an example.
 
