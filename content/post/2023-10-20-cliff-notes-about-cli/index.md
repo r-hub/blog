@@ -9,7 +9,7 @@ tags:
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: 001e359f687da9b5
+rmd_hash: 7b194483295e83c9
 
 ---
 
@@ -91,7 +91,7 @@ If you want to actually communicate something with curly braces, you'll need to 
 
 ### What about plural?
 
-cli has support for [pluralization](https://cli.r-lib.org/reference/pluralization.html) (presumably only for 0/1/more than one, not for more complex forms of pluralization).
+cli has support for [pluralization](https://cli.r-lib.org/reference/pluralization.html) (presumably only for 0/1/more than one, not for [more complex forms of pluralization](https://michaelchirico.github.io/potools/articles/translators.html#plurals)).
 
 ### How to add a custom class / theme
 
@@ -117,10 +117,10 @@ One of the things the `usethis::` function do so well, it be very verbose of tha
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>pkg_dir</span> <span class='o'>&lt;-</span> <span class='nf'>withr</span><span class='nf'>::</span><span class='nf'><a href='https://withr.r-lib.org/reference/with_tempfile.html'>local_tempdir</a></span><span class='o'>(</span><span class='o'>)</span></span>
 <span><span class='nf'>usethis</span><span class='nf'>::</span><span class='nf'><a href='https://usethis.r-lib.org/reference/create_package.html'>create_package</a></span><span class='o'>(</span><span class='nv'>pkg_dir</span>, open <span class='o'>=</span> <span class='kc'>FALSE</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'/tmp/RtmpKkOnw9/file860e24c8c63c'</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'/tmp/RtmpAhxSDP/file87894c3656da'</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Creating <span style='color: #0000BB;'>'R/'</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Writing <span style='color: #0000BB;'>'DESCRIPTION'</span></span></span>
-<span></span><span><span class='c'>#&gt; <span style='color: #0000BB;'>Package</span>: file860e24c8c63c</span></span>
+<span></span><span><span class='c'>#&gt; <span style='color: #0000BB;'>Package</span>: file87894c3656da</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Title</span>: What the Package Does (One Line, Title Case)</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Version</span>: 0.0.0.9000</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Authors@R</span> (parsed):</span></span>

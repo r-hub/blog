@@ -121,7 +121,7 @@ If you want to actually communicate something with curly braces, you'll need to 
 
 ### What about plural?
 
-cli has support for [pluralization](https://cli.r-lib.org/reference/pluralization.html) (presumably only for 0/1/more than one, not for more complex forms of pluralization).
+cli has support for [pluralization](https://cli.r-lib.org/reference/pluralization.html) (presumably only for 0/1/more than one, not for [more complex forms of pluralization](https://michaelchirico.github.io/potools/articles/translators.html#plurals)).
 
 ### How to add a custom class / theme
 
