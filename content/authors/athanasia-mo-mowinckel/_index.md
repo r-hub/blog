@@ -1,5 +1,6 @@
 ---
 name: Athanasia Mo Mowinckel
+img: https://github.com/drmowinckels.png
 social:
 - service: Home
   link: https://drmowinckels.io/
