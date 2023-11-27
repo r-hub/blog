@@ -4,7 +4,7 @@ title: "Cliff notes about the cli package"
 authors: 
 - Maëlle Salmon
 - Athanasia Mo Mowinckel
-date: "2023-10-20" 
+date: "2023-11-27" 
 tags: 
 - package development
 - code style
@@ -136,7 +136,13 @@ It would be easy to assume that this all would not work well on dark theme, but 
 The output colors change to be dark friendly!
 For that reason, user-overrides of colors can be a tricky thing, as you are no longer relying on the excellent tooling of cli to make sure this works in both light and dark mode.
 
-Open questions remain: How to let an user override it with their own?
+An user can define their own themes, for instance putting this in their profile to make variables underlined:
+
+```{r, eval=FALSE}
+options(cli.user_theme = list(.var = list("text-decoration" = "underline")))
+cli::start_app() # not needed if the previous line is in the profile
+cli::cli_text("Don't call a variable {.var variable}!")
+```
 
 ### How to turn off colors
 

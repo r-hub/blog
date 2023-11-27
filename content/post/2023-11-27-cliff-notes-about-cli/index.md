@@ -4,12 +4,12 @@ title: "Cliff notes about the cli package"
 authors: 
 - Maëlle Salmon
 - Athanasia Mo Mowinckel
-date: "2023-10-20" 
+date: "2023-11-27" 
 tags: 
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: 56a0b1471f5b42bc
+rmd_hash: 4edbe4b851d11533
 
 ---
 
@@ -29,7 +29,7 @@ In this post, we transform the hurdles we encountered in a series of tips so tha
 
 You can view cli as a domain-specific language (DSL) for command-line interfaces (CLI): Just like tidyverse makes your data pipelines easier to construct and more readable, cli makes your communication producing code simpler to write!
 
-cli, well its author Gábor Csárdi, deals with pesky details and we package developers only need to use the high-level interface. Mo has previously got lost in the rabbit hole of making prettier outputs, and thinks noone else should ever have to do that! As an example, text is automatically wrapped to the terminal width!
+cli deals with pesky details and we package developers only need to use the high-level interface. Mo has previously got lost in the rabbit hole of making prettier outputs, and thinks noone else should ever have to do that! As an example, text is automatically wrapped to the terminal width!
 
 cli is truly feature-rich, for instance allowing you to make URLs in messages clickable and code in messages runnable at a click!
 
@@ -101,7 +101,15 @@ How to define a custom class or theme seems to be a bit under-documented at the 
 
 Together, we cover both sides of having dark (Mo) and light (Maëlle) themes in RStudio. It would be easy to assume that this all would not work well on dark theme, but Mo can tell you that it all works seamlessly. The output colors change to be dark friendly! For that reason, user-overrides of colors can be a tricky thing, as you are no longer relying on the excellent tooling of cli to make sure this works in both light and dark mode.
 
-Open questions remain: How to let an user override it with their own?
+An user can define their own themes, for instance putting this in their profile to make variables underlined:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='o'>(</span>cli.user_theme <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span>.var <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='s'>"text-decoration"</span> <span class='o'>=</span> <span class='s'>"underline"</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>
+<span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/start_app.html'>start_app</a></span><span class='o'>(</span><span class='o'>)</span> <span class='c'># not needed if the previous line is in the profile</span></span>
+<span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/cli_text.html'>cli_text</a></span><span class='o'>(</span><span class='s'>"Don't call a variable &#123;.var variable&#125;!"</span><span class='o'>)</span></span></code></pre>
+
+</div>
 
 ### How to turn off colors
 
@@ -117,10 +125,10 @@ One of the things the `usethis::` functions do so well, it be very verbose of th
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>pkg_dir</span> <span class='o'>&lt;-</span> <span class='nf'>withr</span><span class='nf'>::</span><span class='nf'><a href='https://withr.r-lib.org/reference/with_tempfile.html'>local_tempdir</a></span><span class='o'>(</span><span class='o'>)</span></span>
 <span><span class='nf'>usethis</span><span class='nf'>::</span><span class='nf'><a href='https://usethis.r-lib.org/reference/create_package.html'>create_package</a></span><span class='o'>(</span><span class='nv'>pkg_dir</span>, open <span class='o'>=</span> <span class='kc'>FALSE</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'/tmp/RtmpfSxfDC/file89bf4830ea9f'</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'/tmp/RtmpNGX8fa/file137c35042b51c'</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Creating <span style='color: #0000BB;'>'R/'</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Writing <span style='color: #0000BB;'>'DESCRIPTION'</span></span></span>
-<span></span><span><span class='c'>#&gt; <span style='color: #0000BB;'>Package</span>: file89bf4830ea9f</span></span>
+<span></span><span><span class='c'>#&gt; <span style='color: #0000BB;'>Package</span>: file137c35042b51c</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Title</span>: What the Package Does (One Line, Title Case)</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Version</span>: 0.0.0.9000</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Authors@R</span> (parsed):</span></span>
