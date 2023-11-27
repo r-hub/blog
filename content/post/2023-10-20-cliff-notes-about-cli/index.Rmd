@@ -63,7 +63,7 @@ In this post, we transform the hurdles we encountered in a series of tips so tha
 
 You can view cli as a domain-specific language (DSL) for command-line interfaces (CLI): Just like tidyverse makes your data pipelines easier to construct and more readable, cli makes your communication producing code simpler to write!
 
-cli, well its author Gábor Csárdi, deals with pesky details and we package developers only need to use the high-level interface.
+cli deals with pesky details and we package developers only need to use the high-level interface.
 Mo has previously got lost in the rabbit hole of making prettier outputs, and thinks noone else should ever have to do that!
 As an example, text is automatically wrapped to the terminal width!
 
