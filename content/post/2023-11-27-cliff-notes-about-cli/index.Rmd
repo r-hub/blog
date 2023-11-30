@@ -111,7 +111,7 @@ To mention only a few of them (you might notice clickability is a star here...if
 -   `.run` means that the code in the message will be clickable! Best code hints ever!
 -   `.help` will have a clickable link to a help topic.
 -   `.file` will have a clickable link to a file.
--   `.obj_type_friendly`, for instance `{.obj_type_friendly {mtcars}}`, prints an object in, well, a friendly way (thanks to Jon Harmon for reminding us about this one).
+-   `.obj_type_friendly`, for instance `{.obj_type_friendly {mtcars}}`, prints the object type in, well, a friendly way (thanks to Jon Harmon for reminding us about this one).
 
 It's well worth going through the list of classes at least once.
 
@@ -139,8 +139,14 @@ For that reason, user-overrides of colors can be a tricky thing, as you are no l
 An user can define their own themes, for instance putting this in their profile to make variables underlined:
 
 ```{r, eval=FALSE}
+# This goes in your .Rprofile 
 options(cli.user_theme = list(.var = list("text-decoration" = "underline")))
-cli::start_app() # not needed if the previous line is in the profile
+
+# not needed if the previous line is in your .Rprofile 
+# we do this here to expose the effect in this post directly
+cli::start_app() 
+
+# Code is underlined!
 cli::cli_text("Don't call a variable {.var variable}!")
 ```
 
