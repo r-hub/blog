@@ -4,12 +4,12 @@ title: "Cliff notes about the cli package"
 authors: 
 - Maëlle Salmon
 - Athanasia Mo Mowinckel
-date: "2023-11-27" 
+date: "2023-11-30" 
 tags: 
 - package development
 - code style
 output: hugodown::hugo_document
-rmd_hash: 4edbe4b851d11533
+rmd_hash: 5d72b92400acf720
 
 ---
 
@@ -81,7 +81,7 @@ See the [full list of classes](https://cli.r-lib.org/reference/inline-markup.htm
 -   `.run` means that the code in the message will be clickable! Best code hints ever!
 -   `.help` will have a clickable link to a help topic.
 -   `.file` will have a clickable link to a file.
--   `.obj_type_friendly`, for instance `{.obj_type_friendly {mtcars}}`, prints an object in, well, a friendly way (thanks to Jon Harmon for reminding us about this one).
+-   `.obj_type_friendly`, for instance `{.obj_type_friendly {mtcars}}`, prints the object type in, well, a friendly way (thanks to Jon Harmon for reminding us about this one).
 
 It's well worth going through the list of classes at least once.
 
@@ -105,8 +105,14 @@ An user can define their own themes, for instance putting this in their profile 
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='o'>(</span>cli.user_theme <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span>.var <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='s'>"text-decoration"</span> <span class='o'>=</span> <span class='s'>"underline"</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>
-<span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/start_app.html'>start_app</a></span><span class='o'>(</span><span class='o'>)</span> <span class='c'># not needed if the previous line is in the profile</span></span>
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'># This goes in your .Rprofile </span></span>
+<span><span class='nf'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='o'>(</span>cli.user_theme <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span>.var <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='o'>(</span><span class='s'>"text-decoration"</span> <span class='o'>=</span> <span class='s'>"underline"</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>
+<span></span>
+<span><span class='c'># not needed if the previous line is in your .Rprofile </span></span>
+<span><span class='c'># we do this here to expose the effect in this post directly</span></span>
+<span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/start_app.html'>start_app</a></span><span class='o'>(</span><span class='o'>)</span> </span>
+<span></span>
+<span><span class='c'># Code is underlined!</span></span>
 <span><span class='nf'>cli</span><span class='nf'>::</span><span class='nf'><a href='https://cli.r-lib.org/reference/cli_text.html'>cli_text</a></span><span class='o'>(</span><span class='s'>"Don't call a variable &#123;.var variable&#125;!"</span><span class='o'>)</span></span></code></pre>
 
 </div>
@@ -125,10 +131,10 @@ One of the things the `usethis::` functions do so well, it be very verbose of th
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>pkg_dir</span> <span class='o'>&lt;-</span> <span class='nf'>withr</span><span class='nf'>::</span><span class='nf'><a href='https://withr.r-lib.org/reference/with_tempfile.html'>local_tempdir</a></span><span class='o'>(</span><span class='o'>)</span></span>
 <span><span class='nf'>usethis</span><span class='nf'>::</span><span class='nf'><a href='https://usethis.r-lib.org/reference/create_package.html'>create_package</a></span><span class='o'>(</span><span class='nv'>pkg_dir</span>, open <span class='o'>=</span> <span class='kc'>FALSE</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'/tmp/RtmpNGX8fa/file137c35042b51c'</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Setting active project to <span style='color: #0000BB;'>'/tmp/RtmpHmpWa5/file40d46f5e4651'</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Creating <span style='color: #0000BB;'>'R/'</span></span></span>
 <span><span class='c'>#&gt; <span style='color: #00BB00;'>✔</span> Writing <span style='color: #0000BB;'>'DESCRIPTION'</span></span></span>
-<span></span><span><span class='c'>#&gt; <span style='color: #0000BB;'>Package</span>: file137c35042b51c</span></span>
+<span></span><span><span class='c'>#&gt; <span style='color: #0000BB;'>Package</span>: file40d46f5e4651</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Title</span>: What the Package Does (One Line, Title Case)</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Version</span>: 0.0.0.9000</span></span>
 <span><span class='c'>#&gt; <span style='color: #0000BB;'>Authors@R</span> (parsed):</span></span>
