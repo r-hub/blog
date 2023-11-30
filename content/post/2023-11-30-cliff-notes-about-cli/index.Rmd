@@ -111,7 +111,7 @@ To mention only a few of them (you might notice clickability is a star here...if
 -   `.run` means that the code in the message will be clickable! Best code hints ever!
 -   `.help` will have a clickable link to a help topic.
 -   `.file` will have a clickable link to a file.
--   `.obj_type_friendly`, for instance `{.obj_type_friendly {mtcars}}`, prints the object type in, well, a friendly way (thanks to Jon Harmon for reminding us about this one).
+-   `.obj_type_friendly`, for instance `{.obj_type_friendly {mtcars}}`, prints the object type in, well, a friendly way (thanks to [Jon Harmon](https://github.com/jonthegeek) for reminding us about this one).
 
 It's well worth going through the list of classes at least once.
 
