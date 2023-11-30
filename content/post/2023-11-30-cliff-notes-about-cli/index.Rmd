@@ -4,7 +4,7 @@ title: "Cliff notes about the cli package"
 authors: 
 - Maëlle Salmon
 - Athanasia Mo Mowinckel
-date: "2023-11-27" 
+date: "2023-11-30" 
 tags: 
 - package development
 - code style
