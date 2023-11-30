@@ -1,0 +1,228 @@
+---
+slug: cliff-notes-about-cli
+title: "Cliff notes about the cli package" 
+authors: 
+- Maëlle Salmon
+- Athanasia Mo Mowinckel
+date: "2023-11-30" 
+tags: 
+- package development
+- code style
+output: hugodown::hugo_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(fig.path = "", comment = "")
+# knitr hook to make images output use Hugo options
+knitr::knit_hooks$set(
+  plot = function(x, options) {
+    hugoopts <- options$hugoopts
+    paste0(
+      "{{<figure src=",
+      '"', x, '" ',
+      if (!is.null(hugoopts)) {
+        glue::glue_collapse(
+          glue::glue('{names(hugoopts)}="{hugoopts}"'),
+          sep = " "
+        )
+      },
+      ">}}\n"
+    )
+  }
+)
+
+```
+
+```{r, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  out.width = "100%",
+  asciicast_theme = "pkgdown"
+)
+Sys.setenv(CLI_TICK_TIME = "100")
+asciicast::init_knitr_engine(
+  startup = quote({
+    library(cli)
+    set.seed(1) }),
+  echo = TRUE,
+  echo_input = FALSE
+)
+```
+
+We've both coincidentally dipped our toes in the wonderful world of pretty messaging with [cli](https://cli.r-lib.org/).
+
+```{r}
+cli::cli_alert_success("marvellous package adopted!")
+```
+
+In this post, we transform the hurdles we encountered in a series of tips so that your own journey might be slightly smoother, and also to encourage you to try out cli in your package!
+
+## cli is the thing for package interfaces now!
+
+You can view cli as a domain-specific language (DSL) for command-line interfaces (CLI): Just like tidyverse makes your data pipelines easier to construct and more readable, cli makes your communication producing code simpler to write.
+
+cli deals with pesky details and we package developers only need to use the high-level interface.
+Mo has previously got lost in the rabbit hole of making prettier outputs, and thinks noone else should ever have to do that!
+As an example, text is automatically wrapped to the terminal width.
+
+cli is truly feature-rich, for instance allowing you to make URLs in messages clickable and code in messages runnable at a click!
+
+cli is part of the [tidyverse capsule wardrobe](https://github.com/r-lib/usethis/pull/1423/files), which shows how important it's becoming, near other important tools such as withr and rlang.
+
+### What if you were making pretty interfaces with usethis?
+
+Is your package using `usethis::ui_` functions?
+If you have time for a bit of [upkeep](https://www.tidyverse.org/blog/2023/06/spring-cleaning-2023/), you can do the switch from that to cli by reading and following the [cli article on the topic](https://cli.r-lib.org/articles/usethis-ui.html).
+Do not discover this article *well after* starting a transition, cough (that's what happened to Maëlle).
+
+## cli formatting: all the curly braces
+
+You'll probably end up calling various cli functions whose names start with `cli_` to create [semantic elements](https://cli.r-lib.org/reference/index.html#semantic-cli-elements): headers, lists, alerts, etc.
+What do they expect as inputs?
+
+cli has a glue-like syntax: if there's an object called say `thing` and you want to use it in a message, you use `{thing}`.
+
+```{r}
+thing <- "a string"
+cli::cli_li("Hey you provided this text: {thing}!")
+```
+
+Then, you can use classes in messages.
+Classes, like classes in CSS, help format the elements.
+For instance if `thing` is a variable, we write:
+
+```{r}
+thing <- "a string"
+cli::cli_li("Hey you provided this text: {thing} ({.var thing})!")
+```
+
+Curly braces can be nested if you are using a class and glue-like syntax at the same time:
+
+```{r}
+variable_name <- "blop"
+cli::cli_li("Hey you entered {.var {variable_name}}!")
+```
+
+See the [full list of classes](https://cli.r-lib.org/reference/inline-markup.html#classes) in cli docs.
+To mention only a few of them (you might notice clickability is a star here...if the terminal supports ANSI hyperlinks to runnable code (for instance, RStudio IDE)):
+
+-   `.run` means that the code in the message will be clickable! Best code hints ever!
+-   `.help` will have a clickable link to a help topic.
+-   `.file` will have a clickable link to a file.
+-   `.obj_type_friendly`, for instance `{.obj_type_friendly {mtcars}}`, prints the object type in, well, a friendly way (thanks to [Jon Harmon](https://github.com/jonthegeek) for reminding us about this one).
+
+It's well worth going through the list of classes at least once.
+
+### What if my string contains curly braces?
+
+If you want to actually communicate something with curly braces, you'll need to [double them to escape them](https://cli.r-lib.org/reference/inline-markup.html#escaping-and-).
+
+### What about plural?
+
+cli has support for [pluralization](https://cli.r-lib.org/reference/pluralization.html) (presumably only for 0/1/more than one, not for [more complex forms of pluralization](https://michaelchirico.github.io/potools/articles/translators.html#plurals)).
+
+### How to add a custom class / theme
+
+How to define a custom class or theme seems to be a bit under-documented at the moment, which is unsurprising as it's an advanced topic.
+Jenny Bryan [assumes](https://mastodon.social/@jennybryan@fosstodon.org/110675320334403080) adding a custom class needs to happen as part of a theme, which she does in [googlesheets4](https://github.com/tidyverse/googlesheets4/blob/fdb187643b324cd607f71cefa133bf49924f6e49/R/utils-ui.R#L1-L16).
+Michael McCarthy [recommends](https://mastodon.social/@mccarthymg@fosstodon.org/110673498809652527) looking at what cli itself does.
+
+### What about dark themes?
+
+Together, we cover both sides of having dark (Mo) and light (Maëlle) themes in RStudio.
+It would be easy to assume that this all would not work well on dark theme, but Mo can tell you that it all works seamlessly.
+The output colors change to be dark friendly!
+For that reason, user-overrides of colors can be a tricky thing, as you are no longer relying on the excellent tooling of cli to make sure this works in both light and dark mode.
+
+An user can define their own themes, for instance putting this in their profile to make variables underlined:
+
+```{r, eval=FALSE}
+# This goes in your .Rprofile 
+options(cli.user_theme = list(.var = list("text-decoration" = "underline")))
+
+# not needed if the previous line is in your .Rprofile 
+# we do this here to expose the effect in this post directly
+cli::start_app() 
+
+# Code is underlined!
+cli::cli_text("Don't call a variable {.var variable}!")
+```
+
+### How to turn off colors
+
+cli respects the [nocolor standard](https://cli.r-lib.org/articles/cli-config-user.html?q=no#no_color), therefore an user can set the environment variable `NO_COLOR` to any string in order to not get colored output.
+
+## cli for expressing what?
+
+### Advertise side effects
+
+One of the things the `usethis::` functions do so well, it be very verbose of that they are doing.
+
+```{r eval=TRUE}
+pkg_dir <- withr::local_tempdir()
+usethis::create_package(pkg_dir, open = FALSE)
+```
+
+This is great information so the user can build an understanding of what a function they ran actually does.
+This is particularly important for functions that do something with a users settings or file system in some persistent way, as it makes it possible to back-track what has been done and alter it at need.
+See the the [tidy design guide](https://design.tidyverse.org/spooky-action.html?q=cli#advertise-the-side-effects) for more information on this subject.
+
+### Progress
+
+As seen when installing packages with [pak](https://pak.r-lib.org/)!
+Not only does cli support progress bars, it [documents how to create them in two articles](https://cli.r-lib.org/articles/progress.html)!
+
+#### How does it look in logfiles?
+
+It's likely not what you are after for a logfile, as each new update will create another line.
+The cli output in non-interactive sessions or to file is discussed in the [article about advanced progress bar topics](https://cli.r-lib.org/articles/progress-advanced.html#non-interactive-r-sessions).
+
+### Error messages
+
+You can use `cli::cli_abort()` instead of `stop()` for errors, as recommended by the [tidyverse style guide](https://style.tidyverse.org/error-messages.html).
+Note that using this function necessitates your package importing rlang.
+A neat thing about this (and companions `cli::cli_alert()` and `cli::cli_warn()`), is that you can construct very complex messages through syntax seen throughout the cli package.
+For instance, providing a vector of text will create multi-line messages, and giving the elements specific names can turn them into list types.
+
+```{r error=TRUE}
+cli::cli_abort(
+  c(
+    "This is a complex error message.",
+    "The input is missing important things:",
+    "*" = "important thing 1", # bullet point
+    "*" = "important thing 2", # bullet point
+    "To learn more about these see the {.url www.online.docs}"
+  )
+)
+```
+
+## How to make cli quiet or not
+
+You can choose to silence/shush/muffle cli messages!
+
+For cli functions whose name starts with `cli_`, see the [docs](https://cli.r-lib.org/articles/semantic-cli.html#cli-messages).
+
+Let's try an example.
+
+```{r}
+cli::cli_li("hello")
+rlang::local_options(cli.default_handler = function(msg) invisible(NULL))
+cli::cli_li("hello")
+```
+
+This can be useful in tests for instance!
+Who wants to be looking at a wall of cli output when debugging one's tests.
+
+For other functions, probably write your own wrapper and make it responsive to an option (rather than arguments in all functions, see [discussion](https://github.com/ropensci/dev_guide/issues/603)), like what happens in usethis with the `usethis.quiet` option.
+
+Speaking of options, let's remind you about `rlang::is_interactive()` whose output is controllable via the `rlang_interactive` global option.
+
+### How to test cli output
+
+You should probably look into [snapshot tests](https://testthat.r-lib.org/articles/snapshotting.html), maybe in combination with [`cli::test_that_cli()`](https://cli.r-lib.org/reference/test_that_cli.html).
+
+## Conclusion
+
+In this post we presented what we know about cli: in short, it's a fantastic package for building informative and pretty command-line interfaces, and its docs are extensive!
