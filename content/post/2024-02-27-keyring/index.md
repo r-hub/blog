@@ -7,7 +7,7 @@ date: "2024-02-27"
 tags: 
 - package development
 output: hugodown::hugo_document
-rmd_hash: d53dab0695e393fe
+rmd_hash: 90802744db1942f3
 
 ---
 
@@ -50,6 +50,14 @@ Using keyring to store secrets, rather than writing them in plain text somewhere
 Because otherwise, how will package users know about it? The keyring package is both rather low-level and... aimed at users, which is a weird spot. Package users do not necessarily trawl through repositories of the r-lib organization. :wink:
 
 Examples of package docs mentioning the keyring package include the [opencage package](https://docs.ropensci.org/opencage/reference/oc_config.html#set-your-opencage-api-key) and the [babeldown package](https://docs.ropensci.org/babeldown/#api-key).
+
+## Related package: gitcreds
+
+For storing Git credentials such as a GitHub PAT, see
+
+-   [gitcreds](https://gitcreds.r-lib.org/) also maintained by Gábor Csárdi, which the GitHub API client [gh](https://gh.r-lib.org/) therefore [usethis](https://usethis.r-lib.org/) use.
+
+-   [credentials](https://docs.ropensci.org/credentials/) maintained by Jeroen Ooms, which the Git client [gert](https://docs.ropensci.org/gert/) therefore usethis use.
 
 ## Conclusion
 

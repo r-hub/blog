@@ -90,6 +90,14 @@ Package users do not necessarily trawl through repositories of the r-lib organiz
 
 Examples of package docs mentioning the keyring package include the [opencage package](https://docs.ropensci.org/opencage/reference/oc_config.html#set-your-opencage-api-key) and the [babeldown package](https://docs.ropensci.org/babeldown/#api-key).
 
+## Related package: gitcreds
+
+For storing Git credentials such as a GitHub PAT, see
+
+-   [gitcreds](https://gitcreds.r-lib.org/) also maintained by Gábor Csárdi, which the GitHub API client [gh](https://gh.r-lib.org/) therefore [usethis](https://usethis.r-lib.org/) use.
+
+-   [credentials](https://docs.ropensci.org/credentials/) maintained by Jeroen Ooms, which the Git client [gert](https://docs.ropensci.org/gert/) therefore usethis use.
+
 ## Conclusion
 
 In this post we presented the keyring package, that allows to save secrets securely and then access them, all from R.
