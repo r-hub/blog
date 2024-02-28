@@ -7,7 +7,7 @@ date: "2024-02-28"
 tags: 
 - package development
 output: hugodown::hugo_document
-rmd_hash: 8d864bc54f96a3ff
+rmd_hash: e9b81bc06f52264c
 
 ---
 
@@ -35,7 +35,7 @@ Let's exemplify the usage of keyring with the example of `mypkg::my_fun()` that 
 2.  The user sets an environment variable with `Sys.setenv(MYSECRET = keyring::key_get("MYSECRET"))` in a script for instance.
 3.  The package retrieves the secret with `Sys.getenv("MYSECRET")`.
 
-Or, if you want the package users to be forced to use keyring, for instance like in the [ecmwfr package](https://bluegreen-labs.github.io/ecmwfr/#setup),
+Or, if you want the package users to be forced to use keyring, for instance like in the [ecmwfr package maintained by Koen Hufkens](https://bluegreen-labs.github.io/ecmwfr/#setup),
 
 1.  The user stores the secret, once and for all per computer, using `keyring::key_set("MYSECRET")` (or a function of your package that wraps keyring calls), typing interactively so nothing is recorded in `.Rhistory`.
 2.  The package retrieves the secret using keyring.
