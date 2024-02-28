@@ -7,11 +7,11 @@ date: "2024-02-28"
 tags: 
 - package development
 output: hugodown::hugo_document
-rmd_hash: 87bbdc1706980f5a
+rmd_hash: e179edd285d1d9ca
 
 ---
 
-Does your package need the user to provide secrets, like API tokens, to work? Have you considered telling your package users about the keyring package, or even forcing them to use them for using your package?
+Does your package need the user to provide secrets, like API tokens, to work? Have you considered telling your package users about the keyring package, or even forcing them to use it?
 
 The [keyring](https://keyring.r-lib.org/) package maintained by Gábor Csárdi is a package that accesses the **system credential store** from R: each operating system has a special place for storing secrets securely, that keyring knows how to interact with. The credential store can hold several **keyrings**, each **keyring** can be protected by a specific password and can hold several **keys** which are the **secrets**.
 
