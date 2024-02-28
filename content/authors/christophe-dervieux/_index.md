@@ -4,9 +4,9 @@ img: https://github.com/cderv.png
 social:
 - service: Home
   link: https://cderv.rbind.io/
-- service: Twitter
-  link: https://twitter.com/chrisderv
-  icon: fa-twitter
+- service: Mastodon
+  link: https://fosstodon.org/@cderv
+  icon: fa-mastodon
 - service: Github
   link: github.com/cderv
   icon: fa-github

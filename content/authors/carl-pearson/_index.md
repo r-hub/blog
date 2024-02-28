@@ -1,9 +1,9 @@
 ---
 name: Carl Pearson
 social:
-- service: Twitter
-  link: https://twitter.com/cap1024
-  icon: fa-twitter
+- service: Mastodon
+  link: https://fosstodon.org/@cap1024
+  icon: fa-mastodon
 - service: Github
   link: https://github.com/pearsonca
   icon: fa-github

@@ -4,9 +4,9 @@ img: Maelle_Salmon.jpg
 social:
 - service: Home
   link: https://masalmon.eu
-- service: Twitter
-  link: https://twitter.com/ma_salmon
-  icon: fa-twitter
+- service: Mastodon
+  link: https://mastodon.social/@maelle
+  icon: fa-mastodon
 - service: Github
   link: https://github.com/maelle
   icon: fa-github

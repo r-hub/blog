@@ -2,9 +2,9 @@
 name: Gábor Csárdi
 img: https://github.com/gaborcsardi.png
 social:
-- service: Twitter
-  link: https://twitter.com/GaborCsardi
-  icon: fa-twitter
+- service: Mastodon
+  link: https://fosstodon.org/@gaborcsardi
+  icon: fa-mastodon
 - service: Github
   link: https://github.com/gaborcsardi
   icon: fa-github

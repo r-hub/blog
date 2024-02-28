@@ -3,9 +3,9 @@ name: Hugo Gruson
 social:
 - service: Home
   link: https://hugogruson.fr
-- service: Twitter
-  link: https://twitter.com/grusonh
-  icon: fa-twitter
+- service: Mastodon
+  link: https://mastodon.social/@grusonh
+  icon: fa-mastodon
 - service: Github
   link: https://github.com/Bisaloo
   icon: fa-github
