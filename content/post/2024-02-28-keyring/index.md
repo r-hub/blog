@@ -3,11 +3,11 @@ slug: key-advantages-of-using-keyring
 title: "Key advantages of using the keyring package" 
 authors: 
 - Maëlle Salmon
-date: "2024-02-27" 
+date: "2024-02-28" 
 tags: 
 - package development
 output: hugodown::hugo_document
-rmd_hash: 90802744db1942f3
+rmd_hash: 67982c629445d7f8
 
 ---
 
@@ -35,15 +35,20 @@ Let's exemplify the usage of keyring with the example of `mypkg::my_fun()` that 
 2.  The user sets an environment variable with `Sys.setenv(MYSECRET = keyring::key_get("MYSECRET"))` in a script for instance.
 3.  The package retrieves the secret with `Sys.getenv("MYSECRET")`.
 
+Or, if you want the package users to be forced to use keyring, for instance like in the [ecmwfr package](https://bluegreen-labs.github.io/ecmwfr/#setup),
+
+1.  The user stores the secret, once and for all per computer, using `keyring::key_set("MYSECRET")` (or a function of your package that wraps keyring calls), typing interactively so nothing is recorded in `.Rhistory`.
+2.  The package retrieves the secret using keyring.
+
 ## Advantages of keyring
 
 When storing a secret with keyring rather than in `.Renviron`, the secret has less chances to end up in the Git history, or screen-shared.
 
-The keyring package works on Linux, Windows, macOS, and falls back to secret environment variables on [GitHub Actions](https://keyring.r-lib.org/#github).
+The keyring package works on Linux (desktop), Windows, macOS, and falls back to secret environment variables on [GitHub Actions](https://keyring.r-lib.org/#github).
 
-A keyring can be locked and protected by a password, which might be one more barrier of protection. Otherwise, someone with access to your computer session has access to your keyring secrets.
+A keyring can be locked and protected by a password, which might be one more barrier of protection. Otherwise, someone who logged into your computer session has access to your keyring secrets.
 
-Using keyring to store secrets, rather than writing them in plain text somewhere, feels closer to using a [password manager](https://guide.rladies.org/organization/tech/security/#use-a-personal-password-manager)[^1], so might promote good habits more generally?
+Using keyring to store secrets, rather than writing them in plain text somewhere, feels closer to using a [password manager](https://guide.rladies.org/organization/tech/security/#use-a-personal-password-manager)[^1], so might promote good habits more generally.
 
 ## Why mention keyring in your package docs?
 
