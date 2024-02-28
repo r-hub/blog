@@ -7,7 +7,7 @@ date: "2024-02-28"
 tags: 
 - package development
 output: hugodown::hugo_document
-rmd_hash: e9b81bc06f52264c
+rmd_hash: 4cc5cb3956dd31bf
 
 ---
 
@@ -55,6 +55,8 @@ Using keyring to store secrets, rather than writing them in plain text somewhere
 Because otherwise, how will package users know about it? The keyring package is both rather low-level and... aimed at users, which is a weird spot. Package users do not necessarily trawl through repositories of the r-lib organization. :wink:
 
 Examples of package docs mentioning the keyring package include the [opencage package](https://docs.ropensci.org/opencage/reference/oc_config.html#set-your-opencage-api-key) and the [babeldown package](https://docs.ropensci.org/babeldown/#api-key).
+
+As mentioned earlier, you can even bake keyring calls into your package, as was done in the [ecmwfr package](https://bluegreen-labs.github.io/ecmwfr/), whose setup documentation explains how to save the necessary secret in a keyring. If your package provides a helper function for registering the secret, the user does not need to call keyring themselves directly.
 
 ## Related package: gitcreds
 

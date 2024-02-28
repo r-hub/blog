@@ -95,6 +95,9 @@ Package users do not necessarily trawl through repositories of the r-lib organiz
 
 Examples of package docs mentioning the keyring package include the [opencage package](https://docs.ropensci.org/opencage/reference/oc_config.html#set-your-opencage-api-key) and the [babeldown package](https://docs.ropensci.org/babeldown/#api-key).
 
+As mentioned earlier, you can even bake keyring calls into your package, as was done in the [ecmwfr package](https://bluegreen-labs.github.io/ecmwfr/), whose setup documentation explains how to save the necessary secret in a keyring.
+If your package provides a helper function for registering the secret, the user does not need to call keyring themselves directly.
+
 ## Related package: gitcreds
 
 For storing Git credentials such as a GitHub PAT, see
