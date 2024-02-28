@@ -7,7 +7,7 @@ date: "2024-02-28"
 tags: 
 - package development
 output: hugodown::hugo_document
-rmd_hash: 4cc5cb3956dd31bf
+rmd_hash: 87bbdc1706980f5a
 
 ---
 
@@ -69,6 +69,8 @@ For storing Git credentials such as a GitHub PAT, see
 ## Conclusion
 
 In this post we presented the keyring package, that allows to save secrets securely and then access them, all from R. If you are looking for more resources related to security and package development, refer to the ["Package Development Security Best Practices" chapter of the rOpenSci dev guide](https://devguide.ropensci.org/package-development-security-best-practices.html).
+
+Do you use keyring yourself? Do you recommend it to users of your packages?
 
 [^1]: The keyring package does not interact with password managers, but there is an open issue related to [interacting with 1Password](https://github.com/r-lib/keyring/issues/123).
 
