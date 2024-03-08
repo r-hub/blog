@@ -43,8 +43,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-This blog featured a [post on mocking](/2019/10/29/mocking/) years ago.
-Since then, we've entered a new decade, the second edition of Hadley Wickham's and Jenny Bryan's R packages book was published, and mocking came back to testthat, so it's time for a new take/resources roundup!
+This blog featured a [post on mocking, the art of replacing a function with whatever fake we need for testing](/2019/10/29/mocking/), years ago.
+Since then, we've entered a new decade, the second edition of Hadley Wickham's and Jenny Bryan's [R packages book](https://r-pkgs.org) was published, and mocking returned to testthat, so it's time for a new take/resources roundup!
 
 ## Mocking yay or nay
 
@@ -64,7 +64,7 @@ Beside, sometimes, testing is complex because your code is begging to be refacto
 
 The [example of general mocking](/2019/10/29/mocking/#general-mocking) in the post from 2019 can be rewritten to take advantage of the new mocking functionality that was [announced as no longer experimental in October 2023](https://www.tidyverse.org/blog/2023/10/testthat-3-2-0/#mocking).
 
-Now, using testthat's mocking means the best demo includes an actual package... which thankfully can be created in a few usethis function calls, and writing a few code lines (well, copy-pasting them from the old post!).
+Now, using testthat's mocking means the best demo includes an actual package... which thankfully can be created in a few [usethis](https://usethis.r-lib.org) function calls, and writing a few code lines (well, copy-pasting them from the old post!).
 
 ``` r
 create_package("../mockexample")
@@ -81,7 +81,7 @@ use_github_action("check-standard")
 # Git add, commit and push
 ```
 
-Find the example repository on [GitHub](https://github.com/maelle/mockexample)
+Find the example repository on [GitHub](https://github.com/maelle/mockexample).
 
 The mockexample package has a function called `is_encoding_a_pain()`:
 
@@ -123,11 +123,21 @@ We had to add this line in the `R/encoding.R` script:
 Sys.info <- NULL
 ```
 
-This case is documented, as other cases (namespaced calls in particular), in [testthat::local_mocked_bindings()\` manual page](https://testthat.r-lib.org/reference/local_mocked_bindings.html#use).
+This case is documented, as other cases (namespaced calls in particular), in [`testthat::local_mocked_bindings()` manual page](https://testthat.r-lib.org/reference/local_mocked_bindings.html#use).
 
 TODO: example from keyring?
 
 ## Revisiting the escape hatch example
 
-Even the example in a more recent post, on [escape hatches](/2023/01/23/code-switch-escape-hatch-test/), can be easily re-written to use mocking.
-It does not completely throw the escape hatch pattern out of the window, but seriously limits its relevance.
+Even the example in a more recent post, on [escape hatches](/2023/01/23/code-switch-escape-hatch-test/), can be easily re-written to use mocking: we'd use `local_mocked_bindings(is_internet_down = function(...) TRUE)`.
+
+Mocking, and its nowadays improved support in testthat, does not completely throw the escape hatch pattern out of the window, but it's still good to keep mocking in mind.
+That post actually also mentioned mocking so it's all good.
+:innocent:
+
+## Conclusion
+
+In this post, we corrected the [someone who was wrong on the internet](https://xkcd.com/386/) years ago.
+In summary, nowadays you can use mocking tools from testthat itself, when you decide mocking is more a help than a hindrance in your testing suite, and when you do not need to turn to specific packages such as [httptest2](https://enpiar.com/httptest2/), [vcr](https://docs.ropensci.org/vcr/) (for HTTP calls), [dittodb](https://docs.ropensci.org/dittodb/) (for database calls).
+Let's see how the ecosystem looks like in the next decade.
+:smile_cat:
