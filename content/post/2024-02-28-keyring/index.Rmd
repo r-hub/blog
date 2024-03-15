@@ -109,7 +109,7 @@ For storing Git credentials such as a GitHub PAT, see
 ## Conclusion
 
 In this post we presented the keyring package, that allows to save secrets securely and then access them, all from R.
-If you are looking for more resources related to security and package development, refer to the ["Package Development Security Best Practices" chapter of the rOpenSci dev guide](https://devguide.ropensci.org/package-development-security-best-practices.html).
+If you are looking for more resources related to security and package development, refer to the ["Package Development Security Best Practices" chapter of the rOpenSci dev guide](https://devguide.ropensci.org/pkg_security.html).
 
 Do you use keyring yourself?
 Do you recommend it to users of your packages?
