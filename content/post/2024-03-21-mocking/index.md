@@ -3,13 +3,13 @@ slug: mocking-new-take
 title: "Update on mocking for testing R packages" 
 authors: 
 - Maëlle Salmon
-date: "2024-03-13" 
+date: "2024-03-21" 
 tags: 
 - package development
 - testing
 - mocking
 output: hugodown::hugo_document
-rmd_hash: 1fae1552ad0b7efe
+rmd_hash: bec4ad28195f2a3a
 
 ---
 
@@ -21,7 +21,7 @@ The R packages book by Hadley Wickham and Jenny Bryan contains an insightful par
 
 > "In many cases, that last 10% or 1% often requires some awkward gymnastics to cover. Sometimes this forces you to introduce mocking or some other new complexity. Don't sacrifice the maintainability of your test suite in the name of covering some weird edge case that hasn't yet proven to be a problem."
 
-This is definitely good to keep in mind whilst diving into the world of mocking. Not that mocking needs to be especially complex!
+This is definitely good to keep in mind whilst diving into the world of mocking. Not that mocking needs to be especially complex though!
 
 Beside, sometimes, testing is complex because your code is begging to be refactored. :wink:
 
