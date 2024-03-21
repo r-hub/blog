@@ -9,11 +9,13 @@ tags:
 - testing
 - mocking
 output: hugodown::hugo_document
-rmd_hash: bec4ad28195f2a3a
+rmd_hash: 7f0e3b027c938744
 
 ---
 
 This blog featured a [post on mocking, the art of replacing a function with whatever fake we need for testing](/2019/10/29/mocking/), years ago. Since then, we've entered a new decade, the second edition of Hadley Wickham's and Jenny Bryan's [R packages book](https://r-pkgs.org) was published, and mocking returned to testthat, so it's time for a new take/resources roundup!
+
+*Thanks a lot to [Hannah Frick](https://www.frick.ws/) for useful feedback on this post!*
 
 ## Mocking yay or nay
 
@@ -23,11 +25,15 @@ The R packages book by Hadley Wickham and Jenny Bryan contains an insightful par
 
 This is definitely good to keep in mind whilst diving into the world of mocking. Not that mocking needs to be especially complex though!
 
-Beside, sometimes, testing is complex because your code is begging to be refactored. :wink:
+Beside, sometimes, testing is complex because your code is begging to be refactored :wink:: on this topic we can quote from the same book:
+
+> "Code that is well designed tends to be easy to test and you can turn this to your advantage. If you are struggling to write tests, consider if the problem is actually the design of your function(s). The process of writing tests is a great way to get free, private, and personalized feedback on how well-factored your code is."
+
+Now on to mocking...
 
 ## Revisiting the general mocking example
 
-The [example of general mocking](/2019/10/29/mocking/#general-mocking) in the post from 2019 can be rewritten to take advantage of the new mocking functionality that was [announced as no longer experimental in October 2023](https://www.tidyverse.org/blog/2023/10/testthat-3-2-0/#mocking).
+We can re-write [example of general mocking](/2019/10/29/mocking/#general-mocking) in the post from 2019 to take advantage of the new mocking functionality that was [announced as no longer experimental in October 2023](https://www.tidyverse.org/blog/2023/10/testthat-3-2-0/#mocking).
 
 Now, using testthat's mocking means the best demo includes an actual package... which thankfully can be created in a few [usethis](https://usethis.r-lib.org) function calls, and writing a few code lines (well, copy-pasting them from the old post!).
 
