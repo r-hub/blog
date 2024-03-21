@@ -102,9 +102,11 @@ is_encoding_a_pain <- function(){
 
 The function returns `TRUE` on Windows, `FALSE` on other operating systems.
 
-To test it no matter the operating system, we need to make our tests believe they are run on a given operating system.
-We can in this day and age achieve this using mocking tools from testthat itself!
+To test it no matter the operating system, we need to make our tests believe they are run on a given operating system[^2].
+We can, in this day and age, achieve this using mocking tools from testthat itself!
 Here's our test file:
+
+[^2]: We can actually test our package on different operating system using [continuous integration](https://devguide.ropensci.org/pkg_ci.html), however it's not the topic here.
 
 ``` r
 test_that("is_encoding_a_pain() works on Linux", {
@@ -118,8 +120,18 @@ test_that("is_encoding_a_pain() works on Windows", {
 })
 ```
 
-The magic happens in `local_mocked_bindings()` calls such as `local_mocked_bindings(Sys.info = function(...) c(sysname = "Windows"))`, that indicates what we want the mocked function, `Sys.info()`, to return in this environment.
-Using testthat's own mocking feels good for three reasons: not needing to add another dependency (and to remember what the mocking packages are called :sweat_smile:), knowing this mocking implementation is [considered better](https://www.tidyverse.org/blog/2023/10/testthat-3-2-0/#mocking) by testthat authors, and getting a [withr vibe](https://withr.r-lib.org/) from the "local\_" aspect.
+The magic happens in `local_mocked_bindings()` calls such as `local_mocked_bindings(Sys.info = function(...) c(sysname = "Windows"))`.
+This call indicates what we want the argument `Sys.info`, meaning the mocked function `Sys.info()`, to return a fake output in the context of this unit test.
+The fake output we strive for is `c(sysname = "Windows")`.
+With this spin, our function `is_encoding_a_pain()` will return `TRUE` as if on Windows, even when the test is run on macOS or Ubuntu.
+
+Using testthat's own mocking feels good for three reasons:
+
+-   not needing to add another dependency (and to remember what the mocking packages are called :sweat_smile:\... even if "local_mocked_bindings" is a mouthful!),
+
+-   knowing this mocking implementation is [considered better](https://www.tidyverse.org/blog/2023/10/testthat-3-2-0/#mocking) by testthat authors, and
+
+-   getting a [withr vibe](https://withr.r-lib.org/) from the "local\_" aspect.
 
 Now, there's a catch here because `Sys.info()` is a base R function.
 We had to add this line in the `R/encoding.R` script:
@@ -130,19 +142,95 @@ Sys.info <- NULL
 
 This case is documented, as other cases (namespaced calls in particular), in [`testthat::local_mocked_bindings()` manual page](https://testthat.r-lib.org/reference/local_mocked_bindings.html#use).
 
-TODO: example from keyring?
-
 ## Revisiting the escape hatch example
 
-Even the example in a more recent post, on [escape hatches](/2023/01/23/code-switch-escape-hatch-test/), can be easily re-written to use mocking: we'd use `local_mocked_bindings(is_internet_down = function(...) TRUE)`.
+Even the example in a more recent post, on [escape hatches](/2023/01/23/code-switch-escape-hatch-test/), can be easily re-written to use mocking.
+
+``` r
+create_package("../mockexample2")
+# then from mockexample
+use_mit_license()
+use_r("internet")
+use_package("curl")
+use_testthat()
+use_test("internet")
+# then filling in the script and test file
+use_git()
+use_github()
+# then remember it'd be nice to show it works
+use_github_action("check-standard")
+# Git add, commit and push
+```
+
+The code in `R/internet.R` is:
+
+``` r
+is_internet_down <- function() {
+  !curl::has_internet()
+}
+
+my_complicated_code <- function() {
+  if (is_internet_down()) {
+    message("No internet! Le sigh")
+  }
+  # blablablabla
+}
+```
+
+How to test for the message?
+
+In `tests/testthat/test-internet.R`, we have:
+
+``` r
+test_that("my_complicated_code() notes the absence of internet", {
+  local_mocked_bindings(is_internet_down = function(...) TRUE)
+  expect_message(my_complicated_code(), "No internet")
+})
+```
 
 Mocking, and its nowadays improved support in testthat, does not completely throw the escape hatch pattern out of the window, but it's still good to keep mocking in mind.
 That post actually also mentioned mocking so it's all good.
 :innocent:
 
+## Some real-life examples
+
+A drawback of the previous examples is that they're really simple and... fake.
+
+Through an [advanced GitHub search](https://github.com/search?q=local_mocked_bindings+user%3Acran&type=code&ref=advsearch) we can identify some examples:
+
+-   In the tests of the pool package, mocking allows to [simulate having an old version of dplyr installed](https://github.com/rstudio/pool/blob/7ac5df4faf62323b6e28d36a3ab1576613bcdbc0/tests/testthat/test-dbplyr.R#L95-L99):
+
+``` r
+local_mocked_bindings(packageVersion = function(...) "1.0.0")
+```
+
+-   In the tests of the downlit package, mocking allows to [pretend rlang isn't installed](https://github.com/r-lib/downlit/blob/c0a8f645e21a03e258b7c1684901f84279cc706a/tests/testthat/test-metadata.R#L13):
+
+``` r
+local_mocked_bindings(is_installed = function(...) FALSE)
+```
+
+-   In the tests of the httr2 package, mocking is used to [test OAuth functionality](https://github.com/r-lib/httr2/blob/824f142f048489d698673c4d2ada149b4e4c80c7/tests/testthat/test-oauth.R#L46-L48):
+
+``` r
+local_mocked_bindings(
+  oauth_client_get_token = function(...) oauth_token("789")
+)
+```
+
+-   In the tests of the usethis package, mocking is applied to get a [fake GitHub URL for a project](https://github.com/r-lib/usethis/blob/9e64daf13ac1636187d59e6446d9526a414d8ba6/tests/testthat/test-github.R#L7-L9),
+
+``` r
+local_mocked_bindings(
+  github_url_from_git_remotes = function() "https://github.com/OWNER/REPO"
+)
+```
+
+Hopefully those are more convincing examples than the earlier demos!
+
 ## Conclusion
 
-In this post, we corrected the [someone who was wrong on the internet](https://xkcd.com/386/) years ago.
-In summary, nowadays you can use mocking tools from testthat itself, when you decide mocking is more a help than a hindrance in your testing suite, and when you do not need to turn to specific packages such as [httptest2](https://enpiar.com/httptest2/), [vcr](https://docs.ropensci.org/vcr/) (for HTTP calls), [dittodb](https://docs.ropensci.org/dittodb/) (for database calls).
+In this post, we corrected the [someone who was (somehow) wrong on the internet](https://xkcd.com/386/) years ago.
+In summary, nowadays you can use mocking tools from testthat itself, when you decide mocking is more a help than a hindrance in your testing suite.
 Let's see how the ecosystem looks like in the next decade.
 :smile_cat:
