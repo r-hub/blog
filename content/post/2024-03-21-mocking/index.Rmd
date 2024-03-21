@@ -162,6 +162,8 @@ use_github_action("check-standard")
 # Git add, commit and push
 ```
 
+Find the example repository on [GitHub](https://github.com/maelle/mockexample2).
+
 The code in `R/internet.R` is:
 
 ``` r

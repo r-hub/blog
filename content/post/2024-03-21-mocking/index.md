@@ -9,7 +9,7 @@ tags:
 - testing
 - mocking
 output: hugodown::hugo_document
-rmd_hash: 089397f59ccd0625
+rmd_hash: b61c1e2c53f30af1
 
 ---
 
@@ -119,6 +119,8 @@ use_github()
 use_github_action("check-standard")
 # Git add, commit and push
 ```
+
+Find the example repository on [GitHub](https://github.com/maelle/mockexample2).
 
 The code in `R/internet.R` is:
 
