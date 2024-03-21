@@ -9,7 +9,7 @@ tags:
   - mocking
 ---
 
-*See also the [more recent update](/2024/03/13/mocking-new-take/).*
+*See also the [more recent update](/2024/03/21/mocking-new-take/).*
 
 When [writing unit tests for a package](https://r-pkgs.org/tests.html), you might find yourself wondering about how to best test the behaviour of your package
 

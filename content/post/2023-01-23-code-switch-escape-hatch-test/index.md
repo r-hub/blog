@@ -105,7 +105,7 @@ You could also use it as a complement or alternative to the `transform` argument
 
 ## What about mocking instead?
 
-*See also the [more recent update](/2024/03/13/mocking-new-take/).*
+*See also the [more recent update](/2024/03/21/mocking-new-take/).*
 
 Mocking consists in modifying the behavior of a function *from outside*, replacing it with a mock (`how` in [`mockery::stub()`](https://rdrr.io/pkg/mockery/man/stub.html)) for a given context (`where` in [`mockery::stub()`](https://rdrr.io/pkg/mockery/man/stub.html)).
 
