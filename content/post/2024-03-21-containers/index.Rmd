@@ -45,7 +45,7 @@ knitr::opts_chunk$set(
 
 If you need a Docker container with R, or need to run a specific R version
 or need to run R on a specific platform, then chances are, you don't need
-to compile R or build your own ocker image. Take a look at the links
+to compile R or build your own Docker image. Take a look at the links
 below.
 
 ## [`rstudio/r-docker`](https://github.com/rstudio/r-docker)
@@ -74,6 +74,7 @@ Tag                               | Description
 
 `<x.y.z>` can be any version from `3.1.0` to `4.3.3` or `devel`.
 `<x.y>` can be any minor version from `3.1` to `4.3`.
+
 `<distro>` can be one of `focal`, `jammy`, `bullseye`, `bookworm`,
 `centos7`, `rockylinux8` `rockylinux9`, `opensuse154` and `opensuse155`.
 

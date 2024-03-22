@@ -9,21 +9,21 @@ tags:
 - containers
 - R versions
 output: hugodown::hugo_document
-rmd_hash: c088cbc87ddcafeb
+rmd_hash: e98dcd1279f66d9e
 
 ---
 
 ## TL;DR
 
-If you need a Docker container with R, or need to run a specific R version or need to run R on a specific platform, then chances are, you don't need to compile R or build your own ocker image. Take a look at the links below.
+If you need a Docker container with R, or need to run a specific R version or need to run R on a specific platform, then chances are, you don't need to compile R or build your own Docker image. Take a look at the links below.
 
 ## [`rstudio/r-docker`](https://github.com/rstudio/r-docker)
 
-Containers corresponding to Posit's R builds from [rstudio/r-buidls](https://github.com/rstudio/r-builds)
+Containers corresponding to Posit's R builds from [rstudio/r-builds](https://github.com/rstudio/r-builds)
 
 Advantages:
 
--   Many Linux distributions, currently all supported versions of Ubuntu, Debian, CentOS, Rocky Linux, and openSUSE.
+-   Many Linux distributions, currently all supported versions of Ubuntu, Debian, CentOS, Rocky Linux, and OpenSUSE.
 -   Extensively tested. These Ubuntu (20.04 currently) builds are used on [Posit Cloud](https://posit.cloud/), [shinyapps.io](https://shinyapps.io/), and the [`r-lib/actions/setup-r`](https://github.com/r-lib/actions/tree/v2-branch/setup-r) GitHub Action also installs these on Linux.
 -   They support all versions of R from R 3.1.0, and R-devel.
 -   It is possible to install multiple versions of R on these containers.
@@ -35,7 +35,9 @@ List of Docker images at the time of writing:
 | `rstudio/r-base:<x.y.z>-<distro>` | R version `x.y.z` on the specified OS                     |
 | `rstudio/r-base:<x.y>-<distro>`   | Latest R version in the `x.y` branch, on the specified OS |
 
-`<x.y.z>` can be any version from `3.1.0` to `4.3.3` or `devel`. `<x.y>` can be any minor version from `3.1` to `4.3`. `<distro>` can be one of `focal`, `jammy`, `bullseye`, `bookworm`, `centos7`, `rockylinux8` `rockylinux9`, `opensuse154` and `opensuse155`.
+`<x.y.z>` can be any version from `3.1.0` to `4.3.3` or `devel`. `<x.y>` can be any minor version from `3.1` to `4.3`.
+
+`<distro>` can be one of `focal`, `jammy`, `bullseye`, `bookworm`, `centos7`, `rockylinux8` `rockylinux9`, `opensuse154` and `opensuse155`.
 
 See the [GitHub repo](https://github.com/rstudio/r-docker#releases-and-tags) or [Docker Hub](https://hub.docker.com/r/rstudio/r-base/tags?page=1&name=4.3.3) for the current list of containers.
 
@@ -49,8 +51,8 @@ Advantages:
 -   Extensively tested. These Ubuntu (20.04 `linux/amd64` currently) builds are used on [Posit Cloud](https://posit.cloud/), [shinyapps.io](https://shinyapps.io/), and the [`r-lib/actions/setup-r`](https://github.com/r-lib/actions/tree/v2-branch/setup-r) GitHub Action also installs these on Linux.
 -   They come with [rig](https://github.com/r-lib/rig), to be able to add more R versions easily.
 -   They come with [pak](https://github.com/r-lib/pak), to be able to install R packages easily, including automatic system dependency installation.
--   They are availbale for `linux/amd64` and `linux/arm64` architectures.
--   The `linux/amd64` Ubunntu, Deian and OpenSUSE containers are set up to use Posit Public Package Manager to install binary builds of R packages.
+-   They are available for `linux/amd64` and `linux/arm64` architectures.
+-   The `linux/amd64` Ubuntu, Debian and OpenSUSE containers are set up to use Posit Public Package Manager to install binary builds of R packages.
 -   The `ghcr.io/r-lib/rig/multi` container comes with the latest versions of the six last R minor branches, including R-next and R-devel, preinstalled.
 
 List of Docker images at the time of writing:
@@ -72,7 +74,7 @@ Minimal containers on Alpine Linux. These containers have a very minimal R insta
 Advantages:
 
 -   Very small image size. The current R 4.3.3 `linux/amd64` container is 20.8 MB compressed and 35.7 MB uncompressed.
--   They are availbale for `linux/amd64` and `linux/arm64` architectures.
+-   They are available for `linux/amd64` and `linux/arm64` architectures.
 -   They support the last four minor R releases, and R-next and R-devel.
 -   They come with tools to help with package and system dependency installation and cleanup.
 
