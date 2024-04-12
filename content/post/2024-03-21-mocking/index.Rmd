@@ -48,6 +48,8 @@ Since then, we've entered a new decade, the second edition of Hadley Wickham's a
 
 *Thanks a lot to [Hannah Frick](https://www.frick.ws/) for useful feedback on this post!*
 
+*This post was featured on the [R Weekly highlights podcast](https://rweekly.fireside.fm/158) hosted by Eric Nantz and Mike Thomas.*
+
 ## Mocking yay or nay
 
 The R packages book by Hadley Wickham and Jenny Bryan contains an insightful paragraph on [test coverage](https://r-pkgs.org/testing-design.html#sec-testing-design-coverage)[^1], including those lines:

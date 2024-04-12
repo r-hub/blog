@@ -9,13 +9,15 @@ tags:
 - testing
 - mocking
 output: hugodown::hugo_document
-rmd_hash: b61c1e2c53f30af1
+rmd_hash: a9dc2410a50301e0
 
 ---
 
 This blog featured a [post on mocking, the art of replacing a function with whatever fake we need for testing](/2019/10/29/mocking/), years ago. Since then, we've entered a new decade, the second edition of Hadley Wickham's and Jenny Bryan's [R packages book](https://r-pkgs.org) was published, and mocking returned to testthat, so it's time for a new take/resources roundup!
 
 *Thanks a lot to [Hannah Frick](https://www.frick.ws/) for useful feedback on this post!*
+
+*This post was featured on the [R Weekly highlights podcast](https://rweekly.fireside.fm/158) hosted by Eric Nantz and Mike Thomas.*
 
 ## Mocking yay or nay
 
