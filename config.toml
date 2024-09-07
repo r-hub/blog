@@ -33,7 +33,7 @@ removePathAccents = true
     pre = "<i class=\"fab fa-github\"></i>"
 
 [params]
-    description = "Blog for the R-hub project of the R Consortium, easing the R package development process."
+    description = "Blog for the R-hub project, easing the R package development process."
     customCSS = ["css/friendly.css", "css/rhub.css"]
     githubsource = "https://github.com/r-hub/blog/blob/master/content/"
 
