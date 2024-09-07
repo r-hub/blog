@@ -17,7 +17,7 @@ A recent topic of the Write The Docs' great newsletter was [READMEs](https://www
 
 As mentioned above, the WTD newsletter stated that READMEs are often the first entry point to a project. For a package you could think of other entry points such as the CRAN homepage, but the README remains quite important as seen in the poll below
 
-<!--html_preserve-->{{% tweet "969442252610191361" %}}<!--/html_preserve-->
+<!--html_preserve-->{{% tweet user="carroll_jono" id="969442252610191361" %}}<!--/html_preserve-->
 
 A good README is crucial to recruit users that'll actually gain something from using your package. As written by [noffle](https://github.com/noffle/) in [the Art of README](https://github.com/noffle/art-of-readme), 
 

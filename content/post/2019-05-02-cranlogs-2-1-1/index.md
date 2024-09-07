@@ -55,7 +55,7 @@ Probably not, such data can be useful:
 -   You could also use download counts as a way to summarize the "most important" packages around a topic, like what Zev Ross did below with spatial packages (the code attached to the tweet, [available as a GitHub gist](https://gist.github.com/zross/b64657b05156d43cf81dbdd093df5c13), uses the list of packages of the [spatial CRAN task view](https://cran.r-project.org/web/views/Spatial.html), get their downloads with `cranlogs`, and sort them by popularity).
     Note that the [R-hub `pkgsearch` package returns the downloads of last month for search results](https://r-hub.github.io/pkgsearch/)!
 
-<!--html_preserve-->{{% tweet "1123204696141963264" %}}<!--/html_preserve-->
+<!--html_preserve-->{{% tweet user="zevross" id="1123204696141963264" %}}<!--/html_preserve-->
 
 # How to use `cranlogs`?
 

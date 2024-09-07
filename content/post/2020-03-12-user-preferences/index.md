@@ -255,11 +255,11 @@ To use an app directory from within your package you can use `rappdirs` as menti
 
 * Package developers might also like the [`hoardr` package](https://docs.ropensci.org/hoardr/) that basically creates an R6 object building on `rappdirs` with a few more methods (directory creation, deletion).
 
-<!--html_preserve-->{{% tweet "1233495999982628865" %}}<!--/html_preserve-->
+<!--html_preserve-->{{% tweet user="henrikbengtsson" id="1233495999982628865" %}}<!--/html_preserve-->
 
 * Some package authors "roll their own" like Henrik Bengtsson in [`R.cache`](https://github.com/HenrikBengtsson/R.cache).
 
-<!--html_preserve-->{{% tweet "1233487759412809734" %}}<!--/html_preserve-->
+<!--html_preserve-->{{% tweet user="henrikbengtsson" id="1233487759412809734" %}}<!--/html_preserve-->
 
 * R-devel "just gained support for OS-agile user-specific #rstats cache/config/data folders" [which is big](https://twitter.com/henrikbengtsson/status/1233496382608199683) (but if you use the base R implementation available after R 4.x.y, [unless your package depends on R above that version you'll need to backport the functionality](https://twitter.com/JennyBryan/status/1233506099292246016) [^4]).
 
