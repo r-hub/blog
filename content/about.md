@@ -5,11 +5,7 @@ title: About the R-hub blog
 
 This is the blog of the R-hub project of the [R Consortium](https://www.r-consortium.org/). Its posts are syndicated on [R-bloggers](https://www.r-bloggers.com/) and featured in [R Weekly live feed](https://rweekly.org/live).
 
-You might also like, or actually be looking for:
-
-* [R-hub documentation website](https://docs.r-hub.io/),
-
-* [R-hub package builder](https://builder.r-hub.io/).
+You might also like, or actually be looking for the [rhub R package](https://r-hub.github.io/rhub/).
 
 Except where otherwise noted, content on this site is licensed under the [CC-BY license](https://creativecommons.org/licenses/by/4.0/). 
 
