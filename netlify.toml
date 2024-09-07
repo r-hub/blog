@@ -1,3 +1,9 @@
+[[redirects]]
+  from = "/*"
+  to = "https://r-hub.github.io/rhub/"
+  status = 301
+  force = true
+
 [build]
   command = "hugo -F"
 
