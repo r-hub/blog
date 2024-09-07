@@ -26,7 +26,7 @@ or you might even wonder how to test at least part of that package of yours that
 In some of these cases, the programming concept you're after is *mocking*, i.e. making a function act *as if* something were a certain way!
 In this blog post we shall offer a round-up of resources around mocking, or not mocking, when unit testing an R package.
 
-<!--html_preserve-->{{% tweet "1156754150828498945" %}}<!--/html_preserve-->
+<!--html_preserve-->{{% tweet user="sharlagelfand" id="1156754150828498945" %}}<!--/html_preserve-->
 
 Please keep reading, do not flee to Twitter!
 :wink: (The talented Sharla did end up using mocking for [her package](https://sharlagelfand.github.io/opendatatoronto/)!)
@@ -159,7 +159,7 @@ Say you want to be sure your packages builds correctly on another operating syst
 
 Regarding the case where you want to test your package when a suggested dependency is or is not installed, you can use the configuration script of a continuous integration service to have at least one build without that dependency:
 
-<!--html_preserve-->{{% tweet "1180175458782076928" %}}<!--/html_preserve-->
+<!--html_preserve-->{{% tweet user="hadleywickham" id="1180175458782076928" %}}<!--/html_preserve-->
 
 ## Conclusion
 
