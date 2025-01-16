@@ -60,16 +60,50 @@ The latter is only computed when accessed, and cached once computed.
 ### What about {future}?
 
 Maybe you have heard of the [future package](https://future.futureverse.org/index.html) by Henrik Bengtsson.
-It provides an implementation in R of futures, a programming concept.
+It provides an implementation in R of **futures**, a programming concept.
 Its homepage state "In programming, a future is an abstraction for a value that may be available at some point in the future. The state of a future can either be unresolved or resolved."
 
-With futures, you create a future, that is associated to a promise, not the same as the aforementioned base R promise, which is a placeholder for a value and then the value itself.
+With futures, you create a future, that is associated to a **promise**, which is a **placeholder for a value** and then the value itself (so not the same definition of "promise" as the "promises" used by base R in the context of lazy evaluation).
 The value can be computed asynchronously, which means in parallel.
 Therefore, the futures package allows R programmers to take full advantage of their local computing resources: cores, clusters, etc.
 
-Now, to add confusion beyond the different meaning of "promise" in this context, by default a future is **not lazy**, it is **eager**.
+Now, to add confusion beyond the different meaning of "promise" in this context, [by default](https://future.futureverse.org/reference/future.html) a future is **not lazy**, it is **eager**.
 This means that it is computed immediately unless you specify an alternative method (a "plan").
-Therefore, the use of futures and the use of lazy evaluation are orthogonal concepts.
+
+By default, the creation of a future below (`eager_future`) takes as much time as not wrapping the code in a future, because the computation is immediate.
+Setting `lazy` to `TRUE` makes the future creation much faster (`lazy_future`).
+
+```{r, cache=TRUE}
+library("future")
+bench::mark(no_future <- runif(n = 10000000))
+bench::mark(eager_future <- future(runif(n = 10000000)))
+bench::mark(lazy_future <- future(runif(n = 10000000), lazy = TRUE))
+```
+
+If we do retrieve the value, overall the same time is spent between creating the future and our getting the value:
+
+```{r, cache=TRUE}
+bench::mark({
+  withr::local_seed(42)
+  a <- runif(n = 10000000)
+  a
+})
+
+bench::mark({
+  withr::local_seed(42)
+  b <- future(runif(n = 10000000))
+  value(b)
+})
+
+bench::mark({
+  withr::local_seed(42)
+  c <- future(runif(n = 10000000), lazy = TRUE)
+  value(c)
+})
+```
+
+Therefore, the use of futures and the use of lazy evaluation are orthogonal concepts: you can use future with or without lazy evaluation.
+The future package is about *how* the value is computed (in parallel or sequentially for instance), lazy evaluation is about *when* the value is computed (right as it is defined, or only when it is needed).
 
 ## Lazy as in lazy database operations
 
