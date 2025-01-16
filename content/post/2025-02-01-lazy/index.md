@@ -8,7 +8,7 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: 84b7a3fc5ab271e6
+rmd_hash: c6ba240cfbf97d72
 
 ---
 
@@ -28,7 +28,7 @@ Maybe you have heard of the [future package](https://future.futureverse.org/inde
 
 With futures, you create a future, that is associated to a **promise**, which is a **placeholder for a value** and then the value itself (so not the same definition of "promise" as the "promises" used by base R in the context of lazy evaluation). The value can be computed asynchronously, which means in parallel. Therefore, the futures package allows R programmers to take full advantage of their local computing resources: cores, clusters, etc.
 
-Now, to add confusion beyond the different meaning of "promise" in this context, [by default](https://future.futureverse.org/reference/future.html) a future is **not lazy**, it is **eager**. This means that it is computed immediately unless you specify an alternative method (a "plan").
+Now, to add confusion beyond the different meaning of "promise" in this context, [by default](https://future.futureverse.org/reference/future.html) a future is **not lazy**, it is **eager**. This means that it is computed immediately.
 
 By default, the creation of a future below (`eager_future`) takes as much time as not wrapping the code in a future, because the computation is immediate. Setting `lazy` to `TRUE` makes the future creation much faster (`lazy_future`).
 
