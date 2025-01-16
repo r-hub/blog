@@ -9,7 +9,7 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: 11637570fdcc0fcc
+rmd_hash: 62b473bc4f6f7a5b
 
 ---
 
@@ -207,22 +207,11 @@ Slightly tweaked from dtplyr README,
 
 </div>
 
--   the [duckplyr package](https://duckplyr.tidyverse.org/dev/), which is a drop-in replacement for dplyr, powered by DuckDB for fast operation. "Queries on the remote data are executed lazily, and the results are not materialized until explicitly requested."
-
-In the case of the duckplyr package, the behavior can be [switched off](https://duckplyr.tidyverse.org/dev/articles/developers.html?q=lazy#eager-and-lazy-modes) depending on one's preferences around fallbacks to dplyr.
+-   the [duckplyr package](https://duckplyr.tidyverse.org/dev/), which is a drop-in replacement for dplyr, powered by DuckDB for fast operation. Objects created with `duckdb_tibble(.lazy = TRUE)` (`.lazy = TRUE` is not the default) and with `read_parquet_duckdb()` (`lazy=TRUE` is the default) are lazy, the value is only computed if explicitly accessed.
 
 ### duckplyr, lazy evaluation and deferred evaluation
 
-The case of the duckplyr package is also interesting in that its implementation [uses ALTREP](https://duckdb.org/2024/04/02/duckplyr.html#eager-vs-lazy-materialization), a powerful R feature that among other things supports **deferred evaluation**.
-
-> ALTREP allows R objects to have different in-memory representations, and for custom code to be executed whenever those objects are accessed.
-
-If the thing accessing the duckplyr data.frame is...
-
--   not duckplyr, then a special callback is executed, allowing materialization of the data frame.
--   duckplyr, then the operations continue to be lazy (until a call to `collect.duckplyr_df()` for instance).
-
-Therefore, duckplyr can be both lazy (within itself) and not lazy (for the outside world). :zany_face:
+Some doubts to be clarified
 
 ## Lazy as in lazy loading of data in packages (`LazyData`)
 
