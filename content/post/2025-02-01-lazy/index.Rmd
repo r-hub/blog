@@ -3,6 +3,7 @@ slug: lazy-meanings
 title: "Lazy introduction to laziness in R" 
 authors: 
 - Maëlle Salmon
+- Athanasia Mo Mowinckel
 date: "2025-02-01" 
 tags: 
 - package development
@@ -50,6 +51,13 @@ In this post, we will enumerate the different possible definitions of "lazy" in 
 
 You might know that R provides **lazy evaluation**: the arguments of a function are only evaluated if they are accessed.
 In short, you can pass anything as an argument value to a function without any problem as long as the function does not use that value.
+
+For instance, the code below works despite `evaluation`'s not existing, because the definition of the `mean()` function includes ellipsis, and because the `lazy` argument is actually not used.
+
+```{r}
+mean(1:10, lazy = evaluation)
+```
+
 The contrary of lazy evaluation is **eager evaluation**.
 
 The [Advanced R book by Hadley Wickham](https://adv-r.hadley.nz/functions.html#lazy-evaluation) features a very clear introduction to lazy evaluation.
@@ -75,30 +83,27 @@ Setting `lazy` to `TRUE` makes the future creation much faster (`lazy_future`).
 
 ```{r, cache=TRUE}
 library("future")
-bench::mark(no_future <- runif(n = 10000000))
-bench::mark(eager_future <- future(runif(n = 10000000)))
-bench::mark(lazy_future <- future(runif(n = 10000000), lazy = TRUE))
+bench::mark(no_future <- is.numeric(runif(n = 10000000)))
+bench::mark(eager_future <- future(is.numeric(runif(n = 10000000))))
+bench::mark(lazy_future <- future(is.numeric(runif(n = 10000000)), lazy = TRUE))
 ```
 
 If we do retrieve the value, overall the same time is spent between creating the future and our getting the value:
 
-```{r, cache=TRUE}
+```{r, cache=TRUE, warning=FALSE}
 bench::mark({
-  withr::local_seed(42)
-  a <- runif(n = 10000000)
-  a
+  no_future <- is.numeric(runif(n = 10000000))
+  no_future
 })
 
 bench::mark({
-  withr::local_seed(42)
-  b <- future(runif(n = 10000000))
-  value(b)
+  eager_future <- future(is.numeric(runif(n = 10000000)))
+  value(eager_future)
 })
 
 bench::mark({
-  withr::local_seed(42)
-  c <- future(runif(n = 10000000), lazy = TRUE)
-  value(c)
+  lazy_future <- future(is.numeric(runif(n = 10000000)), lazy = TRUE)
+  value(lazy_future)
 })
 ```
 
@@ -113,7 +118,65 @@ Making the output tangible is called *materialization*.
 This is vocabulary we can encounter when using:
 
 -   the [dbplyr package](https://dbplyr.tidyverse.org/), which is the dplyr back-end for databases. "All dplyr calls are evaluated lazily, generating SQL that is only sent to the database when you request the data."
+
+Slightly tweaked from the dbplyr README,
+
+```{r}
+# load packages
+library(dplyr, warn.conflicts = FALSE)
+library("dbplyr")
+
+# create the connection and refer to the table
+con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+copy_to(con, mtcars)
+mtcars2 <- tbl(con, "mtcars")
+
+# create the query
+summary <- mtcars2 %>% 
+  group_by(cyl) %>% 
+  summarise(mpg = mean(mpg, na.rm = TRUE)) %>% 
+  arrange(desc(mpg))
+
+# the object is lazy, the value is not computed yet
+summary
+nrow(summary)
+
+# we explictly request the data, so now it's there
+answer <- collect(summary)
+nrow(answer)
+
+```
+
 -   the [dtplyr package](https://dtplyr.tidyverse.org/index.html), which is a data.table back-end for dplyr. The ["lazy" data.table objects](https://dtplyr.tidyverse.org/reference/lazy_dt.html) "captures the intent of dplyr verbs, only actually performing computation when requested" (with `collect()` for instance). The manual also explains that this allows dtplyr to make the code more performant by simplifying the data.table calls.
+
+Slightly tweaked from dtplyr README,
+
+```{r}
+# load packages
+library(data.table)
+library(dtplyr)
+library(dplyr, warn.conflicts = FALSE)
+
+# create a “lazy” data table that tracks the operations performed on it.
+mtcars2 <- lazy_dt(mtcars)
+
+# create the query
+summary <- mtcars2 %>% 
+  filter(wt < 5) %>% 
+  mutate(l100k = 235.21 / mpg) %>% # liters / 100 km
+  group_by(cyl) %>% 
+  summarise(l100k = mean(l100k))
+
+# the object is lazy, the value is not computed yet
+summary
+nrow(summary)
+
+# we explictly request the data, so now it's there
+answer <- as_tibble(summary)
+nrow(answer)
+
+```
+
 -   the [duckplyr package](https://duckplyr.tidyverse.org/dev/), which is a drop-in replacement for dplyr, powered by DuckDB for fast operation. "Queries on the remote data are executed lazily, and the results are not materialized until explicitly requested."
 
 In the case of the duckplyr package, the behavior can be [switched off](https://duckplyr.tidyverse.org/dev/articles/developers.html?q=lazy#eager-and-lazy-modes) depending on one's preferences around fallbacks to dplyr.
@@ -131,6 +194,14 @@ If the thing accessing the duckplyr data.frame is...
 
 Therefore, duckplyr can be both lazy (within itself) and not lazy (for the outside world).
 :zany_face:
+
+## Lazy as in lazy loading of data in packages (`LazyData`)
+
+If your R package exports data, and sets the `LazyData` field in `DESCRIPTION` to `true`, then the exported datasets are lazily loaded: they're available without the use of `data()`, but they're not actually taking up memory until they are accessed.
+
+There's more details on `LazyData` in the [R packages book by Hadley Wickham and Jenny Bryan](https://r-pkgs.org/data.html#sec-data-data) and in [Writing R Extensions](https://cloud.r-project.org/doc/manuals/r-devel/R-exts.html#Data-in-packages).
+
+Note that internal data is always lazily loaded, and that data that is too big cannot be lazily loaded.
 
 ## Lazy as in frugal file modifications
 

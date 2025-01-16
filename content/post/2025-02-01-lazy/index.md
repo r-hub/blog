@@ -3,12 +3,13 @@ slug: lazy-meanings
 title: "Lazy introduction to laziness in R" 
 authors: 
 - Maëlle Salmon
+- Athanasia Mo Mowinckel
 date: "2025-02-01" 
 tags: 
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: c6ba240cfbf97d72
+rmd_hash: 11637570fdcc0fcc
 
 ---
 
@@ -16,7 +17,19 @@ In the programming world, laziness can often be a good thing: it is both a human
 
 ## Lazy as in lazy evaluation
 
-You might know that R provides **lazy evaluation**: the arguments of a function are only evaluated if they are accessed. In short, you can pass anything as an argument value to a function without any problem as long as the function does not use that value. The contrary of lazy evaluation is **eager evaluation**.
+You might know that R provides **lazy evaluation**: the arguments of a function are only evaluated if they are accessed. In short, you can pass anything as an argument value to a function without any problem as long as the function does not use that value.
+
+For instance, the code below works despite `evaluation`'s not existing, because the definition of the [`mean()`](https://rdrr.io/r/base/mean.html) function includes ellipsis, and because the `lazy` argument is actually not used.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='o'>(</span><span class='m'>1</span><span class='o'>:</span><span class='m'>10</span>, lazy <span class='o'>=</span> <span class='nv'>evaluation</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; [1] 5.5</span></span>
+<span></span></code></pre>
+
+</div>
+
+The contrary of lazy evaluation is **eager evaluation**.
 
 The [Advanced R book by Hadley Wickham](https://adv-r.hadley.nz/functions.html#lazy-evaluation) features a very clear introduction to lazy evaluation.
 
@@ -35,22 +48,22 @@ By default, the creation of a future below (`eager_future`) takes as much time a
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='s'><a href='https://future.futureverse.org'>"future"</a></span><span class='o'>)</span></span>
-<span><span class='nf'>bench</span><span class='nf'>::</span><span class='nf'><a href='http://bench.r-lib.org/reference/mark.html'>mark</a></span><span class='o'>(</span><span class='nv'>no_future</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='o'>(</span>n <span class='o'>=</span> <span class='m'>10000000</span><span class='o'>)</span><span class='o'>)</span></span>
+<span><span class='nf'>bench</span><span class='nf'>::</span><span class='nf'><a href='http://bench.r-lib.org/reference/mark.html'>mark</a></span><span class='o'>(</span><span class='nv'>no_future</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/numeric.html'>is.numeric</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='o'>(</span>n <span class='o'>=</span> <span class='m'>10000000</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>
 <span><span class='c'>#&gt; Warning: Some expressions had a GC in every iteration; so filtering is disabled.</span></span>
 <span></span><span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 1 × 6</span></span></span>
-<span><span class='c'>#&gt;   expression                         min   median `itr/sec` mem_alloc `gc/sec`</span></span>
-<span><span class='c'>#&gt;   <span style='color: #555555; font-style: italic;'>&lt;bch:expr&gt;</span>                    <span style='color: #555555; font-style: italic;'>&lt;bch:tm&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:tm&gt;</span>     <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:byt&gt;</span>    <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'>1</span> no_future &lt;- runif(n = 1e+07)    280ms    287ms      3.48    76.3MB     3.48</span></span>
-<span></span><span><span class='nf'>bench</span><span class='nf'>::</span><span class='nf'><a href='http://bench.r-lib.org/reference/mark.html'>mark</a></span><span class='o'>(</span><span class='nv'>eager_future</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://future.futureverse.org/reference/future.html'>future</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='o'>(</span>n <span class='o'>=</span> <span class='m'>10000000</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt;   expression                             min median `itr/sec` mem_alloc `gc/sec`</span></span>
+<span><span class='c'>#&gt;   <span style='color: #555555; font-style: italic;'>&lt;bch:expr&gt;</span>                           <span style='color: #555555; font-style: italic;'>&lt;bch&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:&gt;</span>     <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:byt&gt;</span>    <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>1</span> no_future &lt;- is.numeric(runif(n = 1… 245ms  249ms      3.98    76.3MB     3.98</span></span>
+<span></span><span><span class='nf'>bench</span><span class='nf'>::</span><span class='nf'><a href='http://bench.r-lib.org/reference/mark.html'>mark</a></span><span class='o'>(</span><span class='nv'>eager_future</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://future.futureverse.org/reference/future.html'>future</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/numeric.html'>is.numeric</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='o'>(</span>n <span class='o'>=</span> <span class='m'>10000000</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 1 × 6</span></span></span>
 <span><span class='c'>#&gt;   expression                             min median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span><span class='c'>#&gt;   <span style='color: #555555; font-style: italic;'>&lt;bch:expr&gt;</span>                           <span style='color: #555555; font-style: italic;'>&lt;bch&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:&gt;</span>     <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:byt&gt;</span>    <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'>1</span> eager_future &lt;- future(runif(n = 1e… 232ms  232ms      4.30    83.1MB     4.30</span></span>
-<span></span><span><span class='nf'>bench</span><span class='nf'>::</span><span class='nf'><a href='http://bench.r-lib.org/reference/mark.html'>mark</a></span><span class='o'>(</span><span class='nv'>lazy_future</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://future.futureverse.org/reference/future.html'>future</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='o'>(</span>n <span class='o'>=</span> <span class='m'>10000000</span><span class='o'>)</span>, lazy <span class='o'>=</span> <span class='kc'>TRUE</span><span class='o'>)</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>1</span> eager_future &lt;- future(is.numeric(r… 258ms  258ms      3.88    83.1MB     3.88</span></span>
+<span></span><span><span class='nf'>bench</span><span class='nf'>::</span><span class='nf'><a href='http://bench.r-lib.org/reference/mark.html'>mark</a></span><span class='o'>(</span><span class='nv'>lazy_future</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://future.futureverse.org/reference/future.html'>future</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/numeric.html'>is.numeric</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='o'>(</span>n <span class='o'>=</span> <span class='m'>10000000</span><span class='o'>)</span><span class='o'>)</span>, lazy <span class='o'>=</span> <span class='kc'>TRUE</span><span class='o'>)</span><span class='o'>)</span></span>
 <span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 1 × 6</span></span></span>
 <span><span class='c'>#&gt;   expression                             min median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span><span class='c'>#&gt;   <span style='color: #555555; font-style: italic;'>&lt;bch:expr&gt;</span>                           <span style='color: #555555; font-style: italic;'>&lt;bch&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:&gt;</span>     <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:byt&gt;</span>    <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'>1</span> lazy_future &lt;- future(runif(n = 1e+… 599µs  642µs     <span style='text-decoration: underline;'>1</span>484.    12.8KB     14.5</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>1</span> lazy_future &lt;- future(is.numeric(ru… 811µs  895µs     <span style='text-decoration: underline;'>1</span>100.    13.9KB     15.4</span></span>
 <span></span></code></pre>
 
 </div>
@@ -60,41 +73,31 @@ If we do retrieve the value, overall the same time is spent between creating the
 <div class="highlight">
 
 <pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nf'>bench</span><span class='nf'>::</span><span class='nf'><a href='http://bench.r-lib.org/reference/mark.html'>mark</a></span><span class='o'>(</span><span class='o'>&#123;</span></span>
-<span>  <span class='nf'>withr</span><span class='nf'>::</span><span class='nf'><a href='https://withr.r-lib.org/reference/with_seed.html'>local_seed</a></span><span class='o'>(</span><span class='m'>42</span><span class='o'>)</span></span>
-<span>  <span class='nv'>a</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='o'>(</span>n <span class='o'>=</span> <span class='m'>10000000</span><span class='o'>)</span></span>
-<span>  <span class='nv'>a</span></span>
+<span>  <span class='nv'>no_future</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://rdrr.io/r/base/numeric.html'>is.numeric</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='o'>(</span>n <span class='o'>=</span> <span class='m'>10000000</span><span class='o'>)</span><span class='o'>)</span></span>
+<span>  <span class='nv'>no_future</span></span>
 <span><span class='o'>&#125;</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt; Warning: Some expressions had a GC in every iteration; so filtering is disabled.</span></span>
-<span></span><span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 1 × 6</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 1 × 6</span></span></span>
 <span><span class='c'>#&gt;   expression                             min median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span><span class='c'>#&gt;   <span style='color: #555555; font-style: italic;'>&lt;bch:expr&gt;</span>                           <span style='color: #555555; font-style: italic;'>&lt;bch&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:&gt;</span>     <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:byt&gt;</span>    <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'>1</span> &#123; withr::local_seed(42) a &lt;- runif(… 290ms  291ms      3.43    76.6MB     3.43</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>1</span> &#123; no_future &lt;- is.numeric(runif(n =… 237ms  264ms      3.79    76.3MB     3.79</span></span>
 <span></span><span></span>
 <span><span class='nf'>bench</span><span class='nf'>::</span><span class='nf'><a href='http://bench.r-lib.org/reference/mark.html'>mark</a></span><span class='o'>(</span><span class='o'>&#123;</span></span>
-<span>  <span class='nf'>withr</span><span class='nf'>::</span><span class='nf'><a href='https://withr.r-lib.org/reference/with_seed.html'>local_seed</a></span><span class='o'>(</span><span class='m'>42</span><span class='o'>)</span></span>
-<span>  <span class='nv'>b</span> <span class='o'>&lt;-</span> <span class='nf'>future</span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='o'>(</span>n <span class='o'>=</span> <span class='m'>10000000</span><span class='o'>)</span><span class='o'>)</span></span>
-<span>  <span class='nf'>value</span><span class='o'>(</span><span class='nv'>b</span><span class='o'>)</span></span>
+<span>  <span class='nv'>eager_future</span> <span class='o'>&lt;-</span> <span class='nf'>future</span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/numeric.html'>is.numeric</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='o'>(</span>n <span class='o'>=</span> <span class='m'>10000000</span><span class='o'>)</span><span class='o'>)</span><span class='o'>)</span></span>
+<span>  <span class='nf'>value</span><span class='o'>(</span><span class='nv'>eager_future</span><span class='o'>)</span></span>
 <span><span class='o'>&#125;</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt; Warning: UNRELIABLE VALUE: Future ('&lt;none&gt;') unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to "ignore".</span></span>
-<span></span><span><span class='c'>#&gt; Warning: UNRELIABLE VALUE: Future ('&lt;none&gt;') unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to "ignore".</span></span>
-<span></span><span><span class='c'>#&gt; Warning: UNRELIABLE VALUE: Future ('&lt;none&gt;') unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to "ignore".</span></span>
-<span></span><span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 1 × 6</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 1 × 6</span></span></span>
 <span><span class='c'>#&gt;   expression                             min median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span><span class='c'>#&gt;   <span style='color: #555555; font-style: italic;'>&lt;bch:expr&gt;</span>                           <span style='color: #555555; font-style: italic;'>&lt;bch&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:&gt;</span>     <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:byt&gt;</span>    <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'>1</span> &#123; withr::local_seed(42) b &lt;- future… 249ms  249ms      4.02    83.3MB     4.02</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>1</span> &#123; eager_future &lt;- future(is.numeric… 251ms  251ms      3.98    83.3MB     3.98</span></span>
 <span></span><span></span>
 <span><span class='nf'>bench</span><span class='nf'>::</span><span class='nf'><a href='http://bench.r-lib.org/reference/mark.html'>mark</a></span><span class='o'>(</span><span class='o'>&#123;</span></span>
-<span>  <span class='nf'>withr</span><span class='nf'>::</span><span class='nf'><a href='https://withr.r-lib.org/reference/with_seed.html'>local_seed</a></span><span class='o'>(</span><span class='m'>42</span><span class='o'>)</span></span>
-<span>  <span class='nv'>c</span> <span class='o'>&lt;-</span> <span class='nf'>future</span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='o'>(</span>n <span class='o'>=</span> <span class='m'>10000000</span><span class='o'>)</span>, lazy <span class='o'>=</span> <span class='kc'>TRUE</span><span class='o'>)</span></span>
-<span>  <span class='nf'>value</span><span class='o'>(</span><span class='nv'>c</span><span class='o'>)</span></span>
+<span>  <span class='nv'>lazy_future</span> <span class='o'>&lt;-</span> <span class='nf'>future</span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/base/numeric.html'>is.numeric</a></span><span class='o'>(</span><span class='nf'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='o'>(</span>n <span class='o'>=</span> <span class='m'>10000000</span><span class='o'>)</span><span class='o'>)</span>, lazy <span class='o'>=</span> <span class='kc'>TRUE</span><span class='o'>)</span></span>
+<span>  <span class='nf'>value</span><span class='o'>(</span><span class='nv'>lazy_future</span><span class='o'>)</span></span>
 <span><span class='o'>&#125;</span><span class='o'>)</span></span>
-<span><span class='c'>#&gt; Warning: UNRELIABLE VALUE: Future ('&lt;none&gt;') unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to "ignore".</span></span>
-<span></span><span><span class='c'>#&gt; Warning: UNRELIABLE VALUE: Future ('&lt;none&gt;') unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to "ignore".</span></span>
-<span></span><span><span class='c'>#&gt; Warning: UNRELIABLE VALUE: Future ('&lt;none&gt;') unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to "ignore".</span></span>
-<span></span><span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 1 × 6</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># A tibble: 1 × 6</span></span></span>
 <span><span class='c'>#&gt;   expression                             min median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span><span class='c'>#&gt;   <span style='color: #555555; font-style: italic;'>&lt;bch:expr&gt;</span>                           <span style='color: #555555; font-style: italic;'>&lt;bch&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:&gt;</span>     <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;bch:byt&gt;</span>    <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
-<span><span class='c'>#&gt; <span style='color: #555555;'>1</span> &#123; withr::local_seed(42) c &lt;- future… 246ms  246ms      4.07    76.4MB     4.07</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>1</span> &#123; lazy_future &lt;- future(is.numeric(… 246ms  253ms      3.95    76.4MB     3.95</span></span>
 <span></span></code></pre>
 
 </div>
@@ -108,7 +111,102 @@ In the database world, queries can be lazy: the query is like a TODO list that i
 This is vocabulary we can encounter when using:
 
 -   the [dbplyr package](https://dbplyr.tidyverse.org/), which is the dplyr back-end for databases. "All dplyr calls are evaluated lazily, generating SQL that is only sent to the database when you request the data."
--   the [dtplyr package](https://dtplyr.tidyverse.org/index.html), which is a data.table back-end for dplyr. The ["lazy" data.table objects](https://dtplyr.tidyverse.org/reference/lazy_dt.html) "captures the intent of dplyr verbs, only actually performing computation when requested" (with `collect()` for instance). The manual also explains that this allows dtplyr to make the code more performant by simplifying the data.table calls.
+
+Slightly tweaked from the dbplyr README,
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'># load packages</span></span>
+<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>, warn.conflicts <span class='o'>=</span> <span class='kc'>FALSE</span><span class='o'>)</span></span>
+<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='s'><a href='https://dbplyr.tidyverse.org/'>"dbplyr"</a></span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; Attaching package: 'dbplyr'</span></span>
+<span></span><span><span class='c'>#&gt; The following objects are masked from 'package:dplyr':</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt;     ident, sql</span></span>
+<span></span><span></span>
+<span><span class='c'># create the connection and refer to the table</span></span>
+<span><span class='nv'>con</span> <span class='o'>&lt;-</span> <span class='nf'>DBI</span><span class='nf'>::</span><span class='nf'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span><span class='o'>(</span><span class='nf'>RSQLite</span><span class='nf'>::</span><span class='nf'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span><span class='o'>(</span><span class='o'>)</span>, <span class='s'>":memory:"</span><span class='o'>)</span></span>
+<span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>copy_to</a></span><span class='o'>(</span><span class='nv'>con</span>, <span class='nv'>mtcars</span><span class='o'>)</span></span>
+<span><span class='nv'>mtcars2</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span><span class='o'>(</span><span class='nv'>con</span>, <span class='s'>"mtcars"</span><span class='o'>)</span></span>
+<span></span>
+<span><span class='c'># create the query</span></span>
+<span><span class='nv'>summary</span> <span class='o'>&lt;-</span> <span class='nv'>mtcars2</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='o'>(</span><span class='nv'>cyl</span><span class='o'>)</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='o'>(</span>mpg <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='o'>(</span><span class='nv'>mpg</span>, na.rm <span class='o'>=</span> <span class='kc'>TRUE</span><span class='o'>)</span><span class='o'>)</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='o'>(</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='o'>(</span><span class='nv'>mpg</span><span class='o'>)</span><span class='o'>)</span></span>
+<span></span>
+<span><span class='c'># the object is lazy, the value is not computed yet</span></span>
+<span><span class='nv'>summary</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># Source:     SQL [?? x 2]</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># Database:   sqlite 3.47.1 [:memory:]</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># Ordered by: desc(mpg)</span></span></span>
+<span><span class='c'>#&gt;     cyl   mpg</span></span>
+<span><span class='c'>#&gt;   <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>1</span>     4  26.7</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>2</span>     6  19.7</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>3</span>     8  15.1</span></span>
+<span></span><span><span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='o'>(</span><span class='nv'>summary</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; [1] NA</span></span>
+<span></span><span></span>
+<span><span class='c'># we explictly request the data, so now it's there</span></span>
+<span><span class='nv'>answer</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://dplyr.tidyverse.org/reference/compute.html'>collect</a></span><span class='o'>(</span><span class='nv'>summary</span><span class='o'>)</span></span>
+<span><span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='o'>(</span><span class='nv'>answer</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; [1] 3</span></span>
+<span></span></code></pre>
+
+</div>
+
+-   the [dtplyr package](https://dtplyr.tidyverse.org/index.html), which is a data.table back-end for dplyr. The ["lazy" data.table objects](https://dtplyr.tidyverse.org/reference/lazy_dt.html) "captures the intent of dplyr verbs, only actually performing computation when requested" (with [`collect()`](https://dplyr.tidyverse.org/reference/compute.html) for instance). The manual also explains that this allows dtplyr to make the code more performant by simplifying the data.table calls.
+
+Slightly tweaked from dtplyr README,
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'># load packages</span></span>
+<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://r-datatable.com'>data.table</a></span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; Attaching package: 'data.table'</span></span>
+<span></span><span><span class='c'>#&gt; The following objects are masked from 'package:dplyr':</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt;     between, first, last</span></span>
+<span></span><span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://dtplyr.tidyverse.org'>dtplyr</a></span><span class='o'>)</span></span>
+<span><span class='kr'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='o'>(</span><span class='nv'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>, warn.conflicts <span class='o'>=</span> <span class='kc'>FALSE</span><span class='o'>)</span></span>
+<span></span>
+<span><span class='c'># create a “lazy” data table that tracks the operations performed on it.</span></span>
+<span><span class='nv'>mtcars2</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://dtplyr.tidyverse.org/reference/lazy_dt.html'>lazy_dt</a></span><span class='o'>(</span><span class='nv'>mtcars</span><span class='o'>)</span></span>
+<span></span>
+<span><span class='c'># create the query</span></span>
+<span><span class='nv'>summary</span> <span class='o'>&lt;-</span> <span class='nv'>mtcars2</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='o'>(</span><span class='nv'>wt</span> <span class='o'>&lt;</span> <span class='m'>5</span><span class='o'>)</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>l100k <span class='o'>=</span> <span class='m'>235.21</span> <span class='o'>/</span> <span class='nv'>mpg</span><span class='o'>)</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='c'># liters / 100 km</span></span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='o'>(</span><span class='nv'>cyl</span><span class='o'>)</span> <span class='o'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='nf'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='o'>(</span>l100k <span class='o'>=</span> <span class='nf'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='o'>(</span><span class='nv'>l100k</span><span class='o'>)</span><span class='o'>)</span></span>
+<span></span>
+<span><span class='c'># the object is lazy, the value is not computed yet</span></span>
+<span><span class='nv'>summary</span></span>
+<span><span class='c'>#&gt; <span style='font-weight: bold;'>Source: </span>local data table [3 x 2]</span></span>
+<span><span class='c'>#&gt; <span style='font-weight: bold;'>Call:   </span>`_DT1`[wt &lt; 5][, `:=`(l100k = 235.21/mpg)][, .(l100k = mean(l100k)), </span></span>
+<span><span class='c'>#&gt;     keyby = .(cyl)]</span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt;     cyl l100k</span></span>
+<span><span class='c'>#&gt;   <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #555555; font-style: italic;'>&lt;dbl&gt;</span></span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>1</span>     4  9.05</span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>2</span>     6 12.0 </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'>3</span>     8 14.9 </span></span>
+<span><span class='c'>#&gt; </span></span>
+<span><span class='c'>#&gt; <span style='color: #555555;'># Use as.data.table()/as.data.frame()/as_tibble() to access results</span></span></span>
+<span></span><span><span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='o'>(</span><span class='nv'>summary</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; [1] NA</span></span>
+<span></span><span></span>
+<span><span class='c'># we explictly request the data, so now it's there</span></span>
+<span><span class='nv'>answer</span> <span class='o'>&lt;-</span> <span class='nf'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span><span class='o'>(</span><span class='nv'>summary</span><span class='o'>)</span></span>
+<span><span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='o'>(</span><span class='nv'>answer</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; [1] 3</span></span>
+<span></span></code></pre>
+
+</div>
+
 -   the [duckplyr package](https://duckplyr.tidyverse.org/dev/), which is a drop-in replacement for dplyr, powered by DuckDB for fast operation. "Queries on the remote data are executed lazily, and the results are not materialized until explicitly requested."
 
 In the case of the duckplyr package, the behavior can be [switched off](https://duckplyr.tidyverse.org/dev/articles/developers.html?q=lazy#eager-and-lazy-modes) depending on one's preferences around fallbacks to dplyr.
@@ -125,6 +223,14 @@ If the thing accessing the duckplyr data.frame is...
 -   duckplyr, then the operations continue to be lazy (until a call to `collect.duckplyr_df()` for instance).
 
 Therefore, duckplyr can be both lazy (within itself) and not lazy (for the outside world). :zany_face:
+
+## Lazy as in lazy loading of data in packages (`LazyData`)
+
+If your R package exports data, and sets the `LazyData` field in `DESCRIPTION` to `true`, then the exported datasets are lazily loaded: they're available without the use of [`data()`](https://rdrr.io/r/utils/data.html), but they're not actually taking up memory until they are accessed.
+
+There's more details on `LazyData` in the [R packages book by Hadley Wickham and Jenny Bryan](https://r-pkgs.org/data.html#sec-data-data) and in [Writing R Extensions](https://cloud.r-project.org/doc/manuals/r-devel/R-exts.html#Data-in-packages).
+
+Note that internal data is always lazily loaded, and that data that is too big cannot be lazily loaded.
 
 ## Lazy as in frugal file modifications
 
