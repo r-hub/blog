@@ -8,7 +8,7 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: ec6f3eef7e4cb168
+rmd_hash: 2c54b48040e37ebf
 
 ---
 
@@ -16,11 +16,11 @@ In the programming world, laziness can often be a good thing: it is both a human
 
 ## Lazy as in lazy evaluation
 
-You might know that R provides lazy evaluation: the arguments of a function are only evaluated if they are accessed. In short, you can pass anything as an argument value to a function without any problem as long as the function does not use that value. The contrary of lazy evaluation is *eager evaluation*.
+You might know that R provides **lazy evaluation**: the arguments of a function are only evaluated if they are accessed. In short, you can pass anything as an argument value to a function without any problem as long as the function does not use that value. The contrary of lazy evaluation is **eager evaluation**.
 
 The [Advanced R book by Hadley Wickham](https://adv-r.hadley.nz/functions.html#lazy-evaluation) features a very clear introduction to lazy evaluation.
 
-Note that the workhorse of lazy evaluation in base R is a thing called a promise that contains an expression (the recipe for getting a value), an environment (the ingredients that are around), a value. The latter is only computed when accessed, and cached once computed.
+Note that the workhorse of lazy evaluation in base R is a thing called a **promise** that contains an *expression* (the recipe for getting a value), an *environment* (the ingredients that are around), a *value*. The latter is only computed when accessed, and cached once computed.
 
 ### What about {future}?
 

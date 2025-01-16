@@ -48,13 +48,13 @@ In this post, we will enumerate the different possible definitions of "lazy" in 
 
 ## Lazy as in lazy evaluation
 
-You might know that R provides lazy evaluation: the arguments of a function are only evaluated if they are accessed.
+You might know that R provides **lazy evaluation**: the arguments of a function are only evaluated if they are accessed.
 In short, you can pass anything as an argument value to a function without any problem as long as the function does not use that value.
-The contrary of lazy evaluation is *eager evaluation*.
+The contrary of lazy evaluation is **eager evaluation**.
 
 The [Advanced R book by Hadley Wickham](https://adv-r.hadley.nz/functions.html#lazy-evaluation) features a very clear introduction to lazy evaluation.
 
-Note that the workhorse of lazy evaluation in base R is a thing called a promise that contains an expression (the recipe for getting a value), an environment (the ingredients that are around), a value.
+Note that the workhorse of lazy evaluation in base R is a thing called a **promise** that contains an *expression* (the recipe for getting a value), an *environment* (the ingredients that are around), a *value*.
 The latter is only computed when accessed, and cached once computed.
 
 ### What about {future}?
