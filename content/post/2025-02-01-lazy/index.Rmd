@@ -80,7 +80,7 @@ When using the {future} package, you create a future, that is associated to a **
 The value can be computed asynchronously, which means in parallel.
 Therefore, the futures package allows R programmers to take full advantage of their local computing resources: cores, clusters, etc.
 
-Now, to add confusion beyond the different meaning of "promise" in this context, [by default](https://future.futureverse.org/reference/future.html) a future is **not lazy**, it is **eager**.
+To come back to laziness, [by default](https://future.futureverse.org/reference/future.html) a future is **not lazy**, it is **eager**.
 This means that it is computed immediately.
 
 By default, the creation of a future below (`eager_future`) takes as much time as not wrapping the code in a future, because the computation is immediate.
