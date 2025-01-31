@@ -190,7 +190,9 @@ If your R package exports data, and sets the `LazyData` field in `DESCRIPTION` t
 
 There's more details on `LazyData` in the [R packages book by Hadley Wickham and Jenny Bryan](https://r-pkgs.org/data.html#sec-data-data) and in [Writing R Extensions](https://cloud.r-project.org/doc/manuals/r-devel/R-exts.html#Data-in-packages).
 
-Note that internal data is always lazily loaded, and that data that is too big cannot be lazily loaded.
+Note that internal data is always lazily loaded, and that data that is too big[^1] cannot be lazily loaded.
+
+[^1]: "those which when serialized exceed 2GB, the limit for the format on 32-bit platforms" at the time of writing, in [Writing R Extensions](https://cloud.r-project.org/doc/manuals/r-devel/R-exts.html#Data-in-packages).
 
 ## Lazy as in frugal file modifications
 
