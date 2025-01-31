@@ -53,10 +53,14 @@ In this post, we will enumerate the different possible definitions of "lazy" in 
 You might know that R provides **lazy evaluation**: the arguments of a function are only evaluated if they are accessed.
 In short, you can pass anything as an argument value to a function without any problem as long as the function does not use that value.
 
-For instance, the code below works despite `evaluation`'s not existing, because the definition of the `mean()` function includes ellipsis, and because the `lazy` argument is actually not used.
+For instance, the code below works despite `evaluation`'s not existing, because the definition of the `do_something()` function includes ellipsis, and because the `lazy` argument is actually not used.
 
 ```{r}
-mean(1:10, lazy = evaluation)
+do_something <- function(x, na.rm = TRUE, ...) {
+  mean(x, na.rm = na.rm)
+}
+
+do_something(1:10, lazy = evaluation)
 ```
 
 The contrary of lazy evaluation is **eager evaluation**.
@@ -72,7 +76,7 @@ Maybe you have heard of the [future package](https://future.futureverse.org/inde
 It provides an implementation in R of **futures**, a programming concept.
 Its homepage state "In programming, a future is an abstraction for a value that may be available at some point in the future. The state of a future can either be unresolved or resolved."
 
-With futures, you create a future, that is associated to a **promise**, which is a **placeholder for a value** and then the value itself (so not the same definition of "promise" as the "promises" used by base R in the context of lazy evaluation).
+When using the futures package, you create a future, that is associated to a **promise**, which is a **placeholder for a value** and then the value itself (so not the same definition of "promise" as the "promises" used by base R in the context of lazy evaluation).
 The value can be computed asynchronously, which means in parallel.
 Therefore, the futures package allows R programmers to take full advantage of their local computing resources: cores, clusters, etc.
 
