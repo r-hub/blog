@@ -203,6 +203,17 @@ It is a much simpler concept of laziness: decide right now whether it is needed 
 
 The potools package, that provides tools for portability and internationalization of R packages, uses ["lazy" for a similar meaning](https://michaelchirico.github.io/potools/reference/po_update.html?q=lazy#ref-usage).
 
+## Lazy as in frugal package testing
+
+The [lazytest package](https://lazytest.cynkra.com/) by Kirill Müller saves you time by only re-running tests that failed during the last run:
+
+-   You run all tests once with `lazytest::lazytest_local()` instead of `devtools::test()`. The lazytest package records which tests failed.
+-   The next call to `lazytest::lazytest_local()` only runs the tests that had failed.
+
+This way you can iterate on fixing tests until you get a clean run.
+At which stage it's probably wise to run all tests again to check you didn't break anything else in the meantime.
+:wink:
+
 ## Lazy as in lazy quantifiers in regular expressions
 
 In regular expressions you can use [quantifiers](https://blog.djnavarro.net/posts/2024-12-16_regex-backreferences/#quantifiers) to indicate how many times a pattern must appear: the pattern can be optional, appear several times, etc.
@@ -222,7 +233,7 @@ stringr::str_match(string, "a+?")
 ## Conclusion
 
 In the context of lazy evaluation and lazy database operations we can think of lazy as a sort of parcimonious procrastination.
-In the case of frugal file modifications in pkgdown and potools, lazy means an informed decision is made on the spot on whether a computation is needed.
+In the case of frugal file modifications in pkgdown and potools or frugal testing with lazytest, lazy means an informed decision is made on the spot on whether a computation is needed.
 In the case of lazy quantifiers in regular expressions, lazy means stingy.
 
 Overall, an user can expect "lazy" to mean "less waste", but it is crucial that the documentation of the particular piece of software at hand clarifies the meaning and the potential trade-offs.
