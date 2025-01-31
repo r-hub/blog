@@ -4,6 +4,7 @@ title: "Lazy introduction to laziness in R"
 authors: 
 - Maëlle Salmon
 - Athanasia Mo Mowinckel
+- Hannah Frick
 date: "2025-02-01" 
 tags: 
 - package development

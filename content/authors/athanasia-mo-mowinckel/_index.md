@@ -10,6 +10,9 @@ social:
 - service: Github
   link: https://github.com/drmowinckels
   icon: fa-github
+- service: Bluesky
+  link: https://bsky.app/profile/drmowinckels.io
+  icon: fa-bluesky
 ---
 
 Cognitive neuroscientist based in Oslo, Norway
