@@ -83,28 +83,23 @@ Setting `lazy` to `TRUE` makes the future creation much faster (`lazy_future`).
 
 ```{r, cache=TRUE}
 library("future")
-bench::mark(no_future <- is.numeric(runif(n = 10000000)))
-bench::mark(eager_future <- future(is.numeric(runif(n = 10000000))))
-bench::mark(lazy_future <- future(is.numeric(runif(n = 10000000)), lazy = TRUE))
+bench::mark(
+  no_future = is.numeric(runif(n = 10000000)),
+  eager_future = future(is.numeric(runif(n = 10000000))),
+  lazy_future = future(is.numeric(runif(n = 10000000)), lazy = TRUE),
+  check = FALSE
+)
 ```
 
 If we do retrieve the value, overall the same time is spent between creating the future and our getting the value:
 
 ```{r, cache=TRUE, warning=FALSE}
-bench::mark({
-  no_future <- is.numeric(runif(n = 10000000))
-  no_future
-})
-
-bench::mark({
-  eager_future <- future(is.numeric(runif(n = 10000000)))
-  value(eager_future)
-})
-
-bench::mark({
-  lazy_future <- future(is.numeric(runif(n = 10000000)), lazy = TRUE)
-  value(lazy_future)
-})
+bench::mark(
+  no_future = {is.numeric(runif(n = 10000000))},
+  eager_future = {x <- future(is.numeric(runif(n = 10000000))); value(x)},
+  lazy_future = {x <- future(is.numeric(runif(n = 10000000)), lazy = TRUE); value(x)},
+  check = FALSE
+)
 ```
 
 Therefore, the use of futures and the use of lazy evaluation are orthogonal concepts: you can use future with or without lazy evaluation.
@@ -212,14 +207,14 @@ Matching as many repetitions as possible is "eager" (or greedy, actual term).
 string <- "aaaaaa"
 # greedy! eager!
 stringr::str_match(string, "a+")
-# stringy! lazy!
+# stingy! lazy!
 stringr::str_match(string, "a+?")
 ```
 
 ## Conclusion
 
 In the context of lazy evaluation and lazy database operations we can think of lazy as a sort of parcimonious procrastination.
-In the case of frugal file modifications in pkgdown and potools, no procrastination, an informed decision is made on the spot on whether a computation is needed.
+In the case of frugal file modifications in pkgdown and potools, lazy means an informed decision is made on the spot on whether a computation is needed.
 In the case of lazy quantifiers in regular expressions, lazy means stingy.
 
-Overall, an user can expect "lazy" means less waste, but it is crucial the documentation of the particular piece of software at hand clarifies the meaning and the potential trade-offs.
+Overall, an user can expect "lazy" to mean "less waste", but it is crucial that the documentation of the particular piece of software at hand clarifies the meaning and the potential trade-offs.
