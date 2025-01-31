@@ -208,8 +208,8 @@ The potools package, that provides tools for portability and internationalizatio
 In regular expressions you can use [quantifiers](https://blog.djnavarro.net/posts/2024-12-16_regex-backreferences/#quantifiers) to indicate how many times a pattern must appear: the pattern can be optional, appear several times, etc.
 You can also specify whether the tool should match as many repetitions as possible, or the fewest number of repetitions possible.
 
-Matching the fewest number of repetitions possible is "lazy" (stingy, I made that up).
-Matching as many repetitions as possible is "eager" (or greedy, actual term).
+Matching the fewest number of repetitions possible is "lazy" (or stingy).
+Matching as many repetitions as possible is "eager" (or greedy).
 
 ```{r}
 string <- "aaaaaa"
