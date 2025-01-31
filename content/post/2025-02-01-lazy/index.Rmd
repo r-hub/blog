@@ -138,6 +138,7 @@ summary <- mtcars2 %>%
   arrange(desc(mpg))
 
 # the object is lazy, the value is not computed yet
+# here is what summary looks like at this stage
 summary
 nrow(summary)
 
