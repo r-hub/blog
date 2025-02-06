@@ -10,7 +10,7 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: 80862337571d31d9
+rmd_hash: 6d5bdb18997bb52a
 
 ---
 
@@ -20,7 +20,7 @@ In the programming world, laziness can often be a good thing: it is both a human
 
 You might know that R provides **lazy evaluation**: the arguments of a function are only evaluated if they are accessed. In short, you can pass anything as an argument value to a function without any problem as long as the function does not use that value.
 
-For instance, the code below works despite `evaluation`'s not existing, because the definition of the `do_something()` function includes ellipsis, and because the `lazy` argument is actually not used.
+For instance, the code below works despite `evaluation` not existing because the definition of the `do_something()` function includes ellipsis and because the `lazy` argument is not actually used.
 
 <div class="highlight">
 
