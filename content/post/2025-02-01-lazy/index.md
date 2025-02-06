@@ -10,7 +10,7 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: fa4281ef57246066
+rmd_hash: 80862337571d31d9
 
 ---
 
@@ -198,7 +198,7 @@ Slightly tweaked from dtplyr README,
 
 -   [the duckplyr package](https://duckplyr.tidyverse.org/dev/) which deserves its own subsection as its objects are both lazy and eager.
 
-### duckplyr, lazy evaluation and funneling
+### duckplyr, lazy evaluation and prudence
 
 The duckplyr package is a package that uses DuckDB under the hood but that is also a drop-in replacement for dplyr. These two facts create a tension:
 
@@ -217,7 +217,38 @@ If the thing accessing the duckplyr data.frame is...
 
 Therefore, duckplyr can be both lazy (within itself) and not lazy (for the outside world). :zany_face:
 
-Now, the default materialization can be problematic if dealing with large data: what if the materialization eats up all RAM? Therefore, the duckplyr package has a safeguard called **funneling** (in the current development version of the package). A funneled data.frame cannot be materialized by default, it needs a call to a [`collect()`](https://dplyr.tidyverse.org/reference/compute.html) function. By default, duckplyr frames are unfunneled, but duckplyr frames created from Parquet data (presumedly large) are funneled.
+Now, the default materialization can be problematic if dealing with large data: what if the materialization eats up all memory? Therefore, the duckplyr package has a safeguard called **prudence** (in the current development version of the package) to control automatic materialization. It has three possible settings:
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'># default: lavish, automatic materialization</span></span>
+<span><span class='nv'>mtcars</span> <span class='o'>|&gt;</span></span>
+<span>  <span class='nf'>duckplyr</span><span class='nf'>::</span><span class='nf'><a href='https://duckplyr.tidyverse.org/reference/duckdb_tibble.html'>as_duckdb_tibble</a></span><span class='o'>(</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
+<span>  <span class='nf'>dplyr</span><span class='nf'>::</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mpg2 <span class='o'>=</span> <span class='nv'>mpg</span> <span class='o'>+</span> <span class='m'>2</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
+<span>  <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='o'>(</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; [1] 32</span></span>
+<span></span><span></span>
+<span><span class='c'># frugal, no automatic materialization</span></span>
+<span><span class='nv'>mtcars</span> <span class='o'>|&gt;</span></span>
+<span>  <span class='nf'>duckplyr</span><span class='nf'>::</span><span class='nf'><a href='https://duckplyr.tidyverse.org/reference/duckdb_tibble.html'>as_duckdb_tibble</a></span><span class='o'>(</span>prudence <span class='o'>=</span> <span class='s'>"frugal"</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
+<span>  <span class='nf'>dplyr</span><span class='nf'>::</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mpg2 <span class='o'>=</span> <span class='nv'>mpg</span> <span class='o'>+</span> <span class='m'>2</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
+<span>  <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='o'>(</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; Error: Materialization would result in 1 rows, which exceeds the limit of 0. Use collect() or as_tibble() to materialize.</span></span>
+<span></span><span></span>
+<span><span class='c'># thrifty, automatic materialization up to 1 million cells so ok here</span></span>
+<span><span class='nv'>mtcars</span> <span class='o'>|&gt;</span></span>
+<span>  <span class='nf'>duckplyr</span><span class='nf'>::</span><span class='nf'><a href='https://duckplyr.tidyverse.org/reference/duckdb_tibble.html'>as_duckdb_tibble</a></span><span class='o'>(</span>prudence <span class='o'>=</span> <span class='s'>"thrifty"</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
+<span>  <span class='nf'>dplyr</span><span class='nf'>::</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mpg2 <span class='o'>=</span> <span class='nv'>mpg</span> <span class='o'>+</span> <span class='m'>2</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
+<span>  <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='o'>(</span><span class='o'>)</span></span>
+<span><span class='c'>#&gt; [1] 32</span></span>
+<span></span></code></pre>
+
+</div>
+
+By default,
+
+-   duckplyr frames created with, say, [`duckplyr::as_duckdb_tibble()`](https://duckplyr.tidyverse.org/reference/duckdb_tibble.html) are "lavish",
+-   but duckplyr frames created with ingestion functions such as [`duckplyr::read_parquet_duckdb()`](https://duckplyr.tidyverse.org/reference/read_file_duckdb.html) (presumedly large data) are "thrifty".
 
 ## Lazy as in lazy loading of data in packages (`LazyData`)
 

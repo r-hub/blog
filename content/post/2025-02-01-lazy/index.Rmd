@@ -180,7 +180,7 @@ nrow(answer)
 
 -   [the duckplyr package](https://duckplyr.tidyverse.org/dev/) which deserves its own subsection as its objects are both lazy and eager.
 
-### duckplyr, lazy evaluation and funneling
+### duckplyr, lazy evaluation and prudence
 
 The duckplyr package is a package that uses DuckDB under the hood but that is also a drop-in replacement for dplyr.
 These two facts create a tension:
@@ -204,10 +204,35 @@ If the thing accessing the duckplyr data.frame is...
 Therefore, duckplyr can be both lazy (within itself) and not lazy (for the outside world).
 :zany_face:
 
-Now, the default materialization can be problematic if dealing with large data: what if the materialization eats up all RAM?
-Therefore, the duckplyr package has a safeguard called **funneling** (in the current development version of the package).
-A funneled data.frame cannot be materialized by default, it needs a call to a `collect()` function.
-By default, duckplyr frames are unfunneled, but duckplyr frames created from Parquet data (presumedly large) are funneled.
+Now, the default materialization can be problematic if dealing with large data: what if the materialization eats up all memory?
+Therefore, the duckplyr package has a safeguard called **prudence** (in the current development version of the package) to control automatic materialization.
+It has three possible settings:
+
+```{r, error=TRUE}
+# default: lavish, automatic materialization
+mtcars |>
+  duckplyr::as_duckdb_tibble() |>
+  dplyr::mutate(mpg2 = mpg + 2) |> 
+  nrow()
+
+# frugal, no automatic materialization
+mtcars |>
+  duckplyr::as_duckdb_tibble(prudence = "frugal") |>
+  dplyr::mutate(mpg2 = mpg + 2) |> 
+  nrow()
+
+# thrifty, automatic materialization up to 1 million cells so ok here
+mtcars |>
+  duckplyr::as_duckdb_tibble(prudence = "thrifty") |>
+  dplyr::mutate(mpg2 = mpg + 2) |> 
+  nrow()
+
+```
+
+By default,
+
+-   duckplyr frames created with, say, `duckplyr::as_duckdb_tibble()` are "lavish",
+-   but duckplyr frames created with ingestion functions such as `duckplyr::read_parquet_duckdb()` (presumedly large data) are "thrifty".
 
 ## Lazy as in lazy loading of data in packages (`LazyData`)
 
