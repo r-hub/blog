@@ -53,7 +53,7 @@ In this post, we will enumerate the different possible definitions of "lazy" in 
 You might know that R provides **lazy evaluation**: the arguments of a function are only evaluated if they are accessed.
 In short, you can pass anything as an argument value to a function without any problem as long as the function does not use that value.
 
-For instance, the code below works despite `evaluation`'s not existing, because the definition of the `do_something()` function includes ellipsis, and because the `lazy` argument is actually not used.
+For instance, the code below works despite `evaluation` not existing because the definition of the `do_something()` function includes ellipsis and because the `lazy` argument is not actually used.
 
 ```{r}
 do_something <- function(x, na.rm = TRUE, ...) {
