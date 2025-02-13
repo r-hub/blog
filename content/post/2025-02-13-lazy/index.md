@@ -10,7 +10,7 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: 92bcb31d0123e859
+rmd_hash: 53472eb933ca96b6
 
 ---
 
@@ -232,7 +232,7 @@ Now, the default materialization can be problematic if dealing with large data: 
 
 </div>
 
--   frugal, no automatic materialization ever.
+-   stingy, no automatic materialization ever.
 
 <div class="highlight">
 

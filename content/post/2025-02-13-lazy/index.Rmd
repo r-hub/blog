@@ -217,7 +217,7 @@ mtcars |>
   nrow()
 ```
 
--   frugal, no automatic materialization ever.
+-   stingy, no automatic materialization ever.
 
 ```{r, error=TRUE}
 mtcars |>
