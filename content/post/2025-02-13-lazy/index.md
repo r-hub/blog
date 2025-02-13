@@ -5,12 +5,12 @@ authors:
 - Maëlle Salmon
 - Athanasia Mo Mowinckel
 - Hannah Frick
-date: "2025-02-08" 
+date: "2025-02-13" 
 tags: 
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: 6d5bdb18997bb52a
+rmd_hash: 92bcb31d0123e859
 
 ---
 
@@ -208,7 +208,7 @@ The duckplyr package is a package that uses DuckDB under the hood but that is al
 
 As a consequence, duckplyr is lazy on the inside for all DuckDB operations but eager on the outside, thanks to [ALTREP](https://duckdb.org/2024/04/02/duckplyr.html#eager-vs-lazy-materialization), a powerful R feature that among other things supports **deferred evaluation**.
 
-> ALTREP allows R objects to have different in-memory representations, and for custom code to be executed whenever those objects are accessed.
+> "ALTREP allows R objects to have different in-memory representations, and for custom code to be executed whenever those objects are accessed." Hannes Mühleisen.
 
 If the thing accessing the duckplyr data.frame is...
 
@@ -217,26 +217,39 @@ If the thing accessing the duckplyr data.frame is...
 
 Therefore, duckplyr can be both lazy (within itself) and not lazy (for the outside world). :zany_face:
 
-Now, the default materialization can be problematic if dealing with large data: what if the materialization eats up all memory? Therefore, the duckplyr package has a safeguard called **prudence** (in the current development version of the package) to control automatic materialization. It has three possible settings:
+Now, the default materialization can be problematic if dealing with large data: what if the materialization eats up all memory? Therefore, the duckplyr package has a safeguard called **prudence** to control automatic materialization (from duckplyr 1.0.0). It has three possible settings:
+
+-   lavish, automatic materialization.
 
 <div class="highlight">
 
-<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='c'># default: lavish, automatic materialization</span></span>
-<span><span class='nv'>mtcars</span> <span class='o'>|&gt;</span></span>
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>mtcars</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'>duckplyr</span><span class='nf'>::</span><span class='nf'><a href='https://duckplyr.tidyverse.org/reference/duckdb_tibble.html'>as_duckdb_tibble</a></span><span class='o'>(</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'>dplyr</span><span class='nf'>::</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mpg2 <span class='o'>=</span> <span class='nv'>mpg</span> <span class='o'>+</span> <span class='m'>2</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
 <span>  <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='o'>(</span><span class='o'>)</span></span>
 <span><span class='c'>#&gt; [1] 32</span></span>
-<span></span><span></span>
-<span><span class='c'># frugal, no automatic materialization</span></span>
-<span><span class='nv'>mtcars</span> <span class='o'>|&gt;</span></span>
-<span>  <span class='nf'>duckplyr</span><span class='nf'>::</span><span class='nf'><a href='https://duckplyr.tidyverse.org/reference/duckdb_tibble.html'>as_duckdb_tibble</a></span><span class='o'>(</span>prudence <span class='o'>=</span> <span class='s'>"frugal"</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
+<span></span></code></pre>
+
+</div>
+
+-   frugal, no automatic materialization ever.
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>mtcars</span> <span class='o'>|&gt;</span></span>
+<span>  <span class='nf'>duckplyr</span><span class='nf'>::</span><span class='nf'><a href='https://duckplyr.tidyverse.org/reference/duckdb_tibble.html'>as_duckdb_tibble</a></span><span class='o'>(</span>prudence <span class='o'>=</span> <span class='s'>"stingy"</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'>dplyr</span><span class='nf'>::</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mpg2 <span class='o'>=</span> <span class='nv'>mpg</span> <span class='o'>+</span> <span class='m'>2</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
 <span>  <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='o'>(</span><span class='o'>)</span></span>
 <span><span class='c'>#&gt; Error: Materialization would result in 1 rows, which exceeds the limit of 0. Use collect() or as_tibble() to materialize.</span></span>
-<span></span><span></span>
-<span><span class='c'># thrifty, automatic materialization up to 1 million cells so ok here</span></span>
-<span><span class='nv'>mtcars</span> <span class='o'>|&gt;</span></span>
+<span></span></code></pre>
+
+</div>
+
+-   thrifty, automatic materialization up to 1 million cells so ok here
+
+<div class="highlight">
+
+<pre class='chroma'><code class='language-r' data-lang='r'><span><span class='nv'>mtcars</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'>duckplyr</span><span class='nf'>::</span><span class='nf'><a href='https://duckplyr.tidyverse.org/reference/duckdb_tibble.html'>as_duckdb_tibble</a></span><span class='o'>(</span>prudence <span class='o'>=</span> <span class='s'>"thrifty"</span><span class='o'>)</span> <span class='o'>|&gt;</span></span>
 <span>  <span class='nf'>dplyr</span><span class='nf'>::</span><span class='nf'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='o'>(</span>mpg2 <span class='o'>=</span> <span class='nv'>mpg</span> <span class='o'>+</span> <span class='m'>2</span><span class='o'>)</span> <span class='o'>|&gt;</span> </span>
 <span>  <span class='nf'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='o'>(</span><span class='o'>)</span></span>
@@ -298,7 +311,7 @@ Matching the fewest number of repetitions possible is "lazy" (or stingy). Matchi
 
 ## Conclusion
 
-In the context of lazy evaluation and lazy database operations we can think of lazy as a sort of parcimonious procrastination. In the case of frugal file modifications in pkgdown and potools or frugal testing with lazytest, lazy means an informed decision is made on the spot on whether a computation is needed. In the case of lazy quantifiers in regular expressions, lazy means stingy.
+In the context of lazy evaluation and lazy database operations we can think of lazy as a sort of parcimonious procrastination. For lazy database operations, the laziness is what supports optimization of the whole pipeline. In the case of frugal file modifications in pkgdown and potools or frugal testing with lazytest, lazy means an informed decision is made on the spot on whether a computation is needed. In the case of lazy quantifiers in regular expressions, lazy means stingy.
 
 Overall, an user can expect "lazy" to mean "less waste", but it is crucial that the documentation of the particular piece of software at hand clarifies the meaning and the potential trade-offs.
 
