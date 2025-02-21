@@ -10,11 +10,13 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: 53472eb933ca96b6
+rmd_hash: ed1b5536b48eb324
 
 ---
 
 In the programming world, laziness can often be a good thing: it is both a human quality that can motivate automation efforts, and a programming concept that avoids wasting resources such as memory. Now, when reading code or documentation, seeing the word "lazy" can be confusing, because of its polisemy: it carries several meanings. In this post, we will enumerate the different possible definitions of "lazy" in R code.
+
+*This post was featured on the [R Weekly highlights podcast](https://serve.podhome.fm/episodepage/r-weekly-highlights/issue-2025-w08-highlights_638757139532492773) hosted by Eric Nantz and Mike Thomas.*
 
 ## Lazy as in lazy evaluation
 
