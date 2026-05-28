@@ -9,7 +9,7 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: 49cfcb0f0cfc4f89
+rmd_hash: 0192a0722eb8d683
 
 ---
 
@@ -64,7 +64,7 @@ I could have run `jarl check . --fix` to fix everything with an automatic fix bu
 jarl check . --select any_is_na
 ```
 
-This separation of changes by rule also made it easier to review PRs: one topic per PR.
+This separation of changes by rule also made it easier to review changes: one topic per commit. *Maëlle: in igraph, I created one **PR** per rule or group of rules.*
 
 I first went through the ones with automatic fixes, then the ones without. The result of the clean-up: <https://github.com/tidymodels/parsnip/pull/1356> *Maëlle: in igraph, I went through rules starting with the ones with the least violations, ending with the ones that had the most hits.*
 

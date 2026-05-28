@@ -105,7 +105,8 @@ You can [select rules](https://jarl.etiennebacher.com/by-example#select-or-ignor
 jarl check . --select any_is_na
 ```
 
-This separation of changes by rule also made it easier to review PRs: one topic per PR. 
+This separation of changes by rule also made it easier to review changes: one topic per commit.
+_Maëlle: in igraph, I created one **PR** per rule or group of rules._ 
 
 I first went through the ones with automatic fixes, then the ones without.
 The result of the clean-up: https://github.com/tidymodels/parsnip/pull/1356
