@@ -9,7 +9,7 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: 0192a0722eb8d683
+rmd_hash: d54c55093fb1dd00
 
 ---
 
@@ -68,7 +68,7 @@ This separation of changes by rule also made it easier to review changes: one to
 
 I first went through the ones with automatic fixes, then the ones without. The result of the clean-up: <https://github.com/tidymodels/parsnip/pull/1356> *Maëlle: in igraph, I went through rules starting with the ones with the least violations, ending with the ones that had the most hits.*
 
-parsnip has been around the block a few times and had accumulated a few functions flagged by jarl as unused. I spotted `release_bullets()` in the list which I know we want to keep.[^1] We use it for parsnip in the release process but we don't use it in parsnip. I wasn't expecting jarl to catch onto this difference so I decided to review the list of flagged functions separately and split that off into its own issue (and PR). I ended up keeping one other function that was part of a set of functions provided in a standalone file but the other ones I removed.
+parsnip has been around the block a few times and had accumulated a few functions flagged by Jarl as unused. I spotted `release_bullets()` in the list which I know we want to keep.[^1] We use it for parsnip in the release process but we don't use it in parsnip. I wasn't expecting Jarl to catch onto this difference so I decided to review the list of flagged functions separately and split that off into its own issue (and PR). I ended up keeping one other function that was part of a set of functions provided in a standalone file but the other ones I removed.
 
 No kittens were hurt!
 
