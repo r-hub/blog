@@ -9,7 +9,7 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: be2a53c4ab2d1ede
+rmd_hash: 56576b086aab7ee4
 
 ---
 
@@ -17,7 +17,7 @@ rmd_hash: be2a53c4ab2d1ede
 
 TL;DR, don't let your friends use Claude for finding useless code in a project! Using [Jarl](https://jarl.etiennebacher.com/) instead is cheaper, more reliable, and won't kill any kitten.
 
-r packaWe (Hannah and Maëlle) share an appreciation for the unglamorous maintenance work we call upkeep. So when Claude highlighted some [dead](https://github.com/tidymodels/tune/commit/5b4d63b58bd496e6c2809a5444b6ab119ae14f37) [code](https://github.com/tidymodels/tune/commit/16766b32ae1157425b124a70ec0bd64246e24c7f) in the tune package to Hannah, it was worth a mention during a chat. This led to Maëlle recommending Etienne Bacher's [Jarl](https://jarl.etiennebacher.com/), a fast linter for R written in Rust that can, among other things, detect unused functions.
+We (Hannah and Maëlle) share an appreciation for the unglamorous maintenance work we call upkeep. So when Claude highlighted some [dead](https://github.com/tidymodels/tune/commit/5b4d63b58bd496e6c2809a5444b6ab119ae14f37) [code](https://github.com/tidymodels/tune/commit/16766b32ae1157425b124a70ec0bd64246e24c7f) in the tune package to Hannah, it was worth a mention during a chat. This led to Maëlle recommending Etienne Bacher's [Jarl](https://jarl.etiennebacher.com/), a fast linter for R written in Rust that can, among other things, detect unused functions.
 
 Motivated by this conversation among other things, Maëlle wrote a [whole blog post](https://ropensci.org/blog/2026/04/02/tree-sitter-overview/) about Jarl and other tooling for R based on tree-sitter, including the above meme.
 
