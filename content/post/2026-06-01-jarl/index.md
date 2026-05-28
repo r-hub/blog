@@ -2,14 +2,14 @@
 slug: jarl
 title: "Refactoring with Jarl: a coffee chat" 
 authors: 
-- Maëlle Salmon
 - Hannah Frick
+- Maëlle Salmon
 date: "2026-06-01" 
 tags: 
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: 56576b086aab7ee4
+rmd_hash: 49cfcb0f0cfc4f89
 
 ---
 

@@ -2,8 +2,8 @@
 slug: jarl
 title: "Refactoring with Jarl: a coffee chat" 
 authors: 
-- Maëlle Salmon
 - Hannah Frick
+- Maëlle Salmon
 date: "2026-06-01" 
 tags: 
 - package development
