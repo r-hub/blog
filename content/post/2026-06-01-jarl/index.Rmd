@@ -114,7 +114,7 @@ _Maëlle: in igraph, I went through rules starting with the ones with the least 
 
 parsnip has been around the block a few times and had accumulated a few functions flagged by Jarl as unused. 
 I spotted `release_bullets()` in the list which I know we want to keep.[^release]
-We use it for parsnip in the release process but we don't use it in parsnip. 
+We use it _for_ parsnip in the release process but we don't use it _in_ parsnip. 
 I wasn't expecting Jarl to catch onto this difference so I decided to review the list of flagged functions separately and split that off into its own issue (and PR). 
 I ended up keeping one other function that was part of a set of functions provided in a standalone file but the other ones I removed. 
 
