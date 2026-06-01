@@ -116,7 +116,7 @@ parsnip has been around the block a few times and had accumulated a few function
 I spotted `release_bullets()` in the list which I know we want to keep.[^release]
 We use it _for_ parsnip in the release process but we don't use it _in_ parsnip. 
 I wasn't expecting Jarl to catch onto this difference so I decided to review the list of flagged functions separately and split that off into its own issue (and PR). 
-I ended up keeping one other function that was part of a set of functions provided in a standalone file but the other ones I removed. 
+I ended up keeping one other function that was part of a set of functions provided in a standalone file but I removed the other ones. 
 
 [^release]: This inspired an [issue](https://github.com/etiennebacher/jarl/issues/497).
 
