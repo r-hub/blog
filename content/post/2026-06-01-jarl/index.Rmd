@@ -58,7 +58,7 @@ This led to Maëlle recommending Etienne Bacher's [Jarl](https://jarl.etiennebac
 Motivated by this conversation among other things, Maëlle wrote a [whole blog post](https://ropensci.org/blog/2026/04/02/tree-sitter-overview/) about Jarl and other tooling for R based on tree-sitter, including the above meme.
 
 So naturally, when you get called out in a custom meme, you listen. :smile_cat:
-So here’s the long(er) form of “Use Jarl!”, from my following sweep through the [parsnip](https://parsnip.tidymodels.org/) package, with commentary from Maëlle.
+So here’s the long(er) form of “Use Jarl!”, from the following sweep through the [parsnip](https://parsnip.tidymodels.org/) package by Hannah, with commentary from Maëlle.
 
 
 ## How Hannah used Jarl
