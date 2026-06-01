@@ -186,4 +186,4 @@ Note that you could run Jarl checks manually as we did, or you could tell a LLM 
 To quote Hannah's colleague [Emil Hvitfeldt](https://emilhvitfeldt.com/post/ast-grep-r-claude-code/ ), _“When coding or using coding agents, one way to improve your workflow is by using CLI tools with a very clear focus.”_. 🫡
 
 What's even better with Jarl is that it is actively developed!
-The [open PR](https://github.com/etiennebacher/jarl/pull/454) to add a check for unused _function arguments_ is in particular very exciting! 
+The [open PR](https://github.com/etiennebacher/jarl/pull/454) to add a check for unused _function arguments_ is very exciting in particular! 
