@@ -118,7 +118,7 @@ We use it _for_ parsnip in the release process but we don't use it _in_ parsnip.
 I wasn't expecting Jarl to catch onto this difference so I decided to review the list of flagged functions separately and split that off into its own issue (and PR). 
 I ended up keeping one other function that was part of a set of functions provided in a standalone file but I removed the other ones. 
 
-[^release]: This inspired an [issue](https://github.com/etiennebacher/jarl/issues/497).
+[^release]: This inspired an [issue](https://github.com/etiennebacher/jarl/issues/497). As noted there, for this function one should add an [exception as a comment](https://jarl.etiennebacher.com/howto/suppression-comments) or in the [config file](https://jarl.etiennebacher.com/reference/config-file#unused_function).
 
 No kittens were hurt!
 
@@ -157,6 +157,22 @@ Deleting unused lines is very satisfying.
 For instance, code that comes after a `return()` or a `stop()` in a function.
 Sometimes, you can simply delete that code (again, a feel good move!).
 Other times, the check is an opportunity for [targeted refactoring](https://github.com/tidymodels/parsnip/issues/1359)!
+
+### Jarl can check your testthat code
+
+As a bonus, because these rules are turned off by default, you can run
+
+```
+jarl check . --select TESTTHAT
+```
+
+This will apply all rules from the [testthat group](https://jarl.etiennebacher.com/rules) that help you use more specific expectations.
+For instance, `expect_equal(length(x), 2)` should be `expect_length(x, 2)`.
+All these rules come with automatic fixes!
+
+Example in [parsnip](https://github.com/tidymodels/parsnip/pull/1379), example in [igraph](https://github.com/igraph/rigraph/pull/2670).
+
+Should your package depend on dplyr, there's a group of (currently two) rules for this as well!
 
 ## Conclusion
 

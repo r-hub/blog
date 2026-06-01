@@ -9,7 +9,7 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: e59e68eb28ad0d8e
+rmd_hash: 0944d378c851a19e
 
 ---
 
@@ -21,7 +21,7 @@ We (Hannah and Maëlle) share an appreciation for the unglamorous maintenance wo
 
 Motivated by this conversation among other things, Maëlle wrote a [whole blog post](https://ropensci.org/blog/2026/04/02/tree-sitter-overview/) about Jarl and other tooling for R based on tree-sitter, including the above meme.
 
-So naturally, when you get called out in a custom meme, you listen. :smile_cat: So here's the long(er) form of "Use Jarl!", from my following sweep through the [parsnip](https://parsnip.tidymodels.org/) package, with commentary from Maëlle.
+So naturally, when you get called out in a custom meme, you listen. :smile_cat: So here's the long(er) form of "Use Jarl!", from the following sweep through the [parsnip](https://parsnip.tidymodels.org/) package by Hannah, with commentary from Maëlle.
 
 ## How Hannah used Jarl
 
@@ -68,7 +68,7 @@ This separation of changes by rule also made it easier to review changes: one to
 
 I first went through the ones with automatic fixes, then the ones without. The result of the clean-up: <https://github.com/tidymodels/parsnip/pull/1356> *Maëlle: in igraph, I went through rules starting with the ones with the least violations, ending with the ones that had the most hits.*
 
-parsnip has been around the block a few times and had accumulated a few functions flagged by Jarl as unused. I spotted `release_bullets()` in the list which I know we want to keep.[^1] We use it for parsnip in the release process but we don't use it in parsnip. I wasn't expecting Jarl to catch onto this difference so I decided to review the list of flagged functions separately and split that off into its own issue (and PR). I ended up keeping one other function that was part of a set of functions provided in a standalone file but the other ones I removed.
+parsnip has been around the block a few times and had accumulated a few functions flagged by Jarl as unused. I spotted `release_bullets()` in the list which I know we want to keep.[^1] We use it *for* parsnip in the release process but we don't use it *in* parsnip. I wasn't expecting Jarl to catch onto this difference so I decided to review the list of flagged functions separately and split that off into its own issue (and PR). I ended up keeping one other function that was part of a set of functions provided in a standalone file but I removed the other ones.
 
 No kittens were hurt!
 
@@ -98,6 +98,18 @@ Also a problem that happens in a package that wasn't born yesterday! In this cas
 
 For instance, code that comes after a [`return()`](https://rdrr.io/r/base/function.html) or a [`stop()`](https://rdrr.io/r/base/stop.html) in a function. Sometimes, you can simply delete that code (again, a feel good move!). Other times, the check is an opportunity for [targeted refactoring](https://github.com/tidymodels/parsnip/issues/1359)!
 
+### Jarl can check your testthat code
+
+As a bonus, because these rules are turned off by default, you can run
+
+    jarl check . --select TESTTHAT
+
+This will apply all rules from the [testthat group](https://jarl.etiennebacher.com/rules) that help you use more specific expectations. For instance, `expect_equal(length(x), 2)` should be `expect_length(x, 2)`. All these rules come with automatic fixes!
+
+Example in [parsnip](https://github.com/tidymodels/parsnip/pull/1379), example in [igraph](https://github.com/igraph/rigraph/pull/2670).
+
+Should your package depend on dplyr, there's a group of (currently two) rules for this as well!
+
 ## Conclusion
 
 Automatic tools are extremely useful for guiding upkeep work. Thinking *"let me clean up this repo"* can be daunting :scream:, tools like Jarl provide a roadmap! They let you fix obvious problems, and at the same time, they can make you read some dusty corners of your codebase. Hannah's work on parsnip inspired Maëlle to run Jarl on igraph (influencer influenced back!), and she too can confirm it was both useful and satisfying. Thanks Etienne for that cool tool!
@@ -106,5 +118,5 @@ Note that you could run Jarl checks manually as we did, or you could tell a LLM 
 
 What's even better with Jarl is that it is actively developed! The [open PR](https://github.com/etiennebacher/jarl/pull/454) to add a check for unused *function arguments* is in particular very exciting!
 
-[^1]: This inspired an [issue](https://github.com/etiennebacher/jarl/issues/497).
+[^1]: This inspired an [issue](https://github.com/etiennebacher/jarl/issues/497). As noted there, for this function one should add an [exception as a comment](https://jarl.etiennebacher.com/howto/suppression-comments) or in the [config file](https://jarl.etiennebacher.com/reference/config-file#unused_function).
 
