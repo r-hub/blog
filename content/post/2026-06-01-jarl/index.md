@@ -9,13 +9,13 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: d54c55093fb1dd00
+rmd_hash: e59e68eb28ad0d8e
 
 ---
 
 {{< figure src="meme.png" alt="Cute kitten attacked by robots. The text says 'Everytime you use Claude for something a CLI can do, a kitten dies'." >}}
 
-TL;DR, don't let your friends use Claude for finding useless code in a project! Using [Jarl](https://jarl.etiennebacher.com/) instead is cheaper, more reliable, and won't kill any kitten.
+TL;DR, don't let your friends use LLMs for finding useless code in a project! Using [Jarl](https://jarl.etiennebacher.com/) instead is cheaper, more reliable, and won't kill any kitten.
 
 We (Hannah and Maëlle) share an appreciation for the unglamorous maintenance work we call upkeep. So when Claude highlighted some [dead](https://github.com/tidymodels/tune/commit/5b4d63b58bd496e6c2809a5444b6ab119ae14f37) [code](https://github.com/tidymodels/tune/commit/16766b32ae1157425b124a70ec0bd64246e24c7f) in the tune package to Hannah, it was worth a mention during a chat. This led to Maëlle recommending Etienne Bacher's [Jarl](https://jarl.etiennebacher.com/), a fast linter for R written in Rust that can, among other things, detect unused functions.
 
@@ -82,7 +82,7 @@ And here are a few more reasons beyond our success stories :grin::
 
 For instance, the [`outer_negation`](https://jarl.etiennebacher.com/rules/outer_negation) rule helps improve readability: `!all(x)` is easier to understand than `any(!x)`. See it in action in [parsnip](https://github.com/tidymodels/parsnip/pull/1356/changes/8029bb8eb9acab8beef75975fd6675e38a70f802).
 
-Generally, Jarl will make the codebase less [smelly](https://github.com/jennybc/code-smells-and-feels%20and%20https://www.youtube.com/watch?v=7oyiPBjLAWY).
+Generally, Jarl will make the codebase less [smelly](https://github.com/jennybc/code-smells-and-feels).
 
 ### Jarl will find unused functions
 
