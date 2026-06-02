@@ -9,7 +9,7 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: 8cd12d1b0f4e9455
+rmd_hash: 78d1adb373359c68
 
 ---
 
@@ -82,7 +82,23 @@ And here are a few more reasons beyond our success stories :grin::
 
 ### Jarl will find small smelly things
 
-For instance, the [`outer_negation`](https://jarl.etiennebacher.com/rules/outer_negation) rule helps improve readability: `!all(x)` is easier to understand than `any(!x)`. See it in action in [parsnip](https://github.com/tidymodels/parsnip/pull/1356/changes/8029bb8eb9acab8beef75975fd6675e38a70f802).
+For instance, the [`outer_negation`](https://jarl.etiennebacher.com/rules/outer_negation) rule helps improve readability: `!all(x)` is easier to understand than `any(!x)`. In igraph for example, thanks to that rule we [changed](https://github.com/igraph/rigraph/pull/2666)
+
+``` r
+any(!names(options) %in% names(defaults))
+```
+
+*Any names of options not in names of defaults* (and actually a tad worse since we do not use `%notin%` yet, new in [R 4.6.0](https://cran.r-project.org/doc/manuals/r-release/NEWS.html))
+
+into
+
+``` r
+!all(names(options) %in% names(defaults))
+```
+
+*Not all names of options in names of defaults*.
+
+See also the rule in action in [parsnip](https://github.com/tidymodels/parsnip/pull/1356/changes/8029bb8eb9acab8beef75975fd6675e38a70f802).
 
 Generally, Jarl will make the codebase less [smelly](https://github.com/jennybc/code-smells-and-feels).
 
