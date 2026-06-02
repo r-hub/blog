@@ -9,7 +9,7 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: d6f67ce84138e3b9
+rmd_hash: 8cd12d1b0f4e9455
 
 ---
 
@@ -44,7 +44,7 @@ Found 296 errors.
 More than 15 errors reported, use `--statistics` to get the count by rule.
 ```
 
-So one more time, with the `--statistics` option, to get an overview of what Jarl all flagged. The output look something like
+So one more time, with the `--statistics` option, to get an overview of what Jarl all flagged. The output (here with made up numbers) looked something like
 
 ``` sh
 jarl check . --statistics
