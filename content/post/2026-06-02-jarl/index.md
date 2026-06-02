@@ -4,12 +4,12 @@ title: "Refactoring with Jarl: a coffee chat"
 authors: 
 - Hannah Frick
 - Maëlle Salmon
-date: "2026-06-01" 
+date: "2026-06-02" 
 tags: 
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: ba14919891cca160
+rmd_hash: d6f67ce84138e3b9
 
 ---
 
@@ -23,9 +23,11 @@ Motivated by this conversation among other things, Maëlle wrote a [whole blog p
 
 So naturally, when you get called out in a custom meme, you listen. :smile_cat: So here's the long(er) form of "Use Jarl!", from the following sweep through the [parsnip](https://parsnip.tidymodels.org/) package by Hannah, with commentary from Maëlle.
 
+*Many thanks to [Etienne Bacher](https://www.etiennebacher.com/) for reviewing this post!*
+
 ## How Hannah used Jarl
 
-I have the [Jarl extension](https://jarl.etiennebacher.com/howto/editors) installed for my Positron but here I used the CLI of Jarl. I started off with running this [command](https://jarl.etiennebacher.com/by-example#lint-a-directory) in the terminal:
+I have the [Jarl extension](https://jarl.etiennebacher.com/howto/editors) installed for my Positron but here I used the command line interface (CLI) of Jarl. I started off with running this [command](https://jarl.etiennebacher.com/by-example#lint-a-directory) in the terminal:
 
 ``` sh
 jarl check .
@@ -74,7 +76,7 @@ No kittens were hurt!
 
 ## Why use Jarl for refactoring
 
-Obviously, because we are telling you you should! More seriously: Jarl, a command line interface (CLI) for linting code, is fast and free!
+Obviously, because we are telling you you should! More seriously: Jarl is fast and free!
 
 And here are a few more reasons beyond our success stories :grin::
 
