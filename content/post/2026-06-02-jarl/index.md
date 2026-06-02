@@ -9,7 +9,7 @@ tags:
 - package development
 - programming
 output: hugodown::hugo_document
-rmd_hash: 78d1adb373359c68
+rmd_hash: d3d6c8b66b9cdb33
 
 ---
 
@@ -134,7 +134,7 @@ Automatic tools are extremely useful for guiding upkeep work. Thinking *"let me 
 
 Note that you could run Jarl checks manually as we did, or you could tell a LLM to run Jarl. To quote Hannah's colleague [Emil Hvitfeldt](https://emilhvitfeldt.com/post/ast-grep-r-claude-code/), *"When coding or using coding agents, one way to improve your workflow is by using CLI tools with a very clear focus."*. 🫡
 
-What's even better with Jarl is that it is actively developed! The [open PR](https://github.com/etiennebacher/jarl/pull/454) to add a check for unused *function arguments* is very exciting in particular!
+What's even better with Jarl is that it is actively developed, which you can confirm by skimming through the rich [changelog](https://jarl.etiennebacher.com/dev/changelog)!
 
 [^1]: This inspired an [issue](https://github.com/etiennebacher/jarl/issues/497). As noted there, for this function one should add an [exception as a comment](https://jarl.etiennebacher.com/howto/suppression-comments) or in the [config file](https://jarl.etiennebacher.com/reference/config-file#unused_function).
 
